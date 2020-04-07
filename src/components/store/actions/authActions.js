@@ -1,0 +1,45 @@
+import firebase from 'firebase/app';
+import firestore from '../../../index' 
+export const signIn = (credentials) => {
+  return (dispatch, getState, getFirebase) => {
+    
+    
+    firebase.auth().signInWithEmailAndPassword(
+      credentials.email,
+      credentials.password
+    ).then(() => {
+      dispatch({ type: 'LOGIN_SUCCESS' });
+    }).catch((err) => {
+      dispatch({ type: 'LOGIN_ERROR', err });
+    });
+
+  }
+}
+
+export const signOut = () => {
+  return (dispatch, getState) => {
+
+
+    firebase.auth().signOut().then(() => {
+      dispatch({ type: 'SIGNOUT_SUCCESS' })
+    });
+  }
+}
+
+export const signUp = (newUser) => {
+  return (dispatch, getState) => {
+    firebase.auth().createUserWithEmailAndPassword(
+      newUser.email, 
+      newUser.password
+    ).then(resp => {
+      return firestore.collection('users').doc(resp.user.uid).set({
+        displayName: newUser.firstName +" "+newUser.lastName,
+        email:  newUser.email,
+      });
+    }).then(() => {
+      dispatch({ type: 'SIGNUP_SUCCESS' });
+    }).catch((err) => {
+      dispatch({ type: 'SIGNUP_ERROR', err});
+    });
+  }
+}
