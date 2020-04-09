@@ -9,7 +9,7 @@ import Reports from './components/pages/Reports';
 import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-
+import "./App.css"
 
 class App extends Component {
   

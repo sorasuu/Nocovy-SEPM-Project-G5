@@ -66,6 +66,9 @@ class SignIn extends Component {
     this.props.signIn(this.state)
 
   }
+  handleResetPassword = () => {
+
+  }
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.authError !== prevState.authError) {
       if (nextProps.authError === "Incorrect Email or Password") {
@@ -109,7 +112,7 @@ class SignIn extends Component {
                   {this.state.emailError}
                 </div>
               </div>
-              {this.state.isForget == false ? 
+              {this.state.isForget === false ? 
               <div className="form-group">
                 <label htmlFor="password">Password</label>
                 <input
@@ -126,7 +129,7 @@ class SignIn extends Component {
               </div>: <button onClick={this.handleForget}>Back</button>}
             </div>
             
-            
+            {this.state.isForget === false ? 
             <div className="input-field">
               <NoSsr>
                 <StyledButton onClick={this.handleSubmit}>Login</StyledButton>
@@ -135,7 +138,12 @@ class SignIn extends Component {
               <div className="center red-text">
                 {authError ? <p>{authError}</p> : null}
               </div>
-            </div>
+            </div>: 
+            <div className="input-field">
+              <NoSsr>
+                <StyledButton onClick={this.handleResetPassword}>Confirm</StyledButton>
+              </NoSsr>
+              </div> }
           </form>
         </Container>
       </div>
