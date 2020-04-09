@@ -22,7 +22,13 @@ class App extends Component {
           <Switch>
             <Route exact path='/'component={Dashboard} />
             {/* <Route path='/product/:id' component={(props) => <ClassDetail {...props} classes={productlist} />}/> /> */}
-            <Route path='/signin' component={SignIn} />
+            <Route path='/signin'>
+              <div>
+                <SignIn/>
+              
+              </div>
+              
+            </Route>
             <Route path='/signup' component={SignUp} />
             {/* <Route path='/reports'  component={() => <Reports products={productobj} reports={reports} />}/>
             <Route path='/myproducts' component={() => <ProductsManage products={productlist} />}/> */}

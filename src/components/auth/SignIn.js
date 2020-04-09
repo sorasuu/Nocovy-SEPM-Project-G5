@@ -4,6 +4,7 @@ import { signIn } from '../store/actions/authActions'
 import { Redirect } from 'react-router-dom'
 import { Container, NoSsr, LinearProgress, withStyles } from '@material-ui/core'
 import StyledButton from '../layout/StyledButton'
+import "./style.css"
 const ColorLinearProgress = withStyles({
   colorPrimary: {
     background: '#ffff'
@@ -12,27 +13,62 @@ const ColorLinearProgress = withStyles({
     background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)"
   }
 })(LinearProgress);
+
+const initialState = {
+  email: '',
+  password: '',
+  emailError: '',
+  passwordError: '',
+  logging: false, authError: '',
+  isForget: false,
+}
 class SignIn extends Component {
-  state = {
-    email: '',
-    password: '',
-    logging: false, authError: ''
-  }
+  state = initialState;
+
   handleChange = (e) => {
     this.setState({
       [e.target.id]: e.target.value
     })
   }
+
+
+  validate = () => {
+    let emailError = "";
+    let passwordError = "";
+
+    if (!this.state.email.includes("@")) {
+      emailError = "invalid email";
+    }
+    
+    if (!this.state.password){
+      passwordError = "Password cannot be blank"
+    }
+    if (emailError || passwordError) {
+      this.setState({ emailError, passwordError });
+      return false;
+    }
+
+    return true;
+  }
+
+  handleForget = () =>{
+    this.setState({isForget: !this.state.isForget})
+    
+  }
   handleSubmit = (e) => {
     e.preventDefault();
     this.setState({ logging: true })
+    const isValid = this.validate();
+    if (isValid) {
+      // console.log(this.state);
+      this.setState(initialState);
+    }
     this.props.signIn(this.state)
 
   }
-
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.authError !== prevState.authError) {
-      if (nextProps.authError === "Login failed") {
+      if (nextProps.authError === "Incorrect Email or Password") {
       }
       return { authError: nextProps.authError, logging: false };
     }
@@ -46,22 +82,51 @@ class SignIn extends Component {
     }
   }
   render() {
+    
     const { authError, auth } = this.props;
+    console.log(this.props.auth)
     if (auth.uid) return <Redirect to='/' />
     return (
-      <div>
-
-        <Container style={{ marginTop: "2%" }}>
+      
+      <div className="base-container">
+        <Container style={{ marginTop: "2%", width: "500px" }}>
           <form className="white auth" onSubmit={this.handleSubmit} style={{ padding: "2%" }}>
-            <h5 className="grey-text text-darken-3" style={{ marginBottom: "3%" }}>Sign In</h5>
-            <div className="input-field">
-              <label htmlFor="email">Email</label>
-              <input type="email" id='email' onChange={this.handleChange} />
+            <div className="header">Login</div>
+            <div className="image">
+              <img src="handshake.png"></img>
             </div>
-            <div className="input-field">
-              <label htmlFor="password">Password</label>
-              <input type="password" id='password' onChange={this.handleChange} />
+            <div className="form">
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id='email'
+                  placeholder='Enter your Email'
+                  value={this.state.email}
+                  onChange={this.handleChange}
+                />
+                <div style={{ fontSize: 11, color: "red" }}>
+                  {this.state.emailError}
+                </div>
+              </div>
+              {this.state.isForget == false ? 
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  id='password'
+                  placeholder='Enter your password'
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                />
+                <div style={{ fontSize: 11, color: "red" }}>
+                  {this.state.passwordError}
+                </div>
+                <a onClick={this.handleForget}>Forget Password?</a>
+              </div>: <button onClick={this.handleForget}>Back</button>}
             </div>
+            
+            
             <div className="input-field">
               <NoSsr>
                 <StyledButton onClick={this.handleSubmit}>Login</StyledButton>
