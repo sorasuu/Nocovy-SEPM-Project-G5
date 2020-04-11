@@ -1,3 +1,4 @@
+
 export const storeProducts = [
     {
     id:'1',
@@ -41,7 +42,21 @@ export const detailProduct = {
     subHeader:'Eco Dot',
     info:'Alexa Alexa Wake Up',
     price: 10,
-    image: "image/Alexa.jpg",
+    color: ['Pink','Blue','Red'],
+    imageDetail: [
+      {
+        imageId:'1',
+        imageUrl: "image/Alexa.jpg"
+      },
+      {
+        imageId: '2',
+        imageUrl: 'image/Lighter.jpg'
+      },
+      {
+        imageId: '3',
+        imageUrl: "image/Pen.jpg"
+      }
+    ],
     company: 'NOCOVY',
     inCart: false,
     count : 0,
