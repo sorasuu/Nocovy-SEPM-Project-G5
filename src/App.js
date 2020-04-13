@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Navbar from './components/layout/Navbar'
 import Dashboard from './components/pages/Dashboard'
+import ProductDetail from './components/pages/ProductDetail'
+import Profile from './components/pages/Profile'
 import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
 import Reports from './components/pages/Reports';
@@ -24,6 +26,7 @@ class App extends Component {
             {/* <Route path='/product/:id' component={(props) => <ClassDetail {...props} classes={productlist} />}/> /> */}
             <Route path='/signin' component={SignIn} />
             <Route path='/signup' component={SignUp} />
+            <Route path='/profile' component={Profile} />
             {/* <Route path='/reports'  component={() => <Reports products={productobj} reports={reports} />}/>
             <Route path='/myproducts' component={() => <ProductsManage products={productlist} />}/> */}
 
