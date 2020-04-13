@@ -1,13 +1,7 @@
 import React, { Component } from 'react'
-import { Redirect,  NavLink } from 'react-router-dom'
-import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import {Container, Paper} from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add';
-import StyledButton from '../layout/StyledButton'
-import ProductDetailCard from '../layout/ProductDetailCard'
-import ColorLinearProgress from '../layout/ColorLinearProgress'
 
 class Profile extends Component {
   state={
