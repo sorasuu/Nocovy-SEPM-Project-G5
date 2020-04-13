@@ -39,7 +39,7 @@ class Dashboard extends Component {
           <NavLink to ="/products" style={{ marginBottom:"2%"}}>
             <StyledButton>Product Manangerment</StyledButton>
           </NavLink>
-          <div style={{marginTop:'10%'}}>
+          {/* <div style={{marginTop:'10%'}}>
           <Grid
                   container
                   spacing={2}
@@ -52,7 +52,7 @@ class Dashboard extends Component {
               <Grid item xs={12} sm={6} md={4}  key={productmockup.id}>
              <ProductCard  product={productmockup}/>
           </Grid>
-          )}):<h5>Loading...</h5>}</Grid></div>
+          )}):<h5>Loading...</h5>}</Grid></div> */}
         </div>
      
     )
