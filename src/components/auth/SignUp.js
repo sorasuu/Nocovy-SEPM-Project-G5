@@ -2,6 +2,16 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signUp } from '../store/actions/authActions'
+import { Container, NoSsr, LinearProgress, withStyles } from '@material-ui/core'
+import StyledButton from '../layout/StyledButton'
+const ColorLinearProgress = withStyles({
+  colorPrimary: {
+    background: '#ffff'
+  },
+  barColorPrimary: {
+    background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)"
+  }
+})(LinearProgress);
 
 class SignUp extends Component {
   state = {
@@ -23,8 +33,11 @@ class SignUp extends Component {
     const { auth, authError } = this.props;
     if (auth.uid) return <Redirect to='/' /> 
     return (
-      <div className="container">
-        <form className="white" onSubmit={this.handleSubmit}>
+      <div>
+      <Container style={{marginTop: "2%"}}>
+
+      
+        <form className="white" onSubmit={this.handleSubmit} style={{padding:"2%"}}>
           <h5 className="grey-text text-darken-3">Sign Up</h5>
           <div className="input-field">
             <label htmlFor="email">Email</label>
@@ -43,12 +56,16 @@ class SignUp extends Component {
             <input type="text" id='lastName' onChange={this.handleChange} />
           </div>
           <div className="input-field">
-            <button className="btn lighten-1 z-depth-0" color="#39B04B">Sign Up</button>
+            {/* <button className="btn lighten-1 z-depth-0" color="#39B04B">Sign Up</button> */}
+            <NoSsr>
+                <StyledButton onClick={this.handleSubmit}>Signup</StyledButton>
+              </NoSsr>
             <div className="center red-text">
               { authError ? <p>{authError}</p> : null }
             </div>
           </div>
         </form>
+        </Container>
       </div>
     )
   }
