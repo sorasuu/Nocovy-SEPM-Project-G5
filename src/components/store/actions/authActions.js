@@ -2,8 +2,6 @@ import firebase from 'firebase/app';
 import firestore from '../../../index' 
 export const signIn = (credentials) => {
   return (dispatch, getState, getFirebase) => {
-    
-    
     firebase.auth().signInWithEmailAndPassword(
       credentials.email,
       credentials.password
@@ -38,6 +36,12 @@ export const signUp = (newUser) => {
       });
     }).then(() => {
       dispatch({ type: 'SIGNUP_SUCCESS' });
+      var user = firebase.auth().currentUser;
+      user.sendEmailVerification().then(function() {
+      // Email sent.
+      }).catch(function(error) {
+      // An error happened.
+      });
     }).catch((err) => {
       dispatch({ type: 'SIGNUP_ERROR', err});
     });
