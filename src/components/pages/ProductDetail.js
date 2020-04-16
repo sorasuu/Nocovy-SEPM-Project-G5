@@ -39,7 +39,11 @@ class ProductDetail extends Component {
 
     return (
       <div>
-        <ProductDetailCard product={detailProduct} />        
+        <Grid container spacing={2}>
+          <Grid item xs={8}>
+            <ProductDetailCard product={detailProduct} />
+            </Grid>
+        </Grid>        
       </div>
     )
   }

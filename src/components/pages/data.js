@@ -59,6 +59,72 @@ export const detailProduct = {
     ],
     company: 'NOCOVY',
     inCart: false,
-    count : 0,
-    total: 0
+    details:[
+      {
+        name: 'Brand',
+        value:'Fashionista',
+      },
+      {
+        name: 'Sizes',
+        value:' XS, S , M, L, XL'
+      },
+      {
+        name: 'Color',
+        value:
+          'Blue,Red, Yellow'
+      },
+      {
+        name: 'Material',
+        value:'100% Polyester',
+      },
+      {
+        name: 'Weight',
+        value:'1.1 lbs',
+      },
+      {
+        name: 'Master Pack',
+        value: 12,
+      },
+      {
+        name: 'Carton Demension',
+        value: ' 13.50 x 14.25 x 13.80'
+      },
+      {
+        name: 'Cube',
+        value: 1.40,
+      },
+      {
+        name: 'UPC',
+        value:'123456789123',
+      },
+      {
+        name: 'MOQ',
+        value: 460,
+      },
+      {
+        name: 'Lead Time',
+        value: 60,
+      },
+      {
+        name: 'Orgin',
+        value: "China",
+      },
+      {
+        name: 'Length',
+        value: 4.35,
+      },
+      {
+        name: 'Width',
+        value: 1,
+      },
+      {
+        name: 'Height',
+        value: 8.6,
+      },
+      {
+        name: 'Suppling Capacity',
+        value: 976234.2342,
+      },
+
+    ]
   };

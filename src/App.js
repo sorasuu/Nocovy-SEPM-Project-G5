@@ -16,7 +16,7 @@ import "./App.css"
 class App extends Component {
   
   render() {
-    const {productobj,productlist, reports}= this.props
+    const { productobj, productlist, reports }= this.props
     // console.log('productList nay',productlist)
     return (
       <BrowserRouter>
