@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import firestore from '../../../index' 
 export const signIn = (credentials) => {
-  return (dispatch, getState, getFirebase) => {
+  return (dispatch, getState) => {
     firebase.auth().signInWithEmailAndPassword(
       credentials.email,
       credentials.password
