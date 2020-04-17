@@ -20,110 +20,55 @@ export class FormSignUp extends Component {
         this.props.nextStep();
     }
 
-
-
     render() {
         const { auth, authError, values, handleChange } = this.props;
         // if (auth.uid) return <Redirect to='/' />
         return (
+
             <div className="base-container">
                 <Container style={{ marginTop: "2%", width: "500px" }}>
-                    <form className="white auth" onSubmit={this.handleSubmit} style={{ padding: "2%" }}>
-                        <div className="header">Sign up</div>
+                    <form className="white" onSubmit={this.handleSubmit}>
+                        <h5 className="header">Sign Up</h5>
                         <div className="image">
                             <img src="handshake.png"></img>
                         </div>
-                        <div className="form">
-
-
-                            <div className="form-group">
-                                <label htmlFor="firstName" >First Name</label>
-                                <input
-                                    // type="firstName"
-                                    id='firstName'
-                                    placeholder='Enter your first name'
-                                    //   value={this.state.firstName}
-                                    onChange={this.handleChange}
-                                />
-
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="lastName">Last Name</label>
-                                <input
-                                    // type="lastName"
-                                    id='lastName'
-                                    placeholder='Enter your last name'
-                                    //   value={this.state.lastName}
-                                    onChange={this.handleChange}
-                                />
-
-                            </div>
+                        <div className="input-field">
+                            <label htmlFor="firstName">First Name</label>
+                            <input type="text" id='firstName' onChange={handleChange('firstName')} defaultValue={values.firstName} />
+                        </div>
+                        <div className="input-field">
+                            <label htmlFor="lastName">Last Name</label>
+                            <input tnkype="text" id='lastName' onChange={handleChange('lastName')} defaultValue={values.lastName} />
+                        </div>
+                        <div className="input-field">
                             <label htmlFor="email">Email</label>
-                            <input
-                                // type="email"
-                                id='email'
-                                placeholder='Enter your Email'
-                                //   value={this.state.email}
-                                onChange={this.handleChange}
-                            />
-                            {/* <div style={{ fontSize: 11, color: "red" }}>
-                  {this.state.emailError}
-                </div> */}
-
-
-                            <div className="form-group">
-                                <label htmlFor="password">Password</label>
-                                <input
-                                    // type="password"
-                                    id='password'
-                                    placeholder='Enter your password'
-                                    //   value={this.state.password}
-                                    onChange={this.handleChange}
-                                />
-                                {/* <div style={{ fontSize: 11, color: "red" }}>
-                  {this.state.passwordError}
-                </div> */}
-                            </div>
-
-                            {/* <div className="form-group">
-                                <label htmlFor="password">Re-enter Password</label>
-                                <input
-                                    // type="password"
-                                    id='password'
-                                    placeholder='Re-enter your password'
-                                    //   value={this.state.password}
-                                    onChange={this.handleChange}
-                                />
-                         
-                            </div> */}
-
-                            <div className="form-group">
-                                <label htmlFor="phonenumber">Phone Number</label>
-                                <input
-                                    // type="phonenumber"
-                                    id='phoneNumber'
-                                    placeholder='Enter your phone number'
-                                    //   value={this.state.phoneNumber}
-                                    onChange={this.handleChange}
-                                />
-
-                            </div>
-
-
-
+                            <input type="email" id='email' onChange={handleChange('email')} defaultValue={values.email} />
+                        </div>
+                        <div className="input-field">
+                            <label htmlFor="password">Password</label>
+                            <input type="password" id='password' onChange={handleChange('password')} defaultValue={values.password} />
+                        </div>
+                        <div className="input-field">
+                            <label htmlFor="phoneNumber">Phone Number</label>
+                            <input type="text" pattern="[0-9]*" y id='phoneNumber' onChange={handleChange('phoneNumber')} defaultValue={values.phoneNumber} />
                         </div>
 
-
+                        {/* <div className="input-field">
+                            <button className="btn lighten-1 z-depth-0" color="#39B04B" onClick={this.continue}>Continue</button>
+                            <div className="center red-text">
+                                {authError ? <p>{authError}</p> : null}
+                            </div>
+                        </div> */}
                         <div className="input-field">
                             <NoSsr>
                                 <StyledButton onClick={this.continue}>Continue</StyledButton>
                             </NoSsr>
+
                             {/* {this.state.logging ? <ColorLinearProgress style={{ marginBottom: "2%", marginTop: "2%", padding: "5px" }} /> : null} */}
                             <div className="center red-text">
                                 {authError ? <p>{authError}</p> : null}
                             </div>
                         </div>
-
                     </form>
                 </Container>
             </div>

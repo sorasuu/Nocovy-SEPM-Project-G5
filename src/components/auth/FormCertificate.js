@@ -45,7 +45,7 @@ export class FormCertificate extends Component {
                                 <input
                                     type="file"
                                     id='bio'
-                                    //   value={this.state.firstName}
+                                    defaultValue={values.bio}
                                     onChange={this.handleChange}
                                 />
 

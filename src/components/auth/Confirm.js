@@ -16,12 +16,20 @@ const ColorLinearProgress = withStyles({
 })(LinearProgress);
 
 export class FormCertificate extends Component {
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.signUp(this.state);
+      }
+
     continue = e => {
         e.preventDefault();
         //process the form
         //send the data to backend
         //email and phone validation here
+
+        this.handleSubmit();
         this.props.nextStep();
+
     }
 
     back = e => {
@@ -30,7 +38,7 @@ export class FormCertificate extends Component {
     }
 
     render() {
-        const { values:{firstName, lastName, email, password, phoneNumber,bio} } = this.props;
+        const { values: { firstName, lastName, email, password, phoneNumber, bio } } = this.props;
         // if (auth.uid) return <Redirect to='/' />
         return (
             <div className="base-container">
@@ -44,41 +52,44 @@ export class FormCertificate extends Component {
 
 
                             <div className="form-group">
-                            <label htmlFor="firstName" >First Name</label>
-                            
-
+                                <label htmlFor="firstName" >First Name</label>
+                                {/* {console.log(firstName)} */}
+                                <p>{firstName}</p>
                             </div>
+
                             <div className="form-group">
-                            <label htmlFor="lastName" >Last Name</label>
-                            
-
+                                <label htmlFor="lastName" >Last Name</label>
+                                <p>{lastName}</p>
                             </div>
+
                             <div className="form-group">
-                            <label htmlFor="email" >Email</label>
-                            
-
+                                <label htmlFor="email" >Email</label>
+                                <p>{email}</p>
                             </div>
+
                             <div className="form-group">
-                            <label htmlFor="password" >Password</label>
-                            
-
+                                <label htmlFor="password" >Password</label>
+                                <p>{password}</p>
                             </div>
+
                             <div className="form-group">
-                            <label htmlFor="phonenumber" >Phone Number</label>
-                            
-
+                                <label htmlFor="phonenumber" >Phone Number</label>
+                                <p>{phoneNumber}</p>
                             </div>
-                            
 
-
+                            <div className="form-group">
+                                <label htmlFor="bio" >Certificate</label>
+                                {/* Certificate display goes here */}
+                            </div>
 
                         </div>
 
 
                         <div className="input-field">
                             <NoSsr>
-                                <StyledButton onClick={this.continue}>Continue</StyledButton>
+                                <StyledButton onClick={this.continue}>Confirm and Continue</StyledButton>
                             </NoSsr>
+                            
 
                             {/* {this.state.logging ? <ColorLinearProgress style={{ marginBottom: "2%", marginTop: "2%", padding: "5px" }} /> : null} */}
                             {/* <div className="center red-text">
