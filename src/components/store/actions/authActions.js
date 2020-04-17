@@ -38,9 +38,9 @@ export const signUp = (newUser) => {
       dispatch({ type: 'SIGNUP_SUCCESS' });
       var user = firebase.auth().currentUser;
       user.sendEmailVerification().then(function() {
-      // Email sent.
+      console.log("Email Sent")
       }).catch(function(error) {
-      // An error happened.
+      console.log("Email Sent failed ",error)
       });
     }).catch((err) => {
       dispatch({ type: 'SIGNUP_ERROR', err});
