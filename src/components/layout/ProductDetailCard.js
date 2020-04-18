@@ -3,14 +3,12 @@ import cx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Card, CardContent, CardHeader,
-    Paper, Typography, Input,
-    InputAdornment, FormControl, TextField, InputLabel,
-    FilledInput, OutlinedInput
+    Paper, Typography
 } from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import SaveIcon from '@material-ui/icons/Save';
-import { Table, TableBody, TableRow, TableCell } from '@material-ui/core';
+import MaterialTable from 'material-table';
+import { Table, TableContainer, TableBody, TableRow, TableCell, TableHead } from '@material-ui/core';
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
@@ -33,24 +31,12 @@ const useStyles = makeStyles((theme) => ({
             border: `1px solid black`,
             padding: '2% 2% 2px 10px'
         },
-
-       
-    },
-    withoutLabel: {
-        marginTop: theme.spacing(3),
     },
 
-    leftDetail: {
-        width: 150,
-        border: `1px solid ${theme.palette.divider}`,
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: theme.palette.background.paper,
-        color: theme.palette.text.secondary,
-    },
     paper: {
         padding: theme.spacing(2),
         margin: 'auto',
-        marginTop:'5px',
+        marginTop: '5px',
         maxWidth: 500,
     },
     card: {
@@ -79,88 +65,14 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         display: 'flex',
     },
-    margin: {
-        margin: theme.spacing(1),
-    },
-    innerCell: {
-        width: 'auto',
-        padding: '3% 10px 10px 10px',
-        border: `1px solid ${theme.palette.divider}`,
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: theme.palette.background.paper,
-
-    },
-    priceCaculator:{
-        '& .MuiTableCell-root': {
-            border: `1px solid white`,
-            padding: '2% 2% 2px 10px'
-        },
-
+    '&.MuiTableCell-head': {
+        border: `1px solid red`
     }
 
 }));
 
-function PriceCalculator() {
-    const classes = useStyles();
-    const [values, setValues] = React.useState({
-        FOBpoint: '',
-        FreightRate: '',
-        DutyRate: '',
-        UnitCost: '',
-        ListPrice: '',
-    });
-
-    const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
-    };
-
-    return (
-        <div className={classes.root}>
-            <div>
-
-                <FormControl fullWidth className={classes.margin}>
-                    <InputLabel htmlFor="standard-adornment-amount">Amount</InputLabel>
-                    <Input
-
-                        id="standard-adornment-amount"
-                        value={values.amount}
-                        onChange={handleChange('amount')}
-                        startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                    />
-                </FormControl>
-            </div>
-            <div>
-
-                <FormControl className={classes.margin} variant="filled">
-                    <InputLabel htmlFor="filled-adornment-amount">Amount</InputLabel>
-                    <FilledInput
-                        id="filled-adornment-amount"
-                        value={values.amount}
-                        onChange={handleChange('amount')}
-                        startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                    />
-                </FormControl>
-            </div>
-            <div>
-
-                <FormControl fullWidth className={classes.margin} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
-                    <OutlinedInput
-                        id="outlined-adornment-amount"
-                        value={values.amount}
-                        onChange={handleChange('amount')}
-                        startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                        labelWidth={60}
-                    />
-                </FormControl>
-            </div>
-        </div>
-    );
-}
-
-
 export default function ProductDetailCard(props) {
-    console.log("Product Detail", props)
+    console.log("Product Price", props.product.price)
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles();
@@ -231,150 +143,132 @@ const ProductImageCard = props => {
 export const ProductInfoCard = props => {
     const classes = useStyles();
     return (
-        <div className={classes.root}>
-            <Grid
-                container
-                direction="row"
-                justify="space-between"
+        <TableContainer className={classes.root}>
 
-            >
-                <h5>{props.product.company}</h5>
-
-            </Grid>
-
-            <Paper className={classes.paper}>
+            <Table aria-label="simple table">
                 <Grid container spacing={2}>
-                    <Grid
-                        container
-                        justify="space-between"
-                    >
-                        <Grid item xs={6}>
-                            <Typography variant="h6" gutterBottom>Price Calculator</Typography>
-                        </Grid>
-                        <Grid>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                size='small'
-                            // startIcon={<SaveIcon />}
-                            >
-                                Save
-                            </Button>
-                        </Grid>
-
-                    </Grid>
+                    <Grid item xs={6} md={6} lg={6}><h4>PRICE</h4></Grid>
+                    <Grid item xs={6} md={6} lg={6}><Button color="primary">Edit</Button></Grid>
                 </Grid>
-                <Table>
-                    <TableBody className={classes.priceCaculator}>
-                        <TableRow>
-                            <TableCell
 
-                                variant="head">FOB Point</TableCell>
-                            <TableCell >
-                                <Input
-                                    className={classes.innerCell}
-                                    disableUnderline={true}
-                                    id="standard-adornment-amount"
-                                    // value={values.amount}
-                                    // onChange={handleChange('amount')}
-                                    inputProps={{
-                                        'aria-label': 'weight',
-                                    }}
-                                    labelWidth={0}
-                                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                />
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell >Freight Rate</TableCell>
-                            <TableCell>
-                                <Input
-                                    className={classes.root}
-                                    style={{ width: '30%' }}
+                {props.product.price ? props.product.price.map(price => {
+                    return (
+                        <TableBody key={price.id}>
+                            {price.cost ? price.cost.map((cost, key) => {
+                                return (
+                                    <TableRow key={key}>
+                                        <TableCell>{cost.name}</TableCell>
+                                        <TableCell>{cost.value}</TableCell>
+                                    </TableRow>
 
-                                    disableUnderline={true}
-                                    id="standard-adornment-amount"
-                                    // value={values.amount}
-                                    // onChange={handleChange('amount')}
-                                    inputProps={{
-                                        'aria-label': 'weight',
-                                    }}
+                                )
+                            }) : null}
 
-                                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                /> / <Input
-                                    className={classes.root}
-                                    style={{ width: '30%' }}
-                                    disableUnderline={true}
-                                    id="standard-adornment-amount"
-                                    // value={values.amount}
-                                    // onChange={handleChange('amount')}
-                                    inputProps={{
-                                        'aria-label': 'weight',
-                                    }}
-                                    labelWidth={0}
-                                    endAdornment={<InputAdornment position="end">ft</InputAdornment>}
-                                /></TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>Freight Description</TableCell>
-                            <TableCell>
-                                <Input
-                                    className={classes.innerCell}
-                                    disableUnderline={true}
-                                    id="standard-adornment-amount"
-                                    // value={values.amount}
-                                    // onChange={handleChange('amount')}
-                               
-                                />
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>Duty Rate</TableCell>
-                            <TableCell><Input
-                                className={classes.innerCell}
-                                disableUnderline={true}
-                                id="standard-adornment-amount"
-                                // value={values.amount}
-                                // onChange={handleChange('amount')}
-                                endAdornment={<InputAdornment position="end">%</InputAdornment>}
-                            /></TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
-            </Paper>
+                        </TableBody>
+                    )
+                }) : null}
 
-            <Paper className={classes.paper}>
+            </Table>
+
+
+
+
+            {/* <Table style={{marginTop:'2%'}}>
                 <TableBody>
                     {props.product.details ? props.product.details.map(detail => {
-                        return(
+                        return (
                             <TableRow key={detail.name}>
                                 <TableCell>{detail.name}</TableCell>
                                 <TableCell>
                                     {detail.value}
-                                </TableCell>
+                                </TableCell>    
                             </TableRow>
                         )
                     }) : null}
                 </TableBody>
-            </Paper>
-            <Grid container spacing={2}>
+            </Table> */}
+            <DetailTable details={props.product.details} />
+
+            {/* <Grid container spacing={2}>
                 <Grid item xs={4}>
-                    <Typography variant="h6">Components</Typography> 
-                  
+                    <Typography variant="h6">Components</Typography>
+
                 </Grid>
                 <Grid item xs={8}>
                     <Button>Edit</Button>
                 </Grid>
                 <Grid item xs={4}>
-                    <Typography variant="h6">Attachment</Typography> 
-                  
+                    <Typography variant="h6">Attachment</Typography>
+
                 </Grid>
                 <Grid item xs={8}>
                     <Button>Add</Button>
                 </Grid>
-            
-            </Grid>
-        </div>
+
+            </Grid> */}
+        </TableContainer>
     )
 }
+function DetailTable(props) {
+    console.log('detail table props', props.details)
 
+    const [state, setState] = React.useState({
+        columns: [
+            { title: 'Name', field: 'name' },
+            { title: 'Surname', field: 'surname' },
+            
+        ],
+        data: [
+            { name: 'Mehmet', surname: 'Baran'},
+            {
+                name: 'Zerya Betül',
+                surname: 'Baran',        
+            },
+        ],
+    });
+
+    return (
+        <MaterialTable
+            title="Detail Table"
+            columns={state.columns}
+            data={state.data}
+            editable={{
+                onRowAdd: (newData) =>
+                    new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve();
+                            setState((prevState) => {
+                                const data = [...prevState.data];
+                                data.push(newData);
+                                return { ...prevState, data };
+                            });
+                        }, 600);
+                    }),
+                onRowUpdate: (newData, oldData) =>
+                    new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve();
+                            if (oldData) {
+                                setState((prevState) => {
+                                    const data = [...prevState.data];
+                                    data[data.indexOf(oldData)] = newData;
+                                    return { ...prevState, data };
+                                });
+                            }
+                        }, 600);
+                    }),
+                onRowDelete: (oldData) =>
+                    new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve();
+                            setState((prevState) => {
+                                const data = [...prevState.data];
+                                data.splice(data.indexOf(oldData), 1);
+                                return { ...prevState, data };
+                            });
+                        }, 600);
+                    }),
+            }}
+        />
+    );
+}
