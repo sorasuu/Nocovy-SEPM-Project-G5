@@ -5,6 +5,7 @@ import { firestoreReducer } from 'redux-firestore';
 import { firebaseReducer } from 'react-redux-firebase'
 import productReducer from './productReducer'
 import userReducer from './userReducer'
+import uploadReducer from './uploadReducer'
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   firebase: firebaseReducer,
   productReducer,
   userReducer,
+  uploadReducer,
 });
 
 export default rootReducer
