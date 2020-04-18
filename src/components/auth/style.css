@@ -55,4 +55,6 @@
   .base-container .content .form .form-group input:focus {
     outline: none;
     box-shadow: 0px 0px 12px 0.8px #0e81ce96;
+
   }
+
