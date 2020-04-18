@@ -7,7 +7,6 @@ import { Provider,useSelector} from 'react-redux'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore' // <- needed if using firestore
-import 'firebase/storage';
 import { createStore, compose ,applyMiddleware} from 'redux'
 import { ReactReduxFirebaseProvider,getFirebase,isLoaded  } from 'react-redux-firebase'
 import { createFirestoreInstance,getFirestore } from 'redux-firestore' // <- needed if using firestore
@@ -36,9 +35,7 @@ const middlewares = [
 // Initialize firebase instance
 firebase.initializeApp(fbConfig)
 const firestore = firebase.firestore()
-
- const  storageRef = firebase.storage().ref();
-export default (firestore,storageRef)
+export default firestore
 
 function AuthIsLoaded({ children }) {
 

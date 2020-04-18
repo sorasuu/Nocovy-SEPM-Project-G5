@@ -21,7 +21,7 @@ const initState = {
         console.log('login error');
         return {
           ...state,
-          authError: 'Login failed'
+          // authError: 'Login failed'
         }
       
       case 'LOGIN_SUCCESS':

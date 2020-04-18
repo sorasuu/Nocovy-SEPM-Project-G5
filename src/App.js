@@ -9,7 +9,6 @@ import Reports from './components/pages/Reports';
 import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import Uploader from './components/store/actions/uploadAction';
 
 
 class App extends Component {
@@ -27,8 +26,7 @@ class App extends Component {
             <Route path='/signup' component={SignUp} />
             {/* <Route path='/reports'  component={() => <Reports products={productobj} reports={reports} />}/>
             <Route path='/myproducts' component={() => <ProductsManage products={productlist} />}/> */}
-           
-            
+
           </Switch>
           {/* <Footer/> */}
         </div>
