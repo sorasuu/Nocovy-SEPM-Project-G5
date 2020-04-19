@@ -214,24 +214,43 @@ function DetailTable(props) {
 
     const [state, setState] = React.useState({
         columns: [
-            { title: 'Name', field: 'name' },
-            { title: 'Surname', field: 'surname' },
-            
+            {
+                title: 'Name', field: 'name',
+                cellStyle: {
+                  backgroundColor: '#039be5',
+                  color: '#FFF',
+                  width:'auto'
+                },
+                headerStyle: {
+                  backgroundColor: '#039be5',
+                  fontSize:15,
+                  fontFamily:'Open Sans'
+                }
+              },
+            { title: 'Value', field: 'value' },         
         ],
         data: [
-            { name: 'Mehmet', surname: 'Baran'},
+            { name: 'Origin', value: 'China'},
             {
-                name: 'Zerya Betül',
-                surname: 'Baran',        
+                name: 'Brand',
+                value: 'Fashionista',        
             },
         ],
+       
     });
 
     return (
+        <div>
+        <h4>Detail Table</h4>
         <MaterialTable
-            title="Detail Table"
+            title={' '}
             columns={state.columns}
             data={state.data}
+            options={{
+                searchFieldAlignment: "left",
+                paging:false,
+                
+            }}
             editable={{
                 onRowAdd: (newData) =>
                     new Promise((resolve) => {
@@ -270,5 +289,6 @@ function DetailTable(props) {
                     }),
             }}
         />
+        </div>
     );
 }
