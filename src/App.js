@@ -27,17 +27,15 @@ class App extends Component {
         <div className="App">
           <Navbar />
           <Switch>
-            {/* <Route exact path='/'component={Dashboard} /> */}
-            <Route exact path='/'component={ProductDetail} />
+            <Route exact path='/'component={Dashboard} />
+            {/* <Route exact path='/'component={ProductDetail} /> */}
 
             <Route path='/product/:id' component={(props) => <ProductDetail {...props} classes={productlist} />}/> />
             <Route path='/signin'component={SignIn}/>
             <Route path='/signup' component={SignUp} />
-            <Route path='/profile' component={Profile} />
+            <Route path='/profile/:id' component={Profile} />
             {/* <Route path='/reports'  component={() => <Reports products={productobj} reports={reports} />}/>
-            <Route path='/myproducts' component={() => <ProductsManage products={productlist} />}/> */}
-           
-            
+            <Route path='/myproducts' component={() => <ProductsManage products={productlist} />}/> */}    
           </Switch>
           {/* <Footer/> */}
         </div>

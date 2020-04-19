@@ -1,43 +1,46 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import {Container, Paper} from '@material-ui/core'
+import {Container, Typography, Grid} from '@material-ui/core'
+import WholesalerInfoCard from '../layout/WholesalerInfoCard'
+import { storeProducts } from "./data"
+import ProductCard from '../layout/ProductCard'
 
 class Profile extends Component {
   state={
     businessName: 'Coastal Designs Décor',
-    businessGenre: 'Handmade Products, Home Decor, Licensed Products, Nostalgic Gifts, Woodware',
-    description: 'Product lines include Photo frames, money boxes, wall plaques, book boxes, trinket boxes, candle holders, tea light holders, wall art including shadow boxes, shell theme products',
+    phoneNumber: '+61 02 4954 4100',
     address: 'Unit 3/339 Hillsborough Road Warners Bay NSW',
-    phoneNumber: '02 4954 4100',
-    website: 'http://www.coastaldesigns.com.au'
+    website: 'http://www.coastaldesigns.com.au',
+    businessGenre: 'Handmade Products, Home Decor, Licensed Products, Nostalgic Gifts, Woodware',
+    description: `Originally Established in 1985, Coastal Designs Decor is a long established and experienced Australian wholesale distribution business.
+    Our main products are Home decorating accessories in the form of Volkswagen memorabilia, such as VW Beetle and VW Kombi or beach theme and coastal designs like:- Lighthouses Anchors, oars, paddles, beach girl figurines, pelicans, starfish, shells etc.
+    Product lines include Photo frames, money boxes, wall plaques, book boxes, trinket boxes, candle holders, tea light holders, wall art including shadow boxes, shell theme products`,
   }
- handelReportformClicked =(e)=>{
-   this.setState({reportform:!this.state.reportform})
- }
   render() {
     return (
       <Container>
-        <Paper elevation={3}>
-          <Container>
-            <img className="img-responsive" src="http://wholesalerslist.com.au/wp-content/uploads/2019/07/BL1158-150x150.jpg" alt="logo"/>
-            <h4>Coastal Designs Décor</h4>
-            <div><text style={{fontWeight: "bold"}}>Business Name:</text> {this.state.businessName}</div>
-            <div><text style={{fontWeight: "bold"}}>Business Genre:</text> {this.state.businessGenre}</div>
-            <div><text style={{fontWeight: "bold"}}>Business Description:</text> {this.state.description}</div>
-            <div><text style={{fontWeight: "bold"}}>Address:</text> {this.state.address}</div>
-            <div><text style={{fontWeight: "bold"}}>Phone Number:</text> {this.state.phoneNumber}</div>
-            <div><text style={{fontWeight: "bold"}}>Website:</text> {this.state.website}</div>
-          </Container>
-      </Paper>
+        <WholesalerInfoCard info = {this.state}/>
+        <Typography gutterBottom align='center' variant='h3'><text style={{fontWeight:'bold'}}>Products</text></Typography>
+        <Grid
+                  container
+                  spacing={2}
+                  direction="row"
+                  justify="flex-start"
+                  alignItems="flex-start"       
+          >
+           {storeProducts?storeProducts.map(product=>{
+             return(
+              <Grid item xs={12} sm={6} md={4}  key={product.id}>
+             <ProductCard  product={product}/>
+          </Grid>
+          )}):<h5>Loading...</h5>}</Grid>
       </Container>
     )
   }
 }
 
 const mapStateToProps = (state,ownProps) => {
-  const id = ownProps.match.params.id;
-
   console.log(state);
   console.log(ownProps)
   return {

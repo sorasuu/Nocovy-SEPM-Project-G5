@@ -16,6 +16,7 @@ const useStyles = makeStyles(() => ({
         width: '100%',
         overflow: 'initial',
         background: '#ffffff',
+        borderRadius: 16,
     },
 
 }));
