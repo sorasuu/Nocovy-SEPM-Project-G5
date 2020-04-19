@@ -119,9 +119,9 @@ const ProductImageCard = props => {
                 {props.product.imageDetail.map(i => {
                     return (
                         // <Grid item xs={3} sm={3} md={3} key={i.imageId}>
-                        <Card style={{ width: '50px', height: "75px" }} key={i.imageId}>
-                            <img src={i.imageUrl} style={{ width: "100%" }} />
-                        </Card>
+                        <Card style={{ width: '75px', height: "75px" }} key={i.imageId}>
+                            <img src={i.imageUrl} style={{ width: "100%", height:"100%" }} />
+                        </Card>         
                         // </Grid>
                     );
                 })}
@@ -130,7 +130,7 @@ const ProductImageCard = props => {
                 return (
                     // <Grid item xs={3} sm={3} md={3} key={i.imageId}>
                     <Card className={classes.imageCard} key={i.imageId}>
-                        <img src={i.imageUrl} style={{ width: "50%", height: '350px' }} />
+                        <img src={i.imageUrl} style={{ width: "75%", height: '75%' }} />
                     </Card>
                     // </Grid>
                 );
@@ -140,11 +140,13 @@ const ProductImageCard = props => {
 }
 // table detail
 export const ProductInfoCard = props => {
+    
     const classes = useStyles();
+    
     return (
         <div>
         <Grid container spacing={2}>
-            <Grid item xs={6} md={6} lg={6}><h4>PRICE</h4></Grid>
+            <Grid item xs={6} md={6} lg={6}><h4>Price</h4></Grid>
             <Grid item xs={6} md={6} lg={6}><PriceForm/></Grid>
         </Grid>
         <TableContainer className={classes.root}>
@@ -156,7 +158,7 @@ export const ProductInfoCard = props => {
                             {price.cost ? price.cost.map((cost, key) => {
                                 return (
                                     <TableRow key={key}>
-                                        <TableCell>{cost.name}</TableCell>
+                                        <TableCell style={{backgroundColor: `hsla(14, 100%, 53%, 0.6)`, color:'white'}}>{cost.name}</TableCell>
                                         <TableCell>{cost.value}</TableCell>
                                     </TableRow>
                                 )
@@ -179,18 +181,23 @@ function DetailTable(props) {
         columns: [
             {
                 title: 'Name', field: 'name',
-                cellStyle: {
-                  backgroundColor: '#039be5',
-                  color: '#FFF',
-                  width:'auto'
-                },
+                
                 headerStyle: {
-                  backgroundColor: '#039be5',
+                  backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
                   fontSize:15,
-                  fontFamily:'Open Sans'
+                  fontFamily:'Open Sans',
+                  color:'white'
+                  
                 }
               },
-            { title: 'Value', field: 'value' },         
+            { title: 'Value', field: 'value',
+            headerStyle:{
+                backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
+                fontSize:15,
+                fontFamily:'Open Sans',
+                color:'white'
+            } 
+        },         
         ],
         data: [
             { name: 'Origin', value: 'China'},

@@ -44,15 +44,15 @@ export const detailProduct = {
   imageDetail: [
     {
       imageId:'1',
-      imageUrl: "image/Alexa.jpg"
+      imageUrl: "https://images.unsplash.com/photo-1558981408-db0ecd8a1ee4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
     },
     {
       imageId: '2',
-      imageUrl: 'image/Lighter.jpg'
+      imageUrl: 'https://images.unsplash.com/photo-1518444065439-e933c06ce9cd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=967&q=80'
     },
     {
       imageId: '3',
-      imageUrl: "image/Pen.jpg"
+      imageUrl: "https://images.unsplash.com/photo-1519799297475-fdcbf5f5953b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80"
     }
   ],
   company: 'NOCOVY',

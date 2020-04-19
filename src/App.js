@@ -28,7 +28,7 @@ class App extends Component {
           <Navbar />
           <Switch>
             <Route exact path='/'component={Dashboard} />
-            {/* <Route exact path='/'component={ProductDetail} /> */}
+            {/* <Route path='/'component={ProductDetail} /> */}
 
             <Route path='/product/:id' component={(props) => <ProductDetail {...props} classes={productlist} />}/> />
             <Route path='/signin'component={SignIn}/>

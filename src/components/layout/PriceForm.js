@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
@@ -18,21 +18,62 @@ export default class PriceForm extends React.Component{
   constructor(props){
     super(props);
     this.state ={
-      isOpen: false,
+      open: false,
+      price:{
+        fobPoint:'',
+        freightRate:'',
+        freightDescription:'',
+        dutyRate:'',
+        unitCost:'',
+        freightCost:'',
+        dutyCost:'',
+        miscCost:'',
+        landedCost:'',
+        margin:'',
+        unitPrice:'',
+      }
     }
   }
   handleClickForm =() => {
-    this.setState({isOpen: !this.state.isOpen})
+    this.setState({open: !this.state.open})
   }
+  handleChange = name => ({ target: { value } }) => {
+    this.setState({
+      price: {
+        ...this.state.price,
+        [name]: value
+      }
+    })
+
+  }
+  // handleSubmit =() => {
+  //   const {price} = this.state
+
+  //   this.props.onCreate(price)  
+  // }
 
   render(){
-    return (
-      <div>
+    const { open, 
+    price:{
+      fob,
+      frate,
+      fdescription,
+      dutyrate,
+      unitcost,
+      fcost,
+      dutycost,
+      misc,
+      land,
+      margin,
+      unitprice} 
+    } = this.state
+    return <Fragment>
+   
         <Button variant="outlined" color="primary" onClick={this.handleClickForm}>
           Edit
         </Button>
        
-        <Dialog open={this.state.isOpen} onClose={this.handleClickForm} aria-labelledby="form-dialog-title">
+        <Dialog open={open} onClose={this.handleClickForm} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Price Form</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -42,45 +83,95 @@ export default class PriceForm extends React.Component{
             <TextField
               autoFocus
               margin="dense"
-              id=""
-              label="$"
+              label="FOB Point"
+              value={fob}
+              type='string'          
+            />
+            <br/>
+            <TextField
+              autoFocus
+              margin="dense"
+              value={frate}
+              label="Freight Rate ($/ft3)"
               type='number'
+              
+            />
+            <br/>
+            <TextField
+              autoFocus
+              multiline
+              rows="3"
+              margin="dense"
+              value={fdescription}
+              label="Freight Description"
+              type='string'
               fullWidth
+            />
+            <br/>
+            <TextField
+              autoFocus
+              margin="dense"
+              value={fcost}
+              label="Freight Cost ($)"
+              type='number'
             />
             <TextField
               autoFocus
               margin="dense"
-              id=""
-              label=""
-              fullWidth
+              value={unitcost}
+              label="Unit Cost ($)"
+              type='number'
+              style={{marginLeft:10}}
+            />
+            <br/>
+            <TextField
+              autoFocus
+              margin="dense"
+              value={dutyrate}
+              label="Duty Rate (%)"
+              type='number'
             />
             <TextField
               autoFocus
               margin="dense"
-              id=""
-              label=""
-              fullWidth
+              value={dutycost}
+              label="Duty Cost ($)"
+              type='number'
+              style={{marginLeft:10}}
             />
+            <br/>
             <TextField
               autoFocus
               margin="dense"
-              id=""
-              label=""
-              fullWidth
+              value={misc}
+              label="Misc Cost ($)"
+              type='number'
+
             />
+      
             <TextField
               autoFocus
               margin="dense"
-              id=""
-              label=""
-              fullWidth
+              value={land}
+              label="Landed Cost ($)"
+              type='number'
+              style={{marginLeft:10}}
             />
+            <br/>
+             <TextField
+              autoFocus
+              value={margin}
+              label="Margin (%)"
+              type='number'
+              
+            />
+            <br/>
             <TextField
               autoFocus
               margin="dense"
-              id=""
-              label=""
-              fullWidth
+              value={unitprice}
+              label="Unit Price ($)"
+              type='number'
             />
             
           </DialogContent>
@@ -88,14 +179,13 @@ export default class PriceForm extends React.Component{
             <Button onClick={this.handleClickForm} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleClickForm} color="primary">
+            <Button onClick={this.handleSubmit} color="primary">
               Done
             </Button>
           </DialogActions>
         </Dialog> 
         
-      </div>
-    );
+      </Fragment>
   }
  
 }
