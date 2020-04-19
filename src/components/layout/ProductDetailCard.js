@@ -6,13 +6,12 @@ import {
     Paper, Typography
 } from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import MaterialTable from 'material-table';
 import { Table, TableContainer, TableBody, TableRow, TableCell, TableHead } from '@material-ui/core';
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
-
+import PriceForm from './PriceForm'
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -143,14 +142,14 @@ const ProductImageCard = props => {
 export const ProductInfoCard = props => {
     const classes = useStyles();
     return (
+        <div>
+        <Grid container spacing={2}>
+            <Grid item xs={6} md={6} lg={6}><h4>PRICE</h4></Grid>
+            <Grid item xs={6} md={6} lg={6}><PriceForm/></Grid>
+        </Grid>
         <TableContainer className={classes.root}>
 
-            <Table aria-label="simple table">
-                <Grid container spacing={2}>
-                    <Grid item xs={6} md={6} lg={6}><h4>PRICE</h4></Grid>
-                    <Grid item xs={6} md={6} lg={6}><Button color="primary">Edit</Button></Grid>
-                </Grid>
-
+            <Table aria-label="simple table">               
                 {props.product.price ? props.product.price.map(price => {
                     return (
                         <TableBody key={price.id}>
@@ -160,53 +159,17 @@ export const ProductInfoCard = props => {
                                         <TableCell>{cost.name}</TableCell>
                                         <TableCell>{cost.value}</TableCell>
                                     </TableRow>
-
                                 )
                             }) : null}
-
                         </TableBody>
                     )
                 }) : null}
 
             </Table>
-
-
-
-
-            {/* <Table style={{marginTop:'2%'}}>
-                <TableBody>
-                    {props.product.details ? props.product.details.map(detail => {
-                        return (
-                            <TableRow key={detail.name}>
-                                <TableCell>{detail.name}</TableCell>
-                                <TableCell>
-                                    {detail.value}
-                                </TableCell>    
-                            </TableRow>
-                        )
-                    }) : null}
-                </TableBody>
-            </Table> */}
             <DetailTable details={props.product.details} />
 
-            {/* <Grid container spacing={2}>
-                <Grid item xs={4}>
-                    <Typography variant="h6">Components</Typography>
-
-                </Grid>
-                <Grid item xs={8}>
-                    <Button>Edit</Button>
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography variant="h6">Attachment</Typography>
-
-                </Grid>
-                <Grid item xs={8}>
-                    <Button>Add</Button>
-                </Grid>
-
-            </Grid> */}
         </TableContainer>
+        </div>
     )
 }
 function DetailTable(props) {
