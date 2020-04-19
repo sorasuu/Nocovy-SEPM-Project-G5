@@ -25,7 +25,7 @@ class Dashboard extends Component {
             <StyledButton>Product Report</StyledButton>
           </NavLink>
           <NavLink to ="/products" style={{ marginBottom:"2%"}}>
-            <StyledButton>Product Manangerment</StyledButton>
+            <StyledButton>Product Manangement</StyledButton>
           </NavLink>
            <div style={{marginTop:'10%'}}>
           <Grid
