@@ -3,8 +3,8 @@ import { Redirect, NavLink } from 'react-router-dom'
 import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { fade, makeStyles } from '@material-ui/core/styles'
-import { Button, Paper, Grid, InputBase, withStyles } from '@material-ui/core'
+import { fade } from '@material-ui/core/styles'
+import { Grid, InputBase, withStyles } from '@material-ui/core'
 import StyledButton from '../layout/StyledButton'
 import ProductCard from '../layout/ProductCard'
 import ColorLinearProgress from '../layout/ColorLinearProgress'
@@ -58,7 +58,7 @@ class Dashboard extends Component {
     const { auth, classes} = this.props;
     const { search, products } = this.state;
     const filteredProducts = products.filter(product =>{
-        return product.title.toLowerCase().indexOf( search.toLowerCase())!== -1
+        return product.title.toLowerCase().indexOf(search.toLowerCase())!== -1
     })
     if (!auth.uid) return <Redirect to='/signin' />
 

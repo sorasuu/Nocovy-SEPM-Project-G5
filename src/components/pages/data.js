@@ -1,28 +1,30 @@
 
 export const storeProducts = [
   {
-  id:'1',
-  title:'Alexa',
-  subHeader:'Eco Dot',
-  info:'Alexa Alexa Wake Up',
-  price: 10,
-  image: "https://images.unsplash.com/photo-1518444065439-e933c06ce9cd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=967&q=80",
-  company: 'NOCOVY',
-  inCart: false,
-  count : 0,
-  total: 0
-},{
-  id:'2',
-  title:'Haley',
-  subHeader:'Haley',
-  info:'Burn Burn Burn',
-  price:5,
-  image: 'https://images.unsplash.com/photo-1558981408-db0ecd8a1ee4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-  company: 'NOCOVY',
-  inCart: false,
-  count : 0,
-  total: 0
-},{
+    id:'1',
+    title:'Motobike',
+    subHeader:'Haley',
+    info:'Burn Burn Burn',
+    price:5,
+    image: 'https://images.unsplash.com/photo-1558981408-db0ecd8a1ee4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+    company: 'NOCOVY',
+    inCart: false,
+    count : 0,
+    total: 0
+  },
+  {
+    id:'2',
+    title:'Moto',
+    subHeader:'Haley',
+    info:'Burn Burn Burn',
+    price:5,
+    image: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+    company: 'NOCOVY',
+    inCart: false,
+    count : 0,
+    total: 0
+  },  
+  {
   id:'3',
   title:'Camera',
   subHeader:'Camera',
@@ -33,7 +35,8 @@ export const storeProducts = [
   inCart: false,
   count : 0,
   total: 0
-}
+},
+
 ];
 
 export const detailProduct = {

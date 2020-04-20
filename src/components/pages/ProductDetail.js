@@ -3,12 +3,10 @@ import { Redirect, NavLink } from 'react-router-dom'
 import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Button, Paper, Grid, withStyles, Divider } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add';
-import StyledButton from '../layout/StyledButton'
+import { Grid, withStyles } from '@material-ui/core'
+
 import  ProductDetailCard  from '../layout/ProductDetailCard'
-import ColorLinearProgress from '../layout/ColorLinearProgress'
-import { detailProduct, storeProducts } from './data'
+import { detailProduct } from './data'
 
 const useStyles = (theme) => ({
   root: {
