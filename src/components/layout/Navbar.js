@@ -35,7 +35,7 @@ const Navbar = (props) => {
         style={{ background: 'transparent', boxShadow: 'none' }}>
         <Toolbar>
           <Link to="/">
-       <img src="LogoNocovy.png" style={{width:"120px"}}></img>
+       <img src="https://firebasestorage.googleapis.com/v0/b/sepm-nocovy.appspot.com/o/LogoNocovy.png?alt=media&token=d9ea6b4b-27c5-4bb6-83b0-06d9dc1d38e1" style={{width:"120px"}} alt='Nocovy Logo'></img>
        </Link>
           <div className={classes.root} />
           {links}

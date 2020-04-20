@@ -7,28 +7,16 @@ import { Button, Paper, Grid} from '@material-ui/core'
 import StyledButton from '../layout/StyledButton'
 import ProductCard from '../layout/ProductCard'
 import ColorLinearProgress from '../layout/ColorLinearProgress'
+import { storeProducts } from "./data"
+
 class Dashboard extends Component {
- 
+  state = {
+    products: storeProducts
+  }
   render() {
-    const { auth, products } = this.props;
+    const { auth } = this.props;
     if (!auth.uid) return <Redirect to='/signin' />
-    const productsmockup = [{
-      id:'anhtungdanhcmchetmiet',
-      name:'Anh Tùng đánh CM chết miết',
-      subHeader:'chananhTunglam',
-      info:'Đánh CM thế sao mà có Acarna'
-    },{
-      id:'anhtungdanhinvohaythe',
-      name:'Anh Tùng đánh invo ghê thế',
-      subHeader:'chananhTunglam',
-      info:'đi đánh Ti đi hihi ^^'
-    },{
-      id:'anhtungdanhinvonhusumiya',
-      name:'Anh Tùng đánh invo  như Sumiya',
-      subHeader:'chananhTunglam',
-      info:'đi đánh Ti đi hihi ^^'
-    }
-  ]
+  
     return (
       <div className="container" style={{textAlign:'center'}}>
 
@@ -37,22 +25,24 @@ class Dashboard extends Component {
             <StyledButton>Product Report</StyledButton>
           </NavLink>
           <NavLink to ="/products" style={{ marginBottom:"2%"}}>
-            <StyledButton>Product Manangerment</StyledButton>
+            <StyledButton>Product Manangement</StyledButton>
           </NavLink>
-          <div style={{marginTop:'10%'}}>
+           <div style={{marginTop:'10%'}}>
           <Grid
                   container
                   spacing={2}
                   direction="row"
                   justify="flex-start"
-                  alignItems="flex-start"
-              >
-           {productsmockup?productsmockup.map(productmockup=>{
+                  alignItems="flex-start"       
+          >
+           {this.state.products?this.state.products.map(product=>{
              return(
-              <Grid item xs={12} sm={6} md={4}  key={productmockup.id}>
-             <ProductCard  product={productmockup}/>
+              <Grid item xs={12} sm={6} md={4}  key={product.id}>
+             <ProductCard  product={product}/>
           </Grid>
-          )}):<h5>Loading...</h5>}</Grid></div>
+          )}):<h5>Loading...</h5>}</Grid>
+          
+          </div>
         </div>
      
     )
@@ -60,7 +50,7 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
+  // console.log("haha", state.product);
   return {
     auth: state.firebase.auth,
   }

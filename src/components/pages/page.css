@@ -1,0 +1,54 @@
+:root{
+    --mainBlue:#2a2a72;
+    --lightBlue: #009ffd;
+    --mainWhite: #f3f3f3;
+    --mainDark: #232528;
+    --mainYellow: #ffa400;
+
+}
+body{
+    font-family:"Oswald", sans-serif !important;
+    background: var(--mainWhite) !important;
+    color: var(--mainDark) !important;
+
+}
+.text-title{
+    font-family: 'Permanent Marker', cursive;
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
+}
+.text-blue{
+    color: var(--mainBlue);
+    
+}
+
+* {box-sizing: border-box}
+
+/* Container needed to position the overlay. Adjust the width as needed */
+
+
+/* The overlay effect - lays on top of the container and over the image */
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    background: rgba(255, 255, 255, 0.5); /* Black see-through */
+    color: #f1f1f1;
+    width: 100%;
+    transition: .5s ease;
+    opacity:0;
+    color: white;
+    font-size: 20px;
+    padding: 20px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+  .image:hover .overlay {
+    opacity: 1;
+  }

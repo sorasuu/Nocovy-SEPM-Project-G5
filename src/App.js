@@ -2,34 +2,42 @@ import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Navbar from './components/layout/Navbar'
 import Dashboard from './components/pages/Dashboard'
-import ProductDetail from './components/pages/ProductDetail'
+
 import Profile from './components/pages/Profile'
 import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
+import ProductDetail from './components/pages/ProductDetail'
 import Reports from './components/pages/Reports';
+import Upload from './components/pages/Upload'
+
 // import Footer from './components/layout/Footer';
 import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 
+import "./App.css"
+
 
 class App extends Component {
   
   render() {
-    const {productobj,productlist, reports}= this.props
+    const { productobj, productlist, reports }= this.props
+    // console.log('productList nay',productlist)
     return (
       <BrowserRouter>
         <div className="App">
           <Navbar />
           <Switch>
             <Route exact path='/'component={Dashboard} />
-            {/* <Route path='/product/:id' component={(props) => <ClassDetail {...props} classes={productlist} />}/> /> */}
-            <Route path='/signin' component={SignIn} />
-            <Route path='/signup' component={SignUp} />
-            <Route path='/profile' component={Profile} />
-            {/* <Route path='/reports'  component={() => <Reports products={productobj} reports={reports} />}/>
-            <Route path='/myproducts' component={() => <ProductsManage products={productlist} />}/> */}
+            {/* <Route exact path='/'component={ProductDetail} /> */}
 
+            <Route path='/product/:id' component={(props) => <ProductDetail {...props} classes={productlist} />}/> />
+            <Route path='/signin'component={SignIn}/>
+            <Route path='/signup' component={SignUp} />
+            <Route path='/myproducts' component={Profile} />
+            <Route path='/upload'component={Upload}/>
+            {/* <Route path='/reports'  component={() => <Reports products={productobj} reports={reports} />}/>
+            <Route path='/myproducts' component={() => <ProductsManage products={productlist} />}/> */}    
           </Switch>
           {/* <Footer/> */}
         </div>
