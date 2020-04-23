@@ -2,7 +2,7 @@ import React, { Component} from 'react';
 import Row from './row';
 
 
-class TableRowspan extends Component {
+class TableRowSpan extends Component {
   constructor(props, context) {
     super(props, context);
     var myProps=this.getDataModelled();
@@ -22,7 +22,7 @@ getDataModelled(){
           newColData.push(new Object({
             key:key,
             value:obj[key],
-            rowspan:1,
+            rowSpan:1,
             print:true
           }));
         };
@@ -36,7 +36,7 @@ getDataModelled(){
       for(let j=0;j<myProps[i].length;j++)
       {
         for(let k=i-1;k>=0&&myProps[i][j].value==myProps[k][j].value;k--){
-          myProps[k][j].rowspan=myProps[k][j].rowspan+1;
+          myProps[k][j].rowSpan=myProps[k][j].rowSpan+1;
           myProps[k+1][j].print=false;
         }
     }
@@ -47,14 +47,14 @@ getDataModelled(){
     return (
       <table className='table table-bordered'>
           <thead>
-          <tr>{this.props.tColumns.map(tColumn=>
-          <th>{tColumn.header}</th>
+          <tr>{this.props.tColumns.map((tColumn, key) =>
+          <th key={key}>{tColumn.header}</th>
           )}
           </tr>
           </thead>
           <tbody>
-          {this.state.tableNewData.map(rData =>
-            <Row  rData={rData}/>
+          {this.state.tableNewData.map((rData, index) =>
+            <Row key={index} rData={rData}/>
           )}
           </tbody>
         </table>
@@ -62,4 +62,4 @@ getDataModelled(){
   }
 }
 
-export default TableRowspan;
+export default TableRowSpan;

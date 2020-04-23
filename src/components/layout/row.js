@@ -5,8 +5,8 @@ import TableColumn from './col';
     const Row=({rData})=>{
     return(
       <tr>
-      {rData.map(colData=>
-        <TableColumn colData={colData}/>
+      {rData.map((colData, key)=>
+        <TableColumn key={key} colData={colData}/>
       )}
    </tr>
  );

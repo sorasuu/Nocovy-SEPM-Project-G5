@@ -70,7 +70,7 @@ class Dashboard extends Component {
           <StyledButton>Product Report</StyledButton>
         </NavLink>
         <NavLink to="/products" style={{ marginBottom: "2%" }}>
-          <StyledButton>Product Manangement</StyledButton>
+          <StyledButton>Product Management</StyledButton>
         </NavLink>
         <br/>
         <div className={classes.search}>

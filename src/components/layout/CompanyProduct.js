@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 
-import TableRowspan from './table';
+import TableRowSpan from './table';
 import authors from './authors'
+
 
 class CompanyProduct extends Component {
   constructor(props,context){
@@ -27,10 +28,10 @@ class CompanyProduct extends Component {
         }
       ]
   
-    return (<div className="App">
+    return (<div className="container">
         <h4>Product List</h4>
-      <div  style={{width:'600px',marginTop:'10px'}}>
-      <TableRowspan 
+      <div  style={{marginLeft:'10px',marginTop:'10px'}}>
+      <TableRowSpan 
       tData={Object.assign([],this.state.tData)} 
       tColumns={columns}
       />
