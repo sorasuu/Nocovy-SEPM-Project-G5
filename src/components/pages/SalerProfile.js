@@ -34,9 +34,7 @@ const useStyles = theme => ({
 export default class SalerProfile extends Component {
   constructor(props, context) {
     super(props, context);
-    // this.state = {
-    //   tData: authors
-    // }
+  
   }
   render() {
     const { classes ,data , id} = this.props;
@@ -45,7 +43,9 @@ export default class SalerProfile extends Component {
         return detail.id == id
       }
     )
+    
     console.log("profile Detail", profileDetail)
+    console.log(typeof(profileDetail[0].products))
     let columns =
       [
         {
@@ -66,7 +66,7 @@ export default class SalerProfile extends Component {
       <Grid container spacing={2}>
         <Grid item xs={4} md={4} lg={4} >
           <h4>Logo</h4>
-          <img src ={profileDetail.logo}/>
+          <img src ={profileDetail[0].logo}/>
           <h4>
             Business Certification
           </h4>
@@ -74,9 +74,9 @@ export default class SalerProfile extends Component {
         <Grid item xs={8} md={8} lg={8}>
           
             <h4>Product List</h4>
-            <div style={{ marginLeft: '10px', marginTop: '10px' }}>
+            <div style={{ padding:'1% 1% 1% 1%'}}>
               <TableRowSpan
-                tData={Object.assign([], profileDetail.products)}
+                tData={Object.assign([], profileDetail[0].products)}
                 tColumns={columns}
               />
             </div>

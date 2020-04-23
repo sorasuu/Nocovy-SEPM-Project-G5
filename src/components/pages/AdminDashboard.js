@@ -88,7 +88,28 @@ class AdminDashboard extends Component {
                 {
                     id: 1, name: 'Amazon', 
                     address: 'Amazon VN', email: 'amazon@email.com', 
-                    pending: false
+                    pending: false,
+                    products: [
+                        {
+                        id: '1',
+                        product: 'Pen',
+                        retailer: 'Allen'
+                        },
+                        {
+                        id: '2',
+                        product: 'Pen',
+                        retailer: 'Adam'
+                        },
+                        {
+                        id: '3',
+                        product: 'Pen',
+                        retailer: 'Allen'
+                        },  {
+                        id: '4',
+                        product: 'Pen',
+                        retailer: 'Bob'
+                        },
+                    ]
                 },
                 {
                     id: 2, name: 'Adidas', 
@@ -163,11 +184,11 @@ class AdminDashboard extends Component {
 
     handleChange(event, newValue) {
         this.setState({ value: newValue });
-        console.log(this.state.value);
+        
     }
 
     handleOpen(event, id) {
-        this.setState({ open: true , index: id})
+        this.setState({ open: !this.state.open , index: id})
     }
 
     handleApproved(event, id){
@@ -178,7 +199,7 @@ class AdminDashboard extends Component {
     }
 
     render() {
-        console.log("index ne: ", this.state.index)
+       
         const { classes, auth } = this.props;
         const { data, value, columns} = this.state
         const dataApprove = data.filter(comp =>{
@@ -188,7 +209,6 @@ class AdminDashboard extends Component {
             return comp.pending == true
         })
         
-
         const TableApproval = () => {
             return (
                 <MaterialTable
@@ -207,12 +227,14 @@ class AdminDashboard extends Component {
                             icon: "email",
                             tooltip: "email",
                             onClick: (event) => alert("Email Sent")
-                        }
+                        },
+                
+                        
                     ]}
                     options={
                         {
                             paging: false,
-                            actionsColumnIndex: -1
+                            // actionsColumnIndex: -1
                         }
                     }
                     editable={{
@@ -249,6 +271,12 @@ class AdminDashboard extends Component {
                     title=""
                     columns={columns}
                     data={dataPending}
+                    options={
+                        {
+                            paging: false,
+                            // actionsColumnIndex: -1
+                        }
+                    }
                     actions={[
                         {
                             icon: "check",
