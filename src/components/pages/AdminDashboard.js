@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import MaterialTable from "material-table";
-import CompanyProduct from '../layout/CompanyProduct'
+import SalerProfile from './SalerProfile'
 import {
     Tab, Tabs, Box, Card,
     Typography, withStyles, Grid
@@ -90,16 +90,25 @@ class AdminDashboard extends Component {
             ],
             data: [     
                 {
-                    id: 1, name: 'Amazon', address: 'Amazon VN', email: 'amazon@email.com', pending: false
+                    id: 1, name: 'Amazon', 
+                    address: 'Amazon VN', email: 'amazon@email.com', 
+                    pending: false
                 },
                 {
-                    id: 2, name: 'Adidas', address: 'Adidas Hanoi', email: 'adidas@email.com', pending: false,logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR2zwZyVeYZTsSm9eJcuzre2hYadL_-9xooEmXsXbKsItJzUreC&usqp=CAU"
+                    id: 2, name: 'Adidas', 
+                    address: 'Adidas Hanoi', email: 'adidas@email.com', 
+                    pending: false,
+                    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR2zwZyVeYZTsSm9eJcuzre2hYadL_-9xooEmXsXbKsItJzUreC&usqp=CAU"
                 },
                 {
-                    id: 3, name: 'Bose', address: 'Bose HCMC', email: 'bose@email.com', pending: true
+                    id: 3, name: 'Bose', 
+                    address: 'Bose HCMC', email: 'bose@email.com', 
+                    pending: true
                 },
                 {
-                    id: 4, name: 'Tiki', address: 'tiki Hanoi', email: 'tiki@email.com', pending: true
+                    id: 4, name: 'Tiki', 
+                    address: 'tiki Hanoi', email: 'tiki@email.com', 
+                    pending: true
                 }
             ],
             open: false,
@@ -108,13 +117,14 @@ class AdminDashboard extends Component {
         });
         this.handleChange = this.handleChange.bind(this);
     }
+
     handleChange(event, newValue) {
         this.setState({ value: newValue });
         console.log(this.state.value);
     }
+
     handleOpen(event, id) {
         this.setState({ open: true , index: id})
-        
     }
 
     render() {
@@ -234,7 +244,6 @@ class AdminDashboard extends Component {
             );
         };
 
-
         const NotiManage = () => {
             const { notifications } = this.props;
             return notifications.map(noti => {
@@ -265,6 +274,7 @@ class AdminDashboard extends Component {
                 );
             });
         };
+        
         return (
             <div className={classes.root}>
             <Grid container spacing={3}>
@@ -298,20 +308,7 @@ class AdminDashboard extends Component {
                    
                         {this.state.open ? 
                         <Grid container spacing={2} item xs={6} md={6} lg={6} >
-                            <Grid item xs={4} md={4} lg={4} >
-                                {dataApprove ? dataApprove.filter(
-                                    data => 
-                        { return(
-                                    data.id == this.state.index
-                         )}           
-                                    
-                                   
-                                ):null}
-                                
-                            </Grid>
-                            <Grid item xs={8} md={8} lg={8}>
-                                <CompanyProduct/>
-                            </Grid>
+                            <SalerProfile data={data}/>
                         </Grid>
 
                     : null}
