@@ -71,11 +71,7 @@ const useStyles = theme => ({
         alignItems: 'center',
         display: 'flex',
     },
-    span:{
-        display: 'flex',
-        justifyContent:'center',
-        alignItems:'center'
-    }
+   
 });
 
 class AdminDashboard extends Component {
@@ -98,12 +94,58 @@ class AdminDashboard extends Component {
                     id: 2, name: 'Adidas', 
                     address: 'Adidas Hanoi', email: 'adidas@email.com', 
                     pending: false,
+                    products: [
+                        {
+                        id: '1',
+                        product: 'Pen',
+                        retailer: 'Allen'
+                        },
+                        {
+                        id: '2',
+                        product: 'Pen',
+                        retailer: 'Adam'
+                        },
+                        {
+                        id: '3',
+                        product: 'Pen',
+                        retailer: 'Allen'
+                        },  {
+                        id: '4',
+                        product: 'Pen',
+                        retailer: 'Bob'
+                        },
+                        {
+                        id: '5',
+                        product: 'Pencil',
+                        retailer: 'Rachel'
+                        },
+                        {
+                        id: '6',
+                        product: 'Pencil',
+                        retailer: 'Wahlin'
+                        },  {
+                          id: '7',
+                          product: 'Pencil',
+                          retailer: 'Bob'
+                        },
+                        {
+                          id: '8',
+                          product: 'Camera',
+                          retailer: 'Allen'
+                        },
+                        {
+                          id: '9',
+                          product: 'Alexa',
+                          retailer: 'Wahlin'
+                        }
+                        ],
                     logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR2zwZyVeYZTsSm9eJcuzre2hYadL_-9xooEmXsXbKsItJzUreC&usqp=CAU"
                 },
                 {
                     id: 3, name: 'Bose', 
                     address: 'Bose HCMC', email: 'bose@email.com', 
-                    pending: true
+                    pending: true,
+                    logo:"https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR2zwZyVeYZTsSm9eJcuzre2hYadL_-9xooEmXsXbKsItJzUreC&usqp=CAU"
                 },
                 {
                     id: 4, name: 'Tiki', 
@@ -116,6 +158,7 @@ class AdminDashboard extends Component {
 
         });
         this.handleChange = this.handleChange.bind(this);
+        this.handleApproved= this.handleApproved.bind(this);
     }
 
     handleChange(event, newValue) {
@@ -125,6 +168,13 @@ class AdminDashboard extends Component {
 
     handleOpen(event, id) {
         this.setState({ open: true , index: id})
+    }
+
+    handleApproved(event, id){
+        var selectItem = this.state.data.findIndex(item => item.id == event)
+        // this.update()
+        console.log("Change to Approved")
+        
     }
 
     render() {
@@ -211,8 +261,7 @@ class AdminDashboard extends Component {
                             icon: "info",
                             tooltip: "detail",
                             onClick: (event, rowData) => {
-
-
+                                this.handleOpen(event, rowData.id)
                             }
                         }
                     ]}
@@ -308,7 +357,7 @@ class AdminDashboard extends Component {
                    
                         {this.state.open ? 
                         <Grid container spacing={2} item xs={6} md={6} lg={6} >
-                            <SalerProfile data={data}/>
+                            <SalerProfile data={data} id={this.state.index}/>
                         </Grid>
 
                     : null}

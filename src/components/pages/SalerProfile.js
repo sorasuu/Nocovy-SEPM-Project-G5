@@ -1,18 +1,51 @@
 import React, { Component } from 'react';
 import {Grid} from '@material-ui/core'
 import TableRowSpan from '../layout/table';
-import authors from '../layout/authors'
 
 
-class CompanyProduct extends Component {
+const useStyles = theme => ({
+  root: {
+      // flexGrow: 1,
+      backgroundColor: theme.palette.background.paper,
+      display: "flex",
+      height: '100%',
+      width:'90%',
+      justifyContent:'center',
+      alignItems:'center',
+      marginLeft:'5%'
+      
+  },
+  tabs: {
+      borderRight: `1px solid ${theme.palette.divider}`
+  },
+  imageCard: {
+      width: 'auto',
+      maxWidth: '500px',
+      height: 'auto',
+      marginTop: '5px',
+      justifyContent: 'center',
+      alignItems: 'center',
+      display: 'flex',
+  },
+  
+});
+
+
+export default class SalerProfile extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      tData: authors
-    }
+    // this.state = {
+    //   tData: authors
+    // }
   }
   render() {
-    const {data} = this.props
+    const { classes ,data , id} = this.props;
+    const profileDetail = data.filter(detail =>
+      {
+        return detail.id == id
+      }
+    )
+    console.log("profile Detail", profileDetail)
     let columns =
       [
         {
@@ -30,29 +63,28 @@ class CompanyProduct extends Component {
       ]
 
     return (
-      <Grid container spacing={2} item xs={6} md={6} lg={6} >
+      <Grid container spacing={2}>
         <Grid item xs={4} md={4} lg={4} >
-          {data ? data.map(detail => {
-            return (
-              <img src={detail.logo} />
-            )
-          }) : null}
-
+          <h4>Logo</h4>
+          <img src ={profileDetail.logo}/>
+          <h4>
+            Business Certification
+          </h4>
         </Grid>
         <Grid item xs={8} md={8} lg={8}>
-          <div className="container">
+          
             <h4>Product List</h4>
             <div style={{ marginLeft: '10px', marginTop: '10px' }}>
               <TableRowSpan
-                tData={Object.assign([], this.state.tData)}
+                tData={Object.assign([], profileDetail.products)}
                 tColumns={columns}
               />
             </div>
-          </div>)
+         
         </Grid>
       </Grid>
     )
   }
 }
 
-export default CompanyProduct;
+
