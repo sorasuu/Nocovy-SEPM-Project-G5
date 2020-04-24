@@ -8,7 +8,7 @@ import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
 import ProductDetail from './components/pages/ProductDetail'
 import Reports from './components/pages/Reports';
-
+import Supplier from './components/pages/Supplier'
 // import Footer from './components/layout/Footer';
 import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
