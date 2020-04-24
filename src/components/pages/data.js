@@ -1,39 +1,42 @@
 
 export const storeProducts = [
   {
-  id:'1',
-  title:'Alexa',
-  subHeader:'Eco Dot',
-  info:'Alexa Alexa Wake Up',
-  price: 10,
-  image: "image/Alexa.jpg",
-  company: 'NOCOVY',
-  inCart: false,
-  count : 0,
-  total: 0
-},{
-  id:'2',
-  title:'Lighter',
-  subHeader:'Zippo',
-  info:'Burn Burn Burn',
-  price:5,
-  image: 'image/Lighter.jpg',
-  company: 'NOCOVY',
-  inCart: false,
-  count : 0,
-  total: 0
-},{
+    id:'1',
+    title:'Motobike',
+    subHeader:'Haley',
+    info:'Burn Burn Burn',
+    price:5,
+    image: 'https://images.unsplash.com/photo-1558981408-db0ecd8a1ee4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+    company: 'NOCOVY',
+    inCart: false,
+    count : 0,
+    total: 0
+  },
+  {
+    id:'2',
+    title:'Moto',
+    subHeader:'Haley',
+    info:'Burn Burn Burn',
+    price:5,
+    image: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+    company: 'NOCOVY',
+    inCart: false,
+    count : 0,
+    total: 0
+  },  
+  {
   id:'3',
-  title:'Pen',
-  subHeader:'Best Pen',
+  title:'Camera',
+  subHeader:'Camera',
   info:'Sign Contract With Luck',
   price: 1,
-  image: "image/Pen.jpg",
+  image: "https://images.unsplash.com/photo-1519799297475-fdcbf5f5953b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80",
   company: 'NOCOVY',
   inCart: false,
   count : 0,
   total: 0
-}
+},
+
 ];
 
 export const detailProduct = {
@@ -44,15 +47,15 @@ export const detailProduct = {
   imageDetail: [
     {
       imageId:'1',
-      imageUrl: "image/Alexa.jpg"
+      imageUrl: "https://images.unsplash.com/photo-1558981408-db0ecd8a1ee4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
     },
     {
       imageId: '2',
-      imageUrl: 'image/Lighter.jpg'
+      imageUrl: 'https://images.unsplash.com/photo-1518444065439-e933c06ce9cd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=967&q=80'
     },
     {
       imageId: '3',
-      imageUrl: "image/Pen.jpg"
+      imageUrl: "https://images.unsplash.com/photo-1519799297475-fdcbf5f5953b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80"
     }
   ],
   company: 'NOCOVY',

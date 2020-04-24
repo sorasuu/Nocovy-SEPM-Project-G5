@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Navbar from './components/layout/Navbar'
 import Dashboard from './components/pages/Dashboard'
-
+import AdminDashboard from './components/pages/AdminDashboard';
 import Profile from './components/pages/Profile'
 import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
@@ -29,8 +29,8 @@ class App extends Component {
           <Navbar />
           <Switch>
             <Route exact path='/'component={Dashboard} />
-            {/* <Route exact path='/'component={ProductDetail} /> */}
-
+            {/* <Route path='/'component={ProductDetail} /> */}
+            <Route path ='/admin' component={AdminDashboard}/>
             <Route path='/product/:id' component={(props) => <ProductDetail {...props} classes={productlist} />}/> />
             <Route path='/signin'component={SignIn}/>
             <Route path='/signup' component={SignUp} />

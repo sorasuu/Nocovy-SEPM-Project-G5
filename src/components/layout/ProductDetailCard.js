@@ -6,13 +6,12 @@ import {
     Paper, Typography
 } from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import MaterialTable from 'material-table';
 import { Table, TableContainer, TableBody, TableRow, TableCell, TableHead } from '@material-ui/core';
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
-
+import PriceForm from './PriceForm'
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -120,9 +119,9 @@ const ProductImageCard = props => {
                 {props.product.imageDetail.map(i => {
                     return (
                         // <Grid item xs={3} sm={3} md={3} key={i.imageId}>
-                        <Card style={{ width: '50px', height: "75px" }} key={i.imageId}>
-                            <img src={i.imageUrl} style={{ width: "100%" }} />
-                        </Card>
+                        <Card style={{ width: '75px', height: "75px" }} key={i.imageId}>
+                            <img src={i.imageUrl} style={{ width: "100%", height:"100%" }} />
+                        </Card>         
                         // </Grid>
                     );
                 })}
@@ -131,7 +130,7 @@ const ProductImageCard = props => {
                 return (
                     // <Grid item xs={3} sm={3} md={3} key={i.imageId}>
                     <Card className={classes.imageCard} key={i.imageId}>
-                        <img src={i.imageUrl} style={{ width: "50%", height: '350px' }} />
+                        <img src={i.imageUrl} style={{ width: "75%", height: '75%' }} />
                     </Card>
                     // </Grid>
                 );
@@ -141,72 +140,38 @@ const ProductImageCard = props => {
 }
 // table detail
 export const ProductInfoCard = props => {
+    
     const classes = useStyles();
+    
     return (
+        <div>
+        <Grid container spacing={2}>
+            <Grid item xs={6} md={6} lg={6}><h4>Price</h4></Grid>
+            <Grid item xs={6} md={6} lg={6}><PriceForm/></Grid>
+        </Grid>
         <TableContainer className={classes.root}>
 
-            <Table aria-label="simple table">
-                <Grid container spacing={2}>
-                    <Grid item xs={6} md={6} lg={6}><h4>PRICE</h4></Grid>
-                    <Grid item xs={6} md={6} lg={6}><Button color="primary">Edit</Button></Grid>
-                </Grid>
-
+            <Table aria-label="simple table">               
                 {props.product.price ? props.product.price.map(price => {
                     return (
                         <TableBody key={price.id}>
                             {price.cost ? price.cost.map((cost, key) => {
                                 return (
                                     <TableRow key={key}>
-                                        <TableCell>{cost.name}</TableCell>
+                                        <TableCell style={{backgroundColor: `hsla(14, 100%, 53%, 0.6)`, color:'white'}}>{cost.name}</TableCell>
                                         <TableCell>{cost.value}</TableCell>
                                     </TableRow>
-
                                 )
                             }) : null}
-
                         </TableBody>
                     )
                 }) : null}
 
             </Table>
-
-
-
-
-            {/* <Table style={{marginTop:'2%'}}>
-                <TableBody>
-                    {props.product.details ? props.product.details.map(detail => {
-                        return (
-                            <TableRow key={detail.name}>
-                                <TableCell>{detail.name}</TableCell>
-                                <TableCell>
-                                    {detail.value}
-                                </TableCell>    
-                            </TableRow>
-                        )
-                    }) : null}
-                </TableBody>
-            </Table> */}
             <DetailTable details={props.product.details} />
 
-            {/* <Grid container spacing={2}>
-                <Grid item xs={4}>
-                    <Typography variant="h6">Components</Typography>
-
-                </Grid>
-                <Grid item xs={8}>
-                    <Button>Edit</Button>
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography variant="h6">Attachment</Typography>
-
-                </Grid>
-                <Grid item xs={8}>
-                    <Button>Add</Button>
-                </Grid>
-
-            </Grid> */}
         </TableContainer>
+        </div>
     )
 }
 function DetailTable(props) {
@@ -216,18 +181,23 @@ function DetailTable(props) {
         columns: [
             {
                 title: 'Name', field: 'name',
-                cellStyle: {
-                  backgroundColor: '#039be5',
-                  color: '#FFF',
-                  width:'auto'
-                },
+                
                 headerStyle: {
-                  backgroundColor: '#039be5',
+                  backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
                   fontSize:15,
-                  fontFamily:'Open Sans'
+                  fontFamily:'Open Sans',
+                  color:'white'
+                  
                 }
               },
-            { title: 'Value', field: 'value' },         
+            { title: 'Value', field: 'value',
+            headerStyle:{
+                backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
+                fontSize:15,
+                fontFamily:'Open Sans',
+                color:'white'
+            } 
+        },         
         ],
         data: [
             { name: 'Origin', value: 'China'},
