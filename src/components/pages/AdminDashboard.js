@@ -18,7 +18,7 @@ import {
     ListItemText
 } from "@material-ui/core";
 
-function TabPanel(props) {
+export function TabPanel(props) {
     const { children, value, index, ...other } = props;
     return (
         <Typography
@@ -40,7 +40,8 @@ TabPanel.propTypes = {
     value: PropTypes.any.isRequired
 };
 
-function a11yProps(index) {
+export function a11yProps(index) {
+    
     return {
         id: `vertical-tab-${index}`,
         "aria-controls": `vertical-tabpanel-${index}`
@@ -77,7 +78,12 @@ const useStyles = theme => ({
 class AdminDashboard extends Component {
     constructor(props) {
         super(props);
-        (this.state = {
+        this.state = {
+            check:[
+                {id: 0},
+                {id:1},
+               
+            ],
             value: 0,
             columns: [
                 { title: "Name", field: "name" },
@@ -177,12 +183,14 @@ class AdminDashboard extends Component {
             open: false,
             index: '',
 
-        });
+        };
         this.handleChange = this.handleChange.bind(this);
         this.handleApproved= this.handleApproved.bind(this);
     }
 
-    handleChange(event, newValue) {
+    handleChange(e, newValue) {
+        console.log("Admin Change Value", e)
+        console.log('new value', newValue)
         this.setState({ value: newValue });
         
     }
@@ -364,18 +372,18 @@ class AdminDashboard extends Component {
                         aria-label="Vertical tabs example"
                         className={classes.tabs}
                     >
-                        <Tab label="Approved" {...a11yProps(0)} />
-                        <Tab label="Pending" {...a11yProps(1)} />
+                        <Tab label="Approved" {...a11yProps(this.state.check[0].id)} />
+                        <Tab label="Pending" {...a11yProps(this.state.check[1].id)} />
                         <Tab label="Notification" {...a11yProps(2)} />
 
                     </Tabs>
                 </Grid>
              
                     <Grid item xs={4} md={4} lg={4}>
-                        <TabPanel value={value} index={0}>
+                        <TabPanel value={value} index={this.state.check[0].id}>
                             <TableApproval />
                         </TabPanel>
-                        <TabPanel value={value} index={1}>
+                        <TabPanel value={value} index={this.state.check[1].id}>
                             <TablePending />
                         </TabPanel>
                         <TabPanel value={value} index={2}>
