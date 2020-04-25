@@ -8,6 +8,7 @@ import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
 import ProductDetail from './components/pages/ProductDetail'
 import Reports from './components/pages/Reports';
+import Upload from './components/pages/Upload'
 import Supplier from './components/pages/Supplier'
 // import Footer from './components/layout/Footer';
 import { firestoreConnect } from 'react-redux-firebase'
@@ -29,11 +30,14 @@ class App extends Component {
           <Switch>
             <Route exact path='/'component={Dashboard} />
             {/* <Route path='/'component={ProductDetail} /> */}
+            <Route path='/supplier' component={Supplier}/>
             <Route path ='/admin' component={AdminDashboard}/>
-            <Route path='/product/:id' component={(props) => <ProductDetail {...props} classes={productlist} />}/> />
+            <Route path='/product/:id' component={(props) => <ProductDetail {...props} classes={productlist} />}/>
             <Route path='/signin'component={SignIn}/>
             <Route path='/signup' component={SignUp} />
             <Route path='/profile/:id' component={Profile} />
+            <Route path='/myproducts' component={Profile} />
+            <Route path='/upload'component={Upload}/>
             {/* <Route path='/reports'  component={() => <Reports products={productobj} reports={reports} />}/>
             <Route path='/myproducts' component={() => <ProductsManage products={productlist} />}/> */}    
           </Switch>

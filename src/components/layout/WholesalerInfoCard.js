@@ -11,6 +11,7 @@ import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import Divider from '@material-ui/core/Divider';
 import Link from '@material-ui/core/Link';
 import StyledButton from './StyledButton'
+import { NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
     card: {
@@ -23,12 +24,13 @@ const useStyles = makeStyles(() => ({
     content: {
         overflowX: 'auto',
         margin: "2%",
-        marginBottom:'1%'
+        marginBottom:'1%',
+        width:'100%'
     },
     header:{
         background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)",
         position: "absolute",
-        top: "4%",
+        top: "3%",
         left: "5%",
         width: '350px'
     },
@@ -83,9 +85,9 @@ const WholesalerInfoCard = (props) => {
                         <Typography variant="h6">{props.info.address}</Typography>
                     </div>
                     <div className={classes.buttons}>
-                        <StyledButton style={{marginBottom:10}}>Send Message</StyledButton>
+                        <StyledButton onClick={props.handleOpen} style={{marginBottom:10}}>New Listing</StyledButton>
                         <Divider light/>
-                        <StyledButton>Add to Favourites</StyledButton>
+                        <NavLink to='/editProfile'><StyledButton>Edit Profile</StyledButton></NavLink>
                     </div>
                 </div>
                 <div className={classes.description}>

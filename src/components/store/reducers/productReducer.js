@@ -1,6 +1,6 @@
 const initState = {}
 
-const siteReducer = (state = initState, action) => {
+const productReducer = (state = initState, action) => {
   switch (action.type) {
     case 'CREATE_PRODUCT_SUCCESS':
         console.log('create product success');
@@ -25,4 +25,4 @@ const siteReducer = (state = initState, action) => {
   }
 };
 
-export default siteReducer;
+export default productReducer;
