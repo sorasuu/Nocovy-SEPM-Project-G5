@@ -7,7 +7,8 @@ import { storeProducts } from "./data"
 import AddProductCard from '../layout/AddProductCard'
 import ProductCard from '../layout/ProductCard'
 import Modal from '@material-ui/core/Modal';
-
+import { Redirect, NavLink } from 'react-router-dom'
+import {createProduct } from '../store/actions/productAction'
 class Profile extends Component {
   state={
     open:false,
@@ -36,6 +37,7 @@ class Profile extends Component {
     unitCost:0,
     unitPrice:0,
     image: '',
+    category:'',
   }
 
   handleOpen = () => {
@@ -59,10 +61,10 @@ class Profile extends Component {
   }
 
   formSubmit = () => {
-    const product = {supplierId: '', 
+    const product = {supplierId: this.props.auth.uid, 
                     name: this.state.productName, 
-                    detail: {origin: this.state.productOrigin,
-                            brand: this.state.productBrand}, 
+                    detail: ['origin: '+ this.state.productOrigin,
+                            'brand:'+ this.state.productBrand], 
                     description: this.state.productDesc, 
                     category: this.state.category, 
                     price: {dutyCost: this.state.dutyCost,
@@ -78,13 +80,17 @@ class Profile extends Component {
                             unitPrice: this.state.unitPrice}}
     console.log(product)
     //Form submit functions go here
+    this.props.createProduct(product)
+
   }
 
 
   render() {
+    const {auth} = this.props
+    if (!auth.uid) return <Redirect to='/signin' />
     return (
       <Container>
-        <WholesalerInfoCard handleOpen={this.handleOpen} info = {this.state}/>
+        <WholesalerInfoCard handleOpen={this.handleOpen} info = {this.state} auth={auth}/>
         <Typography gutterBottom align='center' variant='h3'><text style={{fontWeight:'bold'}}>Products</text></Typography>
         <Grid
                   container
@@ -113,11 +119,16 @@ const mapStateToProps = (state,ownProps) => {
   console.log(state);
   console.log(ownProps)
   return {
-
+    auth: state.firebase.auth,
 }};
+const mapDispatchToProps = dispatch => {
+  return {
+    createProduct: (product) => dispatch(createProduct(product))
+  }
+}
 
 export default  compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps,mapDispatchToProps),
   // firestoreConnect((props) => {
 
   // })
