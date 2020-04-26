@@ -5,12 +5,12 @@ import { signUp } from '../store/actions/authActions'
 import { Container, NoSsr, LinearProgress, withStyles } from '@material-ui/core'
 import StyledButton from '../layout/StyledButton'
 import "./style.css"
-
+import storageRef from '../../index';
 import FormSignUp from './FormSignUp'
 import FormCertificate from './FormCertificate'
 import Confirm from './Confirm'
 import Success from './Success'
-
+import { v4 as uuidv4 } from 'uuid';
 class SignUp extends Component {
     state = {
         step: 1,
@@ -19,8 +19,10 @@ class SignUp extends Component {
         email: '',
         password: '',
         phoneNumber: '',
-
-        bio: ''
+        image: null,
+        url: '',
+        progress: 0,
+        token: uuidv4(),
 
     }
     nextStep = () => {
@@ -35,22 +37,50 @@ class SignUp extends Component {
             step: step - 1
         });
     }
-    // handleChange = (e) => {
-    //     this.setState({
-    //         [e.target.id]: e.target.value
-    //     })
-    // }
+
     handleChange = input => e => {
+        e.preventDefault();
         this.setState({ [input]: e.target.value })
+        if (e.target.files) {
+                const image = e.target.files[0];
+                this.setState(() => ({image}));
+                console.log(image)
+        }
+        
+
     }
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.signUp(this.state);
     }
+    handleUpload = (e) => {
+        e.preventDefault();
+        const {image,token} = this.state;
+        if(image!== undefined&& image!== null){
+        const uploadTask = storageRef.ref(`images/certificates/${image.name+token}`).put(image);
+        uploadTask.on('state_changed', 
+        (snapshot) => {
+          // progrss function ....
+          const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+          this.setState({progress});
+        }, 
+        (error) => {
+             // error function ....
+          console.log(error);
+        }, 
+      () => {
+          // complete function ....
+          storageRef.ref('images/certificates').child(image.name+token).getDownloadURL().then(url => {
+              console.log(url);
+              this.setState({url});
+              this.nextStep()
+          })
+      });}
+    }
     render() {
-        const { step, firstName, lastName, email, password, phoneNumber, bio } = this.state;
+        const { step, firstName, lastName, email, password, phoneNumber,image,url,progress} = this.state;
         const { auth, authError } = this.props;
-        const values = { firstName, lastName, email, password, phoneNumber, bio }
+        const values = { firstName, lastName, email, password, phoneNumber,image,url,progress }
         if (auth.uid) return <Redirect to='/' />
 
         switch (step) {
@@ -68,6 +98,7 @@ class SignUp extends Component {
                         nextStep={this.nextStep}
                         prevStep={this.prevStep}
                         handleChange={this.handleChange}
+                        handleUpload={this.handleUpload}
                         values={values}
 
                     />

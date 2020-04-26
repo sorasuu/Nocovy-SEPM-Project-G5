@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-import firestore from '../../../index' 
+// import firestore from '../../../index' 
 export const signIn = (credentials) => {
   return (dispatch, getState) => {
     firebase.auth().signInWithEmailAndPassword(
@@ -30,19 +30,21 @@ export const signUp = (newUser) => {
       newUser.email, 
       newUser.password
     ).then(resp => {
-      return firestore.collection('users').doc(resp.user.uid).set({
+      return firebase.firestore().collection('users').doc(resp.user.uid).set({
         displayName: newUser.firstName +" "+newUser.lastName,
         email:  newUser.email,
+        // ...newUser
       });
     }).then(() => {
       dispatch({ type: 'SIGNUP_SUCCESS' });
-      var user = firebase.auth().currentUser;
-      user.sendEmailVerification().then(function() {
-      console.log("Email Sent")
-      }).catch(function(error) {
-      console.log("Email Sent failed ",error)
-      });
-    }).catch((err) => {
+      // var user = firebase.auth().currentUser;
+      // user.sendEmailVerification().then(function() {
+      // console.log("Email Sent")
+      // }).catch(function(error) {
+      // console.log("Email Sent failed ",error)
+      // });
+    })
+    .catch((err) => {
       dispatch({ type: 'SIGNUP_ERROR', err});
     });
   }
