@@ -33,7 +33,13 @@ export const signUp = (newUser) => {
       return firebase.firestore().collection('users').doc(resp.user.uid).set({
         displayName: newUser.firstName +" "+newUser.lastName,
         email:  newUser.email,
-        // ...newUser
+        password: newUser.password,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        phoneNumber: newUser.phoneNumber,
+        image: newUser.image,
+        url: newUser.url,
+        progress: newUser.progress
       });
     }).then(() => {
       dispatch({ type: 'SIGNUP_SUCCESS' });
