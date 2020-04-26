@@ -27,9 +27,7 @@ const useStyles = (theme) => ({
 class ProductDetail extends Component {
 
   state = {
-    reports: [],
-    students: [],
-    reportform: false,
+
   }
   render() {
     const { classes, auth } = this.props;
@@ -37,11 +35,11 @@ class ProductDetail extends Component {
 
     return (
       <div>
-        <Grid container spacing={2}>
-          <Grid item xs={8}>
+        {/* <Grid container spacing={2}>
+          <Grid item xs={8}> */}
             <ProductDetailCard product={detailProduct} />
-            </Grid>
-        </Grid>        
+            {/* </Grid>
+        </Grid>         */}
       </div>
     )
   }
