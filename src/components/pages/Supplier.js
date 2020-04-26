@@ -16,7 +16,7 @@ import { supplier } from './data';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-// import { TabPanel, a11yProps} from './AdminDashboard'
+import SupplierInfo from '../layout/SupplierInfo';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -158,13 +158,14 @@ export default function Supplier() {
 
     const [search, setSearch] = useState('');
     const [value, setValue] = useState(0);
-    const [expanded, setExpanded] = React.useState(false);
+    const [expanded, setExpanded] = React.useState(true);
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles();
     const cardHeaderShadowStyles = useFadedShadowStyles();
-    const allProducts = supplier.productList
-    console.log("check", search)
+    const allProducts = supplier[0].productList
+    
+    console.log("check", allProducts)
     const onChange = (event, newValue) => {
         console.log(newValue)
         // setSearch((newValue).toString);
@@ -188,10 +189,10 @@ export default function Supplier() {
                 className={cardHeaderShadowStyles.root}
                 classes={cardHeaderStyles}
                 style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", width: 'auto', minWidth: '200px' }}
-                title={<h4>{supplier.title}</h4>}
+                title={<h4>{supplier[0].title}</h4>}
                 avatar={
                     <Avatar aria-label="recipe" className={classes.avatar}>
-                        <img style={{ width: '100%', height: '100%' }} src={supplier.logo} />
+                        <img style={{ width: '100%', height: '100%' }} src={supplier[0].logo} />
                     </Avatar>
                 }
             />
@@ -235,7 +236,7 @@ export default function Supplier() {
             
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                   {supplier.id}
+                   <SupplierInfo/>
 
                 </CardContent>
             </Collapse>
