@@ -38,6 +38,8 @@ export const signUp = (newUser) => {
         phoneNumber: newUser.phoneNumber,
         // image: newUser.image,
         certificate: newUser.certificate,
+        pending:true,
+        verify:false,
       });
     }).then(() => {
       dispatch({ type: 'SIGNUP_SUCCESS' });
