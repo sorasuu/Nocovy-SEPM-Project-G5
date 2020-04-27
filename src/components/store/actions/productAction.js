@@ -8,7 +8,7 @@ export const createProduct = (product) => {
       firebase.firestore().collection('products').add({
         ...product,
         authorName: profile.displayName,
-        authorId: author.uid,
+        // authorId: author.uid,
         authorEmail: author.email,
         // authorPhotoURL: author.photoURL,
         createdAt: new Date()
