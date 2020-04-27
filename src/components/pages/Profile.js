@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import {Paper, Container, Typography, Grid} from '@material-ui/core'
 import WholesalerInfoCard from '../layout/WholesalerInfoCard'
+import { firestoreConnect } from 'react-redux-firebase'
 import { storeProducts } from "./data"
 import AddProductCard from '../layout/AddProductCard'
 import ProductCard from '../layout/ProductCard'
@@ -129,7 +130,7 @@ const mapDispatchToProps = dispatch => {
 
 export default  compose(
   connect(mapStateToProps,mapDispatchToProps),
-  // firestoreConnect((props) => {
-
-  // })
+  firestoreConnect((props) => {
+      return { collection: 'users', where:[["uid",'==',props.auth.uid]] }
+  })
 )(Profile) 

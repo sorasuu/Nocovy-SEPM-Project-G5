@@ -111,15 +111,16 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = (state) => {
-  // console.log("haha", state.product);
+  console.log("product", state);
   return {
     auth: state.firebase.auth,
+    products :  state.firestore.ordered.products
   }
 };
 
 export default compose(
   connect(mapStateToProps),
-  // firestoreConnect([
-
-  // ])
+  firestoreConnect([
+   { collection: 'products'}])
+    
 )(withStyles(useStyles)(Dashboard) )
