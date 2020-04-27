@@ -36,7 +36,7 @@ export const signUp = (newUser) => {
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         phoneNumber: newUser.phoneNumber,
-        image: newUser.image,
+        // image: newUser.image,
         url: newUser.url,
       });
     }).then(() => {

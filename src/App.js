@@ -16,6 +16,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 
 import "./App.css"
+import Chat from './components/pages/Chat';
 
 
 class App extends Component {
@@ -38,6 +39,7 @@ class App extends Component {
             {/* <Route path='/profile/:id' component={Profile} /> */}
             <Route path='/myproducts' component={Profile} />
             <Route path='/upload'component={Upload}/>
+            <Route path='/chat'component={Chat}/>
             {/* <Route path='/reports'  component={() => <Reports products={productobj} reports={reports} />}/>
             <Route path='/myproducts' component={() => <ProductsManage products={productlist} />}/> */}    
           </Switch>
