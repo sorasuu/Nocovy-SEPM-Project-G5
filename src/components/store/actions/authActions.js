@@ -37,7 +37,7 @@ export const signUp = (newUser) => {
         lastName: newUser.lastName,
         phoneNumber: newUser.phoneNumber,
         // image: newUser.image,
-        url: newUser.url,
+        certificate: newUser.certificate,
       });
     }).then(() => {
       dispatch({ type: 'SIGNUP_SUCCESS' });

@@ -11,6 +11,7 @@ import FormCertificate from './FormCertificate'
 import Confirm from './Confirm'
 import Success from './Success'
 import { v4 as uuidv4 } from 'uuid';
+import {uploadToStorage} from '../store/actions/uploadAction'
 class SignUp extends Component {
     state = {
         step: 1,
@@ -20,9 +21,8 @@ class SignUp extends Component {
         password: '',
         phoneNumber: '',
         image: null,
-        url: '',
+        cetificate: '',
         progress: 0,
-        token: uuidv4(),
 
     }
     nextStep = () => {
@@ -55,28 +55,43 @@ class SignUp extends Component {
     }
     handleUpload = (e) => {
         e.preventDefault();
-        const {image,token} = this.state;
+        const {image} = this.state;
         if(image!== undefined&& image!== null){
-        const uploadTask = storageRef.ref(`images/certificates/${image.name+token}`).put(image);
-        uploadTask.on('state_changed', 
-        (snapshot) => {
-          // progress function ....
-          const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-          this.setState({progress});
-        }, 
-        (error) => {
-             // error function ....
-          console.log(error);
-        }, 
-      () => {
-          // complete function ....
-          storageRef.ref('images/certificates').child(image.name+token).getDownloadURL().then(url => {
-              console.log(url);
-              this.setState({url});
-              this.nextStep()
-          })
-      });}
+            // need a image and a path
+            const file={
+                image,
+                path: '/images/certificates/'
+            }
+            // new upload
+            this.props.uploadToStorage(file)
+            
+            
+        }
     }
+    // update state
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.certificate!==this.props.certificate) {
+            console.log('welp that work')
+          this.setState({certificate:this.props.certificate})
+        }
+        if (prevProps.progress!==this.props.progress) {
+            console.log('loading work')
+          this.setState({progress:this.props.progress})
+          if (this.props.progress==='100'||this.props.progress===100){
+            this.nextStep();
+        }
+        }
+        // console.log('??',this.props.certificate)
+      }
+      static getDerivedStateFromProps(nextProps, prevState){
+        if(nextProps.cetificate!==prevState.cetificate){
+          return { cetificate: nextProps.cetificate};
+       }
+       else if (nextProps.progress!==prevState.progress){
+        return { progress: nextProps.progress};
+       }
+       else return null;
+     }
 
     render() {
         const { step, firstName, lastName, email, password, phoneNumber,image,url,progress} = this.state;
@@ -124,15 +139,20 @@ class SignUp extends Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log(state)
     return {
         auth: state.firebase.auth,
-        authError: state.auth.authError
+        authError: state.auth.authError,
+        //get payload
+        certificate: state.uploadReducer.url,
+        progress: state.uploadReducer.progress,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        signUp: (creds) => dispatch(signUp(creds))
+        signUp: (creds) => dispatch(signUp(creds)),
+        uploadToStorage:(file)=>dispatch(uploadToStorage(file))
     }
 }
 
