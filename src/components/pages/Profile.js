@@ -131,6 +131,6 @@ const mapDispatchToProps = dispatch => {
 export default  compose(
   connect(mapStateToProps,mapDispatchToProps),
   firestoreConnect((props) => {
-      return { collection: 'users', where:[["uid",'==',props.auth.uid]] }
+      return [{ collection: 'users', where:[["uid",'==',props.auth.uid]] }]
   })
 )(Profile) 
