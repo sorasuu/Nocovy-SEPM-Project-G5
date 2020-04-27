@@ -60,7 +60,7 @@ class SignUp extends Component {
         const uploadTask = storageRef.ref(`images/certificates/${image.name+token}`).put(image);
         uploadTask.on('state_changed', 
         (snapshot) => {
-          // progrss function ....
+          // progress function ....
           const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
           this.setState({progress});
         }, 
@@ -77,6 +77,7 @@ class SignUp extends Component {
           })
       });}
     }
+
     render() {
         const { step, firstName, lastName, email, password, phoneNumber,image,url,progress} = this.state;
         const { auth, authError } = this.props;

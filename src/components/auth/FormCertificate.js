@@ -23,9 +23,7 @@ export class FormCertificate extends Component {
     continue = e => {
         e.preventDefault();
         this.setState({uploading:true})
-        this.props.handleUpload(e)
-
-        
+        this.props.handleUpload(e)  
     }
 
     back = e => {
@@ -49,8 +47,6 @@ export class FormCertificate extends Component {
                             <img src="handshake.png"></img>
                         </div>
                         <div className="form">
-
-
                             <div className="form-group">
                                 <label htmlFor="image" >Certificate(s)</label>
                                 <br/>
@@ -60,9 +56,7 @@ export class FormCertificate extends Component {
                                     defaultValue={values.image}
                                     onChange={handleChange('image')}
                                 />
-
                             </div>
-
                         </div>
 
 

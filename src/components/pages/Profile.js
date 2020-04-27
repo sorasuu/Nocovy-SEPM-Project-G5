@@ -1,15 +1,54 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import {Paper, Container, Typography, Grid} from '@material-ui/core'
+import {InputBase, Container, Typography, Grid, withStyles} from '@material-ui/core'
 import WholesalerInfoCard from '../layout/WholesalerInfoCard'
 import { firestoreConnect } from 'react-redux-firebase'
 import { storeProducts } from "./data"
 import AddProductCard from '../layout/AddProductCard'
 import ProductCard from '../layout/ProductCard'
-import Modal from '@material-ui/core/Modal';
+import Modal from '@material-ui/core/Modal'
 import { Redirect, NavLink } from 'react-router-dom'
 import {createProduct } from '../store/actions/productAction'
+import SearchIcon from '@material-ui/icons/Search'
+import { fade } from '@material-ui/core/styles'
+import storageRef from '../../index'
+import { v4 as uuidv4 } from 'uuid'
+
+
+const useStyles = theme => ({
+
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginTop:"2%",
+    // marginRight: theme.spacing(2),
+    justify:'center',
+    alignItems:'center',
+    direction:'flex',
+    width:'100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  }
+});
 class Profile extends Component {
   state={
     open:false,
@@ -21,6 +60,9 @@ class Profile extends Component {
     description: `Originally Established in 1985, Coastal Designs Decor is a long established and experienced Australian wholesale distribution business.
     Our main products are Home decorating accessories in the form of Volkswagen memorabilia, such as VW Beetle and VW Kombi or beach theme and coastal designs like:- Lighthouses Anchors, oars, paddles, beach girl figurines, pelicans, starfish, shells etc.
     Product lines include Photo frames, money boxes, wall plaques, book boxes, trinket boxes, candle holders, tea light holders, wall art including shadow boxes, shell theme products`,
+    products: storeProducts,
+    search:'',
+  
     productName:'',
     productBrand:'',
     productOrigin:'',
@@ -37,8 +79,11 @@ class Profile extends Component {
     miscCost:0,
     unitCost:0,
     unitPrice:0,
-    image: '',
+    image: null,
     category:'',
+    url:'',
+    progress: 0,
+    token: uuidv4(),
   }
 
   handleOpen = () => {
@@ -52,7 +97,12 @@ class Profile extends Component {
 
   handleChange = input => e => {
     this.setState({ [input]: e.target.value })
-    console.log(this.state)
+    if (e.target.files) {
+      const image = e.target.files[0];
+      this.setState(() => ({image}));
+      console.log(image)
+    }
+    console.log(this.image)
   }
 
   handleCatChange = input => e => {
@@ -61,8 +111,36 @@ class Profile extends Component {
     //Write function to parse string input into array of tags
   }
 
+  handleUpload = (e) => {
+    console.log('function was called')
+    e.preventDefault();
+    const {image,token} = this.state;
+    if(image!== undefined&& image!== null){
+    const uploadTask = storageRef.ref(`images/productImg/${image.name+token}`).put(image);
+    uploadTask.on('state_changed', 
+    (snapshot) => {
+      // progress function ....
+      const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+      this.setState({progress});
+    }, 
+    (error) => {
+         // error function ....
+      console.log(error);
+    }, 
+  () => {
+      // complete function ....
+      storageRef.ref('images/productImg').child(image.name+token).getDownloadURL().then(url => {
+          console.log(url);
+          this.setState({url});
+          this.formSubmit()
+          this.setState({open: false});
+      })
+  });}
+}
+
   formSubmit = () => {
-    const product = {supplierId: this.props.auth.uid, 
+    const product = {supplierId: this.props.auth.uid,
+                    productImg: this.state.url,
                     name: this.state.productName, 
                     detail: ['origin: '+ this.state.productOrigin,
                             'brand:'+ this.state.productBrand], 
@@ -87,28 +165,50 @@ class Profile extends Component {
 
 
   render() {
-    const {auth} = this.props
+    const { auth, classes} = this.props;
+    const { search, products } = this.state;
+    const filteredProducts = products.filter(product =>{
+        return product.title.toLowerCase().indexOf(search.toLowerCase())!== -1
+    })
     if (!auth.uid) return <Redirect to='/signin' />
+
     return (
       <Container>
         <WholesalerInfoCard handleOpen={this.handleOpen} info = {this.state} auth={auth}/>
         <Typography gutterBottom align='center' variant='h3'><text style={{fontWeight:'bold'}}>Products</text></Typography>
-        <Grid
-                  container
-                  spacing={2}
-                  direction="row"
-                  justify="flex-start"
-                  alignItems="flex-start"       
+        <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+              onChange={this.handleChange('search')}
+            />
+          </div>
+        <div style={{ marginTop: '3%' }}>
+          <Grid
+            container
+            spacing={2}
+            direction="row"
+            justify="flex-start"
+            alignItems="flex-start"
           >
-           {storeProducts?storeProducts.map(product=>{
-             return(
-              <Grid item xs={12} sm={6} md={4}  key={product.id}>
-             <ProductCard  product={product}/>
-          </Grid>
-          )}):<h5>Loading...</h5>}</Grid>
+            {products ? filteredProducts.map(product => {
+              return (
+                <Grid item xs={12} sm={6} md={4} key={product.id}>
+                  <ProductCard product={product} />
+                </Grid>
+              )
+            }) : <h5>Loading...</h5>}</Grid>
+        </div>
           <Modal style={{}} open={this.state.open} onClose={this.handleClose}>
             <div style={{height:'90%', overflowY: 'auto', maxWidth:700, position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '60%',}}>
-              <AddProductCard formSubmit={this.formSubmit} handleChange={this.handleChange} handleCatChange={this.handleCatChange}/>
+              <AddProductCard formSubmit={this.formSubmit} handleChange={this.handleChange} handleCatChange={this.handleCatChange} handleUpload={this.handleUpload}/>
             </div>
           </Modal>
       </Container>
@@ -121,6 +221,7 @@ const mapStateToProps = (state,ownProps) => {
   console.log(ownProps)
   return {
     auth: state.firebase.auth,
+    products :  state.firestore.ordered.products
 }};
 const mapDispatchToProps = dispatch => {
   return {
@@ -131,6 +232,6 @@ const mapDispatchToProps = dispatch => {
 export default  compose(
   connect(mapStateToProps,mapDispatchToProps),
   firestoreConnect((props) => {
-      return [{ collection: 'users', where:[["uid",'==',props.auth.uid]] }]
+      return [{ collection: 'products'}, { collection: 'users', where:[["uid",'==',props.auth.uid]] }]
   })
-)(Profile) 
+)(withStyles(useStyles)(Profile) )

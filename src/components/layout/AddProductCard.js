@@ -8,7 +8,6 @@ import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/co
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import StyledButton from './StyledButton';
-import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles(() => ({
     card: {
@@ -37,7 +36,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 const AddProductCard = (props) => {
-    console.log(props)
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles =  useOverShadowStyles();
@@ -51,6 +49,15 @@ const AddProductCard = (props) => {
             />
             <CardContent className={classes.content}>
                 <form noValidate autoComplete="off">
+                    <div className="form-group">
+                        <label htmlFor="image" >Image(s)</label>
+                        <br/>
+                        <input
+                            type="file"
+                            id='image'
+                            onChange={props.handleChange('image')}
+                        />
+                    </div>
                     <div className="form-group">
                         <label htmlFor="title">Name</label>
                         <input id='name' placeholder='Product Name' onChange={props.handleChange('productName')}/>
@@ -115,7 +122,7 @@ const AddProductCard = (props) => {
                         <label htmlFor="unitPrice">Unit Price</label>
                         <input type='number' id='unitPrice' placeholder='Unit Price' onChange={props.handleChange('unitPrice')}/>
                     </div>
-                    <StyledButton onClick={props.formSubmit} style={{marginTop:10}}>Create</StyledButton>
+                    <StyledButton onClick={props.handleUpload} style={{marginTop:10}}>Create</StyledButton>
                 </form>
             </CardContent>
         </Card>
