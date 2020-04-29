@@ -16,10 +16,6 @@ const ColorLinearProgress = withStyles({
 })(LinearProgress);
 
 export class FormCertificate extends Component {
-    handleSubmit = (e) => {
-        e.preventDefault();
-        this.props.signUp(this.state);
-      }
 
     continue = e => {
         e.preventDefault();
@@ -27,7 +23,7 @@ export class FormCertificate extends Component {
         //send the data to backend
         //email and phone validation here
 
-        this.handleSubmit();
+        this.props.handleSubmit(e);
         this.props.nextStep();
 
     }
@@ -38,12 +34,14 @@ export class FormCertificate extends Component {
     }
 
     render() {
-        const { values: { firstName, lastName, email, password, phoneNumber, bio } } = this.props;
+        const { values: { firstName, lastName, email, password, phoneNumber, bio,img,url } ,authError,auth} = this.props;
         // if (auth.uid) return <Redirect to='/' />
         return (
             <div className="base-container">
                 <Container style={{ marginTop: "2%", width: "500px" }}>
-                    <form className="white auth" onSubmit={this.handleSubmit} style={{ padding: "2%" }}>
+                    <form className="white auth" 
+                    // onSubmit={this.handleSubmit} 
+                    style={{ padding: "2%" }}>
                         <div className="header">Confirm sign up</div>
                         <div className="image">
                             <img src="handshake.png"></img>
@@ -92,9 +90,9 @@ export class FormCertificate extends Component {
                             
 
                             {/* {this.state.logging ? <ColorLinearProgress style={{ marginBottom: "2%", marginTop: "2%", padding: "5px" }} /> : null} */}
-                            {/* <div className="center red-text">
+                            <div className="center red-text">
                                 {authError ? <p>{authError}</p> : null}
-                            </div> */}
+                            </div>
                         </div>
 
                         <div className="input-field">
@@ -110,17 +108,5 @@ export class FormCertificate extends Component {
         )
     }
 }
-// const mapStateToProps = (state) => {
-//     return {
-//         auth: state.firebase.auth,
-//         authError: state.auth.authError
-//     }
-// }
-
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         signUp: (creds) => dispatch(signUp(creds))
-//     }
-// }
 
 export default FormCertificate

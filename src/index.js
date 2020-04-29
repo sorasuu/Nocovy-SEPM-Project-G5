@@ -35,10 +35,10 @@ const middlewares = [
   ]
 // Initialize firebase instance
 firebase.initializeApp(fbConfig)
-const firestore = firebase.firestore()
+firebase.firestore()
 
 const  storageRef = firebase.storage();
-export default (firestore,storageRef)
+export default (storageRef)
 
 function AuthIsLoaded({ children }) {
 

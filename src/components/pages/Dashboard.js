@@ -13,7 +13,6 @@ import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = theme => ({
 
-
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -54,6 +53,7 @@ class Dashboard extends Component {
   onChange = e =>{
     this.setState({search : e.target.value})
   }
+  
   render() {
     const { auth, classes} = this.props;
     const { search, products } = this.state;
@@ -102,7 +102,6 @@ class Dashboard extends Component {
                 </Grid>
               )
             }) : <h5>Loading...</h5>}</Grid>
-
         </div>
       </div>
 
@@ -111,15 +110,16 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = (state) => {
-  // console.log("haha", state.product);
+  console.log("product", state);
   return {
     auth: state.firebase.auth,
+    products :  state.firestore.ordered.products
   }
 };
 
 export default compose(
   connect(mapStateToProps),
-  // firestoreConnect([
-
-  // ])
+  firestoreConnect([
+   { collection: 'products'}])
+    
 )(withStyles(useStyles)(Dashboard) )

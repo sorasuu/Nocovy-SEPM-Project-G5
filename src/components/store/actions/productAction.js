@@ -1,16 +1,16 @@
 import firebase from 'firebase/app';
-import firestore from '../../../index' 
+
 
 export const createProduct = (product) => {
     return (dispatch, getState ) => {
       const profile = getState().firebase.profile;
       const author = getState().firebase.auth;
-      firestore.collection('products').add({
+      firebase.firestore().collection('products').add({
         ...product,
         authorName: profile.displayName,
-        authorId: author.uid,
+        // authorId: author.uid,
         authorEmail: author.email,
-        authorPhotoURL: author.photoURL,
+        // authorPhotoURL: author.photoURL,
         createdAt: new Date()
       }).then(() => {
         dispatch({ type: 'CREATE_PRODUCT_SUCCESS' });
@@ -22,7 +22,7 @@ export const createProduct = (product) => {
   
 export const editProduct = (product) => {
     return (dispatch, getState) => {
-      firestore.collection('products').doc(product.id).set({
+      firebase.firestore().collection('products').doc(product.id).set({
         ...product,
       }).then(() => {
         dispatch({ type: 'EDIT_PRODUCT_SUCCESS' });
@@ -33,7 +33,7 @@ export const editProduct = (product) => {
   };
 export const deleteProduct = (product) => {
 return (dispatch, getState) => {
-    firestore.collection('products').doc(product.id).delete()
+  firebase.firestore().collection('products').doc(product.id).delete()
     .then(() => {
     dispatch({ type: 'DELETE_PRODUCT_SUCCESS' });
     }).catch(err => {

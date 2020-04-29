@@ -16,27 +16,28 @@ const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         padding: '3% 10px 10px 10px',
-        border: `1px solid ${theme.palette.divider}`,
+        // border: `1px solid ${theme.palette.divider}`,
         borderRadius: theme.shape.borderRadius,
         backgroundColor: theme.palette.background.paper,
         color: theme.palette.text.secondary,
+
         '& svg': {
             margin: theme.spacing(1.5),
         },
         '& hr': {
             margin: theme.spacing(0, 0.5),
         },
-        '& .MuiTableCell-root': {
-            border: `1px solid black`,
-            padding: '2% 2% 2px 10px'
-        },
+        // '& .MuiTableCell-root': {
+        //     border: `1px solid black`,
+        //     padding: '2% 2% 2px 10px'
+        // },
     },
 
     paper: {
         padding: theme.spacing(2),
         margin: 'auto',
         marginTop: '5px',
-        maxWidth: 500,
+        maxWidth: 1000,
     },
     card: {
         marginTop: "10%",
@@ -51,14 +52,14 @@ const useStyles = makeStyles((theme) => ({
         overflowX: 'auto',
         marginLeft: "5%",
         margintTop: "5%",
-        display: 'flex',
+        display: 'center',
         alignItems: 'center',
         justifyContent: 'center',
     },
     imageCard: {
         width: 'auto',
-        maxWidth: '500px',
-        height: "400px",
+        maxWidth: '400px',
+        height: "350px",
         marginTop: '5px',
         justifyContent: 'center',
         alignItems: 'center',
@@ -78,13 +79,13 @@ export default function ProductDetailCard(props) {
     const cardHeaderShadowStyles = useFadedShadowStyles();
 
     return (
-
+        <div className="container" style={{textAlign:'center'}}>
         <Card className={cx(classes.card, cardShadowStyles.root)}
-            style={{ position: "relative", marginBottom: '5px' }}>
+            style={{ position: "relative", marginBottom: '5px', }}>
             <CardHeader
                 className={cardHeaderShadowStyles.root}
                 classes={cardHeaderStyles}
-                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", width: 'auto', minWidth: '200px' }}
+                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", width: 'auto', minWidth: '200px', marginLeft:"30px"  }}
                 title={props.product.title}
             />
             <CardContent className={classes.content} >
@@ -106,6 +107,8 @@ export default function ProductDetailCard(props) {
 
             </CardContent>
         </Card>
+        <DetailTable details={props.product.details} style={{marginBottom: '5px', }}/>
+        </div>
     );
 };
 
@@ -115,7 +118,16 @@ const ProductImageCard = props => {
     const classes = useStyles();
     return (
         <div>
-            <Grid style={{ padding: "10px 10px 10px 10px" }} container spacing={1}>
+            <Grid style={{ padding: "10px 10px 10px 10px", textAlign:'center' }} container spacing={1}>
+            {/* {props.product.imageDetail.map(i => {
+                return (
+                    <Grid item xs={3} sm={3} md={3} key={i.imageId}> */}
+                    <Card className={classes.imageCard} key={props.product.imageDetail[1].imageId}>
+                        <img src={props.product.imageDetail[1].imageUrl} style={{ width: "100%", height: '100%' }} />
+                    </Card>
+                     {/* </Grid>
+                );
+            })} */}
                 {props.product.imageDetail.map(i => {
                     return (
                         // <Grid item xs={3} sm={3} md={3} key={i.imageId}>
@@ -126,15 +138,7 @@ const ProductImageCard = props => {
                     );
                 })}
             </Grid>
-            {props.product.imageDetail.map(i => {
-                return (
-                    // <Grid item xs={3} sm={3} md={3} key={i.imageId}>
-                    <Card className={classes.imageCard} key={i.imageId}>
-                        <img src={i.imageUrl} style={{ width: "75%", height: '75%' }} />
-                    </Card>
-                    // </Grid>
-                );
-            })}
+
         </div>
     )
 }
@@ -168,7 +172,7 @@ export const ProductInfoCard = props => {
                 }) : null}
 
             </Table>
-            <DetailTable details={props.product.details} />
+            
 
         </TableContainer>
         </div>
