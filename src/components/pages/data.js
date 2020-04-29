@@ -144,22 +144,22 @@ export const detailProduct = {
       id: 1,
       cost: [
         {
-          id: 'header',
+           
           name: 'FOB Point',
           value: 'Shanghai'
         },
         {
-          id: 'body',
+           
           name: 'Freight Rate',
           value: '$1.20/1.00ft'
         },
         {
-          id: 'body',
+           
           name: 'Freight Description',
           value: `40' High Cube`
         },
         {
-          id: 'body',
+           
           name: 'Duty Rate',
           value: '3.49%'
         }
@@ -169,22 +169,21 @@ export const detailProduct = {
       id: 2,
       cost: [
         {
-          id: 'header',
           name: 'Unit Cost',
           value: '$9.20'
         },
         {
-          id: 'body',
+           
           name: 'Freight Cost',
           value: '$0.20'
         },
         {
-          id: 'body',
+           
           name: 'Duty Cost',
           value: '$0.80'
         },
         {
-          id: 'body',
+           
           name: 'Misc Cost',
           value: '$0.00'
         }
@@ -193,18 +192,17 @@ export const detailProduct = {
     {
       id: 3,
       cost: [
-        {
-          id: 'body',
+        {    
           name: 'Landed Cost',
           value: '$10.20'
         },
         {
-          id: 'body',
+           
           name: 'Margin',
           value: '62.15%'
         },
         {
-          id: 'body',
+           
           name: 'Unit Price',
           value: `$36.99`
         },

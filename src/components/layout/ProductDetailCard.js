@@ -72,21 +72,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProductDetailCard(props) {
-    console.log("Product Price", props.product.price)
+    
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles();
     const cardHeaderShadowStyles = useFadedShadowStyles();
-
+    
+    console.log("Product Detail Card", props.product)
     return (
-        <div className="container" style={{textAlign:'center'}}>
+        <div style={{textAlign:'center'}}>
         <Card className={cx(classes.card, cardShadowStyles.root)}
             style={{ position: "relative", marginBottom: '5px', }}>
             <CardHeader
                 className={cardHeaderShadowStyles.root}
                 classes={cardHeaderStyles}
                 style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", width: 'auto', minWidth: '200px', marginLeft:"30px"  }}
-                title={props.product.title}
+                title={props.product.name}
             />
             <CardContent className={classes.content} >
                 <Grid
@@ -96,10 +97,10 @@ export default function ProductDetailCard(props) {
                     key={props.product.id}
                 >
                     <Grid item xs={12} sm={6} md={6} >
-                        <ProductImageCard product={props.product} />
+                        <ProductImageCard image={ props.product.productImg } />
                     </Grid>
                     <Grid item xs={12} sm={6} md={6}>
-                        <ProductInfoCard product={props.product} />
+                        {/* <ProductInfoCard product={props.product} /> */}
                     </Grid>
 
                 </Grid>
@@ -116,30 +117,39 @@ export default function ProductDetailCard(props) {
 // image design
 const ProductImageCard = props => {
     const classes = useStyles();
+    // console.log("props image card", props.image)
     return (
-        <div>
-            <Grid style={{ padding: "10px 10px 10px 10px", textAlign:'center' }} container spacing={1}>
-            {/* {props.product.imageDetail.map(i => {
-                return (
-                    <Grid item xs={3} sm={3} md={3} key={i.imageId}> */}
-                    <Card className={classes.imageCard} key={props.product.imageDetail[1].imageId}>
-                        <img src={props.product.imageDetail[1].imageUrl} style={{ width: "100%", height: '100%' }} />
-                    </Card>
-                     {/* </Grid>
-                );
-            })} */}
-                {props.product.imageDetail.map(i => {
-                    return (
-                        // <Grid item xs={3} sm={3} md={3} key={i.imageId}>
-                        <Card style={{ width: '75px', height: "75px" }} key={i.imageId}>
-                            <img src={i.imageUrl} style={{ width: "100%", height:"100%" }} />
-                        </Card>         
-                        // </Grid>
-                    );
+        <Grid
+        container
+        justify='flex-start'
+        alignItems="flex-start"
+        >
+            {/* <Grid 
+            container
+            direction="row"
+            justify="flex-start"
+            alignItems="flex-start"
+            > */}
+                {props.image.map((i, k) => {
+                        return (
+                            <Grid item xs={3} sm={3} md={3} key={k}>
+                                <Card style={{ width: '65px', height: "70px" }} key={k}>
+                                    <img src={i} style={{ width: "100%", height:"100%" }} />
+                                </Card>         
+                            </Grid>
+                        );
                 })}
-            </Grid>
-
-        </div>
+            {/* </Grid> */}
+            {props.image.map((i,k)=>{
+                return(
+                    <Grid item xs={12} md={12} lg={12} key={k}>
+                        <Card style={{width:"100%", height:"350px", direction:'flex', justify:'center',alignItems:'center'}}>
+                            <img src={i} style={{width:"95%", height:"100%", padding:'2% 2% 2% 2%'}}/>
+                        </Card>
+                    </Grid>
+                )})}
+       
+        </Grid>
     )
 }
 // table detail

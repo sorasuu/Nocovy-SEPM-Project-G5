@@ -26,7 +26,7 @@ const ProductCard = (props) => {
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useSoftRiseShadowStyles({ inactive: false });
     const cardHeaderShadowStyles = useFadedShadowStyles();
-
+    console.log("productcard",props)
     // const [hoverRef, isHovered] = useHover();
 
     return (
@@ -36,7 +36,7 @@ const ProductCard = (props) => {
             <CardHeader
                 className={cardHeaderShadowStyles.root}
                 classes={cardHeaderStyles}
-                title={props.product.title}
+                title={props.product.name}
                 style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", right: "5%" }}
             />
             <CardContent className={classes.content}
@@ -45,7 +45,7 @@ const ProductCard = (props) => {
                 <div style={{ marginTop: "10%" }}>
                     {/* put image and info */}
                     <div className='image'>
-                        <img src={props.product.image} style={{ width: "200px", height: "250px" }} />
+                        <img src={props.product.productImg} style={{ width: "200px", height: "250px" }} />
 
                         <div className="overlay">
                             <NavLink to = {'/product/'+ props.product.id}>

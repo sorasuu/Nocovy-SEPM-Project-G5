@@ -7,8 +7,6 @@ import { fade } from '@material-ui/core/styles'
 import { Grid, InputBase, withStyles } from '@material-ui/core'
 import StyledButton from '../layout/StyledButton'
 import ProductCard from '../layout/ProductCard'
-import ColorLinearProgress from '../layout/ColorLinearProgress'
-import { storeProducts } from "./data"
 import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = theme => ({
@@ -20,12 +18,12 @@ const useStyles = theme => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    marginTop:"2%",
+    marginTop: "2%",
     // marginRight: theme.spacing(2),
-    justify:'center',
-    alignItems:'center',
-    direction:'flex',
-    width:'100%',
+    justify: 'center',
+    alignItems: 'center',
+    direction: 'flex',
+    width: '100%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing(3),
       width: 'auto',
@@ -44,27 +42,35 @@ const useStyles = theme => ({
     color: 'inherit',
   }
 });
+
+function checkArray(array) {
+  var products = [{name:"haha"}];
+    if ( array !== undefined ) {
+      products = array
+    }
+    return products
+}
+
 class Dashboard extends Component {
   state = {
-    products: storeProducts,
-    search:''
+    search: '',
   }
-  
-  onChange = e =>{
-    this.setState({search : e.target.value})
-  }
-  
-  render() {
-    const { auth, classes} = this.props;
-    const { search, products } = this.state;
-    const filteredProducts = products.filter(product =>{
-        return product.title.toLowerCase().indexOf(search.toLowerCase())!== -1
-    })
-    if (!auth.uid) return <Redirect to='/signin' />
 
+  onChange = e => {
+    this.setState({ search: e.target.value })
+  }
+
+  render() {
+    const { auth, classes, products } = this.props;
+    const { search } = this.state;
+   
+    
+    if (!auth.uid) return <Redirect to='/signin' />
+   
     return (
+
       <div className="container" style={{ textAlign: 'center' }}>
-        
+
         <h1 style={{ fontFamily: 'Muli', marginBottom: "5%" }}>Welcome To Nocovy</h1>
         <NavLink to="/reports" style={{ marginRight: "2%", marginBottom: "2%" }}>
           <StyledButton>Product Report</StyledButton>
@@ -72,21 +78,21 @@ class Dashboard extends Component {
         <NavLink to="/products" style={{ marginBottom: "2%" }}>
           <StyledButton>Product Management</StyledButton>
         </NavLink>
-        <br/>
+        <br />
         <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={this.onChange}
-            />
+          <div className={classes.searchIcon}>
+            <SearchIcon />
           </div>
+          <InputBase
+            placeholder="Search…"
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+            inputProps={{ 'aria-label': 'search' }}
+            onChange={this.onChange}
+          />
+        </div>
         <div style={{ marginTop: '10%' }}>
           <Grid
             container
@@ -95,13 +101,14 @@ class Dashboard extends Component {
             justify="flex-start"
             alignItems="flex-start"
           >
-            {products ? filteredProducts.map(product => {
+            {checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1).map((product, index) => {
               return (
-                <Grid item xs={12} sm={6} md={4} key={product.id}>
+                <Grid item xs={12} sm={6} md={4} key={index}>
                   <ProductCard product={product} />
                 </Grid>
               )
-            }) : <h5>Loading...</h5>}</Grid>
+            })}
+          </Grid>
         </div>
       </div>
 
@@ -110,16 +117,16 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log("product", state);
   return {
     auth: state.firebase.auth,
-    products :  state.firestore.ordered.products
+    products: state.firestore.ordered.products
   }
 };
 
 export default compose(
   connect(mapStateToProps),
   firestoreConnect([
-   { collection: 'products'}])
-    
-)(withStyles(useStyles)(Dashboard) )
+    { collection: 'products' }
+  ])
+
+)(withStyles(useStyles)(Dashboard))

@@ -9,7 +9,7 @@ import {
     Tab, Tabs, Box, Card,
     Typography, withStyles, Grid
 } from "@material-ui/core";
-
+import { approveUser } from '../store/actions/adminAction'
 import {
     List,
     ListItem,
@@ -113,26 +113,28 @@ class AdminDashboard extends Component {
         this.setState({ open: !this.state.open , index: id})
     }
 
-    handleApproved(id){
-        // this.update()
-        console.log("id", id, 'and data', this.props.usersPending[id] )
+    handleApproved(event, uid, id){
         
+        // this.update()
+        console.log("uid", uid)
+        console.log("id", id)
+        console.log('row data: ', this.props.usersPending[id] )
+        this.props.approveUser(uid)
     }
-f
+f   
     render() {
        
         const { classes, auth, users, usersApprove, usersPending } = this.props;
         console.log("users admin dashboard: ", users)
         const {value, columns} = this.state
-        const dataApprove = usersApprove
-        const dataPending = usersPending
-        console.log('pending',dataPending)
+       
+        console.log('pending',usersPending)
         const TableApproval = () => {
             return (
                 <MaterialTable
                     title=""
                     columns={columns}
-                    data={dataApprove}
+                    data={usersApprove}
                     actions={[
                         {
                             icon: "info",
@@ -188,7 +190,7 @@ f
                 <MaterialTable
                     title=""
                     columns={columns}
-                    data={dataPending}
+                    data={usersPending}
                     options={
                         {
                             paging: false,
@@ -200,8 +202,8 @@ f
                             icon: "check",
                             tooltip: "approve",
                             onClick: (event, rowData) => {
-                                alert("Approved " + rowData.id + "but dont change haha")
-                                this.handleApproved(rowData.id)
+                                // alert("Approved " + rowData.id + "but dont change haha")
+                                this.handleApproved(event, rowData.id, rowData.tableData.id)
                             }
                         },
                         {
@@ -218,9 +220,9 @@ f
                                 setTimeout(() => {
                                     resolve();
                                     this.setState(prevState => {
-                                        const dataPending = [...prevState.dataPending];
-                                        dataPending.push(newData);
-                                        return { ...prevState, dataPending };
+                                        const usersPending = [...prevState.usersPending];
+                                        usersPending.push(newData);
+                                        return { ...prevState, usersPending };
                                     });
                                 }, 600);
                             }),
@@ -229,9 +231,9 @@ f
                                 setTimeout(() => {
                                     resolve();
                                     this.setState(prevState => {
-                                        const dataPending = [...prevState.dataPending];
-                                        dataPending.splice(dataPending.indexOf(oldData), 1);
-                                        return { ...prevState, dataPending };
+                                        const usersPending = [...prevState.usersPending];
+                                        usersPending.splice(usersPending.indexOf(oldData), 1);
+                                        return { ...prevState, usersPending };
                                     });
                                 }, 600);
                             })
@@ -328,23 +330,24 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-    //   updateSite: site => dispatch(updateSite(site))
+   
+    approveUser: id => dispatch(approveUser(id))
     };
 };
 
 export default compose(
 
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect((props)=>{
-        // if(!props.auth.uid){
-        //     props.history.push("/")
-        // }
-        // else{
+        if(!props.auth.uid){
+            props.history.push("/")
+        }
+        else{
             return[
                 {collection:'users'}, 
                 { collection: 'users', where:[["pending","==",true]], storeAs:'usersPending' },
                 { collection: 'users', where:[["pending","==",false]], storeAs:'usersApprove' }
             ]
-        // }
+        }
     })
 )(withStyles(useStyles)(AdminDashboard))

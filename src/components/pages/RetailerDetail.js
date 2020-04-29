@@ -162,7 +162,7 @@ export default function RetailerDetail(props) {
                             <TableCell>TYPE</TableCell>
                             <TableCell>BRAND</TableCell>
                             <TableCell>PRICE</TableCell>
-                            <TableCell>Buyer</TableCell>
+                            
                         </TableRow>
                     </TableHead>
                     <TableBody>
