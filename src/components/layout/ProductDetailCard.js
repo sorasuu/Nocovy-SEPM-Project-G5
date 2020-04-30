@@ -27,10 +27,6 @@ const useStyles = makeStyles((theme) => ({
         '& hr': {
             margin: theme.spacing(0, 0.5),
         },
-        // '& .MuiTableCell-root': {
-        //     border: `1px solid black`,
-        //     padding: '2% 2% 2px 10px'
-        // },
     },
 
     paper: {
@@ -100,7 +96,7 @@ export default function ProductDetailCard(props) {
                         <ProductImageCard image={ props.product.productImg } />
                     </Grid>
                     <Grid item xs={12} sm={6} md={6}>
-                        {/* <ProductInfoCard product={props.product} /> */}
+                        <ProductInfoCard product={props.product} />
                     </Grid>
 
                 </Grid>
@@ -129,17 +125,26 @@ const ProductImageCard = props => {
             direction="row"
             justify="flex-start"
             alignItems="flex-start"
-            > */}
-                {props.image.map((i, k) => {
-                        return (
-                            <Grid item xs={3} sm={3} md={3} key={k}>
+            >
+                <Grid item>
+                    {props.image.map((i, k) => {
+                            return (
                                 <Card style={{ width: '65px', height: "70px" }} key={k}>
                                     <img src={i} style={{ width: "100%", height:"100%" }} />
                                 </Card>         
-                            </Grid>
-                        );
-                })}
-            {/* </Grid> */}
+                            );
+                    })}
+                </Grid>
+            </Grid> */}
+            <Grid item xs={12}>
+                <Grid container justify="center" spacing={1}>
+                    {props.image.map((value) => (
+                        <Grid key={value} item>
+                            <img src={value}/>
+                        </Grid>
+                    ))}
+                </Grid>
+            </Grid>
             {props.image.map((i,k)=>{
                 return(
                     <Grid item xs={12} md={12} lg={12} key={k}>
@@ -153,10 +158,8 @@ const ProductImageCard = props => {
     )
 }
 // table detail
-export const ProductInfoCard = props => {
-    
+export const ProductInfoCard = props => { 
     const classes = useStyles();
-    
     return (
         <div>
         <Grid container spacing={2}>
@@ -164,24 +167,22 @@ export const ProductInfoCard = props => {
             <Grid item xs={6} md={6} lg={6}><PriceForm/></Grid>
         </Grid>
         <TableContainer className={classes.root}>
-
-            <Table aria-label="simple table">               
-                {props.product.price ? props.product.price.map(price => {
-                    return (
-                        <TableBody key={price.id}>
-                            {price.cost ? price.cost.map((cost, key) => {
-                                return (
-                                    <TableRow key={key}>
-                                        <TableCell style={{backgroundColor: `hsla(14, 100%, 53%, 0.6)`, color:'white'}}>{cost.name}</TableCell>
-                                        <TableCell>{cost.value}</TableCell>
-                                    </TableRow>
-                                )
-                            }) : null}
-                        </TableBody>
+ 
+            <TableBody aria-label="simple table">               
+                {props.product.price? props.product.price.map((detail, key)=>{
+                    return(
+                        <TableRow key={key}>
+                        <TableCell style={{ backgroundColor: `hsla(14, 100%, 53%, 0.6)`, color: 'white' }}>
+                            {detail.name}
+                        </TableCell>
+                        <TableCell>
+                            {detail.value}
+                        </TableCell>
+                    </TableRow>
                     )
-                }) : null}
+                    }):null}
 
-            </Table>
+            </TableBody>
             
 
         </TableContainer>
@@ -189,7 +190,7 @@ export const ProductInfoCard = props => {
     )
 }
 function DetailTable(props) {
-    console.log('detail table props', props.details)
+    // console.log('detail table props', props.details)
 
     const [state, setState] = React.useState({
         columns: [
