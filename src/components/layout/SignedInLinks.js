@@ -21,18 +21,21 @@ import Button from "@material-ui/core/Button";
 import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
 const useStyles = makeStyles(styles);
-export  function LongMenu() {
+export  function LongMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [auth, setAuth] = React.useState(null);
   const open = Boolean(anchorEl);
-
+  
   const handleClick = event => {
+    console.log(props)
+    setAuth(props);
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
- 
+ console.log(props)
 
   return (
     <div>
@@ -52,8 +55,9 @@ export  function LongMenu() {
         open={open}
         onClose={handleClose}
       >
-      <NavLink to='/myproducts' style={{color:"black"}} >
+      <NavLink to={`/profile/${props.props.uid}`} style={{color:"black"}} >
       <MenuItem onClick={handleClose}>My Products</MenuItem></NavLink>
+
       <NavLink to='/reports' style={{color:"black"}}>
       <MenuItem onClick={handleClose}>Product Reports</MenuItem></NavLink>
       </Menu>
@@ -75,6 +79,7 @@ const SignedInLinks = (props) => {
   const handleCloseNotification = () => {
     setOpenNotification(null);
   };
+  const {auth} = props 
   return (
     <div>
       <Grid container spacing={3}>
@@ -82,7 +87,7 @@ const SignedInLinks = (props) => {
         <div className={classes.manager}>
         <Button
           color={window.innerWidth > 959 ? "transparent" : "white"}
-          justIcon={window.innerWidth > 959}
+          // justIcon={window.innerWidth > 959}
           simple={!(window.innerWidth > 959)}
           aria-owns={openNotification ? "notification-menu-list-grow" : null}
           aria-haspopup="true"
@@ -159,7 +164,7 @@ const SignedInLinks = (props) => {
       </div>
           </Grid>
       <Grid item xs={4}>
-            <LongMenu  />
+            <LongMenu props={auth} />
         </Grid>
         <Grid item xs={4}>
       <IconButton onClick={props.signOut} >

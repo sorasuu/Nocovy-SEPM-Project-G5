@@ -62,7 +62,7 @@ class Profile extends Component {
     Product lines include Photo frames, money boxes, wall plaques, book boxes, trinket boxes, candle holders, tea light holders, wall art including shadow boxes, shell theme products`,
     products: storeProducts,
     search:'',
-  
+    owner:false,
     productName:'',
     productBrand:'',
     productOrigin:'',
@@ -162,8 +162,13 @@ class Profile extends Component {
     this.props.createProduct(product)
 
   }
-
-
+  componentDidUpdate(prevProps){
+    if (prevProps.auth.uid!== this.props.uid){
+    if (this.props.match.params.id=== this.props.auth.uid && this.state.owner ==false){
+        this.setState({owner:true})
+    }}
+    console.log(this.state)}
+  
   render() {
     const { auth, classes} = this.props;
     const { search, products } = this.state;
@@ -174,7 +179,7 @@ class Profile extends Component {
 
     return (
       <Container>
-        <WholesalerInfoCard handleOpen={this.handleOpen} info = {this.state} auth={auth}/>
+        <WholesalerInfoCard handleOpen={this.handleOpen} info = {this.state} auth={auth} uid ={this.props.match.params.id}/>
         <Typography gutterBottom align='center' variant='h3'><text style={{fontWeight:'bold'}}>Products</text></Typography>
         <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -205,18 +210,21 @@ class Profile extends Component {
                 </Grid>
               )
             }) : <h5>Loading...</h5>}</Grid>
+        
         </div>
+        {this.state.owner?
           <Modal style={{}} open={this.state.open} onClose={this.handleClose}>
             <div style={{height:'90%', overflowY: 'auto', maxWidth:700, position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '60%',}}>
               <AddProductCard formSubmit={this.formSubmit} handleChange={this.handleChange} handleCatChange={this.handleCatChange} handleUpload={this.handleUpload}/>
             </div>
-          </Modal>
+          </Modal>:null}
       </Container>
     )
   }
 }
 
 const mapStateToProps = (state,ownProps) => {
+  const id = ownProps.match.params.id;
   console.log(state);
   console.log(ownProps)
   return {
@@ -232,6 +240,6 @@ const mapDispatchToProps = dispatch => {
 export default  compose(
   connect(mapStateToProps,mapDispatchToProps),
   firestoreConnect((props) => {
-      return [{ collection: 'products'}, { collection: 'users', where:[["uid",'==',props.auth.uid]] }]
+      return [{ collection: 'products', where:[["supplierId","==", props.match.params.id]]}, { collection: 'users', where:[["uid",'==',props.match.params.id]] }]
   })
 )(withStyles(useStyles)(Profile) )

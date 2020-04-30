@@ -84,11 +84,19 @@ const WholesalerInfoCard = (props) => {
                         <Link variant="h6" href={props.info.website}>{props.info.website}</Link>      
                         <Typography variant="h6">{props.info.address}</Typography>
                     </div>
+                    
+                    { props.info.owner?
                     <div className={classes.buttons}>
+                   
                         <StyledButton onClick={props.handleOpen} style={{marginBottom:10}}>New Listing</StyledButton>
                         <Divider light/>
-                        <NavLink to='/editProfile'><StyledButton>Edit Profile</StyledButton></NavLink>
+                        <NavLink to='/editProfile' ><StyledButton>Edit Profile</StyledButton></NavLink>
+                      
                     </div>
+                    :<div className={classes.buttons}>
+                    <NavLink to={'/Chat/'+ props.auth.uid} style={{marginBottom:10}}><StyledButton>Chat</StyledButton></NavLink>
+                    </div> }
+                    
                 </div>
                 <div className={classes.description}>
                     <Divider className={classes.divider} light />
