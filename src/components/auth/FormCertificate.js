@@ -6,7 +6,7 @@ import { Container, NoSsr, LinearProgress, withStyles } from '@material-ui/core'
 import StyledButton from '../layout/StyledButton'
 import "./style.css"
 import storageRef from '../../index';
-
+import {DropzoneArea} from 'material-ui-dropzone'
 const ColorLinearProgress = withStyles({
     colorPrimary: {
         background: '#ffff'
@@ -33,12 +33,12 @@ export class FormCertificate extends Component {
 
   
     render() {
-        const { auth, authError, values,handleChange } = this.props;
+        const { auth, authError, values,handleChangeImg } = this.props;
         // if (auth.uid) return <Redirect to='/' />
         // console.log(this.state.uid)
         return (
             <div className="base-container">
-                <Container style={{ marginTop: "2%", width: "500px" }}>
+                <Container style={{ marginTop: "2%", width: "550px" }}>
                     <form className="white auth"
                     //  onSubmit={this.handleSubmit} 
                      style={{ padding: "2%" }}>
@@ -50,12 +50,14 @@ export class FormCertificate extends Component {
                             <div className="form-group">
                                 <label htmlFor="image" >Certificate(s)</label>
                                 <br/>
-                                <input
-                                    type="file"
-                                    id='image'
-                                    defaultValue={values.image}
-                                    onChange={handleChange('image')}
-                                />
+                                <DropzoneArea
+                                defaultValue={values.images}
+                                onChange={handleChangeImg}
+                                acceptedFiles={['image/*']}
+                                maxFileSize={500000}
+                                filesLimit = {4}
+                                dropzoneText={'Upload your certificates here'}
+        />
                             </div>
                         </div>
 

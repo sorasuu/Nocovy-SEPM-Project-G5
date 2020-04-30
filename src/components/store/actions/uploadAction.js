@@ -19,8 +19,11 @@ export const uploadToStorage = (file) => {
           // complete function ....
           storageRef.ref(file.path).child(file.image.name+token).getDownloadURL().then(url => {
               console.log(url);
-
-            dispatch({ type: 'UPLOAD_SUCCESS', payload: url });
+              const pay={
+                url,
+                path:file.path
+              }
+            dispatch({ type: 'UPLOAD_SUCCESS', payload:  pay });
           }).catch(err => {
             dispatch({ type: 'UPLOAD_ERROR' }, err);
           })
