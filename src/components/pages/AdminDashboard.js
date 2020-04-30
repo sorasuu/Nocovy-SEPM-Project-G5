@@ -9,7 +9,7 @@ import {
     Tab, Tabs, Box, Card,
     Typography, withStyles, Grid
 } from "@material-ui/core";
-import { approveUser } from '../store/actions/adminAction'
+import { approveUser, declineUser } from '../store/actions/adminAction';
 import {
     List,
     ListItem,
@@ -79,11 +79,6 @@ class AdminDashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            check:[
-                {id: 0},
-                {id:1},
-               
-            ],
             value: 0,
             columns: [
                 { title: "Business", field: "businessName" },
@@ -113,13 +108,13 @@ class AdminDashboard extends Component {
         this.setState({ open: !this.state.open , index: id})
     }
 
-    handleApproved(event, uid, id){
-        
-        // this.update()
-        console.log("uid", uid)
-        console.log("id", id)
-        console.log('row data: ', this.props.usersPending[id] )
+    handleApproved(event, uid){
+        // this.update()    
         this.props.approveUser(uid)
+    }
+
+    handleCancel(id){
+        this.props.declineUser(id)
     }
 f   
     render() {
@@ -128,7 +123,6 @@ f
         console.log("users admin dashboard: ", users)
         const {value, columns} = this.state
        
-        console.log('pending',usersPending)
         const TableApproval = () => {
             return (
                 <MaterialTable
@@ -148,6 +142,13 @@ f
                             tooltip: "email",
                             onClick: (event) => alert("Email Sent")
                         },
+                        {
+                            icon:'cancel',
+                            tooltip:'cancel',
+                            onClick: (event, rowData) => {
+                                this.handleCancel(rowData.id)
+                            } 
+                        }
                 
                         
                     ]}
@@ -157,31 +158,7 @@ f
                             // actionsColumnIndex: -1
                         }
                     }
-                    editable={{
-                        onRowAdd: newData =>
-                            new Promise(resolve => {
-                                setTimeout(() => {
-                                    resolve();
-                                    this.setState(prevState => {
-                                        const dataApproval = [...prevState.dataApproval];
-                                        dataApproval.push(newData);
-                                        return { ...prevState, dataApproval };
-                                    });
-                                }, 600);
-                            }),
                     
-                        onRowDelete: oldData =>
-                            new Promise(resolve => {
-                                setTimeout(() => {
-                                    resolve();
-                                    this.setState(prevState => {
-                                        const dataApproval = [...prevState.dataApproval];
-                                        dataApproval.splice(dataApproval.indexOf(oldData), 1);
-                                        return { ...prevState, dataApproval };
-                                    });
-                                }, 600);
-                            })
-                    }}
                 />
             );
         };
@@ -203,7 +180,9 @@ f
                             tooltip: "approve",
                             onClick: (event, rowData) => {
                                 // alert("Approved " + rowData.id + "but dont change haha")
-                                this.handleApproved(event, rowData.id, rowData.tableData.id)
+                                this.handleApproved(event, rowData.id 
+                                    // rowData.tableData.id
+                                    )
                             }
                         },
                         {
@@ -212,32 +191,17 @@ f
                             onClick: (event, rowData) => {
                                 this.handleOpen(event, rowData.id)
                             }
+                        },
+                        {
+                            icon:'cancel',
+                            tooltip:'cancel',
+                            onClick: (event, rowData) => {
+                                this.handleCancel(rowData.id)
+                            } 
                         }
+                        
                     ]}
-                    editable={{
-                        onRowAdd: newData =>
-                            new Promise(resolve => {
-                                setTimeout(() => {
-                                    resolve();
-                                    this.setState(prevState => {
-                                        const usersPending = [...prevState.usersPending];
-                                        usersPending.push(newData);
-                                        return { ...prevState, usersPending };
-                                    });
-                                }, 600);
-                            }),
-                        onRowDelete: oldData =>
-                            new Promise(resolve => {
-                                setTimeout(() => {
-                                    resolve();
-                                    this.setState(prevState => {
-                                        const usersPending = [...prevState.usersPending];
-                                        usersPending.splice(usersPending.indexOf(oldData), 1);
-                                        return { ...prevState, usersPending };
-                                    });
-                                }, 600);
-                            })
-                    }}
+                   
                 />
             );
         };
@@ -275,7 +239,7 @@ f
         
         return (
             <div className={classes.root}>
-            <Grid container spacing={3}>
+            <Grid container spacing={2}>
                 <Grid item xs={2} md={2} lg={2}>
                     <Tabs
                         orientation="vertical"
@@ -285,18 +249,18 @@ f
                         aria-label="Vertical tabs example"
                         className={classes.tabs}
                     >
-                        <Tab label="Approved" {...a11yProps(this.state.check[0].id)} />
-                        <Tab label="Pending" {...a11yProps(this.state.check[1].id)} />
+                        <Tab label="Approved" {...a11yProps(0)} />
+                        <Tab label="Pending" {...a11yProps(1)} />
                         <Tab label="Notification" {...a11yProps(2)} />
 
                     </Tabs>
                 </Grid>
              
                     <Grid item xs={4} md={4} lg={4}>
-                        <TabPanel value={value} index={this.state.check[0].id}>
+                        <TabPanel value={value} index={0}>
                             <TableApproval />
                         </TabPanel>
-                        <TabPanel value={value} index={this.state.check[1].id}>
+                        <TabPanel value={value} index={1}>
                             <TablePending />
                         </TabPanel>
                         <TabPanel value={value} index={2}>
@@ -331,7 +295,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
    
-    approveUser: id => dispatch(approveUser(id))
+    approveUser: id => dispatch(approveUser(id)),
+    declineUser: id => dispatch(declineUser(id))
     };
 };
 

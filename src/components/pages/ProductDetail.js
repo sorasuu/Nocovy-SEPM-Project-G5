@@ -23,6 +23,8 @@ const useStyles = (theme) => ({
   },
 });
 
+
+
 class ProductDetail extends Component {
   constructor(props) {
     super(props);

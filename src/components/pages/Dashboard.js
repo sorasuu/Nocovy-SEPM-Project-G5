@@ -4,11 +4,11 @@ import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { fade } from '@material-ui/core/styles'
-import { Grid, InputBase, withStyles } from '@material-ui/core'
+import { Grid, InputBase, withStyles, Tabs, Tab, CardContent, Typography, CardMedia, Card } from '@material-ui/core'
 import StyledButton from '../layout/StyledButton'
 import ProductCard from '../layout/ProductCard'
 import SearchIcon from '@material-ui/icons/Search';
-
+import { TabPanel, a11yProps } from './AdminDashboard'
 const useStyles = theme => ({
 
   search: {
@@ -40,33 +40,74 @@ const useStyles = theme => ({
   },
   inputRoot: {
     color: 'inherit',
-  }
+  },
+  tabs: {
+    borderRight: `1px solid ${theme.palette.divider}`
+  },
+  root: {
+    display: 'flex',
+    maxWidth: '500px',
+    justifyContent: 'center',
+
+  },
+  details: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  content: {
+    flex: '1 0 auto',
+  },
+  cover: {
+    width: '300px',
+    height: '300px'
+  },
+  controls: {
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
+  playIcon: {
+    height: 38,
+    width: 38,
+  },
+
 });
 
 function checkArray(array) {
-  var products = [{name:"haha"}];
-    if ( array !== undefined ) {
-      products = array
-    }
-    return products
+  var data = [{ name: "haha", businessName: 'hoho' }];
+  if (array !== undefined) {
+    data = array
+  }
+  return data
 }
 
 class Dashboard extends Component {
-  state = {
-    search: '',
+  constructor(props) {
+    super(props);
+    this.state = {
+      search: '',
+      value: 0,
+    };
+    this.handleChange = this.handleChange.bind(this)
   }
 
   onChange = e => {
     this.setState({ search: e.target.value })
   }
 
+  handleChange(e, newValue) {
+    this.setState({ value: newValue });
+
+  }
+
   render() {
-    const { auth, classes, products } = this.props;
-    const { search } = this.state;
-   
-    
+    const { auth, classes, products, suppliers } = this.props;
+    const { search, value } = this.state;
+    console.log('suppliers', suppliers)
+
     if (!auth.uid) return <Redirect to='/signin' />
-   
+
     return (
 
       <div className="container" style={{ textAlign: 'center' }}>
@@ -79,6 +120,16 @@ class Dashboard extends Component {
           <StyledButton>Product Management</StyledButton>
         </NavLink>
         <br />
+        <Tabs
+          orientation="horizontal"
+          value={value}
+          onChange={this.handleChange}
+          className={classes.tabs}
+          justify="center"
+        >
+          <Tab label="Product List" {...a11yProps(0)} />
+          <Tab label="Supplier List" {...a11yProps(1)} />
+        </Tabs>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
             <SearchIcon />
@@ -94,21 +145,64 @@ class Dashboard extends Component {
           />
         </div>
         <div style={{ marginTop: '10%' }}>
-          <Grid
-            container
-            spacing={2}
-            direction="row"
-            justify="flex-start"
-            alignItems="flex-start"
-          >
-            {checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1).map((product, index) => {
-              return (
-                <Grid item xs={12} sm={6} md={4} key={index}>
-                  <ProductCard product={product} />
-                </Grid>
-              )
-            })}
-          </Grid>
+          <TabPanel value={value} index={1}>
+            <Grid
+              container
+              spacing={2}
+              direction="row"
+              justify="center"
+              alignItems="center"
+            >
+
+              {checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1).map((product, index) => {
+                return (
+                  <Grid item xs={12} sm={6} md={4} key={index}>
+                    <ProductCard product={product} />
+                  </Grid>
+                )
+              })}
+
+            </Grid>
+          </TabPanel>
+          <TabPanel value={value} index={0}>
+            <Grid
+              container
+              spacing={2}
+              direction="row"
+              justify="center"
+              alignItems="center"
+            >
+              {checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1).map((supplier, index) => {
+                return (
+                  <Grid item xs={12} sm={6} md={4} key={index}>
+
+                    <Card className={classes.root}>
+                      <CardMedia
+                        className={classes.cover}
+                        image={supplier.logo}
+                        title="Live from space album cover"
+                      />
+                      <div className={classes.details}>
+                        <CardContent className={classes.content}>
+                          <Typography component="h5" variant="h5">
+                            {supplier.businessName}
+                          </Typography>
+                          <Typography variant="subtitle1" color="textSecondary">
+                            {supplier.email}
+                          </Typography>
+                          <Typography variant="subtitle1" color="textSecondary">
+                            {supplier.address}
+                          </Typography>
+                        </CardContent>
+
+                      </div>
+                    </Card>
+                  </Grid>
+                )
+
+              })}
+            </Grid>
+          </TabPanel>
         </div>
       </div>
 
@@ -119,14 +213,16 @@ class Dashboard extends Component {
 const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
-    products: state.firestore.ordered.products
+    products: state.firestore.ordered.products,
+    suppliers: state.firestore.ordered.suppliers,
   }
 };
 
 export default compose(
   connect(mapStateToProps),
   firestoreConnect([
-    { collection: 'products' }
+    { collection: 'products' },
+    { collection: 'users', where: [["type", "==", "WholeSaler"]], storeAs: 'suppliers' }
   ])
 
 )(withStyles(useStyles)(Dashboard))
