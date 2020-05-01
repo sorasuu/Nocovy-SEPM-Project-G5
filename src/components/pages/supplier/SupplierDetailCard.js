@@ -16,11 +16,11 @@ import {
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
-import { supplier } from './data';
+import { supplier } from '../data';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import SupplierInfo from '../layout/SupplierInfo';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -158,7 +158,7 @@ function a11yProps(index) {
     };
 }
 
-export default function Supplier() {
+export default function SupplierDetailCard(props) {
 
     const [search, setSearch] = useState('');
     const [value, setValue] = useState(0);
@@ -167,9 +167,9 @@ export default function Supplier() {
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles();
     const cardHeaderShadowStyles = useFadedShadowStyles();
-    const allProducts = supplier[0].productList
+    const allProducts = props.supplier.products
+    console.log("check", allProducts)  
     
-    console.log("check", allProducts)
     const onChange = (event, newValue) => {
         console.log(newValue)
         // setSearch((newValue).toString);
@@ -183,7 +183,7 @@ export default function Supplier() {
     
 
     const filterProducts = allProducts.filter(product => {
-        return product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+        return product.product.toLowerCase().indexOf(search.toLowerCase()) !== -1
     });
 
     return (
@@ -240,7 +240,7 @@ export default function Supplier() {
             
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                   <SupplierInfo/>
+                   {/* <SupplierInfo/> */}
 
                 </CardContent>
             </Collapse>
@@ -283,7 +283,7 @@ export default function Supplier() {
                                             <TableCell>ADDRESS</TableCell>
                                         </TableRow>
                                     </TableHead>
-                                    <TableBody>
+                                    {/* <TableBody>
                                         {product.retailer ? product.retailer.map(retailer =>
                                             <TableRow key={retailer.id}>
                                                 <TableCell>{retailer.id}</TableCell>
@@ -293,7 +293,7 @@ export default function Supplier() {
                                                 <TableCell>{retailer.address}</TableCell>
                                             </TableRow>
                                         ) : <h4>No Retailer</h4>}
-                                    </TableBody>
+                                    </TableBody> */}
                                 </Table>
                             </TabPanel>)}
 

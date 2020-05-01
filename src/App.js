@@ -1,30 +1,31 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Navbar from './components/layout/Navbar'
-import Dashboard from './components/pages/Dashboard'
-import AdminDashboard from './components/pages/AdminDashboard';
+import Dashboard from './components/pages/dashboard/Dashboard'
+import AdminDashboard from './components/pages/dashboard/AdminDashboard';
 import Profile from './components/pages/Profile'
 import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
-import ProductDetail from './components/pages/ProductDetail'
-import Reports from './components/pages/Reports';
-import Upload from './components/pages/Upload';
-import Supplier from './components/pages/Supplier';
-import Retailer from './components/pages/Retailer';
+import ProductDetail from './components/pages/products/ProductDetail'
+// import Reports from './components/layout/Reports';
+import Upload from './components/layout/Upload';
+import SupplierDetail from './components/pages/supplier/SupplierDetail';
+import Retailer from './components/pages/retailer/Retailer';
 // import Footer from './components/layout/Footer';
 import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-
 import "./App.css"
-import Chat from './components/pages/Chat';
+import Chat from './components/layout/Chat';
+
 
 
 class App extends Component {
   
   render() {
-    const { productobj, productlist, reports }= this.props
-    // console.log('productList nay',productlist)
+    const { productobj, productlist, supplierlist, retailerlist, reports }= this.props
+    console.log('productList nay',productlist)
+    
     return (
       <BrowserRouter>
         <div className="App">
@@ -32,10 +33,10 @@ class App extends Component {
           <Switch>
             <Route exact path='/'component={Dashboard} />
             {/* <Route path='/'component={ProductDetail} /> */}
-            <Route path='/supplier' component={Supplier}/>
+            <Route path='/supplier/:id' component={(props)=> <SupplierDetail {...props} classes={supplierlist}/>}/>
             <Route path ='/admin' component={AdminDashboard}/>
             <Route path='/product/:id' component={(props) => <ProductDetail {...props} classes={productlist} />}/>
-            <Route path='/retailer' component={Retailer}/>
+            <Route path='/retailer/:id' component={(props) =><Retailer {...props} class={retailerlist}/>}/>
             <Route path='/signin'component={SignIn}/>
             <Route path='/signup' component={SignUp} />
             {/* <Route path='/profile/:id' component={Profile} /> */}

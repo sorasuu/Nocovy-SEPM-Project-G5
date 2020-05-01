@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import orderBy from "lodash/orderBy";
-import TableInlineForm from "./TableInlineForm";
-import { supplier } from '../pages/data';
+import TableInlineForm from "../../layout/TableInlineForm";
+import { supplier } from '../data';
 
 
 

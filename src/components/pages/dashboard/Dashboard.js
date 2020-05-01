@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { fade } from '@material-ui/core/styles'
 import { Grid, InputBase, withStyles, Tabs, Tab, CardContent, Typography, CardMedia, Card } from '@material-ui/core'
-import StyledButton from '../layout/StyledButton'
-import ProductCard from '../layout/ProductCard'
+import StyledButton from '../../layout/StyledButton'
+import ProductCard from '../products/ProductCard'
 import SearchIcon from '@material-ui/icons/Search';
 import { TabPanel, a11yProps } from './AdminDashboard'
 const useStyles = theme => ({
@@ -74,8 +74,8 @@ const useStyles = theme => ({
 
 });
 
-function checkArray(array) {
-  var data = [{ name: "haha", businessName: 'hoho' }];
+export function checkArray(array) {
+  var data = [{pending:true, name: "haha", businessName: 'hoho' }];
   if (array !== undefined) {
     data = array
   }
@@ -196,6 +196,11 @@ class Dashboard extends Component {
                         </CardContent>
 
                       </div>
+                      <div>
+                          <NavLink to = {'/supplier/'+ supplier.id}>
+                              <button>Detail</button>
+                          </NavLink>
+                        </div>
                     </Card>
                   </Grid>
                 )
@@ -210,7 +215,9 @@ class Dashboard extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+  const id = ownProps.match.params.id
+
   return {
     auth: state.firebase.auth,
     products: state.firestore.ordered.products,

@@ -10,7 +10,7 @@ import {
   CardContent, Typography, CardActions, Button
 } from '@material-ui/core'
 import RetailerDetail from './RetailerDetail'
-import {retailer} from './data'
+import {retailer} from '../data'
 
 
 const useStyles = theme => ({

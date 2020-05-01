@@ -4,12 +4,12 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import MaterialTable from "material-table";
-import SalerProfile from './SalerProfile'
+import {NavLink} from 'react-router-dom';
 import {
-    Tab, Tabs, Box, Card,
+    Tab, Tabs, Box, Card, Button,
     Typography, withStyles, Grid
 } from "@material-ui/core";
-import { approveUser, declineUser } from '../store/actions/adminAction';
+import { approveUser, declineUser } from '../../store/actions/adminAction';
 import {
     List,
     ListItem,
@@ -17,6 +17,8 @@ import {
     Avatar,
     ListItemText
 } from "@material-ui/core";
+import { checkArray } from './Dashboard';
+
 
 export function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -41,7 +43,6 @@ TabPanel.propTypes = {
 };
 
 export function a11yProps(index) {
-    
     return {
         id: `vertical-tab-${index}`,
         "aria-controls": `vertical-tabpanel-${index}`
@@ -53,10 +54,10 @@ const useStyles = theme => ({
         // flexGrow: 1,
         backgroundColor: theme.palette.background.paper,
         display: "flex",
-        height: '100%',
+        minHeight:800,
         width:'90%',
-        justifyContent:'center',
-        alignItems:'center',
+        justifyContent:'left',
+        alignItems:'top',
         marginLeft:'5%'
         
     },
@@ -87,14 +88,15 @@ class AdminDashboard extends Component {
                 { title: 'Type', field: 'type'},
                 { title: "Address", field: "address" },
             ],
-            usersApprove:[],
-            usersPending:[],
-            open: false,
-            index: '',
+            openApprove: false,
+            openPending: false,
+            index: 0,
 
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleApproved= this.handleApproved.bind(this);
+        this.handleClickNoti= this.handleClickNoti.bind(this);
+       
     }
 
     handleChange(e, newValue) {
@@ -104,8 +106,11 @@ class AdminDashboard extends Component {
         
     }
 
-    handleOpen(event, id) {
-        this.setState({ open: !this.state.open , index: id})
+    handleOpenApprove(event, id) {
+        this.setState({ openApprove: true , openPending: false, index: id})  
+    }
+    handleOpenPending(event, id){
+        this.setState({ openPending: true, openApprove: false, index : id})
     }
 
     handleApproved(event, uid){
@@ -116,13 +121,19 @@ class AdminDashboard extends Component {
     handleCancel(id){
         this.props.declineUser(id)
     }
-f   
+    handleClickNoti(){
+        this.setState({openApprove: false, openPending:false})
+    }
+    
     render() {
        
-        const { classes, auth, users, usersApprove, usersPending } = this.props;
+        const { classes, users} = this.props;
         console.log("users admin dashboard: ", users)
-        const {value, columns} = this.state
-       
+        const usersApprove = checkArray(users).filter(user => user.pending == false)
+        const usersPending = checkArray(users).filter(user => user.pending == true)
+        const {value, columns, index} = this.state
+        
+        console.log("users A", usersApprove, "users P", usersPending)
         const TableApproval = () => {
             return (
                 <MaterialTable
@@ -131,27 +142,26 @@ f
                     data={usersApprove}
                     actions={[
                         {
-                            icon: "info",
-                            tooltip: "detail",
+                            icon:"image",
+                            tooltip: "Applied Files",
                             onClick: (event, rowData) => {
-                                this.handleOpen(event, rowData.id)
+                                this.handleOpenApprove(event, rowData.tableData.id)
                             }
                         },
                         {
                             icon: "email",
-                            tooltip: "email",
+                            tooltip: "Email",
                             onClick: (event) => alert("Email Sent")
                         },
                         {
                             icon:'cancel',
-                            tooltip:'cancel',
+                            tooltip:'Cancel',
                             onClick: (event, rowData) => {
                                 this.handleCancel(rowData.id)
                             } 
                         }
-                
-                        
                     ]}
+                   
                     options={
                         {
                             paging: false,
@@ -177,7 +187,7 @@ f
                     actions={[
                         {
                             icon: "check",
-                            tooltip: "approve",
+                            tooltip: "Approve",
                             onClick: (event, rowData) => {
                                 // alert("Approved " + rowData.id + "but dont change haha")
                                 this.handleApproved(event, rowData.id 
@@ -186,15 +196,15 @@ f
                             }
                         },
                         {
-                            icon: "info",
-                            tooltip: "detail",
+                            icon:"image",
+                            tooltip: "Applied Files",
                             onClick: (event, rowData) => {
-                                this.handleOpen(event, rowData.id)
+                                this.handleOpenPending(event, rowData.tableData.id)
                             }
                         },
                         {
                             icon:'cancel',
-                            tooltip:'cancel',
+                            tooltip:'Cancel',
                             onClick: (event, rowData) => {
                                 this.handleCancel(rowData.id)
                             } 
@@ -239,7 +249,7 @@ f
         
         return (
             <div className={classes.root}>
-            <Grid container spacing={2}>
+            <Grid container spacing={1}>
                 <Grid item xs={2} md={2} lg={2}>
                     <Tabs
                         orientation="vertical"
@@ -251,12 +261,12 @@ f
                     >
                         <Tab label="Approved" {...a11yProps(0)} />
                         <Tab label="Pending" {...a11yProps(1)} />
-                        <Tab label="Notification" {...a11yProps(2)} />
+                        <Tab label="Notification" {...a11yProps(2)} onClick={this.handleClickNoti}/>
 
                     </Tabs>
                 </Grid>
              
-                    <Grid item xs={4} md={4} lg={4}>
+                    <Grid item xs={6} md={6} lg={6}>
                         <TabPanel value={value} index={0}>
                             <TableApproval />
                         </TabPanel>
@@ -268,11 +278,39 @@ f
                         </TabPanel>
                     </Grid>     
                    
-                        {this.state.open ? 
-                        <Grid container spacing={2} item xs={6} md={6} lg={6} >
-                            <SalerProfile data={users} id={this.state.index}/>
-                        </Grid>
-
+                    {this.state.openApprove ?
+                        <Grid container item xs={4} md={4} lg={4} justify='center' alignItems="center">
+                                <div>
+                                    <Grid item xs={12} md={12} lg={12}>
+                                        <NavLink to={`/${usersApprove[index].type}/${usersApprove[index].id}`}>
+                                            <Button>Profile</Button>
+                                        </NavLink>
+                                    </Grid>
+                                    <Grid item xs={12} md={12} lg={12}>
+                                        <h4>Logo</h4>
+                                        <img style={{width:'auto', maxHeight:200}} src={usersApprove[index].logo}/>
+                                    </Grid>
+                                    <Grid>
+                                        <h4>Certification</h4>
+                                        <img style={{width:'auto', height:'auto',maxHeight:400}} src={usersApprove[index].certificates}/>
+                                    </Grid>
+                                </div>
+                                
+                        </Grid> 
+                    : null}
+                    {this.state.openPending ?
+                        <Grid container item xs={4} md={4} lg={4} >
+                                <div>
+                                    <Grid item xs={12} md={12} lg={12}>
+                                        <h4>Logo</h4>
+                                        <img src={usersPending[index].logo}/>
+                                    </Grid>
+                                    <Grid>
+                                        <h4>Certification</h4>
+                                        <img src={usersPending[index].certificate}/>
+                                    </Grid>
+                                </div> 
+                        </Grid> 
                     : null}
                
             </Grid>
@@ -287,16 +325,15 @@ const mapStateToProps = (state) => {
     return {
         auth: state.firebase.auth,
         users: state.firestore.ordered.users,
-        usersPending: state.firestore.ordered.usersPending,
-        usersApprove: state.firestore.ordered.usersApprove,
+        // usersPending: state.firestore.ordered.usersPending,
+        // usersApprove: state.firestore.ordered.usersApprove,
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-   
-    approveUser: id => dispatch(approveUser(id)),
-    declineUser: id => dispatch(declineUser(id))
+        approveUser: id => dispatch(approveUser(id)),
+        declineUser: id => dispatch(declineUser(id))
     };
 };
 
@@ -310,8 +347,9 @@ export default compose(
         else{
             return[
                 {collection:'users'}, 
-                { collection: 'users', where:[["pending","==",true]], storeAs:'usersPending' },
-                { collection: 'users', where:[["pending","==",false]], storeAs:'usersApprove' }
+                // { collection: 'users', where:[["pending","==",true]], storeAs:'usersPending' },
+                // { collection: 'users', where:[["pending","==",false]], storeAs:'usersApprove' },
+                
             ]
         }
     })
