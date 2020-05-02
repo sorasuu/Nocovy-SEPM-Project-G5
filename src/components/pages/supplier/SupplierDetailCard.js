@@ -3,25 +3,24 @@ import cx from 'clsx';
 
 import PropTypes from "prop-types";
 import {
-    Card, CardContent, CardHeader, 
-    Avatar, CardActions, IconButton, 
-    Typography, makeStyles, Box, 
-    InputBase, Tabs, Tab, 
+    Card, CardContent, CardHeader,
+    Avatar, CardActions, IconButton,
+    Typography, makeStyles, Box,
+    InputBase, Tabs, Tab,
     Collapse, Grid
 } from "@material-ui/core";
-import { 
-    Table, TableBody, TableRow, 
-    TableCell, TableHead 
+import {
+    Table, TableBody, TableRow,
+    TableCell, TableHead
 } from '@material-ui/core';
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
-import { supplier } from '../data';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
-
+import { checkArray } from '../dashboard/Dashboard'
+import RetailerList from './RetailerList'
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -123,12 +122,12 @@ const useStyles = makeStyles((theme) => ({
         transform: 'rotate(0deg)',
         marginLeft: 'auto',
         transition: theme.transitions.create('transform', {
-          duration: theme.transitions.duration.shortest,
+            duration: theme.transitions.duration.shortest,
         }),
-      },
+    },
 
 }));
-function TabPanel(props) {
+ export function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
     return (
@@ -167,9 +166,9 @@ export default function SupplierDetailCard(props) {
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles();
     const cardHeaderShadowStyles = useFadedShadowStyles();
-    const allProducts = props.supplier.products
-    console.log("check", allProducts)  
-    
+    const allProducts = checkArray(props.supplier.products)
+    console.log("new", value)
+
     const onChange = (event, newValue) => {
         console.log(newValue)
         // setSearch((newValue).toString);
@@ -179,8 +178,8 @@ export default function SupplierDetailCard(props) {
     };
     const handleExpandClick = () => {
         setExpanded(!expanded);
-      };
-    
+    };
+
 
     const filterProducts = allProducts.filter(product => {
         return product.product.toLowerCase().indexOf(search.toLowerCase()) !== -1
@@ -193,10 +192,10 @@ export default function SupplierDetailCard(props) {
                 className={cardHeaderShadowStyles.root}
                 classes={cardHeaderStyles}
                 style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", width: 'auto', minWidth: '200px' }}
-                title={<h4>{supplier[0].title}</h4>}
+                title={<h4>{props.supplier.businessName}</h4>}
                 avatar={
                     <Avatar aria-label="recipe" className={classes.avatar}>
-                        <img style={{ width: '100%', height: '100%' }} src={supplier[0].logo} />
+                        <img style={{ width: '100%', height: '100%' }} src={props.supplier.logo} />
                     </Avatar>
                 }
             />
@@ -237,69 +236,45 @@ export default function SupplierDetailCard(props) {
 
                 </Grid>
             </CardContent>
-            
+
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                   {/* <SupplierInfo/> */}
+                    {/* <SupplierInfo/> */}
 
                 </CardContent>
             </Collapse>
             <CardContent>
-                <Grid container spacing={2}>
-                    <Grid item xs={3} md={3} lg={3}>
-                        <h4 className={classes.header}>
-                            Product List
-                        </h4>
+
+                <Table>
+                    <TableHead className={classes.header}>
+                        <TableCell>Products </TableCell>
+                        <TableCell>Retailers </TableCell>
+                    </TableHead>
+                </Table>
+                <TableBody>
+                    <TableCell>
                         <Tabs
                             orientation="vertical"
                             variant="scrollable"
                             value={value}
                             onChange={handleChange}
-                            aria-label="Vertical tabs example"
                             className={classes.tabs}
                         >
-                            {
-                                filterProducts.map(
-                                    (product) =>
-                                        <Tab key={product.id} label={product.name} {...a11yProps(product.id)} />
-                                )
-                            }
-
+                            {filterProducts.map((product, key) =>
+                                <Tab label={product.product} {...a11yProps(key)} />
+                            )}
                         </Tabs>
-                    </Grid>
-                    <Grid item xs={9} md={9} lg={9}>
-                        <h4 className={classes.header}>
-                            Product Retailer
-                        </h4>
-                        {filterProducts.map((product) =>
-                            <TabPanel key={product.id} value={value} index={product.id}>
-                                <Table>
-                                    <TableHead className={classes.header} style={{fontStyle:'bold'}}>
-                                        <TableRow >
-                                            <TableCell>ID</TableCell>
-                                            <TableCell>AVATAR</TableCell>
-                                            <TableCell>NAME</TableCell>
-                                            <TableCell>EMAIL</TableCell>
-                                            <TableCell>ADDRESS</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    {/* <TableBody>
-                                        {product.retailer ? product.retailer.map(retailer =>
-                                            <TableRow key={retailer.id}>
-                                                <TableCell>{retailer.id}</TableCell>
-                                                <TableCell><img src={retailer.avatar} /></TableCell>
-                                                <TableCell>{retailer.name}</TableCell>
-                                                <TableCell>{retailer.email}</TableCell>
-                                                <TableCell>{retailer.address}</TableCell>
-                                            </TableRow>
-                                        ) : <h4>No Retailer</h4>}
-                                    </TableBody> */}
-                                </Table>
-                            </TabPanel>)}
+                    </TableCell>
+                    <TableCell>
+                        {filterProducts.map((product,productkey)=>
+                            <RetailerList product={product}
+                                        productkey ={productkey}
+                                        value={value}
+                            />
+                        )}
+                    </TableCell>
+                </TableBody>
 
-                    </Grid>
-
-                </Grid>
             </CardContent>
         </Card>
     )

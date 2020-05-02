@@ -14,3 +14,14 @@ export const editUser = (user) => {
     }
   };
   
+
+export const displayRetailer = (id) => {
+    return (dispatch, getState) => {
+      firebase.firestore().collection('users').doc(id)
+      .then(()=>{
+      dispatch({type: 'READ_RETAILER_SUCCESS'});
+      }).catch(err =>{
+        dispatch({type:"READ_RETAILER_ERROR"}, err);
+      });
+    }
+  }

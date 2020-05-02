@@ -75,7 +75,7 @@ const useStyles = theme => ({
 });
 
 export function checkArray(array) {
-  var data = [{pending:true, name: "haha", businessName: 'hoho' }];
+  var data = [{pending:true, name:"wrong", displayName: "wrong", businessName: 'wrong' }];
   if (array !== undefined) {
     data = array
   }
@@ -102,9 +102,10 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { auth, classes, products, suppliers } = this.props;
+    const { auth, classes, products, suppliers, retailers } = this.props;
     const { search, value } = this.state;
     console.log('suppliers', suppliers)
+    console.log('retailers', retailers)
 
     if (!auth.uid) return <Redirect to='/signin' />
 
@@ -129,6 +130,7 @@ class Dashboard extends Component {
         >
           <Tab label="Product List" {...a11yProps(0)} />
           <Tab label="Supplier List" {...a11yProps(1)} />
+          <Tab label="Retailer List" {...a11yProps(2)} />
         </Tabs>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
@@ -145,7 +147,7 @@ class Dashboard extends Component {
           />
         </div>
         <div style={{ marginTop: '10%' }}>
-          <TabPanel value={value} index={1}>
+          <TabPanel value={value} index={0}>
             <Grid
               container
               spacing={2}
@@ -164,7 +166,7 @@ class Dashboard extends Component {
 
             </Grid>
           </TabPanel>
-          <TabPanel value={value} index={0}>
+          <TabPanel value={value} index={1}>
             <Grid
               container
               spacing={2}
@@ -208,6 +210,50 @@ class Dashboard extends Component {
               })}
             </Grid>
           </TabPanel>
+          <TabPanel value={value} index={2}>
+            <Grid
+              container
+              spacing={2}
+              direction="row"
+              justify="center"
+              alignItems="center"
+            >
+              {checkArray(retailers).filter(retailer => retailer.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1).map((retailer, index) => {
+                return (
+                  <Grid item xs={12} sm={6} md={4} key={index}>
+
+                    <Card className={classes.root}>
+                      <CardMedia
+                        className={classes.cover}
+                        image={retailer.logo}
+                        title="Live from space album cover"
+                      />
+                      <div className={classes.details}>
+                        <CardContent className={classes.content}>
+                          <Typography component="h5" variant="h5">
+                            {retailer.displayName}
+                          </Typography>
+                          <Typography variant="subtitle1" color="textSecondary">
+                            {retailer.email}
+                          </Typography>
+                          <Typography variant="subtitle1" color="textSecondary">
+                            {retailer.address}
+                          </Typography>
+                        </CardContent>
+
+                      </div>
+                      <div>
+                          <NavLink to = {'/retailer/'+ retailer.id}>
+                              <button>Detail</button>
+                          </NavLink>
+                        </div>
+                    </Card>
+                  </Grid>
+                )
+
+              })}
+            </Grid>
+          </TabPanel>
         </div>
       </div>
 
@@ -215,13 +261,12 @@ class Dashboard extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const id = ownProps.match.params.id
-
+const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
     products: state.firestore.ordered.products,
     suppliers: state.firestore.ordered.suppliers,
+    retailers: state.firestore.ordered.retailers
   }
 };
 
@@ -229,7 +274,8 @@ export default compose(
   connect(mapStateToProps),
   firestoreConnect([
     { collection: 'products' },
-    { collection: 'users', where: [["type", "==", "WholeSaler"]], storeAs: 'suppliers' }
+    { collection: 'users', where: [["type", "==", "supplier"]], storeAs: 'suppliers' },
+    { collection: 'users', where: [["type", "==", "retailer"]], storeAs: 'retailers' }
   ])
 
 )(withStyles(useStyles)(Dashboard))

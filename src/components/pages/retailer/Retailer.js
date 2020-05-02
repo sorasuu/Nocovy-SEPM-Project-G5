@@ -57,8 +57,8 @@ class Retailer extends Component {
 
   render() {
 
-    const { auth, classes } = this.props;
-    const { sellList, retailer, expanded, anchorEl } = this.state;
+    const { auth, classes, retailer } = this.props;
+    const { anchorEl } = this.state;
     const open = Boolean(anchorEl)
     const id = open ? 'popover' : undefined;
     if (!auth.uid) return <Redirect to='/signin' />
@@ -66,7 +66,7 @@ class Retailer extends Component {
     return (
       <div className="container" style={{ textAlign: 'center' }}>
         <div style={{ marginTop: '10%' }}>
-
+        {retailer?
           <Grid
             container
             spacing={2}
@@ -81,10 +81,10 @@ class Retailer extends Component {
                     className={classes.media}
 
                     title="Contemplative Reptile"
-                  ><img src={retailer.avatar} /></CardMedia>
+                  ><img src={retailer.logo} /></CardMedia>
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {retailer.name}
+                      {retailer.dislayName}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                       Hello, Im selling vehicles in Vietnam
@@ -112,7 +112,7 @@ class Retailer extends Component {
                 <RetailerDetail retailer={retailer}/>
             </Grid>
           </Grid>
-
+          :null}
         </div>
       </div>
 
@@ -120,16 +120,24 @@ class Retailer extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  // console.log("haha", state.product);
+const mapStateToProps = (state, ownProps) => {
+    
+  const id = ownProps.match.params.id;
+  const users = state.firestore.data.users;
+  const user = users ? users[id]: null;
   return {
     auth: state.firebase.auth,
+    retailer: user
   }
 };
 
 export default compose(
   connect(mapStateToProps),
-  // firestoreConnect([
-
-  // ])
+  firestoreConnect(props => {
+    if (!props.users)
+      return [
+        { collection: "users", doc: props.match.params.id },
+        
+      ];
+  })
 )(withStyles(useStyles)(Retailer))
