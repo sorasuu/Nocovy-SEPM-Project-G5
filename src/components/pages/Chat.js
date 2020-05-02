@@ -178,11 +178,6 @@ class Chat extends Component {
         this.setState({ message: '' });
       };
 
-    scrollToBottom = () => {
-        const chat = document.getElementById('end-of-chat');
-        chat.scrollIntoView();
-    };
-
     onChange = e => {
         this.setState({ search: e.target.value })
     }
