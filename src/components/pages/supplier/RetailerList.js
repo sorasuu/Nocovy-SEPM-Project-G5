@@ -23,16 +23,15 @@ function RetailerList(props){
                                 <TableCell>Email</TableCell>
                                 <TableCell>Address</TableCell>
                             </TableHead>
-                            
                         </Table>
                         <TableBody>
                         {retailersCheck[id]?
                             <TableRow>
-                            <TableCell><img style={{width:"30px", height:'30px'}}src={retailersCheck[id].logo}/></TableCell>
-                            <TableCell>{retailersCheck[id].businessName}</TableCell>
-                            <TableCell>{retailersCheck[id].displayName}</TableCell>
-                            <TableCell>{retailersCheck[id].email}</TableCell>
-                            <TableCell>{retailersCheck[id].address}</TableCell>
+                                <TableCell><img style={{width:"30px", height:'30px'}}src={retailersCheck[id].logo}/></TableCell>
+                                <TableCell>{retailersCheck[id].businessName}</TableCell>
+                                <TableCell>{retailersCheck[id].displayName}</TableCell>
+                                <TableCell>{retailersCheck[id].email}</TableCell>
+                                <TableCell>{retailersCheck[id].address}</TableCell>
                             </TableRow> :null}
                     </TableBody>
                         
@@ -43,7 +42,7 @@ function RetailerList(props){
 }
 const mapStateToProps = (state, ownProps) => {
     const retailers = state.firestore.data.retailers
-    // const retailersmap = state.
+
     return {
         retailers : retailers
     }

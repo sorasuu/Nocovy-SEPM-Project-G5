@@ -2,17 +2,29 @@ import React, { Component, useState, useRef } from 'react'
 import { Redirect, NavLink } from 'react-router-dom'
 import clsx from 'clsx';
 import { makeStyles, fade } from '@material-ui/core/styles'
-
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import { firestoreConnect } from 'react-redux-firebase'
 import {
     Popover, Grid, Button, Grow, Popper, MenuItem, MenuList,
     ButtonGroup, Table, TableHead, TableRow, Typography,
     TableCell, TableBody, Paper, ClickAwayListener
 } from '@material-ui/core'
-
+import { checkArray } from '../dashboard/Dashboard'
 import SearchIcon from '@material-ui/icons/Search';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 const useStyles = makeStyles((theme) => ({
+    root: {
+        // flexGrow: 1,
+        backgroundColor: theme.palette.background.paper,
+        display: "flex",
+        minHeight: 800,
+        width: '90%',
+        justifyContent: 'left',
+        alignItems: 'top',
+        marginLeft: '5%'
+    },
     search: {
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
@@ -45,7 +57,8 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         padding: theme.spacing(2),
-        marginTop: "2%"
+        marginTop: "2%",
+        width: 'auto'
     },
     img: {
         width: 100,
@@ -56,13 +69,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const options = ['Selling Products', 'Buying Products'];
+const options = ['Your Sell', 'Your Cart'];
 
-export default function RetailerDetail(props) {
-    const sellList = props.retailer.sellList
+function RetailerDetail(props) {
+
+    const productsCheck = checkArray(props.products)
+    const suppliersCheck = checkArray(props.suppliers)
+    const sellList = props.retailer.products
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
-
+    console.log("sellList ne:", sellList)
+    console.log("supplier", suppliersCheck)
     // const { sellList, retailer, expanded, anchorEl } = this.state;
     const [openOpt, setOpenOpt] = useState(false);
     const openBuyer = Boolean(anchorEl)
@@ -101,10 +118,8 @@ export default function RetailerDetail(props) {
         // this.setState({ search: e.target.value })
     }
 
-    console.log("retailer detail", props.retailer)
-
     return (
-        <div>
+        
             <Grid container direction="column" alignItems="center">
                 <Grid item xs={12}>
                     <ButtonGroup variant="contained" color="primary" ref={anchorRef} aria-label="split button">
@@ -149,69 +164,97 @@ export default function RetailerDetail(props) {
                         )}
                     </Popper>
                 </Grid>
-            </Grid>
 
 
-            <Paper className={classes.paper}>
-                <Table >
-                    <TableHead className={classes.header} style={{ fontStyle: 'bold' }}>
-                        <TableRow >
-                            <TableCell>ID</TableCell>
-                            <TableCell>AVATAR</TableCell>
-                            <TableCell>NAME</TableCell>
-                            <TableCell>TYPE</TableCell>
-                            <TableCell>BRAND</TableCell>
-                            <TableCell>PRICE</TableCell>
-                            
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {sellList ? sellList.map((product) =>
 
-                            <TableRow aria-owns={openBuyer ? 'mouse-over-popover' : undefined}
-                            aria-haspopup="true"
-                            onMouseEnter={handlePopoverOpen}
-                            onMouseLeave={handlePopoverClose}
-                            key={product.id}
-                            >
-                                <TableCell>{product.id}</TableCell>
-                                <TableCell><img className={classes.img} src={product.img} /></TableCell>
-                                <TableCell>{product.name}</TableCell>
-                                <TableCell>{product.type}</TableCell>
-                                <TableCell>{product.brand}</TableCell>
-                                <TableCell>{product.price}</TableCell>
-                                
-                                <Popover
-                                    id={id}
-                                    open={openBuyer}
-                                    anchorEl={anchorEl}
-                                    onClose={handlePopoverClose}
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'left',
-                                    }}
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                >
-                                    <Paper className={classes.paper}>
-                                        Image
-                                    </Paper>
-                                </Popover>
+                <Grid item xs={12} md={12} lg={12}>
+                    <Table >
+                        <TableHead className={classes.header} style={{ fontStyle: 'bold' }}>
+                            <TableRow >
+                                <TableCell>ID</TableCell>
+                                <TableCell>AVATAR</TableCell>
+                                <TableCell>NAME</TableCell>
+                                <TableCell>Category</TableCell>
+                                <TableCell>BRAND</TableCell>
+                                <TableCell>PRICE</TableCell>
+                                <TableCell>SUPPLIER</TableCell>
+
                             </TableRow>
+                        </TableHead>
 
-                        ) : <h4>No Selling Product</h4>
+                        {sellList ? sellList.map((id, key) =>
+                            <TableBody>
+                                {productsCheck[id] ?
+                                    <TableRow aria-owns={openBuyer ? 'mouse-over-popover' : undefined}
+                                        aria-haspopup="true"
+                                        onMouseEnter={handlePopoverOpen}
+                                        onMouseLeave={handlePopoverClose}
+                                    >
+                                        <TableCell>{id}</TableCell>
+                                        <TableCell><img className={classes.img} src={productsCheck[id].cover} /></TableCell>
+                                        <TableCell>{productsCheck[id].name}</TableCell>
+                                        <TableCell>{productsCheck[id].category}</TableCell>
+                                        <TableCell>{productsCheck[id].brand}</TableCell>
+                                        <TableCell>{productsCheck[id].price}</TableCell>
+                                        {suppliersCheck[productsCheck[id].supplierId] ? <Button>
+                                            {suppliersCheck[productsCheck[id].supplierId].businessName}
+                                        </Button> : null}
+
+                                        <Popover
+                                            id={id}
+                                            open={openBuyer}
+                                            anchorEl={anchorEl}
+                                            onClose={handlePopoverClose}
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'center',
+                                            }}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                        >
+                                            <Paper className={classes.paper}>
+                                                {productsCheck[id].productImg.map((image, key) =>
+                                                    <img style={{ width: '100px', height: '100px' }} key={key} src={image} />
+                                                )
+                                                }
+                                            </Paper>
+                                        </Popover>
+                                    </TableRow> : <div>Loading...</div>
+                                }
+                            </TableBody>
+                        ) : <div>No Selling Product</div>
 
                         }
-                    </TableBody>
-                </Table>
-            </Paper>
-        </div>
+
+                    </Table>
+                </Grid>
+            </Grid>
+   
 
     )
 }
 
+const mapStateToProps = (state) => {
+    const products = state.firestore.data.products
+    const suppliers = state.firestore.data.suppliers
+    return {
+        products: products,
+        suppliers: suppliers
+    }
+};
 
+export default compose(
+    connect(mapStateToProps),
+    firestoreConnect(props => {
+        if (!props.users)
+            return [
+                { collection: "products" },
+                { collection: "users", where: [["type", "==", "supplier"]], storeAs: 'suppliers' },
+            ];
+    })
+
+)(RetailerDetail)
 
 

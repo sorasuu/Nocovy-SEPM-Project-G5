@@ -10,7 +10,6 @@ import {
   CardContent, Typography, CardActions, Button
 } from '@material-ui/core'
 import RetailerDetail from './RetailerDetail'
-import {retailer} from '../data'
 
 
 const useStyles = theme => ({
@@ -40,7 +39,7 @@ const useStyles = theme => ({
 
 class Retailer extends Component {
   state = {
-    retailer: retailer[0],
+    anchorEl: null,
   }
 
   handleClick = (event) => {
@@ -84,7 +83,7 @@ class Retailer extends Component {
                   ><img src={retailer.logo} /></CardMedia>
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {retailer.dislayName}
+                      {retailer.displayName}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                       Hello, Im selling vehicles in Vietnam
