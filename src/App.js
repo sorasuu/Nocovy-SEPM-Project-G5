@@ -7,7 +7,7 @@ import Profile from './components/pages/Profile'
 import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
 import ProductDetail from './components/pages/ProductDetail'
-import Reports from './components/pages/Reports';
+// import Reports from './components/pages/Reports';
 import Upload from './components/pages/Upload';
 import Supplier from './components/pages/Supplier';
 import Retailer from './components/pages/Retailer';
