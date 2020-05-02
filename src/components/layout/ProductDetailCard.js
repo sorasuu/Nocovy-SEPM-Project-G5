@@ -12,6 +12,7 @@ import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/co
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import PriceForm from './PriceForm'
+import StyledButton from './StyledButton'
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -73,6 +74,7 @@ export default function ProductDetailCard(props) {
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles();
     const cardHeaderShadowStyles = useFadedShadowStyles();
+  
     
     console.log("Product Detail Card", props.product)
     return (
@@ -96,7 +98,7 @@ export default function ProductDetailCard(props) {
                         <ProductImageCard image={ props.product.productImg } />
                     </Grid>
                     <Grid item xs={12} sm={6} md={6}>
-                        <ProductInfoCard product={props.product} auth={props.auth} />
+                        <ProductInfoCard product={props.product} auth={props.auth} owner = {props.owner}/>
                     </Grid>
 
                 </Grid>
@@ -160,11 +162,19 @@ const ProductImageCard = props => {
 // table detail
 export const ProductInfoCard = props => { 
     const classes = useStyles();
+    
     return (
         <div>
         <Grid container spacing={2}>
             <Grid item xs={6} md={6} lg={6}><h4>Price</h4></Grid>
-            <Grid item xs={6} md={6} lg={6}><PriceForm/></Grid>
+            {props.owner?
+            <Grid item xs={6} md={6} lg={6}><PriceForm/></Grid>:
+            <Grid item xs={6} md={6} lg={6}>
+                <div style={{ maxWidth:'180px'}}>
+                    <StyledButton>Buy Product</StyledButton>
+                    <StyledButton style={{marginTop:'5%'}}>Offer To Sell This Product</StyledButton>
+                </div>
+                </Grid>}
         </Grid>
         <TableContainer className={classes.root}>
  
