@@ -107,21 +107,25 @@ export const DUMMY_DATA = [
 
 export const MessageList = () => {
     return (
-        // <h5>Messagelist</h5>
-        <ul className="message-list">                 
-            {this.state.messages.map(message => {
-              return (
-               <li key={message.id}>
-                 <div>
-                   {message.senderId}
-                 </div>
-                 <div>
-                   {message.text}
-                 </div>
-               </li>
-             )
-           })}
-         </ul>
+        <div>
+        <br/>
+        <p>Messages go here</p>
+        <br/>
+        </div>
+        // <ul className="message-list">                 
+        //     {this.state.messages.map(message => {
+        //       return (
+        //        <li key={message.id}>
+        //          <div>
+        //            {message.senderId}
+        //          </div>
+        //          <div>
+        //            {message.text}
+        //          </div>
+        //        </li>
+        //      )
+        //    })}
+        //  </ul>
     )
 }
 
