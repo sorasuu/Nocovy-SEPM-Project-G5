@@ -3,12 +3,16 @@ import cx from 'clsx';
 
 import PropTypes from "prop-types";
 import {
-    Card, CardContent, CardHeader, Avatar, CardActions, IconButton,
-    Paper, Typography, withStyles, makeStyles, Box, InputBase, Tabs, Tab, Collapse
+    Card, CardContent, CardHeader, 
+    Avatar, CardActions, IconButton, 
+    Typography, makeStyles, Box, 
+    InputBase, Tabs, Tab, 
+    Collapse, Grid
 } from "@material-ui/core";
-import Grid from '@material-ui/core/Grid';
-import MaterialTable from 'material-table';
-import { Table, TableContainer, TableBody, TableRow, TableCell, TableHead } from '@material-ui/core';
+import { 
+    Table, TableBody, TableRow, 
+    TableCell, TableHead 
+} from '@material-ui/core';
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
@@ -158,7 +162,7 @@ export default function Supplier() {
 
     const [search, setSearch] = useState('');
     const [value, setValue] = useState(0);
-    const [expanded, setExpanded] = React.useState(true);
+    const [expanded, setExpanded] = React.useState(false);
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles();
@@ -281,7 +285,7 @@ export default function Supplier() {
                                     </TableHead>
                                     <TableBody>
                                         {product.retailer ? product.retailer.map(retailer =>
-                                            <TableRow>
+                                            <TableRow key={retailer.id}>
                                                 <TableCell>{retailer.id}</TableCell>
                                                 <TableCell><img src={retailer.avatar} /></TableCell>
                                                 <TableCell>{retailer.name}</TableCell>

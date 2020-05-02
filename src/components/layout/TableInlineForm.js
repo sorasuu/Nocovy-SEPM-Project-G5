@@ -50,7 +50,6 @@ export default ({
   editIdx,
   handleSave,
   stopEditing,
-  handleSort,
 
 }) => (
   <Table>

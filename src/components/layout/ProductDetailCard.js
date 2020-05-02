@@ -12,6 +12,7 @@ import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/co
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import PriceForm from './PriceForm'
+import StyledButton from './StyledButton'
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -27,10 +28,6 @@ const useStyles = makeStyles((theme) => ({
         '& hr': {
             margin: theme.spacing(0, 0.5),
         },
-        // '& .MuiTableCell-root': {
-        //     border: `1px solid black`,
-        //     padding: '2% 2% 2px 10px'
-        // },
     },
 
     paper: {
@@ -72,21 +69,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProductDetailCard(props) {
-    console.log("Product Price", props.product.price)
+    
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles();
     const cardHeaderShadowStyles = useFadedShadowStyles();
-
+  
+    
+    console.log("Product Detail Card", props.product)
     return (
-        <div className="container" style={{textAlign:'center'}}>
+        <div style={{textAlign:'center'}}>
         <Card className={cx(classes.card, cardShadowStyles.root)}
             style={{ position: "relative", marginBottom: '5px', }}>
             <CardHeader
                 className={cardHeaderShadowStyles.root}
                 classes={cardHeaderStyles}
                 style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", width: 'auto', minWidth: '200px', marginLeft:"30px"  }}
-                title={props.product.title}
+                title={props.product.name}
             />
             <CardContent className={classes.content} >
                 <Grid
@@ -96,10 +95,10 @@ export default function ProductDetailCard(props) {
                     key={props.product.id}
                 >
                     <Grid item xs={12} sm={6} md={6} >
-                        <ProductImageCard product={props.product} />
+                        <ProductImageCard image={ props.product.productImg } />
                     </Grid>
                     <Grid item xs={12} sm={6} md={6}>
-                        <ProductInfoCard product={props.product} />
+                        <ProductInfoCard product={props.product} auth={props.auth} owner = {props.owner}/>
                     </Grid>
 
                 </Grid>
@@ -116,62 +115,84 @@ export default function ProductDetailCard(props) {
 // image design
 const ProductImageCard = props => {
     const classes = useStyles();
+    // console.log("props image card", props.image)
     return (
-        <div>
-            <Grid style={{ padding: "10px 10px 10px 10px", textAlign:'center' }} container spacing={1}>
-            {/* {props.product.imageDetail.map(i => {
-                return (
-                    <Grid item xs={3} sm={3} md={3} key={i.imageId}> */}
-                    <Card className={classes.imageCard} key={props.product.imageDetail[1].imageId}>
-                        <img src={props.product.imageDetail[1].imageUrl} style={{ width: "100%", height: '100%' }} />
-                    </Card>
-                     {/* </Grid>
-                );
-            })} */}
-                {props.product.imageDetail.map(i => {
-                    return (
-                        // <Grid item xs={3} sm={3} md={3} key={i.imageId}>
-                        <Card style={{ width: '75px', height: "75px" }} key={i.imageId}>
-                            <img src={i.imageUrl} style={{ width: "100%", height:"100%" }} />
-                        </Card>         
-                        // </Grid>
-                    );
-                })}
+        <Grid
+        container
+        justify='flex-start'
+        alignItems="flex-start"
+        >
+            {/* <Grid 
+            container
+            direction="row"
+            justify="flex-start"
+            alignItems="flex-start"
+            >
+                <Grid item>
+                    {props.image.map((i, k) => {
+                            return (
+                                <Card style={{ width: '65px', height: "70px" }} key={k}>
+                                    <img src={i} style={{ width: "100%", height:"100%" }} />
+                                </Card>         
+                            );
+                    })}
+                </Grid>
+            </Grid> */}
+            <Grid item xs={12}>
+                <Grid container justify="center" spacing={1}>
+                    {props.image.map((value) => (
+                        <Grid key={value} item>
+                            <img src={value}/>
+                        </Grid>
+                    ))}
+                </Grid>
             </Grid>
-
-        </div>
+            {props.image.map((i,k)=>{
+                return(
+                    <Grid item xs={12} md={12} lg={12} key={k}>
+                        <Card style={{width:"100%", height:"350px", direction:'flex', justify:'center',alignItems:'center'}}>
+                            <img src={i} style={{width:"95%", height:"100%", padding:'2% 2% 2% 2%'}}/>
+                        </Card>
+                    </Grid>
+                )})}
+       
+        </Grid>
     )
 }
 // table detail
-export const ProductInfoCard = props => {
-    
+export const ProductInfoCard = props => { 
     const classes = useStyles();
     
     return (
         <div>
         <Grid container spacing={2}>
             <Grid item xs={6} md={6} lg={6}><h4>Price</h4></Grid>
-            <Grid item xs={6} md={6} lg={6}><PriceForm/></Grid>
+            {props.owner?
+            <Grid item xs={6} md={6} lg={6}><PriceForm/></Grid>:
+            <Grid item xs={6} md={6} lg={6}>
+                <div style={{ maxWidth:'180px'}}>
+                    <StyledButton>Buy Product</StyledButton>
+                    <StyledButton style={{marginTop:'5%'}}>Offer To Sell This Product</StyledButton>
+                </div>
+                </Grid>}
         </Grid>
         <TableContainer className={classes.root}>
-
-            <Table aria-label="simple table">               
-                {props.product.price ? props.product.price.map(price => {
-                    return (
-                        <TableBody key={price.id}>
-                            {price.cost ? price.cost.map((cost, key) => {
-                                return (
-                                    <TableRow key={key}>
-                                        <TableCell style={{backgroundColor: `hsla(14, 100%, 53%, 0.6)`, color:'white'}}>{cost.name}</TableCell>
-                                        <TableCell>{cost.value}</TableCell>
-                                    </TableRow>
-                                )
-                            }) : null}
-                        </TableBody>
+ 
+            <TableBody aria-label="simple table">               
+                {props.product.price? props.product.price.map((detail, key)=>{
+                    return(
+                        <TableRow key={key}>
+                        <TableCell style={{ backgroundColor: `hsla(14, 100%, 53%, 0.6)`, color: 'white' }}>
+                            {detail.name}
+                        </TableCell>
+                        <TableCell>
+                            {detail.value}
+                        </TableCell>
+                    </TableRow>
                     )
-                }) : null}
+                    }):null}
 
-            </Table>
+            </TableBody>
             
 
         </TableContainer>
@@ -179,7 +200,7 @@ export const ProductInfoCard = props => {
     )
 }
 function DetailTable(props) {
-    console.log('detail table props', props.details)
+    // console.log('detail table props', props.details)
 
     const [state, setState] = React.useState({
         columns: [

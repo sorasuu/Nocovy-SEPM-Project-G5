@@ -9,7 +9,7 @@ import {
     Tab, Tabs, Box, Card,
     Typography, withStyles, Grid
 } from "@material-ui/core";
-
+import { approveUser } from '../store/actions/adminAction'
 import {
     List,
     ListItem,
@@ -86,100 +86,14 @@ class AdminDashboard extends Component {
             ],
             value: 0,
             columns: [
-                { title: "Name", field: "name" },
-                { title: "Address", field: "address" },
+                { title: "Business", field: "businessName" },
+                { title: "Name", field:'displayName'},
                 { title: "Email", field: "email" },
+                { title: 'Type', field: 'type'},
+                { title: "Address", field: "address" },
             ],
-            data: [     
-                {
-                    id: 1, name: 'Amazon', 
-                    address: 'Amazon VN', email: 'amazon@email.com', 
-                    pending: false,
-                    products: [
-                        {
-                        id: '1',
-                        product: 'Pen',
-                        retailer: 'Allen'
-                        },
-                        {
-                        id: '2',
-                        product: 'Pen',
-                        retailer: 'Adam'
-                        },
-                        {
-                        id: '3',
-                        product: 'Pen',
-                        retailer: 'Allen'
-                        },  {
-                        id: '4',
-                        product: 'Pen',
-                        retailer: 'Bob'
-                        },
-                    ]
-                },
-                {
-                    id: 2, name: 'Adidas', 
-                    address: 'Adidas Hanoi', email: 'adidas@email.com', 
-                    pending: false,
-                    products: [
-                        {
-                        id: '1',
-                        product: 'Pen',
-                        retailer: 'Allen'
-                        },
-                        {
-                        id: '2',
-                        product: 'Pen',
-                        retailer: 'Adam'
-                        },
-                        {
-                        id: '3',
-                        product: 'Pen',
-                        retailer: 'Allen'
-                        },  {
-                        id: '4',
-                        product: 'Pen',
-                        retailer: 'Bob'
-                        },
-                        {
-                        id: '5',
-                        product: 'Pencil',
-                        retailer: 'Rachel'
-                        },
-                        {
-                        id: '6',
-                        product: 'Pencil',
-                        retailer: 'Wahlin'
-                        },  {
-                          id: '7',
-                          product: 'Pencil',
-                          retailer: 'Bob'
-                        },
-                        {
-                          id: '8',
-                          product: 'Camera',
-                          retailer: 'Allen'
-                        },
-                        {
-                          id: '9',
-                          product: 'Alexa',
-                          retailer: 'Wahlin'
-                        }
-                        ],
-                    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR2zwZyVeYZTsSm9eJcuzre2hYadL_-9xooEmXsXbKsItJzUreC&usqp=CAU"
-                },
-                {
-                    id: 3, name: 'Bose', 
-                    address: 'Bose HCMC', email: 'bose@email.com', 
-                    pending: true,
-                    logo:"https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR2zwZyVeYZTsSm9eJcuzre2hYadL_-9xooEmXsXbKsItJzUreC&usqp=CAU"
-                },
-                {
-                    id: 4, name: 'Tiki', 
-                    address: 'tiki Hanoi', email: 'tiki@email.com', 
-                    pending: true
-                }
-            ],
+            usersApprove:[],
+            usersPending:[],
             open: false,
             index: '',
 
@@ -199,30 +113,28 @@ class AdminDashboard extends Component {
         this.setState({ open: !this.state.open , index: id})
     }
 
-    handleApproved(event, id){
-        var selectItem = this.state.data.findIndex(item => item.id == event)
-        // this.update()
-        console.log("Change to Approved")
+    handleApproved(event, uid, id){
         
+        // this.update()
+        console.log("uid", uid)
+        console.log("id", id)
+        console.log('row data: ', this.props.usersPending[id] )
+        this.props.approveUser(uid)
     }
-
+f   
     render() {
        
-        const { classes, auth } = this.props;
-        const { data, value, columns} = this.state
-        const dataApprove = data.filter(comp =>{
-            return comp.pending == false
-        })
-        const dataPending = data.filter(comp => {
-            return comp.pending == true
-        })
-        
+        const { classes, auth, users, usersApprove, usersPending } = this.props;
+        console.log("users admin dashboard: ", users)
+        const {value, columns} = this.state
+       
+        console.log('pending',usersPending)
         const TableApproval = () => {
             return (
                 <MaterialTable
                     title=""
                     columns={columns}
-                    data={dataApprove}
+                    data={usersApprove}
                     actions={[
                         {
                             icon: "info",
@@ -278,7 +190,7 @@ class AdminDashboard extends Component {
                 <MaterialTable
                     title=""
                     columns={columns}
-                    data={dataPending}
+                    data={usersPending}
                     options={
                         {
                             paging: false,
@@ -290,7 +202,8 @@ class AdminDashboard extends Component {
                             icon: "check",
                             tooltip: "approve",
                             onClick: (event, rowData) => {
-                                this.handleApproved(rowData.id);
+                                // alert("Approved " + rowData.id + "but dont change haha")
+                                this.handleApproved(event, rowData.id, rowData.tableData.id)
                             }
                         },
                         {
@@ -307,9 +220,9 @@ class AdminDashboard extends Component {
                                 setTimeout(() => {
                                     resolve();
                                     this.setState(prevState => {
-                                        const dataPending = [...prevState.dataPending];
-                                        dataPending.push(newData);
-                                        return { ...prevState, dataPending };
+                                        const usersPending = [...prevState.usersPending];
+                                        usersPending.push(newData);
+                                        return { ...prevState, usersPending };
                                     });
                                 }, 600);
                             }),
@@ -318,9 +231,9 @@ class AdminDashboard extends Component {
                                 setTimeout(() => {
                                     resolve();
                                     this.setState(prevState => {
-                                        const dataPending = [...prevState.dataPending];
-                                        dataPending.splice(dataPending.indexOf(oldData), 1);
-                                        return { ...prevState, dataPending };
+                                        const usersPending = [...prevState.usersPending];
+                                        usersPending.splice(usersPending.indexOf(oldData), 1);
+                                        return { ...prevState, usersPending };
                                     });
                                 }, 600);
                             })
@@ -393,7 +306,7 @@ class AdminDashboard extends Component {
                    
                         {this.state.open ? 
                         <Grid container spacing={2} item xs={6} md={6} lg={6} >
-                            <SalerProfile data={data} id={this.state.index}/>
+                            <SalerProfile data={users} id={this.state.index}/>
                         </Grid>
 
                     : null}
@@ -409,11 +322,32 @@ const mapStateToProps = (state) => {
     // console.log("haha", state.product);
     return {
         auth: state.firebase.auth,
+        users: state.firestore.ordered.users,
+        usersPending: state.firestore.ordered.usersPending,
+        usersApprove: state.firestore.ordered.usersApprove,
     }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+   
+    approveUser: id => dispatch(approveUser(id))
+    };
 };
 
 export default compose(
 
-    connect(mapStateToProps),
-
+    connect(mapStateToProps, mapDispatchToProps),
+    firestoreConnect((props)=>{
+        if(!props.auth.uid){
+            props.history.push("/")
+        }
+        else{
+            return[
+                {collection:'users'}, 
+                { collection: 'users', where:[["pending","==",true]], storeAs:'usersPending' },
+                { collection: 'users', where:[["pending","==",false]], storeAs:'usersApprove' }
+            ]
+        }
+    })
 )(withStyles(useStyles)(AdminDashboard))

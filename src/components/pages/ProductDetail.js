@@ -6,7 +6,6 @@ import { compose } from 'redux'
 import { Grid, withStyles } from '@material-ui/core'
 
 import  ProductDetailCard  from '../layout/ProductDetailCard'
-import { detailProduct } from './data'
 
 const useStyles = (theme) => ({
   root: {
@@ -25,41 +24,59 @@ const useStyles = (theme) => ({
 });
 
 class ProductDetail extends Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      owner:false
+    }
+ }
 
-  state = {
-
-  }
   render() {
-    const { classes, auth } = this.props;
-    // if (!auth.uid) return <Redirect to='/signin' />
-
+    const { classes, auth, product,owner } = this.props;
+    if (!auth.uid) return <Redirect to='/signin' />
+    // console.log("product detail ne:", this.props.product)
     return (
-      <div>
-        {/* <Grid container spacing={2}>
-          <Grid item xs={8}> */}
-            <ProductDetailCard product={detailProduct} />
-            {/* </Grid>
-        </Grid>         */}
+      <div className="container">
+        {product ?
+          
+            <ProductDetailCard product={product} auth={auth} owner={owner}/>
+         
+          :<div>Loading...</div>
+        }        
       </div>
     )
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
+  
   const id = ownProps.match.params.id;
-
-  console.log(state);
-  console.log(ownProps)
+  const products = state.firestore.data.products;
+  const product = products ? products[id]: null;
+  const auth = state.firebase.auth
+  var owner = null
+  if (auth!==null&&auth!== undefined&& product!==null){
+    if (auth.uid === product.supplierId){
+      owner=true
+    }
+    else{
+      owner=false
+    }
+  }
   return {
-    // currentproduct: currentproduct,
-    auth: state.firebase.auth,
-
+    auth: auth,
+    product: product,
+    owner:owner
   }
 };
 
 export default compose(
   connect(mapStateToProps),
-  // firestoreConnect((props) => {
-
-  // })
+  firestoreConnect(props => {
+    if (!props.products)
+      return [
+        { collection: "products", doc: props.match.params.id },
+        
+      ];
+  })
 )(withStyles(useStyles)(ProductDetail)) 

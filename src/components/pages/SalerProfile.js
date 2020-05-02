@@ -38,6 +38,7 @@ export default class SalerProfile extends Component {
   }
   render() {
     const { classes ,data , id} = this.props;
+    console.log('saleProfile', data)
     const profileDetail = data.filter(detail =>
       {
         return detail.id == id
@@ -66,10 +67,12 @@ export default class SalerProfile extends Component {
       <Grid container spacing={2}>
         <Grid item xs={4} md={4} lg={4} >
           <h4>Logo</h4>
-          <img src ={profileDetail[0].logo}/>
+          <img style={{width:100, height:100}} src ={profileDetail[0].avatarurl}/>
           <h4>
             Business Certification
           </h4>
+          <img style={{width:'fit-content', height:'auto'}} src ={profileDetail[0].certificates}/>
+
         </Grid>
         <Grid item xs={8} md={8} lg={8}>
           
