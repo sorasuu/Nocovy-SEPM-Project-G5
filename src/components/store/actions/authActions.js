@@ -36,7 +36,7 @@ export const signUp = (newUser) => {
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         phoneNumber: newUser.phoneNumber,
-        businessName: newUser.businessName,
+        // businessName: newUser.businessName,
         // image: newUser.image,
         certificate: newUser.certificate,
         pending:true,

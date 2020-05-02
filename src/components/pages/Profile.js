@@ -132,6 +132,7 @@ class Profile extends Component {
     const product = {supplierId: this.props.auth.uid,
                     productImg: this.props.productImg,
                     name: this.state.productName, 
+                    authorName: this.props.user.displayName,
                     detail: ['origin: '+ this.state.productOrigin,
                             'brand:'+ this.state.productBrand], 
                     description: this.state.productDesc, 
@@ -157,7 +158,14 @@ class Profile extends Component {
     if (this.props.match.params.id=== this.props.auth.uid && this.state.owner ==false){
         this.setState({owner:true})
     }}
-    console.log(this.state)}
+    if(this.props.productImg.length=== this.state.images.length&& this.props.productImg.length>0){
+      this.formSubmit();
+      this.setState({open: false});
+    }
+  // console.log('??',this.props.certificate)
+
+    // console.log(this.state)
+  }
   
   render() {
     const { auth, classes} = this.props;
@@ -214,8 +222,10 @@ class Profile extends Component {
 }
 var prourls = new Set()
 const mapStateToProps = (state,ownProps) => {
-  const id = ownProps.match.params.id;
+  // const id = ownProps.match.params.id;
   console.log(state);
+  const users = state.firestore.ordered.currentUser;
+  const user = users ? users[0] : null;
   console.log(ownProps)
   const url = state.uploadReducer.url ? state.uploadReducer.url:null
   if(url!==undefined&& url!==null){
@@ -228,6 +238,8 @@ const mapStateToProps = (state,ownProps) => {
     products :  state.firestore.ordered.products,
     productImg: Array.from(prourls),
     progress: state.uploadReducer.progress,
+    user: user
+    
 }};
 const mapDispatchToProps = dispatch => {
   return {
@@ -239,6 +251,6 @@ const mapDispatchToProps = dispatch => {
 export default  compose(
   connect(mapStateToProps,mapDispatchToProps),
   firestoreConnect((props) => {
-      return [{ collection: 'products', where:[["supplierId","==", props.match.params.id]]}, { collection: 'users', where:[["uid",'==',props.match.params.id]] }]
+      return [{ collection: 'products', where:[["supplierId","==", props.match.params.id]]}, { collection: 'users', doc:props.auth.uid,storeAs:'currentUser' }]
   })
 )(withStyles(useStyles)(Profile) )

@@ -3,14 +3,11 @@ import firebase from 'firebase/app';
 
 export const createProduct = (product) => {
     return (dispatch, getState ) => {
-      const profile = getState().firebase.profile;
+
       const author = getState().firebase.auth;
       firebase.firestore().collection('products').add({
         ...product,
-        authorName: profile.displayName,
-        // authorId: author.uid,
         authorEmail: author.email,
-        // authorPhotoURL: author.photoURL,
         createdAt: new Date()
       }).then(() => {
         dispatch({ type: 'CREATE_PRODUCT_SUCCESS' });
