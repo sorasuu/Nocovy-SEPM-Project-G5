@@ -96,7 +96,7 @@ export default function ProductDetailCard(props) {
                         <ProductImageCard image={ props.product.productImg } />
                     </Grid>
                     <Grid item xs={12} sm={6} md={6}>
-                        <ProductInfoCard product={props.product} />
+                        <ProductInfoCard product={props.product} auth={props.auth} />
                     </Grid>
 
                 </Grid>
