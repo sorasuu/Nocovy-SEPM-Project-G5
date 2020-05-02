@@ -1,11 +1,7 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { signUp } from '../store/actions/authActions'
 import { Container, NoSsr, LinearProgress, withStyles } from '@material-ui/core'
 import StyledButton from '../layout/StyledButton'
 import "./style.css"
-import storageRef from '../../index';
 import {DropzoneArea} from 'material-ui-dropzone'
 const ColorLinearProgress = withStyles({
     colorPrimary: {

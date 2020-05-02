@@ -14,7 +14,7 @@ import SearchIcon from '@material-ui/icons/Search'
 import { fade } from '@material-ui/core/styles'
 import storageRef from '../../index'
 import { v4 as uuidv4 } from 'uuid'
-
+import {uploadToStorage} from '../store/actions/uploadAction'
 
 const useStyles = theme => ({
 
@@ -79,11 +79,9 @@ class Profile extends Component {
     miscCost:0,
     unitCost:0,
     unitPrice:0,
-    image: null,
+    images: [],
     category:'',
-    url:'',
     progress: 0,
-    token: uuidv4(),
   }
 
   handleOpen = () => {
@@ -97,12 +95,6 @@ class Profile extends Component {
 
   handleChange = input => e => {
     this.setState({ [input]: e.target.value })
-    if (e.target.files) {
-      const image = e.target.files[0];
-      this.setState(() => ({image}));
-      console.log(image)
-    }
-    console.log(this.image)
   }
 
   handleCatChange = input => e => {
@@ -110,37 +102,35 @@ class Profile extends Component {
     console.log(this.state)
     //Write function to parse string input into array of tags
   }
-
+  handleChangeImg(files){
+    console.log(files)
+    this.setState({
+      images: files
+    });
+  }
   handleUpload = (e) => {
-    console.log('function was called')
     e.preventDefault();
-    const {image,token} = this.state;
-    if(image!== undefined&& image!== null){
-    const uploadTask = storageRef.ref(`images/productImg/${image.name+token}`).put(image);
-    uploadTask.on('state_changed', 
-    (snapshot) => {
-      // progress function ....
-      const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-      this.setState({progress});
-    }, 
-    (error) => {
-         // error function ....
-      console.log(error);
-    }, 
-  () => {
-      // complete function ....
-      storageRef.ref('images/productImg').child(image.name+token).getDownloadURL().then(url => {
-          console.log(url);
-          this.setState({url});
-          this.formSubmit()
-          this.setState({open: false});
-      })
-  });}
-}
+    
+    const {images} = this.state;
+    console.log(images)
+    if(images!== undefined&& images!== null){
+        // need a image and a path
+        var i;
+        for (i in images){
 
+        const file={
+           image: images[i],
+            path: '/images/productImg/'
+        }
+        // new upload
+        this.props.uploadToStorage(file)
+    }
+        
+    }
+}
   formSubmit = () => {
     const product = {supplierId: this.props.auth.uid,
-                    productImg: this.state.url,
+                    productImg: this.props.productImg,
                     name: this.state.productName, 
                     detail: ['origin: '+ this.state.productOrigin,
                             'brand:'+ this.state.productBrand], 
@@ -179,7 +169,7 @@ class Profile extends Component {
 
     return (
       <Container>
-        <WholesalerInfoCard handleOpen={this.handleOpen} info = {this.state} auth={auth} uid ={this.props.match.params.id}/>
+        <WholesalerInfoCard handleOpen={this.handleOpen} info = {this.state} auth={auth} uid ={this.props.match.params.id} />
         <Typography gutterBottom align='center' variant='h3'><text style={{fontWeight:'bold'}}>Products</text></Typography>
         <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -215,25 +205,34 @@ class Profile extends Component {
         {this.state.owner?
           <Modal style={{}} open={this.state.open} onClose={this.handleClose}>
             <div style={{height:'90%', overflowY: 'auto', maxWidth:700, position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '60%',}}>
-              <AddProductCard formSubmit={this.formSubmit} handleChange={this.handleChange} handleCatChange={this.handleCatChange} handleUpload={this.handleUpload}/>
+              <AddProductCard formSubmit={this.formSubmit} handleChange={this.handleChange} handleCatChange={this.handleCatChange} handleUpload={this.handleUpload} handleChangeImg={this.handleChangeImg.bind(this)}/>
             </div>
           </Modal>:null}
       </Container>
     )
   }
 }
-
+var prourls = new Set()
 const mapStateToProps = (state,ownProps) => {
   const id = ownProps.match.params.id;
   console.log(state);
   console.log(ownProps)
+  const url = state.uploadReducer.url ? state.uploadReducer.url:null
+  if(url!==undefined&& url!==null){
+    if (url.path==='/images/productImg/'){
+      prourls=prourls.add(url.url)
+      }}
+  console.log(prourls)
   return {
     auth: state.firebase.auth,
-    products :  state.firestore.ordered.products
+    products :  state.firestore.ordered.products,
+    productImg: Array.from(prourls),
+    progress: state.uploadReducer.progress,
 }};
 const mapDispatchToProps = dispatch => {
   return {
-    createProduct: (product) => dispatch(createProduct(product))
+    createProduct: (product) => dispatch(createProduct(product)),
+    uploadToStorage:(file)=>dispatch(uploadToStorage(file))
   }
 }
 

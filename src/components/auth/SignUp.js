@@ -92,9 +92,6 @@ class SignUp extends Component {
         if (prevProps.progress!==this.props.progress) {
             console.log('loading work')
           this.setState({progress:this.props.progress})
-          if (this.props.progress==='100'||this.props.progress===100){
-         
-        }
         }
         if(this.props.certificate.length=== this.state.images.length&& this.props.certificate.length>0&&this.state.step===2){
             this.nextStep();}
@@ -168,7 +165,6 @@ const mapStateToProps = (state) => {
         logo =url.url
     }
 }
-    console.log(cerurls)
     return {
         auth: state.firebase.auth,
         authError: state.auth.authError,

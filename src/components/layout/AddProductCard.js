@@ -8,7 +8,7 @@ import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/co
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import StyledButton from './StyledButton';
-
+import {DropzoneArea} from 'material-ui-dropzone'
 const useStyles = makeStyles(() => ({
     card: {
         display: 'flex',
@@ -52,11 +52,13 @@ const AddProductCard = (props) => {
                     <div className="form-group">
                         <label htmlFor="image" >Image(s)</label>
                         <br/>
-                        <input
-                            type="file"
-                            id='image'
-                            onChange={props.handleChange('image')}
-                        />
+                        <DropzoneArea
+                                onChange={props.handleChangeImg}
+                                acceptedFiles={['image/*']}
+                                maxFileSize={500000}
+                                filesLimit = {4}
+                                dropzoneText={'Upload your product Image here'}
+        />
                     </div>
                     <div className="form-group">
                         <label htmlFor="title">Name</label>
@@ -122,7 +124,7 @@ const AddProductCard = (props) => {
                         <label htmlFor="unitPrice">Unit Price</label>
                         <input type='number' id='unitPrice' placeholder='Unit Price' onChange={props.handleChange('unitPrice')}/>
                     </div>
-                    <StyledButton onClick={props.handleUpload} style={{marginTop:10}}>Create</StyledButton>
+                    <StyledButton onClick={(e) =>{props.handleUpload(e)}} style={{marginTop:10}}>Create</StyledButton>
                 </form>
             </CardContent>
         </Card>

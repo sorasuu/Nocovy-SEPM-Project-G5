@@ -60,7 +60,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const WholesalerInfoCard = (props) => {
-    console.log(props)
+    // console.log(props)
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles =  useOverShadowStyles();

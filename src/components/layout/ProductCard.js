@@ -26,7 +26,7 @@ const ProductCard = (props) => {
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useSoftRiseShadowStyles({ inactive: false });
     const cardHeaderShadowStyles = useFadedShadowStyles();
-    console.log("productcard",props)
+    // console.log("productcard",props)
     // const [hoverRef, isHovered] = useHover();
 
     return (
