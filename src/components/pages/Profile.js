@@ -62,12 +62,13 @@ class Profile extends Component {
     Product lines include Photo frames, money boxes, wall plaques, book boxes, trinket boxes, candle holders, tea light holders, wall art including shadow boxes, shell theme products`,
     products: storeProducts,
     search:'',
+    step:1,
     owner:false,
     productName:'',
     productBrand:'',
     productOrigin:'',
     productDesc:'',
-    productCategories: ['',''],
+    productCategories: '',
     dutyCost:0,
     dutyRate:0,
     FOB:'',
@@ -81,7 +82,7 @@ class Profile extends Component {
     unitPrice:0,
     images: [],
     category:'',
-    progress: 0,
+    progress: '',
   }
 
   handleOpen = () => {
@@ -108,12 +109,28 @@ class Profile extends Component {
       images: files
     });
   }
+
+  nextStep = () => {
+    const { step } = this.state;
+    this.setState({
+      step: step + 1
+    });
+  }
+
+  prevStep = () => {
+    const { step } = this.state;
+    this.setState({
+        step: step - 1
+    });
+  }
+
   handleUpload = (e) => {
-    e.preventDefault();
+    if (this.state.images.length !== 0){
+      e.preventDefault();
     
-    const {images} = this.state;
-    console.log(images)
-    if(images!== undefined&& images!== null){
+      const {images} = this.state;
+      console.log(images)
+      if(images!== undefined&& images!== null){
         // need a image and a path
         var i;
         for (i in images){
@@ -121,47 +138,151 @@ class Profile extends Component {
         const file={
            image: images[i],
             path: '/images/productImg/'
-        }
-        // new upload
-        this.props.uploadToStorage(file)
+          }
+          // new upload
+          this.props.uploadToStorage(file)
+          this.nextStep()
+        }   
+      }
     }
-        
+    else{
+      this.nextStep()
     }
-}
-  formSubmit = () => {
-    const product = {supplierId: this.props.auth.uid,
-                    productImg: this.props.productImg,
-                    name: this.state.productName, 
-                    authorName: this.props.user.displayName,
-                    detail: ['origin: '+ this.state.productOrigin,
-                            'brand:'+ this.state.productBrand], 
-                    description: this.state.productDesc, 
-                    category: this.state.category, 
-                    price: {dutyCost: this.state.dutyCost,
-                            dutyRate: this.state.dutyRate,
-                            FOB: this.state.FOB,
-                            freightCost: this.state.freightCost,
-                            freightDesc: this.state.freightDesc,
-                            freightRate: this.state.freightRate,
-                            landedCost: this.state.landedCost,
-                            margin: this.state.margin,
-                            miscCost: this.state.miscCost,
-                            unitCost: this.state.unitCost,
-                            unitPrice: this.state.unitPrice}}
-    console.log(product)
-    //Form submit functions go here
-    this.props.createProduct(product)
+  }
 
+  validateForm = () => {
+    if(this.state.productName === ''){
+      alert('The product name cannot be empty')
+      return false
+    }
+    if(this.state.productName.length > 256){
+      alert('The product name must not exceed 256 characters')
+      return false
+    }
+    if(this.state.productBrand === ''){
+      alert('The product brand cannot be empty')
+      return false
+    }
+    if(this.state.productBrand.length > 256){
+      alert('The product brand must not exceed 256 characters')
+      return false
+    }
+    if(this.state.productOrigin === ''){
+      alert('The product origin cannot be empty')
+      return false
+    }
+    if(this.state.productOrigin.length > 256){
+      alert('The product origin must not exceed 256 characters')
+      return false
+    }
+    if(this.state.productDesc === ''){
+      alert('The product description cannot be empty')
+      return false
+    }
+    if(this.state.productCategories === ''){
+      alert('The product category cannot be empty')
+      return false
+    }
+    if(this.state.dutyCost <= 0){
+      alert('The product duty cost cannot be negative or zero')
+      return false
+    }
+    if(this.state.dutyRate <= 0){
+      alert('The product duty rate cannot be negative or zero')
+      return false
+    }
+    if(this.state.FOB === ''){
+      alert('The product FOB point cannot be empty')
+      return false
+    }
+    if(this.state.FOB.length > 256){
+      alert('The product FOB point must not exceed 256 characters')
+      return false
+    }
+    if(this.state.freightCost <= 0){
+      alert('The product freight cost cannot be negative or zero')
+      return false
+    }
+    if(this.state.freightDesc === ''){
+      alert('The product freight description point cannot be empty')
+      return false
+    }
+    if(this.state.freightDesc.length > 256){
+      alert('The product freight description  must not exceed 256 characters')
+      return false
+    }
+    if(this.state.freightRate === ''){
+      alert('The product freight rate cannot be empty')
+      return false
+    }
+    if(this.state.freightRate.length > 256){
+      alert('The product freight rate must not exceed 256 characters')
+      return false
+    }
+    if(this.state.landedCost <= 0){
+      alert('The product landed cost cannot be negative or zero')
+      return false
+    }
+    if(this.state.margin === ''){
+      alert('The product margin cannot be empty')
+      return false
+    }
+    if(this.state.margin.length > 256){
+      alert('The product margin must not exceed 256 characters')
+      return false
+    }
+    if(this.state.miscCost <= 0){
+      alert('The product miscellaneous cost cannot be negative or zero')
+    }
+    if(this.state.unitCost <= 0){
+      alert('The product unit cost cannot be negative or zero')
+    }
+    if(this.state.unitPrice <= 0){
+      alert('The product unit price cannot be negative or zero')
+    }
+    else{
+      return true
+    }
+  }
+
+  formSubmit = () => {
+    if (this.validateForm()){
+      const product = {
+        supplierId: this.props.auth.uid,
+        productImg: this.props.productImg,
+        name: this.state.productName, 
+        authorName: this.props.user.displayName,
+        detail: [
+          'origin: '+ this.state.productOrigin,
+          'brand:'+ this.state.productBrand
+        ], 
+        description: this.state.productDesc, 
+        category: this.state.productCategories, 
+        price: {
+          dutyCost: this.state.dutyCost,
+          dutyRate: this.state.dutyRate,
+          FOB: this.state.FOB,
+          freightCost: this.state.freightCost,
+          freightDesc: this.state.freightDesc,
+          freightRate: this.state.freightRate,
+          landedCost: this.state.landedCost,
+          margin: this.state.margin,
+          miscCost: this.state.miscCost,
+          unitCost: this.state.unitCost,
+          unitPrice: this.state.unitPrice
+        }
+      }
+      //Form submit functions go here
+      this.props.createProduct(product)
+      alert('Product successfully created')
+      this.handleClose()
+    }
   }
   componentDidUpdate(prevProps){
     if (prevProps.auth.uid!== this.props.uid){
-    if (this.props.match.params.id=== this.props.auth.uid && this.state.owner ==false){
+    if (this.props.match.params.id=== this.props.auth.uid && this.state.owner == false){
         this.setState({owner:true})
     }}
-    if(this.props.productImg.length=== this.state.images.length&& this.props.productImg.length>0){
-      this.formSubmit();
-      this.setState({open: false});
-    }
   // console.log('??',this.props.certificate)
 
     // console.log(this.state)
@@ -211,9 +332,9 @@ class Profile extends Component {
         
         </div>
         {this.state.owner?
-          <Modal style={{}} open={this.state.open} onClose={this.handleClose}>
-            <div style={{height:'90%', overflowY: 'auto', maxWidth:700, position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '60%',}}>
-              <AddProductCard formSubmit={this.formSubmit} handleChange={this.handleChange} handleCatChange={this.handleCatChange} handleUpload={this.handleUpload} handleChangeImg={this.handleChangeImg.bind(this)}/>
+          <Modal open={this.state.open} onClose={this.handleClose}>
+            <div style={{maxWidth:'50%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%',}}>
+              <AddProductCard props={this.props} values={this.state} prevStep={this.prevStep} step={this.state.step} closeModal={this.handleClose} formSubmit={this.formSubmit} handleChange={this.handleChange} handleCatChange={this.handleCatChange} handleUpload={this.handleUpload} handleChangeImg={this.handleChangeImg.bind(this)}/>
             </div>
           </Modal>:null}
       </Container>

@@ -63,7 +63,7 @@ const WholesalerInfoCard = (props) => {
     // console.log(props)
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
-    const cardShadowStyles =  useOverShadowStyles();
+    const cardShadowStyles =  useOverShadowStyles({ inactive: true });
     const cardHeaderShadowStyles = useFadedShadowStyles();
     return (
         <Card className={cx(classes.card, cardShadowStyles.root)} style={{ position: "relative", marginBottom: '2%' }}>

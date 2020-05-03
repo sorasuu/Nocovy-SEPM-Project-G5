@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { firestoreConnect } from 'react-redux-firebase'
 import Navbar from './components/layout/Navbar'
 import Dashboard from './components/pages/Dashboard'
-import AdminDashboard from './components/pages/AdminDashboard';
+import AdminDashboard from './components/pages/AdminDashboard'
 import Profile from './components/pages/Profile'
 import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
 import ProductDetail from './components/pages/ProductDetail'
+import Chat from './components/pages/Chat'
 // import Reports from './components/pages/Reports';
-import Upload from './components/pages/Upload';
-import Supplier from './components/pages/Supplier';
-import Retailer from './components/pages/Retailer';
-// import Footer from './components/layout/Footer';
-import { firestoreConnect } from 'react-redux-firebase'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
+import Upload from './components/pages/Upload'
+import Supplier from './components/pages/Supplier'
+import Retailer from './components/pages/Retailer'
+// import Footer from './components/layout/Footer'
 
 import "./App.css"
-import Chat from './components/pages/Chat';
+
 
 
 class App extends Component {
@@ -47,7 +48,6 @@ class App extends Component {
           </Switch>
           {/* <Footer/> */}
         </div>
-
       </BrowserRouter>
     );
   }

@@ -47,7 +47,7 @@ class FormSignUp extends Component {
                             <div className="form-group">
                                 <div className="input-field">
                                     <label htmlFor="lastName">Last Name</label>
-                                    <input tnkype="text" id='lastName' onChange={handleChange('lastName')} defaultValue={values.lastName} />
+                                    <input type="text" id='lastName' onChange={handleChange('lastName')} defaultValue={values.lastName} />
                                 </div>
                             </div>
                             <div className="form-group">

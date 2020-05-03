@@ -47,7 +47,7 @@ const ProductCard = (props) => {
                     <div className='image'>
                         <img src={props.product.productImg} style={{ width: "200px", height: "250px" }} />
 
-                        <div className="overlay">
+                        <div className="overlay" style={{borderRadius: 16,}}>
                             <NavLink to = {'/product/'+ props.product.id}>
                                 <button>Detail</button>
                             </NavLink>
