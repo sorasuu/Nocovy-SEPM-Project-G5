@@ -15,7 +15,8 @@ import { fade } from '@material-ui/core/styles'
 import storageRef from '../../index'
 import { v4 as uuidv4 } from 'uuid'
 import {uploadToStorage} from '../store/actions/uploadAction'
-
+import {withRouter} from 'react-router-dom';
+import {createChatSession} from '../store/actions/chatActions'
 const useStyles = theme => ({
 
   search: {
@@ -89,7 +90,19 @@ class Profile extends Component {
     this.setState({open: true});
     console.log(this.state.open)
   };
+  handleChat=(e)=>{
+    console.log('go to chat')
+    if (this.props.chatexist===true){
+      this.props.history.push('/chat/'+this.props.chat[this.props.chatId].id)
+    }else{
+      const chat={
+        id:this.props.auth.uid+this.props.match.params.id,
+        chatsesion:[this.props.auth.uid,this.props.match.params.id]
+      }
+      this.props.createChatSession(chat)
+    }
 
+  }
   handleClose = () => {
     this.setState({open: false});
   };
@@ -290,6 +303,7 @@ class Profile extends Component {
   
   render() {
     const { auth, classes} = this.props;
+    console.log(this.props)
     const { search, products } = this.state;
     const filteredProducts = products.filter(product =>{
         return product.title.toLowerCase().indexOf(search.toLowerCase())!== -1
@@ -298,7 +312,7 @@ class Profile extends Component {
 
     return (
       <Container>
-        <WholesalerInfoCard handleOpen={this.handleOpen} info = {this.state} auth={auth} uid ={this.props.match.params.id} />
+        <WholesalerInfoCard handleOpen={this.handleOpen} info = {this.state} auth={auth} uid ={this.props.match.params.id} handleChat={this.handleChat}/>
         <Typography gutterBottom align='center' variant='h3'><text style={{fontWeight:'bold'}}>Products</text></Typography>
         <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -343,9 +357,11 @@ class Profile extends Component {
 }
 var prourls = new Set()
 const mapStateToProps = (state,ownProps) => {
-  // const id = ownProps.match.params.id;
-  console.log(state);
-  const users = state.firestore.ordered.currentUser;
+  const id = ownProps.match.params.id;
+  const chatId1 = ownProps.match.params.id+ state.firebase.auth.uid
+  const chatId2 =  state.firebase.auth.uid+ownProps.match.params.id
+  // console.log(state);
+  const users = state.firestore.ordered.thisUser;
   const user = users ? users[0] : null;
   console.log(ownProps)
   const url = state.uploadReducer.url ? state.uploadReducer.url:null
@@ -354,24 +370,49 @@ const mapStateToProps = (state,ownProps) => {
       prourls=prourls.add(url.url)
       }}
   console.log(prourls)
+  var chatexist=null
+  var chatId =null
+  var i;
+  if (state.firestore.ordered.chatsesion!==undefined){
+    if(state.firestore.ordered.chatsesion.length===0){
+      chatexist= false
+    }
+    for (i in state.firestore.ordered.chatsesion){
+
+      if (state.firestore.ordered.chatsesion[i].id==chatId1){
+        chatexist = true 
+        chatId = chatId1
+      }else if( state.firestore.ordered.chatsesion[i].id==chatId2){
+        chatexist = true 
+        chatId = chatId2
+      }else{
+        chatexist= false
+      }
+    }
+   }
   return {
     auth: state.firebase.auth,
     products :  state.firestore.ordered.products,
     productImg: Array.from(prourls),
     progress: state.uploadReducer.progress,
-    user: user
+    thisUser: user,
+    chatexist: chatexist,
+    chat: state.firestore.data.chatsesion,
+    chatId: chatId
     
 }};
 const mapDispatchToProps = dispatch => {
   return {
     createProduct: (product) => dispatch(createProduct(product)),
-    uploadToStorage:(file)=>dispatch(uploadToStorage(file))
+    uploadToStorage:(file)=>dispatch(uploadToStorage(file)),
+    createChatSession:(chat)=> dispatch(createChatSession(chat))
   }
 }
 
-export default  compose(
+export default withRouter(compose(
   connect(mapStateToProps,mapDispatchToProps),
   firestoreConnect((props) => {
-      return [{ collection: 'products', where:[["supplierId","==", props.match.params.id]]}, { collection: 'users', doc:props.auth.uid,storeAs:'currentUser' }]
+      return [{ collection: 'products', where:[["supplierId","==", props.match.params.id]]}, { collection: 'users', doc:props.match.params.id,storeAs:'thisUser' },]
+      
   })
-)(withStyles(useStyles)(Profile) )
+)(withStyles(useStyles)(Profile)) )
