@@ -94,7 +94,7 @@ const WholesalerInfoCard = (props) => {
                       
                     </div>
                     :<div className={classes.buttons}>
-                    <NavLink to={'/Chat/'+ props.auth.uid} style={{marginBottom:10}}><StyledButton>Chat</StyledButton></NavLink>
+                    <StyledButton style={{marginBottom:10}} onClick={(e)=>props.handleChat(e)}>Chat</StyledButton>
                     </div> }
                     
                 </div>

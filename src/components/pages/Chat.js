@@ -11,6 +11,13 @@ import { Redirect, NavLink } from 'react-router-dom';
 import { Grid, InputBase, withStyles, Container, Paper } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search';
 import { fade } from '@material-ui/core/styles'
+import StyledButton from '../layout/StyledButton'
+import {createChatSession,sendMessage} from '../store/actions/chatActions'
+import { connect } from 'react-redux'
+import { firestoreConnect } from 'react-redux-firebase'
+import { compose } from 'redux'
+import _ from 'lodash'
+import moment from 'moment'
 const useStyles = makeStyles((theme) => ({
     card: {
         marginTop: "10%",
@@ -94,18 +101,10 @@ export const ChatContact = (props) => {
     );
 };
 
-export const DUMMY_DATA = [
-    {
-        senderId: "perborgen",
-        text: "who'll win?"
-    },
-    {
-        senderId: "janedoe",
-        text: "who'll win?"
-    }
-]
 
-export const MessageList = () => {
+
+export const MessageList = (props) => {
+    console.log(props)
     return (
         <div>
         <br/>
@@ -129,7 +128,7 @@ export const MessageList = () => {
     )
 }
 
-export const SendMessageForm = () => {
+export const SendMessageForm = (props) => {
     
     return (
         <form
@@ -137,14 +136,22 @@ export const SendMessageForm = () => {
             // onSubmit={this.handleSendMessage}
             >
             <div className='input-group'>
+                <Grid container spacing={3}>
+                <Grid item xs={10}>
                 <input
                     type='text'
                     className='form-control message-input'
                     placeholder='Type something'
-                    // value={message}
-                    onChange={event => this.setState({ message: event.target.value })}
+                    id='context'
+                    value={props.context}
+                    onChange={(e)=> props.handleChange(e)}
                     required
                 />
+</Grid>
+                <Grid item xs={2}>
+                    <StyledButton onClick={(e)=>props.handleSendMessage(e)}>Send</StyledButton>
+                </Grid>
+</Grid>
             </div>
         </form>
     )
@@ -154,34 +161,45 @@ class Chat extends Component {
     constructor() {
         super()
         this.state = {
-            messages: DUMMY_DATA
+            users: [],
+            search: '',
+            context:''
         }
     }
 
-    state = {
-        users: [],
-        search: ''
-    }
+  
 
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.message !== this.state.message && this.props.typingListener) {
-            this.props.typingListener();
-        }
-        this.scrollToBottom();
-    }
+    // componentDidUpdate(prevProps, prevState) {
+    //     if (prevState.message !== this.state.message && this.props.typingListener) {
+    //         this.props.typingListener();
+    //     }
+    //     // this.scrollToBottom();
+    // }
 
     // dunno where to place this handleSendMessage
     handleSendMessage = event => {
         event.preventDefault();
-        const { message } = this.state;
-        this.props.onSubmit(message);
-        this.setState({ message: '' });
+        const receiver = this.props.match.params.id.replace(this.props.auth.uid,'');
+        const chat ={
+            id : this.props.match.params.id,
+            message:{
+            context: this.state.context,
+            receiver: receiver
+            }
+        }
+        console.log(chat)
+        this.props.sendMessage(chat)
+        this.setState({context:''})
       };
 
     onChange = e => {
         this.setState({ search: e.target.value })
     }
-
+    handleChange = (e) => {
+        this.setState({
+          [e.target.id]: e.target.value
+        })
+      }
     render() {
         const { auth, classes } = this.props;
         const { search, users } = this.state;
@@ -189,7 +207,7 @@ class Chat extends Component {
         // const filteredUsers = users.filter(product => {
         //     return product.title.toLowerCase().indexOf(search.toLowerCase()) !== -1
         // })
-        //   if (!auth.uid) return <Redirect to='/signin' />
+          if (!auth.uid) return <Redirect to='/signin' />
 
         return (
             <div>
@@ -202,10 +220,10 @@ class Chat extends Component {
                             <div className='chat-box'>
                                 <div className='msg-page'>
                                 <h5 style={{alignContent:'center'}}>Messages</h5>
-                                    <MessageList messages={this.state.messages} />
+                                    <MessageList messages={this.props.messages} />
                                 </div>
                                 <div className='msg-footer'>
-                                    <SendMessageForm />
+                                    <SendMessageForm handleSendMessage={this.handleSendMessage} handleChange={this.handleChange} context={this.state.context}/>
                                 </div>
 
                             </div>
@@ -218,4 +236,34 @@ class Chat extends Component {
         )
     };
 }
-export default Chat
+const mapDispatchToProps = dispatch => {
+    return {
+      createChatSession:(chat)=> dispatch(createChatSession(chat)),
+      sendMessage:(message) => dispatch(sendMessage(message))
+    }
+  }
+  
+const mapStateToProps = (state,ownProps) => {
+    
+    var sortedMessages = null 
+    const messages= state.firestore.ordered.thischatsesion
+    if (messages!==undefined){
+        if(messages.length>0)
+        sortedMessages = _.orderBy(messages, function(o) { return new moment(o.created); }, ['desc']);
+
+    }
+    return{
+        auth: state.firebase.auth,
+        messages: sortedMessages
+    }
+
+  }
+
+
+export default compose(
+    connect(mapStateToProps,mapDispatchToProps),
+    firestoreConnect((props) => {
+        return [{ collection: 'chats', doc:props.match.params.id,subcollections: [{ collection: 'chatDetail' }],storeAs:'thischatsesion' },]
+        
+    })
+  )((Chat))

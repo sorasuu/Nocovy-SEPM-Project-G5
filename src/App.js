@@ -23,7 +23,7 @@ import Chat from './components/pages/Chat';
 class App extends Component {
   
   render() {
-    const { productobj, productlist, reports }= this.props
+    const {  productlist,  currentUser,chatsesion }= this.props
     // console.log('productList nay',productlist)
     return (
       <BrowserRouter>
@@ -34,14 +34,14 @@ class App extends Component {
             {/* <Route path='/'component={ProductDetail} /> */}
             <Route path='/supplier' component={Supplier}/>
             <Route path ='/admin' component={AdminDashboard}/>
-            <Route path='/product/:id' component={(props) => <ProductDetail {...props} classes={productlist} />}/>
+            <Route path='/product/:id' component={(props) => <ProductDetail {...props} classes={productlist} chatsesion = {chatsesion}/>}/>
             <Route path='/retailer' component={Retailer}/>
             <Route path='/signin'component={SignIn}/>
             <Route path='/signup' component={SignUp} />
-            <Route path='/profile/:id' component={Profile} />
+            <Route path='/profile/:id' component={ (props) =>  <Profile {...props} currentUser={currentUser} chatsesion = {chatsesion}/>} />
             {/* <Route path='/myproducts' component={Profile} /> */}
             <Route path='/upload'component={Upload}/>
-            <Route path='/chat'component={Chat}/>
+            <Route path='/chat/:id'component={  (props) => <Chat {...props} currentUser={currentUser}  />}/>
             {/* <Route path='/reports'  component={() => <Reports products={productobj} reports={reports} />}/>
             <Route path='/myproducts' component={() => <ProductsManage products={productlist} />}/> */}    
           </Switch>
@@ -54,22 +54,25 @@ class App extends Component {
 }
 const mapStateToProps = (state) => {
   console.log(state);
+  const users = state.firestore.ordered.currentUser
+  const currentUser = users? users[0]:null
   return {
     auth: state.firebase.auth,
-
+    currentUser : currentUser,
+    chatsesion: state.firestore.ordered.chatsesion
 
   }
 };
 
 export default compose(
   connect(mapStateToProps),
-  // firestoreConnect((props) => {
-  //   console.log("fetch data" ,props)
-  //   if(!props.auth.uid){
-  //     return [];
-  //   }
-  //   else{
-  //   return  [{ collection: 'reports', queryParams: ['orderByChild=createdBy' ],limit:50 },{collection:'products'},{collection:'users', doc:props.auth.uid}]
-  //   }})
+  firestoreConnect((props) => {
+    console.log("fetch data" ,props)
+    if(!props.auth.uid){
+      return [];
+    }
+    else{
+    return  [{collection:'users', doc:props.auth.uid, storeAs: 'currentUser' },{collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]], storeAs:'chatsesion'}]
+    }})
   )
  (App);
