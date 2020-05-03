@@ -11,7 +11,7 @@ import FormCertificate from './FormCertificate'
 import Confirm from './Confirm'
 import Success from './Success'
 import { v4 as uuidv4 } from 'uuid';
-import {uploadToStorage} from '../store/actions/uploadAction'
+import { uploadToStorage } from '../store/actions/uploadAction'
 
 class SignUp extends Component {
     state = {
@@ -21,12 +21,13 @@ class SignUp extends Component {
         email: '',
         password: '',
         phoneNumber: '',
+        avatar: [],
         images: [],
         cetificate: [],
         progress: 0,
         businessName: '',
         businessGenre: '',
-        businessDesc:''
+        businessDesc: ''
 
     }
     nextStep = () => {
@@ -48,72 +49,103 @@ class SignUp extends Component {
         // if (e.target.files) {
         //     const images= []
         //           images.push(e.target.files);
-                  
+
         //         this.setState({images:images});
         //         console.log(images)
         // }
-        
+
 
     }
-    handleChangeImg(files){
+    handleChangeImg(files) {
         console.log(files)
         this.setState({
-          images: files
+            images: files
         });
-      }
+    }
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.signUp(this.state);
     }
     handleUpload = (e) => {
         e.preventDefault();
-        
-        const {images} = this.state;
+
+        const { images } = this.state;
         console.log(images)
-        if(images!== undefined&& images!== null){
+        if (images !== undefined && images !== null) {
             // need a image and a path
             var i;
-            for (i in images){
+            for (i in images) {
 
-            const file={
-               image: images[i],
-                path: '/images/certificates/'
+                const file = {
+                    image: images[i],
+                    path: '/images/certificates/'
+                }
+                // new upload
+                this.props.uploadToStorage(file)
             }
-            // new upload
-            this.props.uploadToStorage(file)
+
         }
-            
+    }
+
+    handleChangeAvatar(files) {
+        console.log(files)
+        // console.log('handleChangeAvatar')
+        // can not read SetState as no object is passing thru ???
+        this.setState({
+            images: files
+        });
+    }
+
+    handleUploadAvatar = (e) => {
+        e.preventDefault();
+
+        const { images } = this.state;
+        console.log(images)
+        if (images !== undefined && images !== null) {
+            // need a image and a path
+            var i;
+            for (i in images) {
+
+                const file = {
+                    image: images[i],
+                    path: '/images/avatar/'
+                }
+                // new upload
+                this.props.uploadToStorage(file)
+            }
+
         }
     }
     // update state
     componentDidUpdate(prevProps, prevState) {
         console.log(this.props)
-        if (prevProps.certificate!==this.props.certificate) {
+        if (prevProps.certificate !== this.props.certificate) {
             console.log('welp that work')
-          this.setState({certificate:this.props.certificate})
+            this.setState({ certificate: this.props.certificate })
         }
-        if (prevProps.progress!==this.props.progress) {
+        if (prevProps.progress !== this.props.progress) {
             console.log('loading work')
-          this.setState({progress:this.props.progress})
+            this.setState({ progress: this.props.progress })
         }
-        if(this.props.certificate.length=== this.state.images.length&& this.props.certificate.length>0&&this.state.step===2){
-            this.nextStep();}
+        if (this.props.certificate.length === this.state.images.length && this.props.certificate.length > 0 && this.state.step === 2) {
+            this.nextStep();
+        }
         // console.log('??',this.props.certificate)
-      }
-      static getDerivedStateFromProps(nextProps, prevState){
-        if(nextProps.cetificate!==prevState.cetificate){
-          return { cetificate: nextProps.cetificate};
-       }
-       else if (nextProps.progress!==prevState.progress){
-        return { progress: nextProps.progress};
-       }
-       else return null;
-     }
+    }
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.cetificate !== prevState.cetificate) {
+            return { cetificate: nextProps.cetificate };
+        }
+        else if (nextProps.progress !== prevState.progress) {
+            return { progress: nextProps.progress };
+        }
+        else return null;
+    }
 
     render() {
-        const { step, firstName, lastName, email, password, phoneNumber,image,url,progress} = this.state;
+        const { step, firstName, lastName, email, password, phoneNumber, image, url, progress } = this.state;
         const { auth, authError } = this.props;
-        const values = { firstName, lastName, email, password, phoneNumber,image,url,progress }
+        const values = { firstName, lastName, email, password, phoneNumber, image, url, progress }
         if (auth.uid) return <Redirect to='/' />
 
         switch (step) {
@@ -122,6 +154,8 @@ class SignUp extends Component {
                     <FormSignUp
                         nextStep={this.nextStep}
                         handleChange={this.handleChange}
+                        handleChangeAvatar={this.handleChangeAvatar}
+                        handleUploadAvatar={this.handleUploadAvatar}
                         values={values}
                     />
                 )
@@ -148,9 +182,9 @@ class SignUp extends Component {
                 )
             case 4:
                 return (
-                   <Success
-                       prevStep={this.prevStep}
-                   />
+                    <Success
+                        prevStep={this.prevStep}
+                    />
                 )
         }
     }
@@ -158,16 +192,16 @@ class SignUp extends Component {
 var cerurls = new Set()
 const mapStateToProps = (state) => {
     console.log(state)
-    const url = state.uploadReducer.url ? state.uploadReducer.url:null
-    var logo= null
-    
-    if(url!==undefined&& url!==null){
-    if (url.path==='/images/certificates/'){
-        cerurls=cerurls.add(url.url)
-    }else if(url.path==='/images/certificates/'){
-        logo =url.url
+    const url = state.uploadReducer.url ? state.uploadReducer.url : null
+    var logo = null
+
+    if (url !== undefined && url !== null) {
+        if (url.path === '/images/certificates/') {
+            cerurls = cerurls.add(url.url)
+        } else if (url.path === '/images/certificates/') {
+            logo = url.url
+        }
     }
-}
     return {
         auth: state.firebase.auth,
         authError: state.auth.authError,
@@ -181,7 +215,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         signUp: (creds) => dispatch(signUp(creds)),
-        uploadToStorage:(file)=>dispatch(uploadToStorage(file))
+        uploadToStorage: (file) => dispatch(uploadToStorage(file))
     }
 }
 

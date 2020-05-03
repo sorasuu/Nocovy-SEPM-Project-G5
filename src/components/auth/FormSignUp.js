@@ -5,30 +5,44 @@ import { signUp } from '../store/actions/authActions'
 import { Container, NoSsr, LinearProgress, withStyles } from '@material-ui/core'
 import StyledButton from '../layout/StyledButton'
 import "./style.css"
-const ColorLinearProgress = withStyles({
-    colorPrimary: {
-        background: '#ffff'
-    },
-    barColorPrimary: {
-        background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)"
-    }
-})(LinearProgress);
 
-export class FormSignUp extends Component {
+// const ColorLinearProgress = withStyles({
+//     colorPrimary: {
+//         background: '#ffff'
+//     },
+//     barColorPrimary: {
+//         background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)"
+//     }
+// })(LinearProgress);
+
+class FormSignUp extends Component {
+    state = {
+        uploading: false
+    }
+
     continue = e => {
         e.preventDefault();
+        this.setState({ uploading: true });
+        this.props.handleUploadAvatar(e);
         this.props.nextStep();
     }
 
+
+
     render() {
-        const { auth, authError, values, handleChange } = this.props;
+        const { auth, authError, values, handleChange, handleChangeAvatar } = this.props;
         // if (auth.uid) return <Redirect to='/' />
+
         return (
+
+
 
             <div className="base-container">
                 <Container style={{ marginTop: "2%", width: "500px" }}>
-                    <form className="white auth" onSubmit={this.handleSubmit} style={{ padding: "2%" }}>
-                        
+                    <form className="white auth"
+                        // onSubmit={this.handleSubmit} 
+                        style={{ padding: "2%" }}>
+
                         <div className="header">Sign Up</div>
                         <div className="image">
                             <img src="handshake.png"></img>
@@ -66,12 +80,19 @@ export class FormSignUp extends Component {
                                 </div>
                             </div>
 
-                            {/* <div className="input-field">
-                            <button className="btn lighten-1 z-depth-0" color="#39B04B" onClick={this.continue}>Continue</button>
-                            <div className="center red-text">
-                                {authError ? <p>{authError}</p> : null}
+                            <div className="form-group">
+                                <label htmlFor="image" >Avatar</label>
+                                <br />
+                                <input
+                                    defaultValue={values.image}
+                                    onChange={handleChangeAvatar}
+                                    type="file"
+                                    id='avatar'
+
+                                />
+
                             </div>
-                        </div> */}
+
                             <div className="input-field">
                                 <NoSsr>
                                     <StyledButton onClick={this.continue}>Continue</StyledButton>
@@ -82,7 +103,7 @@ export class FormSignUp extends Component {
                                     {authError ? <p>{authError}</p> : null}
                                 </div>
                             </div>
-                        
+
                         </div>
                     </form>
                 </Container>
@@ -90,17 +111,6 @@ export class FormSignUp extends Component {
         )
     }
 }
-// const mapStateToProps = (state) => {
-//     return {
-//         auth: state.firebase.auth,
-//         authError: state.auth.authError
-//     }
-// }
 
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         signUp: (creds) => dispatch(signUp(creds))
-//     }
-// }
 
 export default FormSignUp
