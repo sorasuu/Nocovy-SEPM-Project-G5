@@ -75,7 +75,7 @@ const useStyles = theme => ({
 });
 
 export function checkArray(array) {
-  var data = [{pending:true, name:"wrong", displayName: "wrong", businessName: 'wrong' }];
+  var data = [{pending:true,product:"No Product", name:"wrong", displayName: "wrong", businessName: 'wrong' }];
   if (array !== undefined) {
     data = array
   }

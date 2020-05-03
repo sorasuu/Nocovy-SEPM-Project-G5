@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Table, TableHead, TableCell, TableBody, TableRow } from '@material-ui/core'
 import { checkArray } from '../dashboard/Dashboard'
-import { displayRetailer } from "../../store/actions/userActions"
+
 function RetailerList(props){
     const { retailers, product, productkey, value } = props
     const retailersCheck = checkArray(retailers)
@@ -47,13 +47,9 @@ const mapStateToProps = (state, ownProps) => {
         retailers : retailers
     }
   };
-const mapDispatchToProps = dispatch => {
-    return {  
-        displayRetailer: id => dispatch(displayRetailer(id))
-    };
-};
+
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps),
     firestoreConnect(props => {
         if (!props.users)
           return [
