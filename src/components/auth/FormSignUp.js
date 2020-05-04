@@ -16,22 +16,33 @@ import "./style.css"
 // })(LinearProgress);
 
 class FormSignUp extends Component {
+    state = {
+        uploading: false
+    }
+
     continue = e => {
-        // e.preventDefault();
+        e.preventDefault();
+        this.setState({ uploading: true });
+        this.props.handleUploadAvatar(e);
         this.props.nextStep();
     }
 
+
+
     render() {
-        const { auth, authError, values, handleChange } = this.props;
+        const { auth, authError, values, handleChange, handleChangeAvatar } = this.props;
         // if (auth.uid) return <Redirect to='/' />
+
         return (
+
+
 
             <div className="base-container">
                 <Container style={{ marginTop: "2%", width: "500px" }}>
-                    <form className="white auth" 
-                    // onSubmit={this.handleSubmit} 
-                    style={{ padding: "2%" }}>
-                        
+                    <form className="white auth"
+                        // onSubmit={this.handleSubmit} 
+                        style={{ padding: "2%" }}>
+
                         <div className="header">Sign Up</div>
                         <div className="image">
                             <img src="handshake.png"></img>
@@ -69,6 +80,19 @@ class FormSignUp extends Component {
                                 </div>
                             </div>
 
+                            <div className="form-group">
+                                <label htmlFor="image" >Avatar</label>
+                                <br />
+                                <input
+                                    defaultValue={values.image}
+                                    onChange={handleChangeAvatar}
+                                    type="file"
+                                    id='logo'
+
+                                />
+
+                            </div>
+
                             <div className="input-field">
                                 <NoSsr>
                                     <StyledButton onClick={this.continue}>Continue</StyledButton>
@@ -79,7 +103,6 @@ class FormSignUp extends Component {
                                     {authError ? <p>{authError}</p> : null}
                                 </div>
                             </div>
-                        
                         </div>
                     </form>
                 </Container>
