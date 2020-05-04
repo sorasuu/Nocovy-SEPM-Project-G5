@@ -112,7 +112,7 @@ class SignUp extends Component {
             console.log('loading work')
             this.setState({ progress: this.props.progress })
         }
-        if (this.props.certificate.length === this.state.images.length && this.props.certificate.length > 0 && this.state.step === 2) {
+        if (this.props.certificate.length === this.state.images.length && this.props.certificate.length >= 1 && this.state.step === 2) {
             this.nextStep();
         }
         // console.log('??',this.props.certificate)
