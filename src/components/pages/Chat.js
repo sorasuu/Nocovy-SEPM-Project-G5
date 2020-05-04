@@ -273,14 +273,10 @@ const mapStateToProps = (state,ownProps) => {
     
     var sortedMessages = null 
     const messages= state.firestore.ordered.thischatsesion
-    if (messages!==undefined){
-        if(messages.length>0)
-        sortedMessages = _.orderBy(messages, function(o) { return new moment(o.created); }, ['desc']);
 
-    }
     return{
         auth: state.firebase.auth,
-        messages: sortedMessages
+        messages: messages
     }
 
   }
@@ -297,7 +293,7 @@ export default compose(
             
             // THIS IS BREAKING THE PAGE
             subcollections: [{ collection: 'chatDetail' }],
-
+            orderBy: ['created', 'asc'],
             storeAs:'thischatsesion' },]
         }else{
             return []

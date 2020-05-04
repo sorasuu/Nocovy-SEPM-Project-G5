@@ -72,7 +72,7 @@ export default compose(
       return [];
     }
     else{
-    return  [{collection:'users', doc:props.auth.uid, storeAs: 'currentUser' },{collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]], storeAs:'chatsesion'}]
+    return  [{collection:'users', doc:props.auth.uid, storeAs: 'currentUser' },{collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]],orderBy: ['createdAt', 'desc'] ,storeAs:'chatsesion'}]
     }})
   )
  (App);
