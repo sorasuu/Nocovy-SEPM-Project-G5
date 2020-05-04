@@ -241,7 +241,7 @@ class Chat extends Component {
                 <Container>
                     <h3>Chat menu</h3>
                     <Grid container spacing={3}>
-                        <Grid item xs={4}><ChatContact props={this.props} handleChange={this.handleChange} messages={this.state.messages}  search={search} /></Grid>
+                        <Grid item xs={4}><ChatContact props={this.props} handleChange={this.handleChange} currentchatsession={this.props.currentchatsession} chatsesion={this.props.currentchatsession}  search={search} /></Grid>
                         <Grid item xs={8}><Paper>
                             <div className='chat-box'>
                                 <div className='msg-page'>
@@ -270,13 +270,15 @@ const mapDispatchToProps = dispatch => {
   }
   
 const mapStateToProps = (state,ownProps) => {
-    
-    var sortedMessages = null 
+    const id = ownProps.match.params.id
     const messages= state.firestore.ordered.thischatsesion
-
+    const chatsession = state.firestore.data.chatsesion
+    const currentchatsession= chatsession? chatsession[id]: null
     return{
         auth: state.firebase.auth,
-        messages: messages
+        messages: messages,
+        currentchatsession: currentchatsession,
+        // chatsession:state.firestore.ordered.chatsesion
     }
 
   }
@@ -285,7 +287,7 @@ const mapStateToProps = (state,ownProps) => {
 export default compose(
     connect(mapStateToProps,mapDispatchToProps),
     firestoreConnect((props) => {
-        console.log(props.match.params.id)
+        // console.log(props.match.params.id)
         if(props.match.params.id!==undefined){
         return [{
             collection: 'chats', 

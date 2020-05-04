@@ -24,12 +24,12 @@ import "./App.css"
 class App extends Component {
   
   render() {
-    const {  productlist,  currentUser,chatsesion }= this.props
+    const {  productlist,  currentUser,chatsesion,notifications }= this.props
     // console.log('productList nay',productlist)
     return (
       <BrowserRouter>
         <div className="App">
-          <Navbar />
+          <Navbar notifications={notifications} />
           <Switch>
             <Route exact path='/'component={Dashboard} />
             {/* <Route path='/'component={ProductDetail} /> */}
@@ -53,13 +53,14 @@ class App extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log(state);
+  // console.log(state);
   const users = state.firestore.ordered.currentUser
   const currentUser = users? users[0]:null
   return {
     auth: state.firebase.auth,
     currentUser : currentUser,
-    chatsesion: state.firestore.ordered.chatsesion
+    chatsesion: state.firestore.ordered.chatsesion,
+    notifications: state.firestore.ordered.notifications
 
   }
 };
@@ -67,12 +68,12 @@ const mapStateToProps = (state) => {
 export default compose(
   connect(mapStateToProps),
   firestoreConnect((props) => {
-    console.log("fetch data" ,props)
+    // console.log("fetch data" ,props)
     if(!props.auth.uid){
       return [];
     }
     else{
-    return  [{collection:'users', doc:props.auth.uid, storeAs: 'currentUser' },{collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]],orderBy: ['createdAt', 'desc'] ,storeAs:'chatsesion'}]
+    return  [{collection:'users', doc:props.auth.uid, storeAs: 'currentUser' },{collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]] ,storeAs:'chatsesion'},{collection:'notifications', where:[['uid','==',props.auth.uid]]}]
     }})
   )
  (App);
