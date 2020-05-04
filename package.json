@@ -16,7 +16,7 @@
     "material-table": "^1.56.1",
     "material-ui": "^0.20.2",
     "material-ui-dropzone": "^3.0.0",
-    "moment": "^2.25.1",
+    "moment": "2.24.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-redux": "^7.1.3",
@@ -29,13 +29,18 @@
     "styled-components": "^5.0.0",
     "typeface-roboto": "0.0.75",
     "uuid": "^7.0.3",
-    "xlsx": "^0.15.4"
+    "xlsx": "^0.15.4",
+    "moment-timezone": "^0.5.28",
+    "resolutions": {
+      "moment": "2.24.0"
+    }
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/*'",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "preinstall": "npx npm-force-resolutions"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -55,6 +60,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.5.0",
     "@testing-library/react": "^10.0.4",
-    "babel-jest": "^24.9.0"
+    "babel-jest": "^24.9.0",
+    "npm-force-resolutions": "0.0.3"
   }
 }
