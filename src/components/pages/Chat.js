@@ -289,13 +289,18 @@ const mapStateToProps = (state,ownProps) => {
 export default compose(
     connect(mapStateToProps,mapDispatchToProps),
     firestoreConnect((props) => {
+        console.log(props.match.params.id)
+        if(props.match.params.id!==undefined){
         return [{
-            collection: 'chats', doc:props.match.params.id,
+            collection: 'chats', 
+            doc:props.match.params.id,
             
             // THIS IS BREAKING THE PAGE
-            // subcollections: [{ collection: 'chatDetail' }],
+            subcollections: [{ collection: 'chatDetail' }],
 
             storeAs:'thischatsesion' },]
-        
+        }else{
+            return []
+        }
     })
   )((Chat))
