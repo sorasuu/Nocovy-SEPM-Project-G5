@@ -125,12 +125,14 @@ const SignedInLinks = (props) => {
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseNotification}>
                   <MenuList role="menu">
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}
-                    >
-                      Mike John responded to your message
-                    </MenuItem>
+                    <NavLink to='/chat'>
+                      <MenuItem
+                        onClick={handleCloseNotification}
+                        className={classes.dropdownItem}
+                      >
+                        Mike John responded to your message
+                      </MenuItem>
+                    </NavLink>
                     <MenuItem
                       onClick={handleCloseNotification}
                       className={classes.dropdownItem}
@@ -141,7 +143,7 @@ const SignedInLinks = (props) => {
                       onClick={handleCloseNotification}
                       className={classes.dropdownItem}
                     >
-                      You{"'"}re now able to trade with Andrew
+                      You are now able to trade with Andrew
                     </MenuItem>
                     <MenuItem
                       onClick={handleCloseNotification}

@@ -63,7 +63,7 @@ const WholesalerInfoCard = (props) => {
     // console.log(props)
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
-    const cardShadowStyles =  useOverShadowStyles();
+    const cardShadowStyles =  useOverShadowStyles({ inactive: true });
     const cardHeaderShadowStyles = useFadedShadowStyles();
     return (
         <Card className={cx(classes.card, cardShadowStyles.root)} style={{ position: "relative", marginBottom: '2%' }}>
@@ -94,7 +94,7 @@ const WholesalerInfoCard = (props) => {
                       
                     </div>
                     :<div className={classes.buttons}>
-                    <NavLink to={'/Chat/'+ props.auth.uid} style={{marginBottom:10}}><StyledButton>Chat</StyledButton></NavLink>
+                    <StyledButton style={{marginBottom:10}} onClick={(e)=>props.handleChat(e)}>Chat</StyledButton>
                     </div> }
                     
                 </div>

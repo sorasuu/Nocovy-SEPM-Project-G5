@@ -7,9 +7,19 @@ import { fade } from '@material-ui/core/styles'
 import { Grid, InputBase, withStyles } from '@material-ui/core'
 import StyledButton from '../layout/StyledButton'
 import ProductCard from '../layout/ProductCard'
+import ColorLinearProgress from '../layout/ColorLinearProgress'
+import { storeProducts } from "./data"
 import SearchIcon from '@material-ui/icons/Search';
 
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
 const useStyles = theme => ({
+
 
   search: {
     position: 'relative',
