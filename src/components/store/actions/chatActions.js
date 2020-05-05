@@ -5,7 +5,8 @@ export const createChatSession = (chat) => {
       console.log('run')
       firebase.firestore().collection('chats').doc(chat.id).set({
         ...chat,
-        createdAt: new Date()
+        createdAt: new Date(),
+        lastMod: new Date()
       }).then(() => {
         history.push('/chat/'+chat.id)
         window.location.reload();

@@ -53,13 +53,14 @@ class App extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  // console.log(state);
+  console.log(state);
   const users = state.firestore.ordered.currentUser
   const currentUser = users? users[0]:null
+  const chatsesion =state.firestore.ordered.chatsesion? state.firestore.ordered.chatsesion.reverse():null
   return {
     auth: state.firebase.auth,
     currentUser : currentUser,
-    chatsesion: state.firestore.ordered.chatsesion,
+    chatsesion: chatsesion,
     notifications: state.firestore.ordered.notifications
 
   }
@@ -73,7 +74,7 @@ export default compose(
       return [];
     }
     else{
-    return  [{collection:'users', doc:props.auth.uid, storeAs: 'currentUser' },{collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]] ,storeAs:'chatsesion'},{collection:'notifications', where:[['uid','==',props.auth.uid]]}]
+    return  [{collection:'users', doc:props.auth.uid, storeAs: 'currentUser' },{collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]],queryParams:['orderByChild=lastMod'] ,storeAs:'chatsesion'},{collection:'notifications', where:[['uid','==',props.auth.uid]]}]
     }})
   )
  (App);
