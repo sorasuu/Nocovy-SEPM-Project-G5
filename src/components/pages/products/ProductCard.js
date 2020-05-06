@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import cx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/styles';
 import {
@@ -7,14 +7,15 @@ import {
     DialogContentText, DialogTitle, Grid
 } from '@material-ui/core';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
-
+import Carousel from 'react-elastic-carousel'
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
 import { useSoftRiseShadowStyles } from '@mui-treasury/styles/shadow/softRise';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import { NavLink } from 'react-router-dom';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
-
+import ChevronLeftRoundedIcon from '@material-ui/icons/ChevronLeftRounded';
+import ChevronRightRoundedIcon from '@material-ui/icons/ChevronRightRounded';
 import "../page.css"
 const useStyles = makeStyles(() => ({
     card: {
@@ -46,6 +47,7 @@ const ProductCard = (props) => {
     const handleClose = () => {
         setOpen(false);
     };
+    
     return (
         // <NavLink to = {'/product/'+ props.product.id}>
 
@@ -74,30 +76,35 @@ const ProductCard = (props) => {
                                 Buy
                             </Button>
                             <Dialog
-                                
+                                fullWidth={true}
+                                maxWidth={'sm'}
                                 open={open}
                                 onClose={handleClose}
                                 aria-labelledby="responsive-dialog-title"
-                            >
+                            >   
+                                <h4>{product.name}</h4>
                                 <Grid container>
-                                    <Grid item xs={6} md={6} lg={6}>
-
+                                    <Grid item xs={8} md={8} lg={8}  >
+                                        <Carousel itemToShow={1}>
+                                            {product.productImg? product.productImg.map((item, key) =>
+                                                <img key={key} style={{minWidth:200,height:500}} src={item}/>
+                                            ):
+                                            <img src={product.cover}/>
+                                            }
+                                        </Carousel>
                                     </Grid>
-                                    <Grid item xs={6} md={6} lg={6}>
-                                        <DialogTitle id="responsive-dialog-title">{"Use Google's location service?"}</DialogTitle>
+                                    <Grid item xs={4} md={4} lg={4}>
+                                        <DialogTitle id="responsive-dialog-title">{product.id}</DialogTitle>
                                         <DialogContent>
-                                            <DialogContentText>
-                                                Let Google help apps determine location. This means sending anonymous location data to
-                                                Google, even when no apps are running.
-                                        </DialogContentText>
+                                            
                                         </DialogContent>
                                         <DialogActions>
                                             <Button autoFocus onClick={handleClose} color="primary">
-                                                Disagree
-                                        </Button>
+                                                Cancel
+                                            </Button>
                                             <Button onClick={handleClose} color="primary" autoFocus>
-                                                Agree
-                                        </Button>
+                                                Purchase
+                                            </Button>
                                         </DialogActions>
                                     </Grid>
                                     

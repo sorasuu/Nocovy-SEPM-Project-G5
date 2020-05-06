@@ -104,8 +104,6 @@ class Dashboard extends Component {
   render() {
     const { auth, classes, products, suppliers, retailers } = this.props;
     const { search, value } = this.state;
-    console.log('suppliers', suppliers)
-    console.log('retailers', retailers)
 
     if (!auth.uid) return <Redirect to='/signin' />
 
