@@ -276,6 +276,7 @@ export default compose(
     { collection: 'products' },
     { collection: 'users', where: [["type", "==", "supplier"]], storeAs: 'suppliers' },
     { collection: 'users', where: [["type", "==", "retailer"]], storeAs: 'retailers' }
-  ])
+  ]),
+  
 
 )(withStyles(useStyles)(Dashboard))

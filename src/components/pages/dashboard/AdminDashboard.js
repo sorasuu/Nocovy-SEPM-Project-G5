@@ -287,6 +287,10 @@ class AdminDashboard extends Component {
                                         </NavLink>
                                     </Grid>
                                     <Grid item xs={12} md={12} lg={12}>
+                                        <h4>{usersApprove[index].businessName}</h4>
+                                       
+                                    </Grid>
+                                    <Grid item xs={12} md={12} lg={12}>
                                         <h4>Logo</h4>
                                         <img style={{width:'auto', maxHeight:200}} src={usersApprove[index].logo}/>
                                     </Grid>

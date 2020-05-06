@@ -75,16 +75,14 @@ function RetailerDetail(props) {
 
     const productsCheck = checkArray(props.products)
     const suppliersCheck = checkArray(props.suppliers)
-    const sellList = props.retailer.products
+    const sellList = props.retailer.sellProducts
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null); 
     const [openedPopoverId, setOpenPopoverId] = useState(null);
     const [openOpt, setOpenOpt] = useState(false);
     const [optionSelected, setOptionSelected] = useState('Your Sell')
-    // const openBuyer = Boolean(anchorEl)
     const anchorRef = useRef(null)
     const [selectedIndex, setSelectedIndex] = useState(0);
-    // const id = openBuyer ? 'popover' : undefined;
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     }
@@ -98,7 +96,8 @@ function RetailerDetail(props) {
     const handleMenuItemClick = (event, index) => {
         setSelectedIndex(index);
         setOpenOpt(false);
-        setOptionSelected(options[index])
+        setOptionSelected(options[index]);
+        
     }
 
     const handlePopoverClose = () => {
@@ -217,6 +216,7 @@ function RetailerDetail(props) {
                                             </NavLink> : null}
 
                                         <Popover
+                                            className={classes.popover}
                                             id={id}
                                             open={openedPopoverId === key}
                                             anchorEl={anchorEl}

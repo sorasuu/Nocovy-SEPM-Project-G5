@@ -17,7 +17,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import "./App.css"
 import Chat from './components/layout/Chat';
-
+import NewDashBoard from './components/pages/dashboard/NewDashBoard'
 
 
 class App extends Component {
