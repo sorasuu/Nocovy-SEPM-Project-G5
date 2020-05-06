@@ -97,7 +97,9 @@ class Profile extends Component {
     }else{
       const chat={
         id:this.props.auth.uid+this.props.match.params.id,
-        chatsesion:[this.props.auth.uid,this.props.match.params.id]
+        chatsesion:[this.props.auth.uid,this.props.match.params.id],
+        user1: this.props.auth.uid,
+        user2: this.props.match.params.id
       }
       this.props.createChatSession(chat)
     }
