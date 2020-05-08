@@ -14,9 +14,10 @@ import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import { NavLink } from 'react-router-dom';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
-import ChevronLeftRoundedIcon from '@material-ui/icons/ChevronLeftRounded';
-import ChevronRightRoundedIcon from '@material-ui/icons/ChevronRightRounded';
 import "../page.css"
+import AddRoundedIcon from '@material-ui/icons/AddRounded';
+import RemoveRoundedIcon from '@material-ui/icons/RemoveRounded';
+
 const useStyles = makeStyles(() => ({
     card: {
         marginTop: "10%",
@@ -26,7 +27,6 @@ const useStyles = makeStyles(() => ({
         background: '#ffffff',
         borderRadius: 16,
     },
-
 }));
 
 const ProductCard = (props) => {
@@ -36,9 +36,8 @@ const ProductCard = (props) => {
     const cardShadowStyles = useSoftRiseShadowStyles({ inactive: false });
     const cardHeaderShadowStyles = useFadedShadowStyles();
     const [open, setOpen] = React.useState(false);
-    const theme = useTheme();
+    const [number, setNumber] = useState(0);
     const product = props.product
-    // const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -47,7 +46,15 @@ const ProductCard = (props) => {
     const handleClose = () => {
         setOpen(false);
     };
-    
+    const buyLess = () => {
+        if (number > 0) {
+            setNumber(number - 1)
+        }
+    }
+    const buyMore = () => {
+        setNumber(number + 1)
+    }
+
     return (
         // <NavLink to = {'/product/'+ props.product.id}>
 
@@ -77,27 +84,40 @@ const ProductCard = (props) => {
                             </Button>
                             <Dialog
                                 fullWidth={true}
-                                maxWidth={'sm'}
+                                maxWidth={"md"}
                                 open={open}
                                 onClose={handleClose}
                                 aria-labelledby="responsive-dialog-title"
-                            >   
-                                <h4>{product.name}</h4>
+                            >
+                                <h4 style={{ margin: '40px' }}>{product.name}</h4>
                                 <Grid container>
                                     <Grid item xs={8} md={8} lg={8}  >
                                         <Carousel itemToShow={1}>
-                                            {product.productImg? product.productImg.map((item, key) =>
-                                                <img key={key} style={{minWidth:200,height:500}} src={item}/>
-                                            ):
-                                            <img src={product.cover}/>
+                                            {product.productImg ? product.productImg.map((item, key) =>
+                                                <img key={key} style={{ minWidth: 200, height: 500 }} src={item} />
+                                            ) :
+                                                <img src={product.cover} />
                                             }
                                         </Carousel>
                                     </Grid>
                                     <Grid item xs={4} md={4} lg={4}>
-                                        <DialogTitle id="responsive-dialog-title">{product.id}</DialogTitle>
+                                        <DialogTitle id="responsive-dialog-title">
+                                            {product.id}
+                                        </DialogTitle>
                                         <DialogContent>
-                                            
+                                            {product.brand}
+                                            {product.authorName}
                                         </DialogContent>
+                                        <Grid container justify='center'>
+
+                                            <Button onClick={buyLess    }><RemoveRoundedIcon/></Button>
+                                            <h4>{number}</h4>
+                                            <Button onClick={buyMore}><AddRoundedIcon/></Button>
+
+                                        </Grid>
+                                    </Grid>
+                                    <Grid container
+                                        justify="flex-end">
                                         <DialogActions>
                                             <Button autoFocus onClick={handleClose} color="primary">
                                                 Cancel
@@ -107,7 +127,6 @@ const ProductCard = (props) => {
                                             </Button>
                                         </DialogActions>
                                     </Grid>
-                                    
                                 </Grid>
                             </Dialog>
                             <NavLink to={'/product/' + product.id}>

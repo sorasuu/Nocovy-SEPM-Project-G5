@@ -5,6 +5,8 @@ import {
     Card, CardContent, CardHeader,
     Paper, Typography
 } from "@material-ui/core";
+import './ProductStyle.css'
+import Carousel from 'react-elastic-carousel'
 import Grid from '@material-ui/core/Grid';
 import MaterialTable from 'material-table';
 import { Table, TableContainer, TableBody, TableRow, TableCell, TableHead } from '@material-ui/core';
@@ -47,18 +49,18 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'left',
         overflowX: 'auto',
         marginLeft: "5%",
-        margintTop: "5%",
+        marginTop: "5%",
         display: 'center',
         alignItems: 'center',
         justifyContent: 'center',
     },
     imageCard: {
-        width: 'auto',
+        width: '100%',
         maxWidth: '400px',
         height: "350px",
         marginTop: '5px',
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
         display: 'flex',
     },
     '&.MuiTableCell-head': {
@@ -91,6 +93,7 @@ export default function ProductDetailCard(props) {
                     container
                     alignItems="flex-start"
                     key={props.product.id}
+                    spacing={2}
                 >
                     <Grid item xs={12} sm={6} md={6} >
                         <ProductImageCard image={ props.product.productImg } />
@@ -111,6 +114,12 @@ export default function ProductDetailCard(props) {
 
 
 // image design
+// const breakPoints = [
+//     { width: 1, itemsToShow: 1 },
+//     { width: 550, itemsToShow: 2 },
+//     { width: 768, itemsToShow: 3 },
+//     { width: 1200, itemsToShow: 4 }
+//   ];
 const ProductImageCard = props => {
     const classes = useStyles();
     // console.log("props image card", props.image)
@@ -120,44 +129,29 @@ const ProductImageCard = props => {
         justify='flex-start'
         alignItems="flex-start"
         >
-            {/* <Grid 
-            container
-            direction="row"
-            justify="flex-start"
-            alignItems="flex-start"
-            >
-                <Grid item>
-                    {props.image.map((i, k) => {
-                            return (
-                                <Card style={{ width: '65px', height: "70px" }} key={k}>
-                                    <img src={i} style={{ width: "100%", height:"100%" }} />
-                                </Card>         
-                            );
-                    })}
-                </Grid>
-            </Grid> */}
-            <Grid item xs={12}>
-                <Grid container justify="center" spacing={1}>
+            <Grid item xs={12} md={12} lg={12}>
+                <Carousel itemsToShow={3}>
                     {props.image.map((value) => (
-                        <Grid key={value} item>
-                            <img src={value}/>
-                        </Grid>
+                       
+                        <img style={{width:'100px', heigh:'auto'}} src={value}/>
+                        
                     ))}
-                </Grid>
+                </Carousel>
             </Grid>
-            {props.image.map((i,k)=>{
+            {/* {props.image.map((i,k)=>{
                 return(
                     <Grid item xs={12} md={12} lg={12} key={k}>
                         <Card style={{width:"100%", height:"350px", direction:'flex', justify:'center',alignItems:'center'}}>
                             <img src={i} style={{width:"95%", height:"100%", padding:'2% 2% 2% 2%'}}/>
                         </Card>
                     </Grid>
-                )})}
+                )})} */}
        
         </Grid>
     )
 }
 // table detail
+
 export const ProductInfoCard = props => { 
     const classes = useStyles();
     return (
