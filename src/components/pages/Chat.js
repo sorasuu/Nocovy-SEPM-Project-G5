@@ -13,7 +13,7 @@ import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import { Redirect, NavLink } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade } from '@material-ui/core/styles'
-
+import firebase from 'firebase/app';
 import {
     Card, 
     CardContent, 
@@ -241,7 +241,7 @@ class Chat extends Component {
                 <Container>
                     <h3>Chat menu</h3>
                     <Grid container spacing={3}>
-                        <Grid item xs={4}><ChatContact props={this.props} handleChange={this.handleChange} currentchatsession={this.props.currentchatsession} chatsesion={this.props.currentchatsession}  search={search} /></Grid>
+                        <Grid item xs={4}><ChatContact props={this.props} handleChange={this.handleChange} currentchatsession={this.props.currentchatsession} chatsesion={this.props.currentchatsession}  search={search} chatuser={this.props.chatuser} /></Grid>
                         <Grid item xs={8}><Paper>
                             <div className='chat-box'>
                                 <div className='msg-page'>
@@ -273,12 +273,27 @@ const mapStateToProps = (state,ownProps) => {
     const id = ownProps.match.params.id
     const messages= state.firestore.ordered.thischatsesion
     const chatsession = state.firestore.data.chatsesion
+    const chatsessionorder = state.firestore.ordered.chatsesion
     const currentchatsession= chatsession? chatsession[id]: null
+    
+    var userIdlist=[]
+    if(chatsessionorder!== undefined&& chatsessionorder!== null&& state.firebase.auth!== undefined&& state.firebase.auth!== null){
+        var u;
+        for (u in chatsessionorder){
+            if(chatsessionorder[u].user1===state.firebase.auth.uid){
+                userIdlist.push(chatsessionorder[u].user2)
+            }else{
+                userIdlist.push(chatsessionorder[u].user1)
+            }
+        }
+    }
+    // console.log(state.firestore.ordered.chatuser)
     return{
         auth: state.firebase.auth,
         messages: messages,
         currentchatsession: currentchatsession,
-        // chatsession:state.firestore.ordered.chatsesion
+        userIdlist:userIdlist,
+        chatuser: state.firestore.data.chatuser
     }
 
   }
@@ -287,8 +302,12 @@ const mapStateToProps = (state,ownProps) => {
 export default compose(
     connect(mapStateToProps,mapDispatchToProps),
     firestoreConnect((props) => {
-        // console.log(props.match.params.id)
+        console.log(props)
         if(props.match.params.id!==undefined){
+        if(props.userIdlist.length>0&& props.chatuser=== undefined &&props.match.params.id!==undefined){
+
+                return [
+                    {collection:'users',where:['uid','in', props.userIdlist], storeAs:'chatuser'}]}
         return [{
             collection: 'chats', 
             doc:props.match.params.id,
@@ -297,8 +316,7 @@ export default compose(
             subcollections: [{ collection: 'chatDetail' }],
             orderBy: ['created', 'asc'],
             storeAs:'thischatsesion' },]
-        }else{
-            return []
         }
+        else {return[]}
     })
   )((Chat))

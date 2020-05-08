@@ -74,7 +74,8 @@ export default compose(
       return [];
     }
     else{
-    return  [{collection:'users', doc:props.auth.uid, storeAs: 'currentUser' },{collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]],queryParams:['orderByChild=lastMod'] ,storeAs:'chatsesion'},{collection:'notifications', where:[['uid','==',props.auth.uid]]}]
+    return  [{collection:'users', doc:props.auth.uid, storeAs: 'currentUser' },{collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]],queryParams:['orderByChild=lastMod'] ,storeAs:'chatsesion'},
+    {collection:'notifications', where:[['uid','==',props.auth.uid]]}]
     }})
   )
  (App);
