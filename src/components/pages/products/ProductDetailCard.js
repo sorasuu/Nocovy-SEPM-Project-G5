@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import cx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -75,7 +75,6 @@ export default function ProductDetailCard(props) {
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles();
     const cardHeaderShadowStyles = useFadedShadowStyles();
-    
     console.log("Product Detail Card", props.product)
     return (
         <div style={{textAlign:'center'}}>
@@ -122,6 +121,11 @@ export default function ProductDetailCard(props) {
 //   ];
 const ProductImageCard = props => {
     const classes = useStyles();
+    const [selectedPhoto, setSelectedPhoto] = useState(props.image[0]);
+    const handleSelectPhoto= (key) =>{
+        console.log("handle :", key)
+        setSelectedPhoto(props.image[key])
+    }
     // console.log("props image card", props.image)
     return (
         <Grid
@@ -131,12 +135,13 @@ const ProductImageCard = props => {
         >
             <Grid item xs={12} md={12} lg={12}>
                 <Carousel itemsToShow={3}>
-                    {props.image.map((value) => (
-                       
-                        <img style={{width:'100px', heigh:'auto'}} src={value}/>
-                        
+                    {props.image.map((value, key) => (   
+                        <img style={{width:'100px', heigh:'auto'}} src={value}/> 
                     ))}
                 </Carousel>
+            </Grid>
+            <Grid item xs={12} md={12} lg={12} >
+                <img style={{width:'90%', height:'auto'}}src={selectedPhoto}/>
             </Grid>
             {/* {props.image.map((i,k)=>{
                 return(
