@@ -3,10 +3,8 @@ import cx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Card, CardContent, CardHeader,
-    Paper, Typography
 } from "@material-ui/core";
-import './ProductStyle.css'
-import Carousel from 'react-elastic-carousel'
+import ProductImageDetail from './ProductImageDetail'
 import Grid from '@material-ui/core/Grid';
 import MaterialTable from 'material-table';
 import { Table, TableContainer, TableBody, TableRow, TableCell, TableHead } from '@material-ui/core';
@@ -95,7 +93,8 @@ export default function ProductDetailCard(props) {
                     spacing={2}
                 >
                     <Grid item xs={12} sm={6} md={6} >
-                        <ProductImageCard image={ props.product.productImg } />
+                        {/* <ProductImageCard image={ props.product.productImg } /> */}
+                        <ProductImageDetail image ={props.product}/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={6}>
                         <ProductInfoCard product={props.product} />
@@ -113,48 +112,7 @@ export default function ProductDetailCard(props) {
 
 
 // image design
-// const breakPoints = [
-//     { width: 1, itemsToShow: 1 },
-//     { width: 550, itemsToShow: 2 },
-//     { width: 768, itemsToShow: 3 },
-//     { width: 1200, itemsToShow: 4 }
-//   ];
-const ProductImageCard = props => {
-    const classes = useStyles();
-    const [selectedPhoto, setSelectedPhoto] = useState(props.image[0]);
-    const handleSelectPhoto= (key) =>{
-        console.log("handle :", key)
-        setSelectedPhoto(props.image[key])
-    }
-    // console.log("props image card", props.image)
-    return (
-        <Grid
-        container
-        justify='flex-start'
-        alignItems="flex-start"
-        >
-            <Grid item xs={12} md={12} lg={12}>
-                <Carousel itemsToShow={3}>
-                    {props.image.map((value, key) => (   
-                        <img style={{width:'100px', heigh:'auto'}} src={value}/> 
-                    ))}
-                </Carousel>
-            </Grid>
-            <Grid item xs={12} md={12} lg={12} >
-                <img style={{width:'90%', height:'auto'}}src={selectedPhoto}/>
-            </Grid>
-            {/* {props.image.map((i,k)=>{
-                return(
-                    <Grid item xs={12} md={12} lg={12} key={k}>
-                        <Card style={{width:"100%", height:"350px", direction:'flex', justify:'center',alignItems:'center'}}>
-                            <img src={i} style={{width:"95%", height:"100%", padding:'2% 2% 2% 2%'}}/>
-                        </Card>
-                    </Grid>
-                )})} */}
-       
-        </Grid>
-    )
-}
+
 // table detail
 
 export const ProductInfoCard = props => { 
