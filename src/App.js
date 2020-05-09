@@ -18,6 +18,7 @@ import Retailer from './components/pages/Retailer'
 // import Footer from './components/layout/Footer'
 
 import "./App.css"
+import ChatWidget from './components/layout/ChatWidget';
 
 
 
@@ -46,23 +47,36 @@ class App extends Component {
             {/* <Route path='/reports'  component={() => <Reports products={productobj} reports={reports} />}/>
             <Route path='/myproducts' component={() => <ProductsManage products={productlist} />}/> */}    
           </Switch>
+          <ChatWidget/>
           {/* <Footer/> */}
         </div>
       </BrowserRouter>
     );
   }
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = (state,ownProps) => {
   console.log(state);
   const users = state.firestore.ordered.currentUser
   const currentUser = users? users[0]:null
   const chatsesion =state.firestore.ordered.chatsesion? state.firestore.ordered.chatsesion.reverse():null
+  const id = chatsesion?ownProps.chatReducer? ownProps.chatReducer.chatid:chatsesion[0].id:null
+  var userIdlist=[]
+  if(chatsesion!== undefined&& chatsesion!== null&& state.firebase.auth!== undefined&& state.firebase.auth!== null){
+      var u;
+      for (u in chatsesion){
+          if(chatsesion[u].user1===state.firebase.auth.uid){
+              userIdlist.push(chatsesion[u].user2)
+          }else{
+              userIdlist.push(chatsesion[u].user1)
+          }
+      }
+  }
   return {
     auth: state.firebase.auth,
     currentUser : currentUser,
     chatsesion: chatsesion,
-    notifications: state.firestore.ordered.notifications
-
+    notifications: state.firestore.ordered.notifications,
+    chatId:id
   }
 };
 
@@ -73,6 +87,11 @@ export default compose(
     if(!props.auth.uid){
       return [];
     }
+    else  if(props.userIdlist!== null&& props.chatuser=== undefined&&props.userIdlist!== undefined){
+
+      return [
+          {collection:'users',where:['uid','in', props.userIdlist], storeAs:'chatuser'},{collection:'users', doc:props.auth.uid, storeAs: 'currentUser' },{collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]],queryParams:['orderByChild=lastMod'] ,storeAs:'chatsesion'},
+          {collection:'notifications', where:[['uid','==',props.auth.uid]]}]}
     else{
     return  [{collection:'users', doc:props.auth.uid, storeAs: 'currentUser' },{collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]],queryParams:['orderByChild=lastMod'] ,storeAs:'chatsesion'},
     {collection:'notifications', where:[['uid','==',props.auth.uid]]}]

@@ -17,7 +17,11 @@ export const createChatSession = (chat) => {
       });
     }
   };
-  
+export const changeChatSession = (chatid)=>{
+return(dispatch, getState)=>{
+  dispatch({ type: 'CHANGECHATSESSION', payload:chatid });
+}
+}
 export const sendMessage = (chat) => {
   console.log('send')
     return (dispatch, getState) => {
