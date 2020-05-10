@@ -293,11 +293,11 @@ class Profile extends Component {
       this.handleClose()
     }
   }
-  componentDidUpdate(prevProps){
-    if (prevProps.auth.uid!== this.props.uid){
+  componentDidMount(){
+   
     if (this.props.match.params.id=== this.props.auth.uid && this.state.owner == false){
         this.setState({owner:true})
-    }}
+    }
   // console.log('??',this.props.certificate)
 
     // console.log(this.state)
@@ -363,7 +363,7 @@ const mapStateToProps = (state,ownProps) => {
   const chatId1 = ownProps.match.params.id+ state.firebase.auth.uid
   const chatId2 =  state.firebase.auth.uid+ownProps.match.params.id
   // console.log(state);
-  const users = state.firestore.ordered.thisUser;
+  const users = ownProps.currentUser;
   const user = users ? users[0] : null;
   console.log(ownProps)
   const url = state.uploadReducer.url ? state.uploadReducer.url:null
@@ -414,7 +414,7 @@ const mapDispatchToProps = dispatch => {
 export default withRouter(compose(
   connect(mapStateToProps,mapDispatchToProps),
   firestoreConnect((props) => {
-      return [{ collection: 'products', where:[["supplierId","==", props.match.params.id]]}, { collection: 'users', doc:props.match.params.id,storeAs:'thisUser' },]
+      return [{ collection: 'products', where:[["supplierId","==", props.match.params.id]]}, ]
       
   })
 )(withStyles(useStyles)(Profile)) )

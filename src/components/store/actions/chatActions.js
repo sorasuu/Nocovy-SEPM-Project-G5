@@ -9,6 +9,7 @@ export const createChatSession = (chat) => {
         lastMod: new Date()
       }).then(() => {
         history.push('/chat/'+chat.id)
+        changeChatSession(chat.id)
         window.location.reload();
         dispatch({ type: 'CREATE_CHAT_SUCCESS'});
 
@@ -19,6 +20,7 @@ export const createChatSession = (chat) => {
   };
 export const changeChatSession = (chatid)=>{
 return(dispatch, getState)=>{
+  sessionStorage.setItem('chatId',chatid)
   dispatch({ type: 'CHANGECHATSESSION', payload:chatid });
 }
 }
@@ -37,6 +39,7 @@ export const sendMessage = (chat) => {
           sender:author.uid,
           created: new Date()
         }).then(() => {
+          changeChatSession(chat.id)
           dispatch({ type: 'CHAT_SUCCESS' });
         }).catch(err => {
           dispatch({ type: 'CHAT_ERROR' }, err);

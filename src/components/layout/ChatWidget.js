@@ -3,7 +3,7 @@ import { Fab,withStyles,CardContent,Card, CardHeader,TextField ,List,ListItem,Di
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import {createChatSession,sendMessage, changeChatSession} from '../store/actions/chatActions'
 import { connect } from 'react-redux'
-import { firestoreConnect } from 'react-redux-firebase'
+import { useFirestoreConnect, firestoreConnect,populate } from 'react-redux-firebase'
 import { compose } from 'redux'
 import { Redirect, NavLink } from 'react-router-dom';
 import cx from 'clsx';
@@ -12,48 +12,37 @@ import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/co
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import ChatMsg from '@mui-treasury/components/chatMsg/ChatMsg';
-
+// import { useFirestoreConnect } from 'react-redux-firebase'
+import { useSelector } from 'react-redux'
 export const DefaultChatMsg = (props) => (
   <div>
-
-    <ChatMsg
-      avatar={''}
-      messages={[
-        'Hi Jenny, How r u today?',
-        'Did you train yesterday',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat lacus laoreet non curabitur gravida.',
-      ]}
-    />
-    <ChatMsg
-      side={'right'}
-      messages={[
-        "Great! What's about you?",
-        'Of course I did. Speaking of which check this out',
-      ]}
-    />
-    <ChatMsg avatar={''} messages={['Im good.', 'See u later.']} />
-    <ChatMsg
-      avatar={''}
-      messages={[
-        'Hi Jenny, How r u today?',
-        'Did you train yesterday',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat lacus laoreet non curabitur gravida.',
-      ]}
-    />
+      {props.messages?props.messages.map(message=>{
+          if (message.sender===props.uid){
+          return(
+            <ChatMsg
+            key={message.id}
+            side={'right'}
+            messages={[
+              message.context
+            ]}
+          />
+          )
+          }else{
+              return(
+            <ChatMsg
+            key={message.id}
+            avatar={props.receiver.logo}
+            messages={[
+                message.context
+            ]}
+          />)
+          }
+      }):null}
+    
   </div>
 );
 
 
- 
-const useStyles = theme => ({
-root:{
-    right: '20px',
-    bottom: '20px',
-    display: 'block',
-    position: 'fixed',
-}
-
-  });
 
   const useStylesCard = makeStyles(() => ({
     card: {
@@ -81,7 +70,24 @@ root:{
 const ChatPanel = (props) => {
     console.log('chat props',props)
     const receiverId = props.chatId.replace(props.uid,'');
-    const receiver = props.chatuser[receiverId]
+    const currentchatsession = props.chatsesiondata[props.chatId]?props.chatsesiondata[props.chatId]:null
+    var receiver
+    if(currentchatsession!== undefined&&currentchatsession!== null){
+    if(currentchatsession.user1.id===receiverId){
+        receiver=currentchatsession.user1
+    }else{receiver=currentchatsession.user2}}
+    
+    useFirestoreConnect(() => [
+            {collection: 'chats', 
+            doc:props.chatId,
+            
+            // THIS IS BREAKING THE PAGE
+            subcollections: [{ collection: 'chatDetail' }],
+            orderBy: ['created', 'asc'],
+            storeAs:'thischatsesion' } 
+          ])
+    let message = useSelector(({ firestore: { ordered } }) => ordered.thischatsesion)
+          console.log(message)
     const classes = useStylesCard();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles =  useOverShadowStyles();
@@ -92,13 +98,13 @@ const ChatPanel = (props) => {
                 className={cardHeaderShadowStyles.root}
                 classes={cardHeaderStyles}
                 title={"Chat"}
-                subheader={receiver.displayName}
+                subheader={receiver?receiver.displayName:null}
                 style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", top: "-5%", left: "5%", width: '200px', }}
             />
             <CardContent className={classes.content}style={{maxHeight: 450, overflow: 'auto', marginTop:'5%'}} >
                 
                 <div >
-                    <DefaultChatMsg/>
+                    <DefaultChatMsg messages={message} uid={props.uid} receiver={receiver}/>
                    
                 </div>
                 
@@ -129,7 +135,7 @@ class ChatWidget extends Component {
             context:'',
             chatwindow: false,
             chatId:'',
-
+            
         }
     }
     handleSendMessage = event => {
@@ -149,38 +155,46 @@ class ChatWidget extends Component {
       };
 
     handleClicked = e => {
-       this.setState({chatwindow:!this.state.chatwindow,chatId: this.props.chatId })
+       this.setState({chatwindow:!this.state.chatwindow })
     }
     handleChange = (e) => {
         this.setState({
           [e.target.id]: e.target.value
         })
       }
-    // componentDidUpdate(prevProps, prevState) {
-    //     console.log('run',this.props.chatId)
-    //     if (prevProps.chatId !== this.props.chatId||prevState.chatId !== this.props.chatId) {
-    //         this.setState({ chatId: this.props.chatId })
-    //     }
+    
+    // componentDidMount(){
+    //     this.setState({chatId:sessionStorage.getItem('chatId')})
+ 
     // }
-    // static getDerivedStateFromProps(nextProps, prevState) {
-    //     if (nextProps.chatId !== prevState.chatId) {
-    //         return { chatId: nextProps.chatId };
-    //     }
-    //     else return null;
-    // }
+    componentDidUpdate(prevState,prevProps){
+        if(this.props.chatsession!==null&&this.props.chatsession!==undefined&&prevProps.chatsession!==this.props.chatsession){
+            if(this.props.chatsession.length>0 && prevProps.chatsession<this.props.chatsession){
+            const chatId = this.props.chatsession[0].id
+            this.props.changeChatSession(chatId)
+            this.setState({chatId:chatId})}
+        }
+        if (prevProps.chatId !== this.props.chatId) {
+            this.setState({ chatId: this.props.chatId })
+        }
+    }
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.chatId !== prevState.chatId) {
+            return { chatId: nextProps.chatId };
+        }
+        else return null;
+    }
     render() {
         const { auth, classes } = this.props;
         const { search, users } = this.state;
-
+        console.log(this.props)
           if (!auth.uid) return <Redirect to='/signin' />
 
         return (
             <div>
-                <Fab className= {classes.root} onClick={(e)=>{this.handleClicked(e)}} >
-                <ChatBubbleIcon/>
-                </Fab>
-                {this.state.chatwindow?<ChatPanel handleChange={this.handleChange} chatId={this.state.chatId} context={this.state.context}
-                currentchatsession={this.props.currentchatsession} chatuser={this.props.chatuser} uid={this.props.auth.uid} handleSendMessage={this.handleSendMessage}/>:null}
+                {this.props.chatId&&this.state.chatId&&this.props.chatsession&&this.props.chatsesiondata?
+               <ChatPanel handleChange={this.handleChange} chatId={this.state.chatId} context={this.state.context}
+                  uid={this.props.auth.uid} handleSendMessage={this.handleSendMessage} chatsesiondata={this.props.chatsesiondata}/>:null}
                 {/* <Container>
                     <Grid container spacing={3}>
                        
@@ -191,7 +205,10 @@ class ChatWidget extends Component {
         )
     };
 }
-
+const populates = [
+    { child: 'user1', root: 'users' },{child: 'user2', root: 'users'}
+  ]
+  const collection = 'chats';
 const mapDispatchToProps = dispatch => {
     return {
       createChatSession:(chat)=> dispatch(createChatSession(chat)),
@@ -199,35 +216,23 @@ const mapDispatchToProps = dispatch => {
       changeChatSession:(id)=> dispatch(changeChatSession(id))
     }
   }
-  
+
 const mapStateToProps = (state,ownProps) => {
-    console.log(state)
-    const messages= state.firestore.ordered.thischatsession
-    const chatsession = state.firestore.data.chatsesion
-    const chatsessionorder = state.firestore.ordered.chatsesion
-    const id = chatsessionorder?ownProps.chatReducer? ownProps.chatReducer.chatid:chatsessionorder[0].id:null
-    const currentchatsession= chatsession? chatsession[id]: null
-    
-    var userIdlist=[]
-    if(chatsessionorder!== undefined&& chatsessionorder!== null&& state.firebase.auth!== undefined&& state.firebase.auth!== null){
-        var u;
-        for (u in chatsessionorder){
-            if(chatsessionorder[u].user1===state.firebase.auth.uid){
-                userIdlist.push(chatsessionorder[u].user2)
-            }else{
-                userIdlist.push(chatsessionorder[u].user1)
-            }
+    console.log(state,ownProps)
+    const chatsession =state.firestore.ordered.chatsesion? state.firestore.ordered.chatsesion:null
+    var id
+     id =ownProps.chatReducer? ownProps.chatReducer.chatid?ownProps.chatReducer.chatid:null:sessionStorage.getItem('chatId')?sessionStorage.getItem('chatId'):null
+    if (id===null &&chatsession!==undefined&&chatsession!==null&& ownProps.chatId===null){
+        if(chatsession.length>0){
+            id = chatsession[0].id
         }
     }
-
     return{
         auth: state.firebase.auth,
-        messages: messages,
-        currentchatsession: currentchatsession,
-        chatsessionorder:chatsessionorder,
-        userIdlist:userIdlist,
         chatuser: state.firestore.data.chatuser,
-        chatId: id
+        chatId: id,
+        chatsession:chatsession,
+        chatsesiondata: populate(state.firestore, 'chatsesion', populates),
     }
 
   }
@@ -236,21 +241,12 @@ const mapStateToProps = (state,ownProps) => {
 export default compose(
     connect(mapStateToProps,mapDispatchToProps),
     firestoreConnect((props) => {
-        console.log(props)
-        if(props.currentchatsession!==undefined&&props.currentchatsession!==null){
-            console.log("hello anh Tung",props.currentchatsession)
-        return [
-    {
-            collection: 'chats', 
-            doc:props.chatId,   
-            // THIS IS BREAKING THE PAGE
-            subcollections: [{ collection: 'chatDetail' }],
-            orderBy: ['created', 'asc'],
-            storeAs:'thischatsession' }
-        ]}
-            else{
-                return[]
-            }
-        }
-    )
-  )((withStyles(useStyles)(ChatWidget)))
+        // console.log("fetch data" ,props)
+  
+        return  [
+        {
+          collection, where:[['chatsesion', 'array-contains',  props.auth.uid]],queryParams:['orderByChild=lastMod'] ,storeAs:'chatsesion',
+          populates,
+        }]
+    })
+  )(ChatWidget)
