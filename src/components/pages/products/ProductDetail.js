@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect, NavLink } from 'react-router-dom'
-import { firestoreConnect } from 'react-redux-firebase'
+import { firestoreConnect, populate } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Grid, withStyles } from '@material-ui/core'
@@ -9,7 +9,7 @@ import  ProductDetailCard  from './ProductDetailCard'
 
 const useStyles = (theme) => ({
   root: {
-    width: 'fit-content',
+    // width: 'fit-content',
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: theme.shape.borderRadius,
     backgroundColor: theme.palette.background.paper,
@@ -31,13 +31,14 @@ class ProductDetail extends Component {
  }
   render() {
     const { auth, product } = this.props;
+    console.log('product nay', product)
     if (!auth.uid) return <Redirect to='/signin' />
     // console.log("product detail ne:", this.props.product)
     return (
       <div className="container">
         {product ?
           
-            <ProductDetailCard product={this.props.product} />
+            <ProductDetailCard product={product} />
          
           :<div>Loading...</div>
         }        
@@ -46,11 +47,19 @@ class ProductDetail extends Component {
   }
 }
 
+const populates = [
+  {
+      child: 'supplierId', root:'users',
+  },
+  {
+    child: 'retailerId', root:'users'
+  }
+]
+
+const collection = 'products'
+
 const mapStateToProps = (state, ownProps) => {
-  
-  const id = ownProps.match.params.id;
-  const products = state.firestore.data.products;
-  const product = products ? products[id]: null;
+  const product = populate(state.firestore, 'thisProduct', populates)
   return {
     auth: state.firebase.auth,
     product: product
@@ -62,7 +71,7 @@ export default compose(
   firestoreConnect(props => {
     if (!props.products)
       return [
-        { collection: "products", doc: props.match.params.id },
+        { collection, doc: props.match.params.id, populates ,storeAs:'thisProduct' },
         
       ];
   })

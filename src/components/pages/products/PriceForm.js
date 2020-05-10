@@ -48,7 +48,7 @@ export default class PriceForm extends React.Component{
   // }
 
   render(){
-    console.log('price:',this.state.price)
+    
     const { open, 
     price:{
       fob,

@@ -12,6 +12,7 @@ import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/co
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import PriceForm from './PriceForm'
+import { checkArray } from '../dashboard/Dashboard';
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -20,20 +21,13 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: theme.shape.borderRadius,
         backgroundColor: theme.palette.background.paper,
         color: theme.palette.text.secondary,
-
-        '& svg': {
-            margin: theme.spacing(1.5),
-        },
-        '& hr': {
-            margin: theme.spacing(0, 0.5),
-        },
     },
 
     paper: {
-        padding: theme.spacing(2),
+        padding: theme.spacing(1),
         margin: 'auto',
         marginTop: '5px',
-        maxWidth: 1000,
+        // maxWidth: 1000,
     },
     card: {
         marginTop: "10%",
@@ -47,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'left',
         overflowX: 'auto',
         marginLeft: "5%",
-        marginTop: "5%",
+        // marginTop: "5%",
         display: 'center',
         alignItems: 'center',
         justifyContent: 'center',
@@ -73,7 +67,9 @@ export default function ProductDetailCard(props) {
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles();
     const cardHeaderShadowStyles = useFadedShadowStyles();
-    console.log("Product Detail Card", props.product)
+    {props.product.price.map(price => console.log('price',price))}
+    // console.log('hello', props.product.price[0])
+  
     return (
         <div style={{textAlign:'center'}}>
         <Card className={cx(classes.card, cardShadowStyles.root)}
@@ -120,13 +116,14 @@ export const ProductInfoCard = props => {
     return (
         <div>
         <Grid container spacing={2}>
-            <Grid item xs={6} md={6} lg={6}><h4>Price</h4></Grid>
+            <Grid item xs={6} md={6} lg={6}><h4>Author:</h4></Grid>
+            <Grid item xs={6} md={6} lg={6}>{props.product.supplierId.displayName}</Grid>
             <Grid item xs={6} md={6} lg={6}><PriceForm/></Grid>
         </Grid>
         <TableContainer className={classes.root}>
  
             <TableBody aria-label="simple table">               
-                {props.product.price? props.product.price.map((detail, key)=>{
+                {/* {props.product.price? props.product.price.map((detail, key)=>{
                     return(
                         <TableRow key={key}>
                         <TableCell style={{ backgroundColor: `hsla(14, 100%, 53%, 0.6)`, color: 'white' }}>
@@ -137,7 +134,7 @@ export const ProductInfoCard = props => {
                         </TableCell>
                     </TableRow>
                     )
-                    }):null}
+                    }):null} */}
 
             </TableBody>
             

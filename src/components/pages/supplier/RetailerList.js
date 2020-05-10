@@ -1,19 +1,20 @@
 import React from 'react';
 import { TabPanel } from './SupplierDetailCard'
-import { firestoreConnect } from 'react-redux-firebase'
+import { firestoreConnect, populate } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Table, TableHead, TableCell, TableBody, TableRow } from '@material-ui/core'
 import { checkArray } from '../dashboard/Dashboard'
 
 function RetailerList(props){
-    const { retailers, product, productkey, value } = props
-    const retailersCheck = checkArray(retailers)
-    // const retails= new Map(retailersCheck['0BVGQYiYTSHwHBf3vR9X'])
-    console.log("retailers",retailersCheck['0BVGQYiYTSHwHBf3vR9X'])
+    const { product, productkey, value } = props
+    
+    const data = props.data?  props.data[product.id]: null;
+    const retailerList = data?data.retailerId:null 
+    console.log("retailer list", retailerList)
     return(
         <div key={productkey}>
-            {product.retailer ? product.retailer.map((id, key)=>
+            {retailerList ? retailerList.map((item, key)=>
                     <TabPanel value={value} index={productkey} key={key}>
                         <Table>
                             <TableHead>
@@ -25,14 +26,14 @@ function RetailerList(props){
                             </TableHead>
                         </Table>
                         <TableBody>
-                        {retailersCheck[id]?
+                        
                             <TableRow>
-                                <TableCell><img style={{width:"30px", height:'30px'}}src={retailersCheck[id].logo}/></TableCell>
-                                <TableCell>{retailersCheck[id].businessName}</TableCell>
-                                <TableCell>{retailersCheck[id].displayName}</TableCell>
-                                <TableCell>{retailersCheck[id].email}</TableCell>
-                                <TableCell>{retailersCheck[id].address}</TableCell>
-                            </TableRow> :null}
+                                <TableCell><img style={{width:"30px", height:'30px'}}src={item.logo}/></TableCell>
+                                <TableCell>{item.businessName}</TableCell>
+                                <TableCell>{item.displayName}</TableCell>
+                                <TableCell>{item.email}</TableCell>
+                                <TableCell>{item.address}</TableCell>
+                            </TableRow> 
                     </TableBody>
                         
                     </TabPanel>
@@ -40,22 +41,7 @@ function RetailerList(props){
         </div>
     )
 }
-const mapStateToProps = (state, ownProps) => {
-    const retailers = state.firestore.data.retailers
 
-    return {
-        retailers : retailers
-    }
-  };
+export default (RetailerList)
 
-export default compose(
-    connect(mapStateToProps),
-    firestoreConnect(props => {
-        if (!props.users)
-          return [
-            { collection: "users", where: [["type", "==", "retailer"]], storeAs: 'retailers' },
-            
-          ];
-      })
-    
-)(RetailerList) 
+

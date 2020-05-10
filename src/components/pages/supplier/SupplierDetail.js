@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Redirect, NavLink } from 'react-router-dom'
-import { firestoreConnect } from 'react-redux-firebase'
+import { firestoreConnect, populate } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-
+import { checkArray } from '../dashboard/Dashboard'
 import SupplierDetailCard from './SupplierDetailCard'
 
 class SupplierDetail extends Component {
@@ -11,14 +11,19 @@ class SupplierDetail extends Component {
       super(props);
    }
     render() {
-      const { auth, user } = this.props;
+      const { auth, user, productList , productListdata} = this.props;
       if (!auth.uid) return <Redirect to='/signin' />
-      console.log("user trong supplier detail", user)
+      
+      console.log('productList', productList)
       return (
         <div className="container">
           {user ?
 
-              <SupplierDetailCard supplier={user} />
+              <SupplierDetailCard 
+                supplier={user} 
+                products={productList}
+                data = {productListdata} 
+               />
            
             :<div>Loading...</div>
           }        
@@ -26,15 +31,26 @@ class SupplierDetail extends Component {
       )
     }
   }
+
+  const populates = [
+    {
+      child: 'retailerId', root:'users'
+    }
+  ]
+  
+  const collection = 'products'
   
   const mapStateToProps = (state, ownProps) => {
-    
-    const id = ownProps.match.params.id;
-    const users = state.firestore.data.users;
-    const user = users ? users[id]: null;
+    const users = state.firestore.ordered.user;
+    const user = users ? users[0]: null;
+    const productListdata = populate(state.firestore, 'listProductSupply', populates)
+    const productList = state.firestore.ordered.listProductSupply
     return {
       auth: state.firebase.auth,
-      user: user
+      user: user,
+      productList : productList,
+      productListdata: productListdata,
+      
     }
   };
   
@@ -43,8 +59,9 @@ class SupplierDetail extends Component {
     firestoreConnect(props => {
       if (!props.users)
         return [
-          { collection: "users", doc: props.match.params.id },
-          
+          { collection: "users", doc: props.match.params.id, storeAs:'user' },
+          { collection, where:[['supplierId','==', props.match.params.id]], storeAs:'listProductSupply', populates},
+          // { collection, populates}
         ];
     })
   )(SupplierDetail) 

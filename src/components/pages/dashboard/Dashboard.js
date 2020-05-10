@@ -75,7 +75,7 @@ const useStyles = theme => ({
 });
 
 export function checkArray(array) {
-  var data = [{pending:true,product:"No Product", name:"wrong", displayName: "wrong", businessName: 'wrong' }];
+  var data = [{id:'Loading...',pending:true, name:"Loading", displayName: "Loading", businessName: 'Loading', price:'Loading' }];
   if (array !== undefined) {
     data = array
   }
@@ -157,7 +157,7 @@ class Dashboard extends Component {
               {checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1).map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                    <ProductCard product={product} />
+                    <ProductCard product={product}/>
                   </Grid>
                 )
               })}

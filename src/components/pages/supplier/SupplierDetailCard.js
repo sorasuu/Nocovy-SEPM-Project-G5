@@ -166,9 +166,10 @@ export default function SupplierDetailCard(props) {
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles();
     const cardHeaderShadowStyles = useFadedShadowStyles();
-    const allProducts = checkArray(props.supplier.products)
-    console.log("new", value)
-
+    // const allProducts = [{name:'a',value:'b'}, {name:'b',value:'c'}]
+    const allProducts = checkArray(props.products)
+    
+    
     const onChange = (event, newValue) => {
         console.log(newValue)
         // setSearch((newValue).toString);
@@ -180,9 +181,8 @@ export default function SupplierDetailCard(props) {
         setExpanded(!expanded);
     };
 
-
     const filterProducts = allProducts.filter(product => {
-        return product.product.toLowerCase().indexOf(search.toLowerCase()) !== -1
+        return product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
     });
 
     return (
@@ -261,15 +261,17 @@ export default function SupplierDetailCard(props) {
                             className={classes.tabs}
                         >
                             {filterProducts.map((product, key) =>
-                                <Tab label={product.product} {...a11yProps(key)} />
+                                <Tab label={product.name} {...a11yProps(key)} />
                             )}
                         </Tabs>
                     </TableCell>
                     <TableCell>
                         {filterProducts.map((product,productkey)=>
-                            <RetailerList product={product}
-                                        productkey ={productkey}
-                                        value={value}
+
+                            <RetailerList   product={product}
+                                            data = {props.data}
+                                            productkey ={productkey}
+                                            value={value}
                             />
                         )}
                     </TableCell>
