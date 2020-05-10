@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 
-import { firestoreConnect } from 'react-redux-firebase'
+import { firestoreConnect, populate } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { fade } from '@material-ui/core/styles'
@@ -56,7 +56,7 @@ class Retailer extends Component {
 
   render() {
 
-    const { auth, classes, retailer } = this.props;
+    const { auth, classes, retailer , sellProduct, sellProductData} = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl)
     const id = open ? 'popover' : undefined;
@@ -108,7 +108,11 @@ class Retailer extends Component {
 
             </Grid>
             <Grid className={classes.root} item xs={8} md={8} lg={8}>
-                <RetailerDetail retailer={retailer}/>
+                <RetailerDetail 
+                  retailer={retailer}
+                  sellProduct={sellProduct}
+                  data={sellProductData}
+                />
             </Grid>
           </Grid>
           :null}
@@ -119,14 +123,21 @@ class Retailer extends Component {
   }
 }
 
+const populates=[{child:'supplierId',root:'users'}]
+const collection= 'products'
+// const collection = 'users'
+
 const mapStateToProps = (state, ownProps) => {
-    
-  const id = ownProps.match.params.id;
-  const users = state.firestore.data.users;
-  const user = users ? users[id]: null;
+  const retailers = state.firestore.ordered.retailer
+  const retailer = retailers? retailers[0]:null;
+  const sellProductData = populate(state.firestore,'sellList',populates)
+  const sellProduct = state.firestore.ordered.sellList
+  console.log('hahha', sellProduct)
   return {
     auth: state.firebase.auth,
-    retailer: user
+    retailer: retailer,
+    sellProduct: sellProduct,
+    sellProductData: sellProductData
   }
 };
 
@@ -135,7 +146,8 @@ export default compose(
   firestoreConnect(props => {
     if (!props.users)
       return [
-        { collection: "users", doc: props.match.params.id },
+        { collection:'users', doc: props.match.params.id, storeAs:'retailer' },
+        { collection, where:[['retailerId','array-contains',props.match.params.id]],populates,storeAs:'sellList'}
         
       ];
   })

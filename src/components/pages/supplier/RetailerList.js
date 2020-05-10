@@ -1,10 +1,7 @@
 import React from 'react';
 import { TabPanel } from './SupplierDetailCard'
-import { firestoreConnect, populate } from 'react-redux-firebase'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
 import { Table, TableHead, TableCell, TableBody, TableRow } from '@material-ui/core'
-import { checkArray } from '../dashboard/Dashboard'
+
 
 function RetailerList(props){
     const { product, productkey, value } = props

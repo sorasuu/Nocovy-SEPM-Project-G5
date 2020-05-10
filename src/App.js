@@ -17,8 +17,6 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import "./App.css"
 import Chat from './components/layout/Chat';
-import NewDashBoard from './components/pages/dashboard/NewDashBoard'
-
 
 class App extends Component {
   
@@ -54,11 +52,8 @@ class App extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     auth: state.firebase.auth,
-
-
   }
 };
 

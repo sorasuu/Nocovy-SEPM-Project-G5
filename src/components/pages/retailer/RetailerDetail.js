@@ -73,9 +73,11 @@ const options = ['Your Sell', 'Your Cart'];
 
 function RetailerDetail(props) {
 
-    const productsCheck = checkArray(props.products)
-    const suppliersCheck = checkArray(props.suppliers)
-    const sellList = props.retailer.sellProducts
+    console.log("retailer Detail: ", props.sellProduct)
+    const data = props.data ? props.data: null
+    console.log("daattata", data)
+   
+    const sellList = props.sellProduct
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null); 
     const [openedPopoverId, setOpenPopoverId] = useState(null);
@@ -89,7 +91,6 @@ function RetailerDetail(props) {
 
     const handlePopoverOpen = (event, popoverId) => {
         setOpenPopoverId(popoverId)
-        console.log("CheckHandleOpen",event.currentTarget)
         setAnchorEl(event.currentTarget);
     }
 
@@ -184,9 +185,9 @@ function RetailerDetail(props) {
                             </TableRow>
                         </TableHead>
                       
-                        {sellList ? sellList.map((id, key) =>
+                        {sellList ? sellList.map((item, key) =>
                                  <TableBody >
-                                {productsCheck[id] ?
+                                {data ?
                                     <TableRow  
                                     // aria-owns={openBuyer ? 'mouse-over-popover' : undefined}
                                     aria-haspopup="true"
@@ -194,30 +195,30 @@ function RetailerDetail(props) {
                                     onMouseLeave={handlePopoverClose}
                                     key= {key}>
                                         <TableCell>
-                                            <NavLink to={'/product/'+ id}>
+                                            <NavLink to={'/product/'+ item.id}>
                                             <Button
                                                 variant="contained"
                                                 color="primary"
                                                 className={classes.button}
                                                 endIcon={<Icon>send</Icon>}
                                             >
-                                                {id}
+                                                {item.id}
                                         </Button></NavLink></TableCell>
-                                        <TableCell><img className={classes.img} src={productsCheck[id].cover} /></TableCell>
-                                        <TableCell>{productsCheck[id].name}</TableCell>
-                                        <TableCell>{productsCheck[id].category}</TableCell>
-                                        <TableCell>{productsCheck[id].brand}</TableCell>
-                                        <TableCell>{productsCheck[id].price}</TableCell>
-                                        {suppliersCheck[productsCheck[id].supplierId] ?
-                                            <NavLink to={'/supplier/' + productsCheck[id].supplierId}>
+                                        <TableCell><img className={classes.img} src={data[item.id].cover} /></TableCell>
+                                        <TableCell>{data[item.id].name}</TableCell>
+                                        <TableCell>{data[item.id].category}</TableCell>
+                                        <TableCell>{data[item.id].brand}</TableCell>
+                                        <TableCell>{data[item.id].price}</TableCell>
+                                        {data[item.id].supplierId ?
+                                            <NavLink to={'/supplier/' + data[item.id].supplierId.id}>
                                                 <Button variant="contained" color="primary" component="span">
-                                                    {suppliersCheck[productsCheck[id].supplierId].businessName}
+                                                    {data[item.id].supplierId.businessName}
                                                 </Button>
                                             </NavLink> : null}
 
                                         <Popover
                                             className={classes.popover}
-                                            id={id}
+                                            id={item.id}
                                             open={openedPopoverId === key}
                                             anchorEl={anchorEl}
                                             onClose={handlePopoverClose}
@@ -231,7 +232,7 @@ function RetailerDetail(props) {
                                             }}
                                         >
                                             <Paper className={classes.paper}>
-                                                {productsCheck[id].productImg.map((image, key) =>
+                                                {data[item.id].productImg.map((image, key) =>
                                                     <img style={{ width: '100px', height: '100px' }} 
                                                         key={key} src={image} 
                                                     />
