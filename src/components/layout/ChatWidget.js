@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Fab,withStyles,CardContent,Card, CardHeader,TextField ,List,ListItem,Divider,ListItemText,ListItemAvatar,AvatarTypography} from '@material-ui/core';
+import { Fab,withStyles,CardContent,Card, CardHeader,TextField ,List,ListItem,Divider,ListItemText,ListItemAvatar,AvatarTypography,Modal, Paper} from '@material-ui/core';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import {createChatSession,sendMessage, changeChatSession} from '../store/actions/chatActions'
 import { connect } from 'react-redux'
@@ -135,6 +135,7 @@ class ChatWidget extends Component {
             context:'',
             chatwindow: false,
             chatId:'',
+            open:true,
             
         }
     }
@@ -162,6 +163,9 @@ class ChatWidget extends Component {
           [e.target.id]: e.target.value
         })
       }
+      handleClose = () => {
+        this.setState({open:false});
+      };
     
     // componentDidMount(){
     //     this.setState({chatId:sessionStorage.getItem('chatId')})
@@ -188,13 +192,28 @@ class ChatWidget extends Component {
         const { auth, classes } = this.props;
         const { search, users } = this.state;
         console.log(this.props)
+        var noContact=<div></div>;
           if (!auth.uid) return <Redirect to='/signin' />
+        if (this.props.loaded===true&&this.props.chatsession===null){
+            if(this.props.chatsession.length===0){
+            noContact= <div>
+                <Modal
+  open={this.state.open}
+  onClose={this.handleClose}
+  style={{width:'50%',height:'20%', textAlign:'center',top:'40%',left:'40%' }}
+>
+    <Paper style={{width:'50%',height:'20%', textAlign:'center'}}><p> You don't have any chat available</p></Paper>
 
+ 
+</Modal>
+            </div>
+        }} else{noContact=<div></div>}
         return (
             <div>
                 {this.props.chatId&&this.state.chatId&&this.props.chatsession&&this.props.chatsesiondata?
                <ChatPanel handleChange={this.handleChange} chatId={this.state.chatId} context={this.state.context}
                   uid={this.props.auth.uid} handleSendMessage={this.handleSendMessage} chatsesiondata={this.props.chatsesiondata}/>:null}
+                {noContact}
                 {/* <Container>
                     <Grid container spacing={3}>
                        
@@ -216,22 +235,33 @@ const mapDispatchToProps = dispatch => {
       changeChatSession:(id)=> dispatch(changeChatSession(id))
     }
   }
-
+  var loaded;
 const mapStateToProps = (state,ownProps) => {
     console.log(state,ownProps)
     const chatsession =state.firestore.ordered.chatsesion? state.firestore.ordered.chatsesion:null
     var id
+
      id =ownProps.chatReducer? ownProps.chatReducer.chatid?ownProps.chatReducer.chatid:null:sessionStorage.getItem('chatId')?sessionStorage.getItem('chatId'):null
     if (id===null &&chatsession!==undefined&&chatsession!==null&& ownProps.chatId===null){
         if(chatsession.length>0){
             id = chatsession[0].id
         }
     }
+    
+    const status =state.firestore.status
+    console.log(status.requesting.chatsesion)
+if(status.requested.chatsesion!==undefined&&status.requesting.chatsesion!==undefined){
+    if(status.requested.chatsesion==true&&status.requesting.chatsesion==false){
+        loaded=true
+    }
+}
+    
     return{
         auth: state.firebase.auth,
         chatuser: state.firestore.data.chatuser,
         chatId: id,
         chatsession:chatsession,
+        loaded: loaded,
         chatsesiondata: populate(state.firestore, 'chatsesion', populates),
     }
 
