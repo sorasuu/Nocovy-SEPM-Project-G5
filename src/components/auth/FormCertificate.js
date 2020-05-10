@@ -14,16 +14,22 @@ const ColorLinearProgress = withStyles({
 
 export class FormCertificate extends Component {
     state = {
-        uploading: false
+        uploading: false,
+        disable:false
     }
     continue = e => {
         e.preventDefault();
+        
+        if(this.props.values.images.length>0){
+            this.setState({disable:true})
+        }
         this.setState({ uploading: true });
         this.props.handleUpload(e);
-        // this.props.nextstep();
+        // this.props.nextstep();}
     }
 
     back = e => {
+        
         e.preventDefault();
         this.props.prevStep();
     }
@@ -99,7 +105,7 @@ export class FormCertificate extends Component {
 
                         <div className="input-field">
                             <NoSsr>
-                                <StyledButton onClick={this.continue}>Continue</StyledButton>
+                                <StyledButton onClick={this.continue} disabled={this.state.disable}>Continue</StyledButton>
                             </NoSsr>
 
                             {this.state.uploading ? <ColorLinearProgress style={{ marginBottom: "2%", marginTop: "2%", padding: "5px" }} /> : null}
@@ -110,7 +116,7 @@ export class FormCertificate extends Component {
 
                         <div className="input-field">
                             <NoSsr>
-                                <StyledButton onClick={this.back}>Back</StyledButton>
+                                <StyledButton onClick={this.back}  disabled={this.state.disable}>Back</StyledButton>
                             </NoSsr>
 
                         </div>

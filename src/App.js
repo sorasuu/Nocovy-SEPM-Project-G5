@@ -54,6 +54,7 @@ class App extends Component {
             <Route path='/myproducts' component={() => <ProductsManage products={productlist} />}/> */}
           </Switch>
           {/* <Footer/> */}
+          {this.props.auth.uid?
           <Fab style={{
             right: '20px',
             bottom: '20px',
@@ -61,7 +62,7 @@ class App extends Component {
             position: 'fixed'
           }} onClick={(e) => { this.handleClicked(e) }} >
             <ChatBubbleIcon />
-          </Fab>
+          </Fab>:null}
           {this.state.chatwindow ? <ChatWidget /> : null}
         </div>
       </BrowserRouter>
