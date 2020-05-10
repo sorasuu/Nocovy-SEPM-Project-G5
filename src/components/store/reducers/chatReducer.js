@@ -9,7 +9,7 @@ const chatReducer = (state = initState, action) => {
             console.log('create chat error');
             return state;
         case 'CHANGECHATSESSION':
-            console.log('change chat');
+            console.log('change chat as');
             return { ...state, chatId: action.payload };
         case 'CHAT_SUCCESS':
             console.log('sent message');

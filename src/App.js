@@ -62,7 +62,7 @@ class App extends Component {
           }} onClick={(e) => { this.handleClicked(e) }} >
             <ChatBubbleIcon />
           </Fab>
-          {this.state.chatwindow ? <ChatWidget/> : null}
+          {this.state.chatwindow ? <ChatWidget /> : null}
         </div>
       </BrowserRouter>
     );

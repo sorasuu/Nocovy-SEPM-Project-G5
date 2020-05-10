@@ -19,9 +19,10 @@ export const createChatSession = (chat) => {
     }
   };
 export const changeChatSession = (chatid)=>{
+  console.log('change',chatid)
 return(dispatch, getState)=>{
   sessionStorage.setItem('chatId',chatid)
-  dispatch({ type: 'CHANGECHATSESSION', payload:chatid });
+  dispatch({ type: 'CHANGECHATSESSION', payload: chatid });
 }
 }
 export const sendMessage = (chat) => {
