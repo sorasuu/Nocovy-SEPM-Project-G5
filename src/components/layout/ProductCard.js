@@ -9,6 +9,9 @@ import { useSoftRiseShadowStyles } from '@mui-treasury/styles/shadow/softRise';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import { NavLink } from 'react-router-dom';
 import "../pages/page.css"
+import StyledButton from './StyledButton'
+
+
 const useStyles = makeStyles(() => ({
     card: {
         marginTop: "10%",
@@ -37,7 +40,7 @@ const ProductCard = (props) => {
                 className={cardHeaderShadowStyles.root}
                 classes={cardHeaderStyles}
                 title={props.product.name}
-                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", right: "5%" }}
+                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", right: "5%", zIndex:'1' }}
             />
             <CardContent className={classes.content}
             // ref={hoverRef}
@@ -45,11 +48,11 @@ const ProductCard = (props) => {
                 <div style={{ marginTop: "10%" }}>
                     {/* put image and info */}
                     <div className='image'>
-                        <img src={props.product.productImg} style={{ width: "200px", height: "250px" }} />
+                        <img alt='Product' src={props.product.productImg} style={{ width: "200px", height: "250px" }} />
 
                         <div className="overlay" style={{borderRadius: 16,}}>
                             <NavLink to = {'/product/'+ props.product.id}>
-                                <button>Detail</button>
+                                <StyledButton>Detail</StyledButton>
                             </NavLink>
                         </div>
                     </div>

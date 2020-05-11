@@ -35,7 +35,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <Navbar notifications={notifications} />
+          <Navbar notifications={notifications}/>
           <Switch>
             <Route exact path='/' component={Dashboard} />
             {/* <Route path='/'component={ProductDetail} /> */}

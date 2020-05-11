@@ -2,23 +2,23 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import {InputBase, Container, Typography, Grid, withStyles} from '@material-ui/core'
-import WholesalerInfoCard from './supplier/WholesalerInfoCard'
+import ProfileInfoCard from './supplier/ProfileInfoCard'
 import { firestoreConnect } from 'react-redux-firebase'
 import { storeProducts } from "./data"
-import AddProductCard from '../layout/AddProductCard'
+import AddProductCard from './products/AddProductCard'
+import EditProfileCard from '../layout/EditProfileCard'
 import ProductCard from './products/ProductCard'
 import Modal from '@material-ui/core/Modal'
-import { Redirect, NavLink } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import {createProduct } from '../store/actions/productAction'
+import {editUser } from '../store/actions/userActions'
 import SearchIcon from '@material-ui/icons/Search'
 import { fade } from '@material-ui/core/styles'
-import storageRef from '../../index'
-import { v4 as uuidv4 } from 'uuid'
 import {uploadToStorage} from '../store/actions/uploadAction'
 import {withRouter} from 'react-router-dom';
 import {createChatSession} from '../store/actions/chatActions'
-const useStyles = theme => ({
 
+const useStyles = theme => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -27,7 +27,6 @@ const useStyles = theme => ({
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
     marginTop:"2%",
-    // marginRight: theme.spacing(2),
     justify:'center',
     alignItems:'center',
     direction:'flex',
@@ -50,17 +49,33 @@ const useStyles = theme => ({
     color: 'inherit',
   }
 });
+
 class Profile extends Component {
   state={
-    open:false,
-    businessName: 'Coastal Designs Décor',
-    phoneNumber: '+61 02 4954 4100',
-    address: 'Unit 3/339 Hillsborough Road Warners Bay NSW',
-    website: 'http://www.coastaldesigns.com.au',
-    businessGenre: 'Handmade Products, Home Decor, Licensed Products, Nostalgic Gifts, Woodware',
-    description: `Originally Established in 1985, Coastal Designs Decor is a long established and experienced Australian wholesale distribution business.
-    Our main products are Home decorating accessories in the form of Volkswagen memorabilia, such as VW Beetle and VW Kombi or beach theme and coastal designs like:- Lighthouses Anchors, oars, paddles, beach girl figurines, pelicans, starfish, shells etc.
-    Product lines include Photo frames, money boxes, wall plaques, book boxes, trinket boxes, candle holders, tea light holders, wall art including shadow boxes, shell theme products`,
+    productOpen:false,
+    editOpen:false,
+    type: this.props.currentUser.type,
+    businessName: this.props.currentUser.businessName,
+    phoneNumber: this.props.currentUser.phoneNumber,
+    address: this.props.currentUser.address,
+    website: this.props.currentUser.website,
+    businessGenre: this.props.currentUser.businessGenre,
+    businessDesc: this.props.currentUser.businessDesc,
+    certificate: this.props.currentUser.certificate,
+    wholesaler: this.props.currentUser.wholesaler,
+    logo: this.props.currentUser.logo,
+    newBusinessName: this.props.currentUser.businessName,
+    newPhoneNumber: this.props.currentUser.phoneNumber,
+    newAddress: this.props.currentUser.address,
+    newWebsite: this.props.currentUser.website,
+    newBusinessGenre: this.props.currentUser.businessGenre,
+    newDescription: this.props.currentUser.businessDesc,
+
+    //Figure out editing logo and cert later
+    newCertificate: '', 
+    newLogo: '',
+
+
     products: storeProducts,
     search:'',
     step:1,
@@ -86,10 +101,22 @@ class Profile extends Component {
     progress: '',
   }
 
-  handleOpen = () => {
-    this.setState({open: true});
-    console.log(this.state.open)
-  };
+  handleProductOpen = () => {
+    this.setState({productOpen: true});
+  }
+
+  handleProductClose = () => {
+    this.setState({productOpen: false});
+  }
+
+  handleEditOpen = () => {
+    this.setState({editOpen: true});
+  }
+
+  handleEditClose = () => {
+    this.setState({editOpen: false});
+  }
+
   handleChat=(e)=>{
     console.log('go to chat')
     if (this.props.chatexist===true){
@@ -105,9 +132,6 @@ class Profile extends Component {
     }
 
   }
-  handleClose = () => {
-    this.setState({open: false});
-  };
 
   handleChange = input => e => {
     this.setState({ [input]: e.target.value })
@@ -289,18 +313,34 @@ class Profile extends Component {
       }
       //Form submit functions go here
       this.props.createProduct(product)
-      alert('Product successfully created')
-      this.handleClose()
+      this.handleProductClose()
     }
   }
+
+  submitProfileEdit = () => {
+    //Replace True with validation
+    console.log(this.props.currentUser)
+    if (true){
+      const newProfileData = {
+        id: this.props.currentUser.id,
+        businessGenre: this.state.newBusinessGenre, 
+        businessName: this.state.newBusinessName,
+        businessDesc: this.state.newDescription, 
+        phoneNumber: this.state.newPhoneNumber,
+        address: this.state.newAddress,
+        website: this.state.newWebsite
+      }
+      //Form submit functions go here
+      this.props.editUser(newProfileData)
+      this.handleEditClose()
+    }
+  }
+
   componentDidMount(){
-   
-    if (this.props.match.params.id=== this.props.auth.uid && this.state.owner == false){
+    if (this.props.match.params.id=== this.props.auth.uid && this.state.owner === false){
         this.setState({owner:true})
     }
-  // console.log('??',this.props.certificate)
 
-    // console.log(this.state)
   }
   
   render() {
@@ -314,8 +354,9 @@ class Profile extends Component {
 
     return (
       <Container>
-        <WholesalerInfoCard handleOpen={this.handleOpen} info = {this.state} auth={auth} uid ={this.props.match.params.id} handleChat={this.handleChat}/>
-        <Typography gutterBottom align='center' variant='h3'><text style={{fontWeight:'bold'}}>Products</text></Typography>
+        <div>
+        <ProfileInfoCard handleEditOpen={this.handleEditOpen} handleProductOpen={this.handleProductOpen} info = {this.state} auth={auth} uid ={this.props.match.params.id} handleChat={this.handleChat}/>
+        <Typography gutterBottom style={{fontWeight:'bold'}} align='center' variant='h3'>Products</Typography>
         <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -348,17 +389,27 @@ class Profile extends Component {
         
         </div>
         {this.state.owner?
-          <Modal open={this.state.open} onClose={this.handleClose}>
+          <Modal open={this.state.productOpen} onClose={this.handleProductClose}>
             <div style={{maxWidth:'50%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%',}}>
-              <AddProductCard props={this.props} values={this.state} prevStep={this.prevStep} step={this.state.step} closeModal={this.handleClose} formSubmit={this.formSubmit} handleChange={this.handleChange} handleCatChange={this.handleCatChange} handleUpload={this.handleUpload} handleChangeImg={this.handleChangeImg.bind(this)}/>
+              <AddProductCard props={this.props} values={this.state} prevStep={this.prevStep} step={this.state.step} closeModal={this.handleProductClose} formSubmit={this.formSubmit} handleChange={this.handleChange} handleCatChange={this.handleCatChange} handleUpload={this.handleUpload} handleChangeImg={this.handleChangeImg.bind(this)}/>
             </div>
-          </Modal>:null}
+          </Modal> : null
+        }
+        {this.state.owner?
+          <Modal open={this.state.editOpen} onClose={this.handleEditClose}>
+            <div style={{maxWidth:'50%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%',}}>
+              <EditProfileCard props={this.props} values={this.state} closeModal={this.handleEditClose} formSubmit={this.submitProfileEdit} handleChange={this.handleChange} handleUpload={this.handleUpload}/>
+            </div>
+          </Modal> : null
+        }
+        </div>
       </Container>
     )
   }
 }
 var prourls = new Set()
 const mapStateToProps = (state,ownProps) => {
+  // eslint-disable-next-line no-unused-vars
   const id = ownProps.match.params.id;
   const chatId1 = ownProps.match.params.id+ state.firebase.auth.uid
   const chatId2 =  state.firebase.auth.uid+ownProps.match.params.id
@@ -381,10 +432,10 @@ const mapStateToProps = (state,ownProps) => {
     }
     for (i in state.firestore.ordered.chatsesion){
 
-      if (state.firestore.ordered.chatsesion[i].id==chatId1){
+      if (state.firestore.ordered.chatsesion[i].id===chatId1){
         chatexist = true 
         chatId = chatId1
-      }else if( state.firestore.ordered.chatsesion[i].id==chatId2){
+      }else if( state.firestore.ordered.chatsesion[i].id===chatId2){
         chatexist = true 
         chatId = chatId2
       }else{
@@ -406,6 +457,7 @@ const mapStateToProps = (state,ownProps) => {
 const mapDispatchToProps = dispatch => {
   return {
     createProduct: (product) => dispatch(createProduct(product)),
+    editUser: (newProfileInfo) => dispatch(editUser(newProfileInfo)),
     uploadToStorage:(file)=>dispatch(uploadToStorage(file)),
     createChatSession:(chat)=> dispatch(createChatSession(chat))
   }

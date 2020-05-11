@@ -113,6 +113,7 @@ class Dashboard extends Component {
 
         <h1 style={{ fontFamily: 'Muli', marginBottom: "5%" }}>Welcome To Nocovy</h1>
         <br />
+        <br />
         <Tabs
           orientation="horizontal"
           value={value}
