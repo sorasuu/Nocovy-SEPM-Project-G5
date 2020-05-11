@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 
-import { firestoreConnect } from 'react-redux-firebase'
+import { firestoreConnect, populate } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { fade } from '@material-ui/core/styles'
@@ -10,7 +10,6 @@ import {
   CardContent, Typography, CardActions, Button
 } from '@material-ui/core'
 import RetailerDetail from './RetailerDetail'
-import {retailer} from './data'
 
 
 const useStyles = theme => ({
@@ -40,7 +39,7 @@ const useStyles = theme => ({
 
 class Retailer extends Component {
   state = {
-    retailer: retailer[0],
+    anchorEl: null,
   }
 
   handleClick = (event) => {
@@ -57,8 +56,8 @@ class Retailer extends Component {
 
   render() {
 
-    const { auth, classes } = this.props;
-    const { sellList, retailer, expanded, anchorEl } = this.state;
+    const { auth, classes, retailer , sellProduct, sellProductData} = this.props;
+    const { anchorEl } = this.state;
     const open = Boolean(anchorEl)
     const id = open ? 'popover' : undefined;
     if (!auth.uid) return <Redirect to='/signin' />
@@ -66,7 +65,7 @@ class Retailer extends Component {
     return (
       <div className="container" style={{ textAlign: 'center' }}>
         <div style={{ marginTop: '10%' }}>
-
+        {retailer?
           <Grid
             container
             spacing={2}
@@ -81,10 +80,10 @@ class Retailer extends Component {
                     className={classes.media}
 
                     title="Contemplative Reptile"
-                  ><img src={retailer.avatar} /></CardMedia>
+                  ><img src={retailer.logo} /></CardMedia>
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {retailer.name}
+                      {retailer.displayName}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                       Hello, Im selling vehicles in Vietnam
@@ -109,10 +108,14 @@ class Retailer extends Component {
 
             </Grid>
             <Grid className={classes.root} item xs={8} md={8} lg={8}>
-                <RetailerDetail retailer={retailer}/>
+                <RetailerDetail 
+                  retailer={retailer}
+                  sellProduct={sellProduct}
+                  data={sellProductData}
+                />
             </Grid>
           </Grid>
-
+          :null}
         </div>
       </div>
 
@@ -120,16 +123,32 @@ class Retailer extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  // console.log("haha", state.product);
+const populates=[{child:'supplierId',root:'users'}]
+const collection= 'products'
+// const collection = 'users'
+
+const mapStateToProps = (state, ownProps) => {
+  const retailers = state.firestore.ordered.retailer
+  const retailer = retailers? retailers[0]:null;
+  const sellProductData = populate(state.firestore,'sellList',populates)
+  const sellProduct = state.firestore.ordered.sellList
+  console.log('hahha', sellProduct)
   return {
     auth: state.firebase.auth,
+    retailer: retailer,
+    sellProduct: sellProduct,
+    sellProductData: sellProductData
   }
 };
 
 export default compose(
   connect(mapStateToProps),
-  // firestoreConnect([
-
-  // ])
+  firestoreConnect(props => {
+    if (!props.users)
+      return [
+        { collection:'users', doc: props.match.params.id, storeAs:'retailer' },
+        { collection, where:[['retailerId','array-contains',props.match.params.id]],populates,storeAs:'sellList'}
+        
+      ];
+  })
 )(withStyles(useStyles)(Retailer))

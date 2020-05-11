@@ -10,7 +10,7 @@ import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import Divider from '@material-ui/core/Divider';
 import Link from '@material-ui/core/Link';
-import StyledButton from './StyledButton'
+import StyledButton from '../../layout/StyledButton'
 import { NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
