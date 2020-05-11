@@ -29,13 +29,13 @@ class App extends Component {
     this.setState({ chatwindow: !this.state.chatwindow })
   }
   render() {
-    const { productobj, productlist, supplierlist, retailerlist, currentUser, chatsession, notifications}= this.props
+    const {  productlist, supplierlist, retailerlist, currentUser, chatsession, notifications,lastContact}= this.props
   
     
     return (
       <BrowserRouter>
         <div className="App">
-          <Navbar notifications={notifications} />
+          <Navbar notifications={notifications} lastContact ={lastContact} />
           <Switch>
             <Route exact path='/' component={Dashboard} />
             {/* <Route path='/'component={ProductDetail} /> */}
@@ -74,12 +74,14 @@ const mapStateToProps = (state) => {
   console.log(state);
   const users = state.firestore.ordered.currentUser
   const currentUser = users ? users[0] : null
-
+  const chatsession = state.firestore.ordered.allchatsesion
+  const lastContact = chatsession? chatsession[0]:null
   return {
     auth: state.firebase.auth,
     currentUser: currentUser,
     notifications: state.firestore.ordered.notifications,
-    chatsession: state.firestore.ordered.allchatsesion
+    chatsession: chatsession,
+    lastContact: lastContact
   }
 };
 

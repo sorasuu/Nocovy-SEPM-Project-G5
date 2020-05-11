@@ -56,10 +56,10 @@ export  function LongMenu(props) {
         onClose={handleClose}
       >
       <NavLink to={`/profile/${props.props.uid}`} style={{color:"black"}} >
-      <MenuItem onClick={handleClose}>My Products</MenuItem></NavLink>
+      <MenuItem onClick={handleClose}>My Profile</MenuItem></NavLink>
 
-      <NavLink to='/reports' style={{color:"black"}}>
-      <MenuItem onClick={handleClose}>Product Reports</MenuItem></NavLink>
+      <NavLink to={'/reports' }style={{color:"black"}}>
+      <MenuItem onClick={handleClose}>Chat</MenuItem></NavLink>
       </Menu>
       
     </div>
