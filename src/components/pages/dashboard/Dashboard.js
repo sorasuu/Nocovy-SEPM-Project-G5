@@ -118,9 +118,9 @@ class Dashboard extends Component {
     this.setState({ value: newValue });
 
   }
-  handleSelectFilter = e =>{
-    this.setState({filter: e.target.value})
-    console.log('filter', this.state.filter)
+  handleSelectFilter = (e,id) =>{
+    this.setState({filter:id})
+
   }
 
   render() {
@@ -128,7 +128,7 @@ class Dashboard extends Component {
     const { search, value, filter } = this.state;
     const afterSearchSupplier = checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchProduct = checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
-    
+    console.log('filter', this.state.filter)
     const uniqueProductCategory = getUnique(checkArray(products), 'category')
     const afterFilter = checkArray(afterSearchProduct).filter(product => product.category.indexOf(filter) !== -1)
     
@@ -171,7 +171,7 @@ class Dashboard extends Component {
           <TabPanel value={value} index={0}>
             <ButtonGroup style={{marginBottom:30}}  value={filter}>
               {uniqueProductCategory.map((product, key) =>
-                <Button key={key} value={product.category} onClick={this.handleSelectFilter} >
+                <Button key={key} onClick={e=> this.handleSelectFilter(e,product.category)} >
                   {product.category}
                 </Button>
               )}
