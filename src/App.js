@@ -46,12 +46,8 @@ class App extends Component {
             <Route path='/signin'component={SignIn}/>
             <Route path='/signup' component={SignUp} />
             <Route path='/profile/:id' component={(props) => <Profile {...props} currentUser={currentUser} chatsesion={chatsession} />} />
-            {/* <Route path='/myproducts' component={Profile} /> */}
             <Route path='/chat/:id' component={(props) => <Chat {...props} currentUser={currentUser} chatsession={chatsession}  />} />
-            {/* <Route path='/reports'  component={() => <Reports products={productobj} reports={reports} />}/>
-            <Route path='/myproducts' component={() => <ProductsManage products={productlist} />}/> */}
           </Switch>
-          {/* <Footer/> */}
           {this.props.auth.uid?
           <Fab style={{
             right: '20px',
