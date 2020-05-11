@@ -112,12 +112,6 @@ class Dashboard extends Component {
       <div className="container" style={{ textAlign: 'center' }}>
 
         <h1 style={{ fontFamily: 'Muli', marginBottom: "5%" }}>Welcome To Nocovy</h1>
-        <NavLink to="/reports" style={{ marginRight: "2%", marginBottom: "2%" }}>
-          <StyledButton>Product Report</StyledButton>
-        </NavLink>
-        <NavLink to="/products" style={{ marginBottom: "2%" }}>
-          <StyledButton>Product Management</StyledButton>
-        </NavLink>
         <br />
         <Tabs
           orientation="horizontal"

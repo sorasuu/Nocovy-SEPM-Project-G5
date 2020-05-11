@@ -59,10 +59,11 @@ const populates = [
 const collection = 'products'
 
 const mapStateToProps = (state, ownProps) => {
+  console.log (state)
   const product = populate(state.firestore, 'thisProduct', populates)
   const auth = state.firebase.auth
   var owner = null
-  if (auth!==null&&auth!== undefined&& product!==null){
+  if (auth!==null&&auth!== undefined&& product!==null&& product!==undefined){
     if (auth.uid === product.supplierId){
       owner=true
     }
