@@ -85,15 +85,23 @@ export function checkArray(array) {
   return data
 }
 
-const category=['fashion', 'luxury']
+const allCategories = [
+  'fashion',
+  'vehicle',
+  'luxury',
+  'convenience',
+  'something',
+  'electronic',
+  'beauty'
+];
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       search: '',
       value: 0,
-      filter: '',
-      // products:null
+      filter: [],
     };
     this.handleChange = this.handleChange.bind(this)
    
@@ -107,24 +115,38 @@ class Dashboard extends Component {
     this.setState({ value: newValue });
 
   }
-  handleSelectFilter = (e) =>{
-    
-      this.state.filter=e.target.value
-    // }
-    console.log('filter', this.state.filter)
-  }
+  handleSelectFilter = (item) =>{
+    this.setState({filter:item})
 
+  }
+  
   render() {
+    
     const { auth, classes, products, suppliers, retailers } = this.props;
     const { search, value, filter } = this.state;
     const afterSearchSupplier = checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchProduct = checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchRetailer = checkArray(retailers).filter(retailer => retailer.displayName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+    console.log('filter', filter)
+    // const afterFilter = checkArray(afterSearchProduct).filter(function(item){
+    //     return 
+    // })
+    // var array1 =['a', 'b', 'c']
+    // var array2 =['a', 'b', 'c', 'd', 'e']
     
-    const afterFilter = checkArray(afterSearchProduct).filter(function(result){
-      return result.category === filter;
-    })
+    // array1 = array1.filter(function(item){
+    //   return !array2.includes(item)? true : array2.splice(array2.indexOf(item), 1) && false && array1.length === 0;
+    // })
+    // console.log("array1:",[],'array2:', ['d', 'e'])
+
+    console.log("check products", checkArray(afterSearchProduct))
     
+    console.log('check category: ',checkArray(afterSearchProduct).category)
+
+    // filter = filter.filter(function(item){
+    //   return !checkArray(afterSearchProduct).category.includes(item)? true: 
+    //           checkArray(afterSearchProduct).category && false && filter.length === 0;
+    // })    
     if (!auth.uid) return <Redirect to='/signin'/>
     
     return (
@@ -162,13 +184,15 @@ class Dashboard extends Component {
        
         <div style={{ marginTop: '10%' }}>
           <TabPanel value={value} index={0}>
-            <FilterForm products = { products } filter={this.handleSelectFilter} item={filter}/>
+            
+            <FilterForm products={products} allCategories={allCategories} handleFilter={item => this.handleSelectFilter(item)}/>
             <Grid
               container
               spacing={2}
               direction="row"
               justify="center"
               alignItems="center"
+              style={{marginTop:'30px'}}
             >
 
               {afterSearchProduct.map((product, index) => {
