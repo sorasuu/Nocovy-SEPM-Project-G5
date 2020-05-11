@@ -29,7 +29,7 @@ class App extends Component {
     this.setState({ chatwindow: !this.state.chatwindow })
   }
   render() {
-    const { productobj, productlist, supplierlist, retailerlist, currentUser, chatsesion, notifications}= this.props
+    const { productobj, productlist, supplierlist, retailerlist, currentUser, chatsession, notifications}= this.props
   
     
     return (
@@ -45,9 +45,9 @@ class App extends Component {
             <Route path='/retailer/:id' component={(props) =><Retailer {...props} class={retailerlist}/>}/>
             <Route path='/signin'component={SignIn}/>
             <Route path='/signup' component={SignUp} />
-            <Route path='/profile/:id' component={(props) => <Profile {...props} currentUser={currentUser} chatsesion={chatsesion} />} />
+            <Route path='/profile/:id' component={(props) => <Profile {...props} currentUser={currentUser} chatsesion={chatsession} />} />
             {/* <Route path='/myproducts' component={Profile} /> */}
-            <Route path='/chat/:id' component={(props) => <Chat {...props} currentUser={currentUser} />} />
+            <Route path='/chat/:id' component={(props) => <Chat {...props} currentUser={currentUser} chatsession={chatsession}  />} />
             {/* <Route path='/reports'  component={() => <Reports products={productobj} reports={reports} />}/>
             <Route path='/myproducts' component={() => <ProductsManage products={productlist} />}/> */}
           </Switch>
@@ -79,7 +79,7 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     currentUser: currentUser,
     notifications: state.firestore.ordered.notifications,
-    chatsesion: state.firestore.ordered.allchatsesion
+    chatsession: state.firestore.ordered.allchatsesion
   }
 };
 
