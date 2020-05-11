@@ -31,9 +31,9 @@ export const editProduct = (product) => {
       });
     }
   };
-export const deleteProduct = (product) => {
+export const deleteProduct = (id) => {
 return (dispatch, getState) => {
-  firebase.firestore().collection('products').doc(product.id).delete()
+  firebase.firestore().collection('products').doc(id).delete()
     .then(() => {
     dispatch({ type: 'DELETE_PRODUCT_SUCCESS' });
     }).catch(err => {
