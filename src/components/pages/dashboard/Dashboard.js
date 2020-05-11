@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { Redirect, NavLink } from 'react-router-dom'
 import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
@@ -11,6 +11,7 @@ import { Grid, InputBase, withStyles,
 import ProductCard from '../products/ProductCard'
 import SearchIcon from '@material-ui/icons/Search';
 import { TabPanel, a11yProps } from './AdminDashboard'
+import FilterForm from './FilterForm'
 const useStyles = theme => ({
 
   search: {
@@ -83,22 +84,8 @@ export function checkArray(array) {
   }
   return data
 }
-export function getUnique(arr, comp) {
-  const unique = arr
-    //store the comparison values in array
-    .map(e => e[comp])
 
-    // store the keys of the unique objects
-    .map((e, i, final) => final.indexOf(e) === i && i)
-
-    // eliminate the dead keys & store unique objects
-    .filter(e => arr[e])
-
-    .map(e => arr[e]);
-
-  return unique;
-}
-
+const category=['fashion', 'luxury']
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -106,8 +93,10 @@ class Dashboard extends Component {
       search: '',
       value: 0,
       filter: '',
+      // products:null
     };
     this.handleChange = this.handleChange.bind(this)
+   
   }
 
   onChange = e => {
@@ -118,8 +107,10 @@ class Dashboard extends Component {
     this.setState({ value: newValue });
 
   }
-  handleSelectFilter = e =>{
-    this.setState({filter: e.target.value})
+  handleSelectFilter = (e) =>{
+    
+      this.state.filter=e.target.value
+    // }
     console.log('filter', this.state.filter)
   }
 
@@ -128,9 +119,11 @@ class Dashboard extends Component {
     const { search, value, filter } = this.state;
     const afterSearchSupplier = checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchProduct = checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+    const afterSearchRetailer = checkArray(retailers).filter(retailer => retailer.displayName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     
-    const uniqueProductCategory = getUnique(checkArray(products), 'category')
-    const afterFilter = checkArray(afterSearchProduct).filter(product => product.category.indexOf(filter) !== -1)
+    const afterFilter = checkArray(afterSearchProduct).filter(function(result){
+      return result.category === filter;
+    })
     
     if (!auth.uid) return <Redirect to='/signin'/>
     
@@ -169,13 +162,7 @@ class Dashboard extends Component {
        
         <div style={{ marginTop: '10%' }}>
           <TabPanel value={value} index={0}>
-            <ButtonGroup style={{marginBottom:30}}  value={filter}>
-              {uniqueProductCategory.map((product, key) =>
-                <Button key={key} value={product.category} onClick={this.handleSelectFilter} >
-                  {product.category}
-                </Button>
-              )}
-            </ButtonGroup>
+            <FilterForm products = { products } filter={this.handleSelectFilter} item={filter}/>
             <Grid
               container
               spacing={2}
@@ -184,7 +171,7 @@ class Dashboard extends Component {
               alignItems="center"
             >
 
-              {afterFilter.map((product, index) => {
+              {afterSearchProduct.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
                     <ProductCard product={product}/>
@@ -246,7 +233,7 @@ class Dashboard extends Component {
               justify="center"
               alignItems="center"
             >
-              {checkArray(retailers).filter(retailer => retailer.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1).map((retailer, index) => {
+              {afterSearchRetailer.map((retailer, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
 
@@ -303,7 +290,8 @@ export default compose(
   firestoreConnect([
     { collection: 'products' },
     { collection: 'users', where: [["type", "==", "supplier"]], storeAs: 'suppliers' },
-    { collection: 'users', where: [["type", "==", "retailer"]], storeAs: 'retailers' }
+    { collection: 'users', where: [["type", "==", "retailer"]], storeAs: 'retailers' },
+   
   ]),
   
 
