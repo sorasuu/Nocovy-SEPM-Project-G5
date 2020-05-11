@@ -118,7 +118,7 @@ export const ProductInfoCard = props => {
         <Grid container spacing={2}>
             <Grid item xs={6} md={6} lg={6}><h4>Author:</h4></Grid>
             <Grid item xs={6} md={6} lg={6}>{props.product.supplierId.displayName}</Grid>
-            <Grid item xs={6} md={6} lg={6}><PriceForm/></Grid>
+            <Grid item xs={6} md={6} lg={6}><PriceForm product={props.product}/></Grid>
         </Grid>
         <TableContainer className={classes.root}>
  

@@ -6,6 +6,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import {Typography} from '@material-ui/core';
+import {deleteProduct} from '../../store/actions/productAction';
+import { firestoreConnect } from 'react-redux-firebase'
+import {withRouter} from 'react-router-dom';
+import { connect } from 'react-redux'
+import { compose } from 'redux'
 
 
 
@@ -13,6 +19,7 @@ export default class PriceForm extends React.Component{
   constructor(props){
     super(props);
     this.state ={
+      openDelete:false,
       open: false,
       price:{
         fobPoint:'',
@@ -29,6 +36,16 @@ export default class PriceForm extends React.Component{
       }
     }
   }
+
+  handleDeleteDialog =() => {
+    this.setState({openDelete: !this.state.openDelete})
+  }
+
+  handleDelete =() => {
+    // console.log(this.props.product)
+    this.props.deleteProduct(this.props.product)
+  }
+
   handleClickForm =() => {
     this.setState({open: !this.state.open})
   }
@@ -49,7 +66,7 @@ export default class PriceForm extends React.Component{
 
   render(){
     
-    const { open, 
+    const { open, openDelete,
     price:{
       fob,
       frate,
@@ -68,6 +85,25 @@ export default class PriceForm extends React.Component{
         <Button variant="outlined" color="primary" onClick={this.handleClickForm}>
           Edit
         </Button>
+        <br/>
+        <Button variant="outlined" color="secondary" onClick={this.handleDeleteDialog}>
+          Delete
+        </Button>
+
+        <Dialog open={openDelete} onClose={this.handleDeleteDialog} aria-labelledby="del-dialog-title">
+          <DialogTitle id="del-dialog-title">Confirm deletion</DialogTitle>
+          <DialogContent>
+            <Typography>Are you sure you wish to delete this product?</Typography>
+          </DialogContent>
+          <DialogActions>
+           <Button onClick={this.handleDeleteDialog} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.handleDelete} color="primary">
+              Confirm
+            </Button>
+          </DialogActions>
+        </Dialog>
        
         <Dialog open={open} onClose={this.handleClickForm} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Price Form</DialogTitle>
@@ -183,5 +219,4 @@ export default class PriceForm extends React.Component{
         
       </Fragment>
   }
- 
 }

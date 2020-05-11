@@ -84,7 +84,7 @@ class Profile extends Component {
     productBrand:'',
     productOrigin:'',
     productDesc:'',
-    productCategories: '',
+    productCategories: [],
     dutyCost:0,
     dutyRate:0,
     FOB:'',
@@ -138,7 +138,8 @@ class Profile extends Component {
   }
 
   handleCatChange = input => e => {
-    this.setState({ [input]: e.target.value })
+    var a = [e.target.value, 'helloWorld']
+    this.setState({ [input]: a })
     console.log(this.state)
     //Write function to parse string input into array of tags
   }
@@ -286,17 +287,24 @@ class Profile extends Component {
 
   formSubmit = () => {
     if (this.validateForm()){
-      const product = {
+
+      //FIX THIS TO FIT WITH NEW DATA
+
+      var timeStamp = Math.floor(Date.now() / 1000);
+      var product = {
+        authorEmail: this.props.user.email,
+        authorName: this.props.user.displayName,
+        category: this.state.productCategories, 
+        cover: this.props.productImg[0],
         supplierId: this.props.auth.uid,
         productImg: this.props.productImg,
         name: this.state.productName, 
-        authorName: this.props.user.displayName,
+        createdAt: timeStamp,
+        description: this.state.productDesc, 
         detail: [
           'origin: '+ this.state.productOrigin,
           'brand:'+ this.state.productBrand
         ], 
-        description: this.state.productDesc, 
-        category: this.state.productCategories, 
         price: {
           dutyCost: this.state.dutyCost,
           dutyRate: this.state.dutyRate,
@@ -321,7 +329,7 @@ class Profile extends Component {
     //Replace True with validation
     console.log(this.props.currentUser)
     if (true){
-      const newProfileData = {
+      var newProfileData = {
         id: this.props.currentUser.id,
         businessGenre: this.state.newBusinessGenre, 
         businessName: this.state.newBusinessName,
