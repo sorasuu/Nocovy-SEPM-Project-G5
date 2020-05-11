@@ -30,7 +30,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ProductCard = (props) => {
-    console.log("product card", props.product)
+    // console.log("product card", props.product)
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useSoftRiseShadowStyles({ inactive: false });

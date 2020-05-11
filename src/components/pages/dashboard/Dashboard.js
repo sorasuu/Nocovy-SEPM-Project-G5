@@ -4,8 +4,10 @@ import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { fade } from '@material-ui/core/styles'
-import { Grid, InputBase, withStyles, Tabs, Tab, CardContent, Typography, CardMedia, Card } from '@material-ui/core'
-import StyledButton from '../../layout/StyledButton'
+import { Grid, InputBase, withStyles, 
+        Tabs, Tab, CardContent, Typography, 
+        CardMedia, Card, ButtonGroup, Button } from '@material-ui/core'
+// import StyledButton from '../../layout/StyledButton'
 import ProductCard from '../products/ProductCard'
 import SearchIcon from '@material-ui/icons/Search';
 import { TabPanel, a11yProps } from './AdminDashboard'
@@ -75,11 +77,26 @@ const useStyles = theme => ({
 });
 
 export function checkArray(array) {
-  var data = [{id:'Loading...',pending:true, name:"Loading", displayName: "Loading", businessName: 'Loading', price:'Loading' }];
+  var data = [{id:'Loading...',category:'Loading...',pending:true, name:"Loading", displayName: "Loading", businessName: 'Loading', price:'Loading' }];
   if (array !== undefined) {
     data = array
   }
   return data
+}
+export function getUnique(arr, comp) {
+  const unique = arr
+    //store the comparison values in array
+    .map(e => e[comp])
+
+    // store the keys of the unique objects
+    .map((e, i, final) => final.indexOf(e) === i && i)
+
+    // eliminate the dead keys & store unique objects
+    .filter(e => arr[e])
+
+    .map(e => arr[e]);
+
+  return unique;
 }
 
 class Dashboard extends Component {
@@ -88,6 +105,7 @@ class Dashboard extends Component {
     this.state = {
       search: '',
       value: 0,
+      filter: '',
     };
     this.handleChange = this.handleChange.bind(this)
   }
@@ -100,24 +118,28 @@ class Dashboard extends Component {
     this.setState({ value: newValue });
 
   }
+  handleSelectFilter = e =>{
+    this.setState({filter: e.target.value})
+    console.log('filter', this.state.filter)
+  }
 
   render() {
     const { auth, classes, products, suppliers, retailers } = this.props;
-    const { search, value } = this.state;
-
-    if (!auth.uid) return <Redirect to='/signin' />
-
+    const { search, value, filter } = this.state;
+    const afterSearchSupplier = checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+    const afterSearchProduct = checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+    
+    const uniqueProductCategory = getUnique(checkArray(products), 'category')
+    const afterFilter = checkArray(afterSearchProduct).filter(product => product.category.indexOf(filter) !== -1)
+    
+    if (!auth.uid) return <Redirect to='/signin'/>
+    
     return (
 
       <div className="container" style={{ textAlign: 'center' }}>
 
         <h1 style={{ fontFamily: 'Muli', marginBottom: "5%" }}>Welcome To Nocovy</h1>
-        <NavLink to="/reports" style={{ marginRight: "2%", marginBottom: "2%" }}>
-          <StyledButton>Product Report</StyledButton>
-        </NavLink>
-        <NavLink to="/products" style={{ marginBottom: "2%" }}>
-          <StyledButton>Product Management</StyledButton>
-        </NavLink>
+        <br />
         <br />
         <Tabs
           orientation="horizontal"
@@ -144,8 +166,16 @@ class Dashboard extends Component {
             onChange={this.onChange}
           />
         </div>
+       
         <div style={{ marginTop: '10%' }}>
           <TabPanel value={value} index={0}>
+            <ButtonGroup style={{marginBottom:30}}  value={filter}>
+              {uniqueProductCategory.map((product, key) =>
+                <Button key={key} value={product.category} onClick={this.handleSelectFilter} >
+                  {product.category}
+                </Button>
+              )}
+            </ButtonGroup>
             <Grid
               container
               spacing={2}
@@ -154,7 +184,7 @@ class Dashboard extends Component {
               alignItems="center"
             >
 
-              {checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1).map((product, index) => {
+              {afterFilter.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
                     <ProductCard product={product}/>
@@ -172,7 +202,7 @@ class Dashboard extends Component {
               justify="center"
               alignItems="center"
             >
-              {checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1).map((supplier, index) => {
+              {afterSearchSupplier.map((supplier, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
 
