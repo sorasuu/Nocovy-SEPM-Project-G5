@@ -29,13 +29,13 @@ class App extends Component {
     this.setState({ chatwindow: !this.state.chatwindow })
   }
   render() {
-    const { productobj, productlist, supplierlist, retailerlist, currentUser, chatsession, notifications}= this.props
+    const {  productlist, supplierlist, retailerlist, currentUser, chatsession, notifications,lastContact}= this.props
   
     
     return (
       <BrowserRouter>
         <div className="App">
-          <Navbar notifications={notifications}/>
+          <Navbar notifications={notifications} lastContact ={lastContact} />
           <Switch>
             <Route exact path='/' component={Dashboard} />
             {/* <Route path='/'component={ProductDetail} /> */}
@@ -46,12 +46,8 @@ class App extends Component {
             <Route path='/signin'component={SignIn}/>
             <Route path='/signup' component={SignUp} />
             <Route path='/profile/:id' component={(props) => <Profile {...props} currentUser={currentUser} chatsesion={chatsession} />} />
-            {/* <Route path='/myproducts' component={Profile} /> */}
             <Route path='/chat/:id' component={(props) => <Chat {...props} currentUser={currentUser} chatsession={chatsession}  />} />
-            {/* <Route path='/reports'  component={() => <Reports products={productobj} reports={reports} />}/>
-            <Route path='/myproducts' component={() => <ProductsManage products={productlist} />}/> */}
           </Switch>
-          {/* <Footer/> */}
           {this.props.auth.uid?
           <Fab style={{
             right: '20px',
@@ -74,12 +70,14 @@ const mapStateToProps = (state) => {
   console.log(state);
   const users = state.firestore.ordered.currentUser
   const currentUser = users ? users[0] : null
-
+  const chatsession = state.firestore.ordered.allchatsesion
+  const lastContact = chatsession? chatsession[0]:null
   return {
     auth: state.firebase.auth,
     currentUser: currentUser,
     notifications: state.firestore.ordered.notifications,
-    chatsession: state.firestore.ordered.allchatsesion
+    chatsession: chatsession,
+    lastContact: lastContact
   }
 };
 
