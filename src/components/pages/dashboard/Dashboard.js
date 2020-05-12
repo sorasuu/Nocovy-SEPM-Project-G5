@@ -212,7 +212,7 @@ class Dashboard extends Component {
               {found.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                    <ProductCard product={product}/>
+                    <ProductCard product={product} uid ={this.props.auth.uid}/>
                   </Grid>
                 )
               })}
