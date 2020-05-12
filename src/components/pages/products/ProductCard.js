@@ -18,6 +18,9 @@ import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
 import "../page.css"
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import RemoveRoundedIcon from '@material-ui/icons/RemoveRounded';
+import ProductImageDetail  from './ProductImageDetail'
+import { useSelector } from 'react-redux'
+import { useFirestoreConnect } from 'react-redux-firebase'
 
 const useStyles = makeStyles(() => ({
     card: {
@@ -31,7 +34,19 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ProductCard = (props) => {
-    console.log("product card", props.product)
+    console.log("why?", props)
+    // useFirestoreConnect((props)=>{
+    // if(props.product !== undefined){
+    //     return[
+
+    //         {collection:'users', doc: props.product.supplierId}
+    //     ]
+    //     }else{
+    //         return[]
+    //     }
+    // })
+    // const supplier = useSelector(({ firestore: { data } }) => data.users && data.users[props.product.supplierId])
+    // console.log("product card", supplier)
     const classes = useStyles();
     const mediaStyles = useFourThreeCardMediaStyles();
     const textCardContentStyles = useN04TextInfoContentStyles();
@@ -97,29 +112,38 @@ const ProductCard = (props) => {
                                 aria-labelledby="responsive-dialog-title"
                             >
                                 <h4 style={{ margin: '40px' }}>{product.name}</h4>
-                                <Grid container>
-                                    <Grid item xs={8} md={8} lg={8}  >
-                                        <Carousel itemToShow={1}>
-                                            {product.productImg ? product.productImg.map((item, key) =>
-                                                <img key={key} style={{ minWidth: 200, height: 500 }} src={item} />
-                                            ) :
-                                                <img src={product.cover} />
-                                            }
-                                        </Carousel>
+                                <Grid container style={{margin:'1%'}}>
+                                    <Grid item xs={7} md={7} lg={7}  >
+                                        <ProductImageDetail image = {product}/>
                                     </Grid>
-                                    <Grid item xs={4} md={4} lg={4}>
+                                    <Grid item xs={5} md={5} lg={5}>
                                         <DialogTitle id="responsive-dialog-title">
-                                            {product.id}
+                                            <h5>ID:</h5> <div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold' }}>{product.id}</div>
                                         </DialogTitle>
                                         <DialogContent>
-                                            {product.brand}
-                                            {product.authorName}
+                                            <Grid container justify="flex-start">
+                                                <Grid item xs={6}><h5>Categories:</h5></Grid>
+                                                <Grid item xs={6}>{product.category.map((item) =><div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold' }}>{item.toUpperCase()} </div>)}</Grid>
+                                                <br/>
+                                                <Grid item xs={6}> <h5>Unit Price:</h5></Grid>
+                                                <Grid item xs={6}> <div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold'}}> {product.price.unitPrice} </div></Grid>
+                                                <Grid item xs={6}><h5>Calculator</h5></Grid>
+                                                <Grid item xs={6}><h5></h5></Grid>
+                                                <Grid item xs={6}>
+                                                    <Grid container direction="row" justify="center" alignItems="center">
+                                                        <Grid item xs={4}><Button onClick={buyLess}><RemoveRoundedIcon/></Button></Grid>
+                                                        <Grid item xs={4}>   <div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold'}}>{number} </div></Grid>
+                                                        <Grid item xs={4}><Button onClick={buyMore}><AddRoundedIcon/></Button></Grid>
+                                                    </Grid>
+                                                </Grid>
+                                                <Grid item xs={6}><div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold'}}> = {product.price.unitPrice * number}</div></Grid> 
+                                               
+                                               
+                                            </Grid>
                                         </DialogContent>
                                         <Grid container justify='center'>
 
-                                            <Button onClick={buyLess    }><RemoveRoundedIcon/></Button>
-                                            <h4>{number}</h4>
-                                            <Button onClick={buyMore}><AddRoundedIcon/></Button>
+                                            
 
                                         </Grid>
                                     </Grid>
@@ -166,5 +190,7 @@ const ProductCard = (props) => {
 };
 
 
+ export default ProductCard
+ 
 
-export default ProductCard;
+ 
