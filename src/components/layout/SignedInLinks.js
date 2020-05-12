@@ -57,9 +57,9 @@ export  function LongMenu(props) {
       >
       <NavLink to={`/profile/${props.props.uid}`} style={{color:"black"}} >
       <MenuItem onClick={handleClose}>My Profile</MenuItem></NavLink>
-
-      <NavLink to={'/reports' }style={{color:"black"}}>
-      <MenuItem onClick={handleClose}>Chat</MenuItem></NavLink>
+      {props.lastContact?
+      <NavLink to={'/chat/'+props.lastContact.id }style={{color:"black"}}>
+      <MenuItem onClick={handleClose}>Chat</MenuItem></NavLink>:null}
       </Menu>
       
     </div>
@@ -166,7 +166,7 @@ const SignedInLinks = (props) => {
       </div>
           </Grid>
       <Grid item xs={4}>
-            <LongMenu props={auth} />
+            <LongMenu props={auth} lastContact={props.props.lastContact}/>
         </Grid>
         <Grid item xs={4}>
       <IconButton onClick={props.signOut} >
