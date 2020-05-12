@@ -54,22 +54,22 @@ class Profile extends Component {
   state={
     productOpen:false,
     editOpen:false,
-    type: this.props.currentUser.type,
-    businessName: this.props.currentUser.businessName,
-    phoneNumber: this.props.currentUser.phoneNumber,
-    address: this.props.currentUser.address,
-    website: this.props.currentUser.website,
-    businessGenre: this.props.currentUser.businessGenre,
-    businessDesc: this.props.currentUser.businessDesc,
-    certificate: this.props.currentUser.certificate,
-    wholesaler: this.props.currentUser.wholesaler,
-    logo: this.props.currentUser.logo,
-    newBusinessName: this.props.currentUser.businessName,
-    newPhoneNumber: this.props.currentUser.phoneNumber,
-    newAddress: this.props.currentUser.address,
-    newWebsite: this.props.currentUser.website,
-    newBusinessGenre: this.props.currentUser.businessGenre,
-    newDescription: this.props.currentUser.businessDesc,
+    type: '',
+    businessName: '',
+    phoneNumber: '',
+    address: '',
+    website: '',
+    businessGenre: '',
+    businessDesc: '',
+    certificate: '',
+    wholesaler: '',
+    logo: '',
+    newBusinessName: '',
+    newPhoneNumber: '',
+    newAddress: '',
+    newWebsite: '',
+    newBusinessGenre: '',
+    newDescription: '',
 
     //Figure out editing logo and cert later
     newCertificate: '', 
@@ -350,6 +350,32 @@ class Profile extends Component {
     }
 
   }
+  componentDidUpdate(prevState, prevProps) {
+    if (prevProps.thisUser !== this.props.thisUser && prevState.thisUser!== this.props.thisUser && this.props.thisUser!==undefined&& this.props.thisUser!==null) {
+        this.setState({ type: this.props.thisUser.type,
+          businessName: this.props.thisUser.businessName,
+          phoneNumber: this.props.thisUser.phoneNumber,
+          address: this.props.thisUser.address,
+          website: this.props.thisUser.website,
+          businessGenre: this.props.thisUser.businessGenre,
+          businessDesc: this.props.thisUser.businessDesc,
+          certificate: this.props.thisUser.certificate,
+          wholesaler: this.props.thisUser.wholesaler,
+          logo: this.props.thisUser.logo,
+          newBusinessName: this.props.thisUser.businessName,
+          newPhoneNumber: this.props.thisUser.phoneNumber,
+          newAddress: this.props.thisUser.address,
+          newWebsite: this.props.thisUser.website,
+          newBusinessGenre: this.props.thisUser.businessGenre,
+          newDescription: this.props.thisUser.businessDesc,})
+    }
+}
+static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.thisUser !== prevState.thisUser) {
+        return { thisUser: nextProps.thisUser };
+    }
+    else return null;
+}
   
   render() {
     const { auth, classes} = this.props;
@@ -423,6 +449,8 @@ const mapStateToProps = (state,ownProps) => {
   const chatId2 =  state.firebase.auth.uid+ownProps.match.params.id
   // console.log(state);
   const users = ownProps.currentUser;
+  const thisUsers = state.firestore.data.thisUser
+  const thisUser = thisUsers?thisUsers:null
   const user = users ? users[0] : null;
   console.log(ownProps)
   const url = state.uploadReducer.url ? state.uploadReducer.url:null
@@ -456,7 +484,7 @@ const mapStateToProps = (state,ownProps) => {
     products :  state.firestore.ordered.products,
     productImg: Array.from(prourls),
     progress: state.uploadReducer.progress,
-    thisUser: user,
+    thisUser: thisUser,
     chatexist: chatexist,
     chat: state.firestore.data.chatsesion,
     chatId: chatId
@@ -474,7 +502,8 @@ const mapDispatchToProps = dispatch => {
 export default withRouter(compose(
   connect(mapStateToProps,mapDispatchToProps),
   firestoreConnect((props) => {
-      return [{ collection: 'products', where:[["supplierId","==", props.match.params.id]]}, ]
+    
+      return [{ collection: 'products', where:[["supplierId","==", props.match.params.id]]},{ collection: 'users', doc: props.match.params.id, storeAs: 'thisUser' } ]
       
   })
 )(withStyles(useStyles)(Profile)) )
