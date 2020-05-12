@@ -152,7 +152,7 @@ const ProductCard = (props) => {
                 <TextInfoContent
           classes={textCardContentStyles}
           overline={product.name}
-          heading={product.price.unitprice+' Đ'}
+          heading={product.price.unitPrice+' VNĐ'}
         //   body={
         //     product.category
         //   }

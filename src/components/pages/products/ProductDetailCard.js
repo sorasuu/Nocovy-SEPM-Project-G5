@@ -66,7 +66,7 @@ export default function ProductDetailCard(props) {
     const classes = useStyles();
     var price 
     if (props.product!==undefined&& props.product!=null){
-        price =[{name:'Unit Cost',value:props.product.price.unitcost},{name:'Margin',value:props.product.price.margin},{name:'Duty Rate',value:props.product.price.dutyrate}]
+        price =[{name:'Unit Cost',value:props.product.price.unitCost},{name:'Margin',value:props.product.price.margin},{name:'Duty Rate',value:props.product.price.dutyRate}]
     }
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles();
