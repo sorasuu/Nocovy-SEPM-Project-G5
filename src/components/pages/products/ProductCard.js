@@ -75,9 +75,9 @@ const ProductCard = (props) => {
                     <CardMedia
                     // component="img"
                     alt="product"
-        className={cx(classes.media, mediaStyles.root)}
-        image={product.cover}
-      />
+                        className={cx(classes.media, mediaStyles.root)}
+                        image={product.cover}
+                    />
 
                         <div className="overlay" style={{borderRadius: 16}}>
                         {owner?null:
@@ -149,18 +149,14 @@ const ProductCard = (props) => {
                         </div>
                     </div>
                 </div>
-<<<<<<< HEAD
-                <div>{product.price.unitPrice}</div>
-=======
                 <TextInfoContent
-          classes={textCardContentStyles}
-          overline={product.name}
-          heading={product.price.unitPrice+' VNĐ'}
+                    classes={textCardContentStyles}
+                    overline={product.name}
+                    heading={product.price.unitPrice+' VNĐ'}
         //   body={
         //     product.category
         //   }
         />
->>>>>>> 594ad62cb276d2c093c4b5089cb5e52e90ca2667
             </CardContent>
         </Card>
 

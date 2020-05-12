@@ -144,7 +144,7 @@ class Dashboard extends Component {
   }
 
   handleChange(e, newValue) {
-    this.setState({ value: newValue }, { isSearch: true });
+    this.setState({ value: newValue });
 
   }
   handleSelectFilter = (item) => {
