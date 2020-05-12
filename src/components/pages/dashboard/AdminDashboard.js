@@ -7,8 +7,9 @@ import MaterialTable from "material-table";
 import {NavLink} from 'react-router-dom';
 import {
     Tab, Tabs, Box, Card, Button,
-    Typography, withStyles, Grid
-} from "@material-ui/core";
+    Typography, withStyles, Grid, 
+    Dialog, DialogTitle, DialogContent, DialogActions
+    } from "@material-ui/core";
 import { approveUser, declineUser } from '../../store/actions/adminAction';
 import {
     List,
@@ -279,49 +280,105 @@ class AdminDashboard extends Component {
                     </Grid>     
                    
                     {this.state.openApprove ?
-                        <Grid container item xs={4} md={4} lg={4} justify='center' alignItems="center">
-                                <div>
-                                    <Grid item xs={12} md={12} lg={12}>
-                                        <NavLink to={`/${usersApprove[index].type}/${usersApprove[index].id}`}>
-                                            <Button>Profile</Button>
-                                        </NavLink>
-                                    </Grid>
-                                    <Grid item xs={12} md={12} lg={12}>
-                                        <h4>{usersApprove[index].businessName}</h4>
-                                       
-                                    </Grid>
-                                    <Grid item xs={12} md={12} lg={12}>
-                                        <h4>Logo</h4>
-                                        <img style={{width:'auto', maxHeight:200}} src={usersApprove[index].logo}/>
-                                    </Grid>
-                                    <Grid>
-                                        <h4>Certification</h4>
-                                        <img style={{width:'auto', height:'auto',maxHeight:400}} src={usersApprove[index].certificates}/>
-                                    </Grid>
-                                </div>
+                        <Grid container item xs={3} md={3} lg={3} direction="row" style={{margin:'1%'}}>
+                            <Grid item xs={3} md={3} lg={3}>
+                            <div style={{textAlign:'left', fontSize:'20px', fontFamily:'bold' }}>Detail:</div>
+                            </Grid>
+                            <Grid item xs={8} md={8} lg={8}>
+                                <NavLink to={`/${usersApprove[index].type}/${usersApprove[index].id}`}>
+                                    <Button variant="contained" color="secondary">Profile Page</Button>
+                                </NavLink>
+                            </Grid>
+                            <Grid item xs={3} md={3} lg={3}>
+                                <div style={{textAlign:'left', fontSize:'20px', fontFamily:'bold' }}>Name:</div>
+                            </Grid>
+                            <Grid item xs={8} md={8} lg={8}>
+                                <div style={{textAlign:'right', fontSize:'30px'}}>{usersApprove[index].businessName}</div>
                                 
+                            </Grid>
+                            <Grid item xs={3} md={3} lg={3}>
+                                <div style={{textAlign:'left', fontSize:'20px', fontFamily:'bold' }}>Logo:</div>
+                            </Grid>
+                            <Grid item xs={7} md={7} lg={7}>
+                                <ImageDialog title="Logo" image={usersApprove[index].logo} maxWidth="100px"/>
+                            </Grid>
+                            <Grid>
+                                <h4>Certification</h4>
+                                {usersApprove[index].certificates.map((item, key)=><ImageDialog key={key} title="Certification" image={item} maxWidth="300px"/>
+                                )}
+                                
+                            </Grid>
+    
+                        
                         </Grid> 
                     : null}
                     {this.state.openPending ?
-                        <Grid container item xs={4} md={4} lg={4} >
-                                <div>
-                                    <Grid item xs={12} md={12} lg={12}>
-                                        <h4>Logo</h4>
-                                        <img src={usersPending[index].logo}/>
-                                    </Grid>
-                                    <Grid>
-                                        <h4>Certification</h4>
-                                        <img src={usersPending[index].certificate}/>
-                                    </Grid>
-                                </div> 
-                        </Grid> 
-                    : null}
-               
-            </Grid>
+                        <Grid container item xs={3} md={3} lg={3} direction="row"  style={{margin:'1%'}}>
+                            <Grid item xs={3} md={3} lg={3}>
+                                <div style={{ display: 'flex', alignItems:'center',textAlign:'left', fontSize: '20px', fontFamily: 'bold' }}>Name:</div>
+                            </Grid>
+                            <Grid item xs={7} md={7} lg={7}>
+                                <div style={{ display: 'flex', alignItems:'center',textAlign:'right', fontSize: '30px' }}>{usersApprove[index].businessName}</div>
+
+                            </Grid>
+                            <Grid item xs={3} md={3} lg={3}>
+                                <div style={{textAlign:'left', fontSize:'20px', fontFamily:'bold' }}>Logo:</div>
+                            </Grid>
+                            <Grid item xs={7} md={7} lg={7}>
+                                <ImageDialog title="Logo" image={usersPending[index].logo} maxWidth="100px"/>
+                            </Grid>
+                           
+                            <Grid>
+                                <h4>Certification</h4>
+                                {usersPending[index].certificates.map((item, key) => <ImageDialog key={key} title="Certification" image={item} maxWidth="300px" />)}
+                            </Grid>
+
+                        </Grid>
+                        : null}
+
+                </Grid>
             </div>
         );
     }
 }
+
+function ImageDialog(props) {
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+  
+    return (
+      <React.Fragment>
+        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+          <img style={{width:'fit-content', maxWidth: `${props.maxWidth}`}} src={props.image}/>
+        </Button>
+        <Dialog
+            style={{width:'fit-content', direction:'flex'}}
+          fullWidth={true}
+          maxWidth={'md'}
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="max-width-dialog-title"
+        >
+          <DialogTitle id="max-width-dialog-title">{props.title}</DialogTitle>
+          <DialogContent>
+            <img style={{direction:'flex', justifyContent:'center', alignItems:'center'}}src={props.image}/> 
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </React.Fragment>
+    );
+  }
 
 
 const mapStateToProps = (state) => {
