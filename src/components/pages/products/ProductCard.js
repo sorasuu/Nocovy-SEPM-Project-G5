@@ -141,6 +141,7 @@ const ProductCard = (props) => {
                         </div>
                     </div>
                 </div>
+                <div>{product.price.unitPrice}</div>
             </CardContent>
         </Card>
 

@@ -118,15 +118,17 @@ export default function FilterForm(props) {
     // const allCategories = props.allCategories
     const handleClickOpen = () => {
         setOpen(true);
+        props.handleFilterForm()
     };
     const handleSubmit = (value) => {
         setOpen(false);
         props.handleFilter(selectedCategories);
-        props.handleFilterForm()
+        
     };
     const handleCancel = () => {
         setOpen(false)
         setCategory([])
+        props.handleCancelFilter()
     }
     const handleDelete = (chipToDelete) => () => {
         setCategory((chips) => chips.filter((chip) => chip !== chipToDelete)

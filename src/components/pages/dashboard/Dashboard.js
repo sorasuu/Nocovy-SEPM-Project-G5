@@ -153,6 +153,9 @@ class Dashboard extends Component {
   handleFilterForm = () => {
     this.setState({ isFiltered: true })
   }
+  handleCancelFilter =()=>{
+    this.setState({ isFiltered: false})
+  }
   render() {
 
     const { auth, classes, products, suppliers, retailers } = this.props;
@@ -219,6 +222,7 @@ class Dashboard extends Component {
               allCategories={allCategories}
               handleFilter={item => this.handleSelectFilter(item)}
               handleFilterForm={this.handleFilterForm}
+              handleCancelFilter={this.handleCancelFilter}
               handleSort={this.handleSort}
               handleSortKind={this.handleSortKind}
               sortName={sortName}
