@@ -77,19 +77,6 @@ const useStyles = theme => ({
 
 });
 
-function checkFilter(arr, arrCheck){
-  var i  
-
-  for (i in arr.length){
-    if (!arrCheck.includes(arr[i])){
-      break
-      
-      }
-      return null
-    }
-    return arrCheck
-  }
-
 
 export function checkArray(array) {
   var data = [{id:'Loading...',category:['a','b'],pending:true, name:"Loading", displayName: "Loading", businessName: 'Loading', price:'Loading' }];
@@ -141,14 +128,15 @@ class Dashboard extends Component {
     const afterSearchSupplier = checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchProduct = checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchRetailer = checkArray(retailers).filter(retailer => retailer.displayName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
-    const afterFilter = allCategories.filter(function(item){
-      return !filter.includes(item)? true : allCategories.splice(allCategories.indexOf(item),1)&& false;
-    })
+    // const afterFilter = allCategories.filter(function(item){
+    //   return !filter.includes(item)? true : allCategories.splice(allCategories.indexOf(item),1) && false;
+    // })
     // console.log('after', afterFilter)
+    
     const found = checkArray(afterSearchProduct).filter((product) => product.category.filter(function(item){
-      // return filter.includes(item)
-      // ? true: product.category.splice(product.category.indexOf(item),1)
-      return checkFilter(filter, product.category)
+      if (filter.includes(item) === true){
+        console.log(item)
+      }
     }))
     
     console.log(filter)
