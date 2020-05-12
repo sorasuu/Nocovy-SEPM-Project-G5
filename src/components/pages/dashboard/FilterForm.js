@@ -121,7 +121,7 @@ export default function FilterForm(props) {
                 Open Filter dialog
             </Button>
             <Form
-                categories={allCategories}
+                categories={props.allCategories}
                 category={selectedCategories}
                 setCategory={setCategory}
                 open={open} onClose={handleClose} />

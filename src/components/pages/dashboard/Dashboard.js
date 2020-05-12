@@ -79,15 +79,21 @@ const useStyles = theme => ({
 
 function checkFilter(arr, arrCheck){
   var i  
-
-  for (i in arr.length){
-    if (!arrCheck.includes(arr[i])){
-      break
+  var arraf=[]
+  for (i = 0; i < arr.length; i++){
+    console.log('run')
+    if (arrCheck.includes(arr[i])){
+      arraf.push(arr[i])
       
+      }else{
+        console.log(false)
+        break
       }
-      return null
+      
     }
-    return arrCheck
+    if(arr.length===arraf.length){
+    return arrCheck}
+    else{ return null}
   }
 
 
@@ -115,7 +121,7 @@ class Dashboard extends Component {
     this.state = {
       search: '',
       value: 0,
-      filter: ['fashion', 'luxury'],
+      filter: [],
     };
     this.handleChange = this.handleChange.bind(this)
    
@@ -141,15 +147,16 @@ class Dashboard extends Component {
     const afterSearchSupplier = checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchProduct = checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchRetailer = checkArray(retailers).filter(retailer => retailer.displayName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
-    const afterFilter = allCategories.filter(function(item){
-      return !filter.includes(item)? true : allCategories.splice(allCategories.indexOf(item),1)&& false;
-    })
+
     // console.log('after', afterFilter)
-    const found = checkArray(afterSearchProduct).filter((product) => product.category.filter(function(item){
+    const found = checkArray(afterSearchProduct).filter((product) => {
       // return filter.includes(item)
       // ? true: product.category.splice(product.category.indexOf(item),1)
-      return checkFilter(filter, product.category)
-    }))
+      if(product.category===checkFilter(filter, product.category)){
+        return true
+      }else{return false}
+      // console.log( checkFilter(filter, product.category))
+    })
     
     console.log(filter)
     console.log(found)    
