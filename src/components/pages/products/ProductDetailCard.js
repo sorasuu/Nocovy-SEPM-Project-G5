@@ -64,10 +64,14 @@ const useStyles = makeStyles((theme) => ({
 export default function ProductDetailCard(props) {
     
     const classes = useStyles();
+    var price 
+    if (props.product!==undefined&& props.product!=null){
+        price =[{name:'Unit Cost',value:props.product.price.unitCost},{name:'Margin',value:props.product.price.margin},{name:'Duty Rate',value:props.product.price.dutyRate}]
+    }
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles();
     const cardHeaderShadowStyles = useFadedShadowStyles();
-    {props.product.price.map(price => console.log('price',price))}
+    // {props.product?props.product.price.map(price => console.log('price',price))}
     // console.log('hello', props.product.price[0])
   
     return (
@@ -93,7 +97,7 @@ export default function ProductDetailCard(props) {
                         <ProductImageDetail image ={props.product}/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={6}>
-                        <ProductInfoCard product={props.product} />
+                        <ProductInfoCard product={props.product} price={price} />
                     </Grid>
 
                 </Grid>
@@ -123,7 +127,7 @@ export const ProductInfoCard = props => {
         <TableContainer className={classes.root}>
  
             <TableBody aria-label="simple table">               
-                {/* {props.product.price? props.product.price.map((detail, key)=>{
+                {props.price? props.price.map((detail, key)=>{
                     return(
                         <TableRow key={key}>
                         <TableCell style={{ backgroundColor: `hsla(14, 100%, 53%, 0.6)`, color: 'white' }}>
@@ -134,7 +138,7 @@ export const ProductInfoCard = props => {
                         </TableCell>
                     </TableRow>
                     )
-                    }):null} */}
+                    }):null}
 
             </TableBody>
             

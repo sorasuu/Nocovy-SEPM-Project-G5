@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import cx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/styles';
 import {
-    Card, CardContent, CardHeader,
+    Card, CardContent, CardMedia ,
     Button, Dialog, DialogContent, DialogActions,
     DialogContentText, DialogTitle, Grid
 } from '@material-ui/core';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Carousel from 'react-elastic-carousel'
-import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
-import { useSoftRiseShadowStyles } from '@mui-treasury/styles/shadow/softRise';
-import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
+import TextInfoContent from '@mui-treasury/components/content/textInfo';
+import { useFourThreeCardMediaStyles } from '@mui-treasury/styles/cardMedia/fourThree';
+import { useN04TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n04';
+import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { NavLink } from 'react-router-dom';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
@@ -30,15 +31,20 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ProductCard = (props) => {
-    // console.log("product card", props.product)
+    console.log("product card", props.product)
     const classes = useStyles();
-    const cardHeaderStyles = useContainedCardHeaderStyles();
-    const cardShadowStyles = useSoftRiseShadowStyles({ inactive: false });
-    const cardHeaderShadowStyles = useFadedShadowStyles();
+    const mediaStyles = useFourThreeCardMediaStyles();
+    const textCardContentStyles = useN04TextInfoContentStyles();
+    const shadowStyles = useOverShadowStyles({ inactive: false });
     const [open, setOpen] = React.useState(false);
     const [number, setNumber] = useState(0);
     const product = props.product
-
+    var owner
+    if(props.uid ===props.product.supplierId){
+        owner= true
+    }else{
+        owner=false
+    }
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -58,22 +64,23 @@ const ProductCard = (props) => {
     return (
         // <NavLink to = {'/product/'+ props.product.id}>
 
-        <Card className={cx(classes.card, cardShadowStyles.root)} style={{ position: "relative", marginBottom: '10px' }}>
-            <CardHeader
-                className={cardHeaderShadowStyles.root}
-                classes={cardHeaderStyles}
-                title={product.name}
-                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", right: "5%" }}
-            />
+        <Card className={cx(classes.root, shadowStyles.root)} style={{ position: "relative", marginBottom: '10px' }}>
+        
             <CardContent className={classes.content}
             // ref={hoverRef}
             >
-                <div style={{ marginTop: "10%" }}>
+                <div style={{ marginTop: "2%" }}>
                     {/* put image and info */}
                     <div className='image'>
-                        <img src={product.cover} style={{ width: "200px", height: "250px" }} />
+                    <CardMedia
+                    // component="img"
+                    alt="product"
+        className={cx(classes.media, mediaStyles.root)}
+        image={product.cover}
+      />
 
-                        <div className="overlay">
+                        <div className="overlay" style={{borderRadius: 16}}>
+                        {owner?null:
                             <Button
                                 variant="contained"
                                 color="secondary"
@@ -81,7 +88,7 @@ const ProductCard = (props) => {
                                 onClick={handleClickOpen}
                             >
                                 Buy
-                            </Button>
+                            </Button>}
                             <Dialog
                                 fullWidth={true}
                                 maxWidth={"md"}
@@ -138,10 +145,22 @@ const ProductCard = (props) => {
                                     Detail
                                 </Button>
                             </NavLink>
+
                         </div>
                     </div>
                 </div>
+<<<<<<< HEAD
                 <div>{product.price.unitPrice}</div>
+=======
+                <TextInfoContent
+          classes={textCardContentStyles}
+          overline={product.name}
+          heading={product.price.unitPrice+' VNĐ'}
+        //   body={
+        //     product.category
+        //   }
+        />
+>>>>>>> 594ad62cb276d2c093c4b5089cb5e52e90ca2667
             </CardContent>
         </Card>
 

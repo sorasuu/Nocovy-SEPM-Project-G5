@@ -244,14 +244,15 @@ class Dashboard extends Component {
                 sortFoundName.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                    <ProductCard product={product} />
+                     <ProductCard product={product} uid ={this.props.auth.uid}/>
                   </Grid>
                 )
                 })
               : sortFoundPrice.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                    <ProductCard product={product} />
+                    <ProductCard product={product} uid ={this.props.auth.uid}/>
+               
                   </Grid>
                 )
               })
@@ -260,7 +261,7 @@ class Dashboard extends Component {
               : afterSearchProduct.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                    <ProductCard product={product} />
+                     <ProductCard product={product} uid ={this.props.auth.uid}/>
                   </Grid>
                 )
               })}

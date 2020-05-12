@@ -129,8 +129,8 @@ class AdminDashboard extends Component {
        
         const { classes, users} = this.props;
         console.log("users admin dashboard: ", users)
-        const usersApprove = checkArray(users).filter(user => user.pending == false)
-        const usersPending = checkArray(users).filter(user => user.pending == true)
+        const usersApprove = checkArray(users).filter(user => user.pending === false)
+        const usersPending = checkArray(users).filter(user => user.pending === true)
         const {value, columns, index} = this.state
         
         console.log("users A", usersApprove, "users P", usersPending)

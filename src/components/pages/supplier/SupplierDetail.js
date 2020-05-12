@@ -8,6 +8,9 @@ import SupplierDetailCard from './SupplierDetailCard'
 class SupplierDetail extends Component {
     constructor(props) {
       super(props);
+      this.state={
+        owner:false
+      }
    }
     render() {
       const { auth, user, productList , productListdata} = this.props;
