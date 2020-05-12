@@ -1,8 +1,16 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Paper, Button, DialogTitle, Dialog, Input, FormControl, InputLabel, Select, Chip, MenuItem } from '@material-ui/core';
-import { checkArray } from './Dashboard'
+
+import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
+import {
+    Paper, Button, DialogTitle,
+    Dialog, Input, FormControl,
+    InputLabel, Select, Chip,
+    MenuItem, Switch, Grid
+} from '@material-ui/core';
+import SortByAlphaOutlinedIcon from '@material-ui/icons/SortByAlphaOutlined';
+import TrendingDownOutlinedIcon from '@material-ui/icons/TrendingDownOutlined';
+import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
+import AttachMoneyOutlinedIcon from '@material-ui/icons/AttachMoneyOutlined';
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -49,6 +57,7 @@ function getStyles(name, personName, theme) {
                 : theme.typography.fontWeightMedium,
     };
 }
+
 function Form(props) {
     const classes = useStyles()
     const { open } = props;
@@ -57,12 +66,6 @@ function Form(props) {
     const handleChange = (event) => {
         props.setCategory(event.target.value);
     };
-
-    // const handleListItemClick = (value) => {
-    //   onClose(value);
-    // };
-
-
     return (
         <Dialog aria-labelledby="simple-dialog-title" open={open}>
             <DialogTitle id="simple-dialog-title">Choose Product Categories:</DialogTitle>
@@ -90,9 +93,20 @@ function Form(props) {
                         </MenuItem>
                     ))}
                 </Select>
-                <Button onClick={props.onClose}>Submit</Button>
+                <Grid container justify='center' alignItems="center" display="flex" spacing={2}>
+                    <Grid item xs={6} ><Button onClick={props.handleSortKind}>{props.sortName ?
+                        <SortByAlphaOutlinedIcon />
+                        : <AttachMoneyOutlinedIcon />}</Button></Grid>
+                        <Grid item xs={6} >
+                    {props.sortName ?
+                        <Button onClick={props.handleSort}>{props.sortAsc ? <>A to Z</> : <>Z to A</>}</Button>
+                        : <Button onClick={props.handleSort}>{props.sortAsc ? <><TrendingUpOutlinedIcon/></> : <><TrendingDownOutlinedIcon/></>}</Button>                }
+                        </Grid>
+                </Grid>
+                <Button onClick={props.onCancel}>Cancel</Button>
+                <Button onClick={props.onSubmit}>Submit</Button>
             </FormControl>
-            
+
         </Dialog>
     );
 }
@@ -100,20 +114,25 @@ export default function FilterForm(props) {
     const [open, setOpen] = React.useState(false);
     const classes = useStyles()
     const [selectedCategories, setCategory] = React.useState([]);
-    const allCategories = props.allCategories
+
+    // const allCategories = props.allCategories
     const handleClickOpen = () => {
         setOpen(true);
     };
-
-    
-    const handleClose = (value) => {
+    const handleSubmit = (value) => {
         setOpen(false);
-        props.handleFilter(selectedCategories)
+        props.handleFilter(selectedCategories);
+        props.handleFilterForm()
     };
+    const handleCancel = () => {
+        setOpen(false)
+        setCategory([])
+    }
     const handleDelete = (chipToDelete) => () => {
-        setCategory((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
+        setCategory((chips) => chips.filter((chip) => chip !== chipToDelete)
+        );
     };
-    
+
     return (
         <div>
             <br />
@@ -124,8 +143,12 @@ export default function FilterForm(props) {
                 categories={props.allCategories}
                 category={selectedCategories}
                 setCategory={setCategory}
-                open={open} onClose={handleClose} />
-                <Paper component="ul" className={classes.root}>
+                sortAsc={props.sortAsc}
+                sortName={props.sortName}
+                handleSort={props.handleSort}
+                handleSortKind={props.handleSortKind}
+                open={open} onSubmit={handleSubmit} onCancel={handleCancel} />
+            <Paper className={classes.root}>
                 {selectedCategories.map((data, key) => {
                     let icon;
                     return (
@@ -139,6 +162,7 @@ export default function FilterForm(props) {
                         </li>
                     );
                 })}
+
             </Paper>
         </div>
     );

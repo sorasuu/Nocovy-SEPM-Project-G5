@@ -108,11 +108,7 @@ const SignedInLinks = (props) => {
           anchorEl={openNotification}
           transition
           disablePortal
-          // className={
-          //   classNames({ [classes.popperClose]: !openNotification }) +
-          //   " " +
-          //   classes.popperNav
-          // }
+         
         >
           {({ TransitionProps, placement }) => (
             <Grow
