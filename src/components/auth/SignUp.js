@@ -128,9 +128,9 @@ class SignUp extends Component {
     }
 
     render() {
-        const { step, firstName, lastName, email, password, phoneNumber, image, url, progress } = this.state;
+        const { step, firstName, lastName, email, password, phoneNumber, images, url, progress } = this.state;
         const { auth, authError } = this.props;
-        const values = { firstName, lastName, email, password, phoneNumber, image, url, progress }
+        const values = { firstName, lastName, email, password, phoneNumber, images, url, progress }
         if (auth.uid) return <Redirect to='/' />
         switch (step) {
             case 1:

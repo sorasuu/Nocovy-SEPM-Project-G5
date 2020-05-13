@@ -47,4 +47,10 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
   background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   background-size: 100%;
 } */
+.MuiFab-root{
+  right: 20px;
+  bottom: 20px;
+  display: block;
+  position: fixed;
+}
 

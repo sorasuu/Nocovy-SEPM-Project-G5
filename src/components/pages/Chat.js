@@ -13,7 +13,7 @@ import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import { Redirect, NavLink } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade } from '@material-ui/core/styles'
-
+import firebase from 'firebase/app';
 import {
     Card, 
     CardContent, 
@@ -111,19 +111,30 @@ export const ChatContact = (props) => {
                 />
                 <Divider style={{marginTop:'3%', marginBottom:'1%'}} />
                 <List>
-                    {DUMMY_DATA.map((message) => 
-                        <ListItem divider dense button alignItems="flex-start" selected={selectedIndex === message.senderId} onClick={(event) => handleListItemClick(event, message.senderId)}>
+                    {props.chatsesion&&props.chatuser?props.chatsesion.map((contact) => {
+                        var receiver;
+                        if(contact.user1===props.uid){
+                             receiver =props.chatuser[ contact.user1]
+                        }else{
+                        receiver = props.chatuser[ contact.user2]
+                            }
+                        
+                        return(
+                        
+
+
+                        <ListItem divider dense button alignItems="flex-start" selected={selectedIndex === contact.id} onClick={(event) => handleListItemClick(event, contact.id)}>
                             <ListItemAvatar>
-                                <Avatar src='https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png'/>
+                                <Avatar src={receiver.logo}/>
                             </ListItemAvatar>
                             <ListItemText 
                                 primary={
-                                    <Typography variant='h6'>{message.senderId}</Typography>} 
+                                    <Typography variant='h6'>{receiver.displayName}</Typography>} 
                                 secondary={
-                                    <Typography variant='subtitle'> {message.text}</Typography>}
+                                    <Typography variant='subtitle'> {contact.lastchat}</Typography>}
                             />
                         </ListItem>
-                    )}
+                     ) }):null}
                 </List>
             </CardContent>
         </Card>
@@ -241,7 +252,7 @@ class Chat extends Component {
                 <Container>
                     <h3>Chat menu</h3>
                     <Grid container spacing={3}>
-                        <Grid item xs={4}><ChatContact props={this.props} handleChange={this.handleChange} currentchatsession={this.props.currentchatsession} chatsesion={this.props.currentchatsession}  search={search} /></Grid>
+                        <Grid item xs={4}><ChatContact props={this.props} handleChange={this.handleChange} currentchatsession={this.props.currentchatsession} chatsesion={this.props.chatsessionorder}  search={search} chatuser={this.props.chatuser} /></Grid>
                         <Grid item xs={8}><Paper>
                             <div className='chat-box'>
                                 <div className='msg-page'>
@@ -270,15 +281,34 @@ const mapDispatchToProps = dispatch => {
   }
   
 const mapStateToProps = (state,ownProps) => {
+    // console.log(ownProps)
     const id = ownProps.match.params.id
     const messages= state.firestore.ordered.thischatsesion
-    const chatsession = state.firestore.data.chatsesion
+    const chatsession = state.firestore.data.allchatsesion
+    const chatsessionorder = ownProps.chatsession
     const currentchatsession= chatsession? chatsession[id]: null
+    
+    var userIdlist=[]
+
+    if(chatsessionorder!== undefined&& chatsessionorder!== null){
+        var u;
+        for (u in chatsessionorder){
+            if(chatsessionorder[u].user1===state.firebase.auth.uid){
+                userIdlist.push(chatsessionorder[u].user2)
+            }else{
+                userIdlist.push(chatsessionorder[u].user1)
+            }
+        }
+    }
+    // console.log(userIdlist)
+    // console.log(state.firestore.ordered.chatuser)
     return{
         auth: state.firebase.auth,
         messages: messages,
         currentchatsession: currentchatsession,
-        // chatsession:state.firestore.ordered.chatsesion
+        chatsessionorder:chatsessionorder,
+        userIdlist:userIdlist,
+        chatuser: state.firestore.data.chatuser
     }
 
   }
@@ -287,8 +317,12 @@ const mapStateToProps = (state,ownProps) => {
 export default compose(
     connect(mapStateToProps,mapDispatchToProps),
     firestoreConnect((props) => {
-        // console.log(props.match.params.id)
+        console.log(props)
         if(props.match.params.id!==undefined){
+        if(props.userIdlist.length>0&& props.chatuser=== undefined &&props.match.params.id!==undefined){
+
+                return [
+                    {collection:'users',where:['uid','in', props.userIdlist], storeAs:'chatuser'}]}
         return [{
             collection: 'chats', 
             doc:props.match.params.id,
@@ -297,8 +331,7 @@ export default compose(
             subcollections: [{ collection: 'chatDetail' }],
             orderBy: ['created', 'asc'],
             storeAs:'thischatsesion' },]
-        }else{
-            return []
         }
+        else {return[]}
     })
   )((Chat))

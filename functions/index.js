@@ -20,13 +20,31 @@ exports.productCreated = functions.firestore
     const notification = {
       content: `Created a new listing: ${product.name}`,
       uid: `${product.supplierId}`,
-      time: admin.firestore.FieldValue.serverTimestamp()
+      time: admin.firestore.FieldValue.serverTimestamp(),
+      tag:'admin',
     }
 
     return createNotification(notification);
 
   });
+exports.userJoined = functions.auth.user()
+  .onCreate(user => {
+    
+    return admin.firestore().collection('users')
+      .doc(user.uid).get().then(doc => {
 
+        const newUser = doc.data();
+        const notification = {
+          content: 'A new user need approval',
+          user: `${newUser.displayName}`,
+          time: admin.firestore.FieldValue.serverTimestamp(),
+          tag:'admin',
+        };
+
+        return createNotification(notification);
+
+      });
+});
 exports.userApproved = functions.firestore
   .document('users/{userId}')
   .onWrite(

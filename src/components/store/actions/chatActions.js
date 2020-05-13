@@ -5,9 +5,11 @@ export const createChatSession = (chat) => {
       console.log('run')
       firebase.firestore().collection('chats').doc(chat.id).set({
         ...chat,
-        createdAt: new Date()
+        createdAt: new Date(),
+        lastMod: new Date()
       }).then(() => {
         history.push('/chat/'+chat.id)
+        changeChatSession(chat.id)
         window.location.reload();
         dispatch({ type: 'CREATE_CHAT_SUCCESS'});
 
@@ -16,7 +18,13 @@ export const createChatSession = (chat) => {
       });
     }
   };
-  
+export const changeChatSession = (chatid)=>{
+  console.log('change',chatid)
+return(dispatch, getState)=>{
+  sessionStorage.setItem('chatId',chatid)
+  dispatch({ type: 'CHANGECHATSESSION', payload: chatid });
+}
+}
 export const sendMessage = (chat) => {
   console.log('send')
     return (dispatch, getState) => {
@@ -32,6 +40,7 @@ export const sendMessage = (chat) => {
           sender:author.uid,
           created: new Date()
         }).then(() => {
+          changeChatSession(chat.id)
           dispatch({ type: 'CHAT_SUCCESS' });
         }).catch(err => {
           dispatch({ type: 'CHAT_ERROR' }, err);

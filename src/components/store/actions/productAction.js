@@ -10,6 +10,9 @@ export const createProduct = (product) => {
         authorEmail: author.email,
         createdAt: new Date()
       }).then(() => {
+        firebase.firestore().collection('categories').doc('productcategories').set({
+          categories: firebase.firestore.FieldValue.arrayUnion(product.category)
+        })
         dispatch({ type: 'CREATE_PRODUCT_SUCCESS' });
       }).catch(err => {
         dispatch({ type: 'CREATE_PRODUCT_ERROR' }, err);
@@ -28,9 +31,9 @@ export const editProduct = (product) => {
       });
     }
   };
-export const deleteProduct = (product) => {
+export const deleteProduct = (id) => {
 return (dispatch, getState) => {
-  firebase.firestore().collection('products').doc(product.id).delete()
+  firebase.firestore().collection('products').doc(id).delete()
     .then(() => {
     dispatch({ type: 'DELETE_PRODUCT_SUCCESS' });
     }).catch(err => {

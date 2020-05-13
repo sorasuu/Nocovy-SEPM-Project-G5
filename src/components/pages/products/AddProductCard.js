@@ -7,7 +7,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
-import StyledButton from './StyledButton';
+import StyledButton from '../../layout/StyledButton';
 import {DropzoneArea} from 'material-ui-dropzone'
 const useStyles = makeStyles(() => ({
     card: {
@@ -20,11 +20,10 @@ const useStyles = makeStyles(() => ({
     header:{
         background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)",
         position: "absolute",
-        top: "2%",
         left: "50%",
         width: '250px',
         textAlign:'center',
-        transform: 'translate(-50%)'
+        transform: 'translate(-50%, 15%)'
     },
     content: {
         margin: "2%",

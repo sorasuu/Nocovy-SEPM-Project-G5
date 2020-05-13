@@ -1,4 +1,5 @@
 import firebase from 'firebase/app';
+import { useSoftRiseShadowStyles } from '@mui-treasury/styles/shadow/softRise';
 
 
 export const approveUser = (id) => {
@@ -26,3 +27,5 @@ export const approveUser = (id) => {
       });
     }
   };
+
+  
