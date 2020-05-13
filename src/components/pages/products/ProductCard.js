@@ -34,19 +34,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ProductCard = (props) => {
-    console.log("why?", props)
-    // useFirestoreConnect((props)=>{
-    // if(props.product !== undefined){
-    //     return[
-
-    //         {collection:'users', doc: props.product.supplierId}
-    //     ]
-    //     }else{
-    //         return[]
-    //     }
-    // })
-    // const supplier = useSelector(({ firestore: { data } }) => data.users && data.users[props.product.supplierId])
-    // console.log("product card", supplier)
+   
     const classes = useStyles();
     const mediaStyles = useFourThreeCardMediaStyles();
     const textCardContentStyles = useN04TextInfoContentStyles();
@@ -54,6 +42,7 @@ const ProductCard = (props) => {
     const [open, setOpen] = React.useState(false);
     const [number, setNumber] = useState(0);
     const product = props.product
+    console.log('product', product)
     var owner
     if(props.uid ===props.product.supplierId){
         owner= true
@@ -85,7 +74,7 @@ const ProductCard = (props) => {
         // <NavLink to = {'/product/'+ props.product.id}>
 
         <Card className={cx(classes.root, shadowStyles.root)} style={{ position: "relative", marginBottom: '10px' }}>
-        
+            
             <CardContent className={classes.content}
             // ref={hoverRef}
             >

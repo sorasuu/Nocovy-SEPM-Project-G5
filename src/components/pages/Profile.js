@@ -17,7 +17,7 @@ import { fade } from '@material-ui/core/styles'
 import {uploadToStorage} from '../store/actions/uploadAction'
 import {withRouter} from 'react-router-dom';
 import {createChatSession} from '../store/actions/chatActions'
-
+import { checkArray } from './dashboard/Dashboard'
 const useStyles = theme => ({
   search: {
     position: 'relative',
@@ -61,7 +61,7 @@ class Profile extends Component {
     website: '',
     businessGenre: '',
     businessDesc: '',
-    certificate: '',
+    certificates: '',
     wholesaler: '',
     logo: '',
     newBusinessName: '',
@@ -292,8 +292,8 @@ class Profile extends Component {
 
       var timeStamp = Math.floor(Date.now() / 1000);
       var product = {
-        authorEmail: this.props.user.email,
-        authorName: this.props.user.displayName,
+        authorEmail: this.props.thisUser.email,
+        authorName: this.props.thisUser.displayName,
         category: this.state.productCategories, 
         cover: this.props.productImg[0],
         supplierId: this.props.auth.uid,
@@ -378,11 +378,11 @@ static getDerivedStateFromProps(nextProps, prevState) {
 }
   
   render() {
-    const { auth, classes} = this.props;
+    const { auth, classes, products } = this.props;
     console.log(this.props)
-    const { search, products } = this.state;
-    const filteredProducts = products.filter(product =>{
-        return product.title.toLowerCase().indexOf(search.toLowerCase())!== -1
+    const { search } = this.state;
+    const filteredProducts = checkArray(products).filter(product =>{
+        return product.name.toLowerCase().indexOf(search.toLowerCase())!== -1
     })
     if (!auth.uid) return <Redirect to='/signin' />
 
