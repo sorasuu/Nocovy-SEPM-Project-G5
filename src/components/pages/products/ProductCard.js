@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ProductCard = (props) => {
-    console.log("product card", props.product)
+    // console.log("product card", props.product)
     const classes = useStyles();
     const mediaStyles = useFourThreeCardMediaStyles();
     const textCardContentStyles = useN04TextInfoContentStyles();
@@ -50,6 +50,11 @@ const ProductCard = (props) => {
     };
 
     const handleClose = () => {
+        setOpen(false);
+    };
+    const handleBuyProduct = (e,product,number) => {
+        props.handleCart(e,product,number)
+        // console.log(product,number)
         setOpen(false);
     };
     const buyLess = () => {
@@ -129,7 +134,7 @@ const ProductCard = (props) => {
                                             <Button autoFocus onClick={handleClose} color="primary">
                                                 Cancel
                                             </Button>
-                                            <Button onClick={handleClose} color="primary" autoFocus>
+                                            <Button onClick={(e)=>handleBuyProduct(e,product,number)} color="primary" autoFocus>
                                                 Purchase
                                             </Button>
                                         </DialogActions>
