@@ -145,29 +145,39 @@ class Dashboard extends Component {
     this.setState({sortName: !this.state.sortName})
   }
   handleCart=(e, productinfo, num)=>{
-    console.log('assa',productinfo)
-    const{cart } = this.state
-    var newcart =cart ;
-
+    
+    const { cart } = this.state
+    console.log('state cart',cart)
+    var newcart = cart;
+    var a =[]
     var productitem ={...productinfo,num}
-      if (cart===[]){
-        newcart=[cart,productitem]
-            this.setState({cart:newcart})
-            localStorage.setItem('cart', JSON.stringify(newcart));
-      }else{
-      let i=0
+    
+      if (cart.length === 0){
+            // console.log('newcart', newcart)
+            this.setState({cart:[productitem]})
+            console.log("productItem", productitem)
+            localStorage.setItem('cart',JSON.stringify(productitem));
+      }
+      else{
+      var i=0
+      var exist = false
       for(i<cart.length;i++;){
         console.log('the fuck',cart[i].id,productitem.id)
           if (cart[i].id===productitem.id){
+            exist= true
             newcart[i]=productitem
             this.setState({cart:newcart})
             localStorage.setItem('cart', JSON.stringify(newcart));
-          }else{
-            newcart=[cart,productitem]
-            this.setState({cart:newcart})
-            localStorage.setItem('cart', JSON.stringify(newcart));
+            break;
           }
         }
+        if(exist===false){
+          newcart = [...cart,productitem]
+          console.log(newcart)
+          this.setState({cart:newcart})
+          localStorage.setItem('cart', JSON.stringify(newcart));
+        }
+        
     }
     var cartfromlocal = JSON.parse(localStorage.getItem('cart'));
     console.log('cart',cartfromlocal)
@@ -186,10 +196,11 @@ class Dashboard extends Component {
     this.setState({ isFiltered: false})
   }
   render() {
-  
+    
     const { auth, classes, products, suppliers, retailers } = this.props;
     console.log('dashboard product', products)
-    const { search, value, filter, sortAsc, isFiltered, sortName } = this.state;
+    const { search, value, filter, sortAsc, isFiltered, sortName, cart } = this.state;
+    
     const afterSearchSupplier = checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchProduct = checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchRetailer = checkArray(retailers).filter(retailer => retailer.displayName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
@@ -281,7 +292,7 @@ class Dashboard extends Component {
               : sortFoundPrice.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                    <ProductCard product={product} uid ={this.props.auth.uid} handleCart={this.handleCart}/>
+                    <ProductCard key={index} product={product} uid ={this.props.auth.uid} handleCart={this.handleCart}/>
                
                   </Grid>
                 )
@@ -291,7 +302,7 @@ class Dashboard extends Component {
               : afterSearchProduct.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                     <ProductCard product={product} uid ={this.props.auth.uid} handleCart={this.handleCart}/>
+                     <ProductCard key ={index} product={product} uid ={this.props.auth.uid} handleCart={this.handleCart}/>
                   </Grid>
                 )
               })}
