@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { signOut } from '../store/actions/authActions'
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Grid from '@material-ui/core/Grid';
 import InputIcon from '@material-ui/icons/Input';
 import IconButton from "@material-ui/core/IconButton";
@@ -83,12 +84,17 @@ const SignedInLinks = (props) => {
   return (
     <div>
       <Grid container spacing={3}>
-      <Grid item xs={4} style={{marginTop:"2%"}}>
+        <Grid item xs={3} style={{marginTop:"4%", marginRight:'-1%'}}>
+        <NavLink to={'/cart'}  >
+          <ShoppingCartIcon style={{color:'black'}} />
+          </NavLink>
+        </Grid>
+      <Grid item xs={3} style={{marginTop:"2%"}}>
         <div className={classes.manager}>
         <Button
-          color={window.innerWidth > 959 ? "transparent" : "white"}
+          color={window.innerWidth > 959 ? "transparent" : "secondary"}
           // justIcon={window.innerWidth > 959}
-          simple={!(window.innerWidth > 959)}
+          // simple={!(window.innerWidth > 959)}
           aria-owns={openNotification ? "notification-menu-list-grow" : null}
           aria-haspopup="true"
           onClick={handleClickNotification}
@@ -107,11 +113,7 @@ const SignedInLinks = (props) => {
           anchorEl={openNotification}
           transition
           disablePortal
-          // className={
-          //   classNames({ [classes.popperClose]: !openNotification }) +
-          //   " " +
-          //   classes.popperNav
-          // }
+         
         >
           {({ TransitionProps, placement }) => (
             <Grow
@@ -168,7 +170,7 @@ const SignedInLinks = (props) => {
       <Grid item xs={4}>
             <LongMenu props={auth} lastContact={props.props.lastContact}/>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
       <IconButton onClick={props.signOut} >
             <InputIcon  />
           </IconButton>

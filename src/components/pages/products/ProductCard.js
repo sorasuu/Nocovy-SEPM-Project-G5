@@ -2,21 +2,25 @@ import React, { useState } from 'react';
 import cx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/styles';
 import {
-    Card, CardContent, CardHeader,
+    Card, CardContent, CardMedia ,
     Button, Dialog, DialogContent, DialogActions,
     DialogContentText, DialogTitle, Grid
 } from '@material-ui/core';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Carousel from 'react-elastic-carousel'
-import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
-import { useSoftRiseShadowStyles } from '@mui-treasury/styles/shadow/softRise';
-import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
+import TextInfoContent from '@mui-treasury/components/content/textInfo';
+import { useFourThreeCardMediaStyles } from '@mui-treasury/styles/cardMedia/fourThree';
+import { useN04TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n04';
+import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { NavLink } from 'react-router-dom';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
 import "../page.css"
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import RemoveRoundedIcon from '@material-ui/icons/RemoveRounded';
+import ProductImageDetail  from './ProductImageDetail'
+import { useSelector } from 'react-redux'
+import { useFirestoreConnect } from 'react-redux-firebase'
 
 const useStyles = makeStyles(() => ({
     card: {
@@ -30,20 +34,42 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ProductCard = (props) => {
-    console.log("product card", props.product)
+    console.log("why?", props)
+    // useFirestoreConnect((props)=>{
+    // if(props.product !== undefined){
+    //     return[
+
+    //         {collection:'users', doc: props.product.supplierId}
+    //     ]
+    //     }else{
+    //         return[]
+    //     }
+    // })
+    // const supplier = useSelector(({ firestore: { data } }) => data.users && data.users[props.product.supplierId])
+    // console.log("product card", supplier)
     const classes = useStyles();
-    const cardHeaderStyles = useContainedCardHeaderStyles();
-    const cardShadowStyles = useSoftRiseShadowStyles({ inactive: false });
-    const cardHeaderShadowStyles = useFadedShadowStyles();
+    const mediaStyles = useFourThreeCardMediaStyles();
+    const textCardContentStyles = useN04TextInfoContentStyles();
+    const shadowStyles = useOverShadowStyles({ inactive: false });
     const [open, setOpen] = React.useState(false);
     const [number, setNumber] = useState(0);
     const product = props.product
-
+    var owner
+    if(props.uid ===props.product.supplierId){
+        owner= true
+    }else{
+        owner=false
+    }
     const handleClickOpen = () => {
         setOpen(true);
     };
 
     const handleClose = () => {
+        setOpen(false);
+    };
+    const handleBuyProduct = (e,product,number) => {
+        props.handleCart(e,product,number)
+        // console.log(product,number)
         setOpen(false);
     };
     const buyLess = () => {
@@ -58,22 +84,23 @@ const ProductCard = (props) => {
     return (
         // <NavLink to = {'/product/'+ props.product.id}>
 
-        <Card className={cx(classes.card, cardShadowStyles.root)} style={{ position: "relative", marginBottom: '10px' }}>
-            <CardHeader
-                className={cardHeaderShadowStyles.root}
-                classes={cardHeaderStyles}
-                title={product.name}
-                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", right: "5%", zIndex:'1'}}
-            />
+        <Card className={cx(classes.root, shadowStyles.root)} style={{ position: "relative", marginBottom: '10px' }}>
+        
             <CardContent className={classes.content}
             // ref={hoverRef}
             >
-                <div style={{ marginTop: "10%" }}>
+                <div style={{ marginTop: "2%" }}>
                     {/* put image and info */}
                     <div className='image'>
-                        <img src={product.cover} style={{ width: "200px", height: "250px" }} />
+                    <CardMedia
+                    // component="img"
+                    alt="product"
+                        className={cx(classes.media, mediaStyles.root)}
+                        image={product.cover}
+                    />
 
                         <div className="overlay" style={{borderRadius: 16}}>
+                        {owner?null:
                             <Button
                                 variant="contained"
                                 color="secondary"
@@ -81,7 +108,7 @@ const ProductCard = (props) => {
                                 onClick={handleClickOpen}
                             >
                                 Buy
-                            </Button>
+                            </Button>}
                             <Dialog
                                 fullWidth={true}
                                 maxWidth={"md"}
@@ -90,29 +117,38 @@ const ProductCard = (props) => {
                                 aria-labelledby="responsive-dialog-title"
                             >
                                 <h4 style={{ margin: '40px' }}>{product.name}</h4>
-                                <Grid container>
-                                    <Grid item xs={8} md={8} lg={8}  >
-                                        <Carousel itemToShow={1}>
-                                            {product.productImg ? product.productImg.map((item, key) =>
-                                                <img key={key} style={{ minWidth: 200, height: 500 }} src={item} />
-                                            ) :
-                                                <img src={product.cover} />
-                                            }
-                                        </Carousel>
+                                <Grid container style={{margin:'1%'}}>
+                                    <Grid item xs={7} md={7} lg={7}  >
+                                        <ProductImageDetail image = {product}/>
                                     </Grid>
-                                    <Grid item xs={4} md={4} lg={4}>
+                                    <Grid item xs={5} md={5} lg={5}>
                                         <DialogTitle id="responsive-dialog-title">
-                                            {product.id}
+                                            <h5>ID:</h5> <div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold' }}>{product.id}</div>
                                         </DialogTitle>
                                         <DialogContent>
-                                            {product.brand}
-                                            {product.authorName}
+                                            <Grid container justify="flex-start">
+                                                <Grid item xs={6}><h5>Categories:</h5></Grid>
+                                                <Grid item xs={6}>{product.category.map((item) =><div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold' }}>{item.toUpperCase()} </div>)}</Grid>
+                                                <br/>
+                                                <Grid item xs={6}> <h5>Unit Price:</h5></Grid>
+                                                <Grid item xs={6}> <div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold'}}> {product.price.unitPrice} </div></Grid>
+                                                <Grid item xs={6}><h5>Calculator</h5></Grid>
+                                                <Grid item xs={6}><h5></h5></Grid>
+                                                <Grid item xs={6}>
+                                                    <Grid container direction="row" justify="center" alignItems="center">
+                                                        <Grid item xs={4}><Button onClick={buyLess}><RemoveRoundedIcon/></Button></Grid>
+                                                        <Grid item xs={4}>   <div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold'}}>{number} </div></Grid>
+                                                        <Grid item xs={4}><Button onClick={buyMore}><AddRoundedIcon/></Button></Grid>
+                                                    </Grid>
+                                                </Grid>
+                                                <Grid item xs={6}><div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold'}}> = {product.price.unitPrice * number}</div></Grid> 
+                                               
+                                               
+                                            </Grid>
                                         </DialogContent>
                                         <Grid container justify='center'>
 
-                                            <Button onClick={buyLess    }><RemoveRoundedIcon/></Button>
-                                            <h4>{number}</h4>
-                                            <Button onClick={buyMore}><AddRoundedIcon/></Button>
+                                            
 
                                         </Grid>
                                     </Grid>
@@ -122,7 +158,7 @@ const ProductCard = (props) => {
                                             <Button autoFocus onClick={handleClose} color="primary">
                                                 Cancel
                                             </Button>
-                                            <Button onClick={handleClose} color="primary" autoFocus>
+                                            <Button onClick={(e)=>handleBuyProduct(e,product,number)} color="primary" autoFocus>
                                                 Purchase
                                             </Button>
                                         </DialogActions>
@@ -138,9 +174,18 @@ const ProductCard = (props) => {
                                     Detail
                                 </Button>
                             </NavLink>
+
                         </div>
                     </div>
                 </div>
+                <TextInfoContent
+                    classes={textCardContentStyles}
+                    overline={product.name}
+                    heading={product.price.unitPrice+' VNĐ'}
+        //   body={
+        //     product.category
+        //   }
+        />
             </CardContent>
         </Card>
 
@@ -150,5 +195,7 @@ const ProductCard = (props) => {
 };
 
 
+ export default ProductCard
+ 
 
-export default ProductCard;
+ 

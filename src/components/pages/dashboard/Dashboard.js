@@ -1,14 +1,19 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { Redirect, NavLink } from 'react-router-dom'
-import { firestoreConnect } from 'react-redux-firebase'
+import { firestoreConnect, populate } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { fade } from '@material-ui/core/styles'
-import { Grid, InputBase, withStyles, Tabs, Tab, CardContent, Typography, CardMedia, Card } from '@material-ui/core'
-import StyledButton from '../../layout/StyledButton'
+import { fade, withStyles } from '@material-ui/core/styles'
+import {
+  Grid, InputBase,
+  Tabs, Tab, CardContent, Typography,
+  CardMedia, Card, Switch
+} from '@material-ui/core'
+// import StyledButton from '../../layout/StyledButton'
 import ProductCard from '../products/ProductCard'
 import SearchIcon from '@material-ui/icons/Search';
 import { TabPanel, a11yProps } from './AdminDashboard'
+import FilterForm from './FilterForm'
 const useStyles = theme => ({
 
   search: {
@@ -74,13 +79,43 @@ const useStyles = theme => ({
 
 });
 
+function checkFilter(arr, arrCheck) {
+  var i
+  var arraf = []
+  for (i = 0; i < arr.length; i++) {
+
+    if (arrCheck.includes(arr[i])) {
+      arraf.push(arr[i])
+    } else {
+      break
+    }
+  }
+  if (arr.length === arraf.length) {
+    return arrCheck
+  }
+  else { return null }
+}
+
+
 export function checkArray(array) {
-  var data = [{id:'Loading...',pending:true, name:"Loading", displayName: "Loading", businessName: 'Loading', price:'Loading' }];
+  var data = [{ id: 'Loading...', category: ['a', 'b'], pending: true, name: "Loading", displayName: "Loading", businessName: 'Loading', price: 'Loading'}];
   if (array !== undefined) {
     data = array
   }
   return data
 }
+
+const allCategories = [
+  'fashion',
+  'vehicle',
+  'luxury',
+  'convenience',
+  'something',
+  'electronic',
+  'beauty'
+];
+
+
 
 class Dashboard extends Component {
   constructor(props) {
@@ -88,25 +123,95 @@ class Dashboard extends Component {
     this.state = {
       search: '',
       value: 0,
+      filter: [],
+      sortName: true,
+      sortAsc: true,
+      isFiltered: false,
+      cart:[]
     };
     this.handleChange = this.handleChange.bind(this)
+    this.handleSortKind = this.handleSortKind.bind(this)
+    // this.handleCart= this.handleCart(this)
   }
 
   onChange = e => {
     this.setState({ search: e.target.value })
   }
+  handleSort = e => {
+    this.setState({ sortAsc: !this.state.sortAsc })
+  }
 
+  handleSortKind(params){
+    this.setState({sortName: !this.state.sortName})
+  }
+  handleCart=(e, productinfo, num)=>{
+    console.log('assa',productinfo)
+    const{cart } = this.state
+    var newcart =cart ;
+
+    var productitem ={...productinfo,num}
+      if (cart===[]){
+        newcart=[cart,productitem]
+            this.setState({cart:newcart})
+            localStorage.setItem('cart', JSON.stringify(newcart));
+      }else{
+      let i=0
+      for(i<cart.length;i++;){
+        console.log('the fuck',cart[i].id,productitem.id)
+          if (cart[i].id===productitem.id){
+            newcart[i]=productitem
+            this.setState({cart:newcart})
+            localStorage.setItem('cart', JSON.stringify(newcart));
+          }else{
+            newcart=[cart,productitem]
+            this.setState({cart:newcart})
+            localStorage.setItem('cart', JSON.stringify(newcart));
+          }
+        }
+    }
+    var cartfromlocal = JSON.parse(localStorage.getItem('cart'));
+    console.log('cart',cartfromlocal)
+  }
   handleChange(e, newValue) {
     this.setState({ value: newValue });
 
   }
-
+  handleSelectFilter = (item) => {
+    this.setState({ filter: item })
+  }
+  handleFilterForm = () => {
+    this.setState({ isFiltered: true })
+  }
+  handleCancelFilter =()=>{
+    this.setState({ isFiltered: false})
+  }
   render() {
+  
     const { auth, classes, products, suppliers, retailers } = this.props;
-    const { search, value } = this.state;
+    console.log('dashboard product', products)
+    const { search, value, filter, sortAsc, isFiltered, sortName } = this.state;
+    const afterSearchSupplier = checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+    const afterSearchProduct = checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+    const afterSearchRetailer = checkArray(retailers).filter(retailer => retailer.displayName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+    const found = checkArray(afterSearchProduct).filter((product) => {
+      if (product.category === checkFilter(filter, product.category)) {
+        return true
+      } else { return false }
+
+    })
+    const sortFoundName = found.sort((a, b) => {
+      const isReverse = (sortAsc === true) ? 1 : -1;
+      return isReverse * a.name.localeCompare(b.name)
+    })
+
+    const sortFoundPrice = found.sort((a,b) => {
+      const isReverse = (sortAsc === true) ? 1: -1;
+      return isReverse * ( a.price.unitPrice - b.price.unitPrice)
+    }
+    )
 
     if (!auth.uid) return <Redirect to='/signin' />
-
+    console.log('asdasd',this.state)
     return (
 
       <div className="container" style={{ textAlign: 'center' }}>
@@ -139,20 +244,54 @@ class Dashboard extends Component {
             onChange={this.onChange}
           />
         </div>
+
         <div style={{ marginTop: '10%' }}>
           <TabPanel value={value} index={0}>
+
+            <FilterForm products={products}
+              allCategories={allCategories}
+              handleFilter={item => this.handleSelectFilter(item)}
+              handleFilterForm={this.handleFilterForm}
+              handleCancelFilter={this.handleCancelFilter}
+              handleSort={this.handleSort}
+              handleSortKind={this.handleSortKind}
+              sortName={sortName}
+              sortAsc={sortAsc}
+            />
             <Grid
               container
               spacing={2}
               direction="row"
               justify="center"
               alignItems="center"
+              style={{ marginTop: '30px' }}
             >
 
-              {checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1).map((product, index) => {
+              {isFiltered ? 
+              <>  
+              {
+                sortName ?
+                sortFoundName.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                    <ProductCard product={product}/>
+                     <ProductCard product={product} uid ={this.props.auth.uid} handleCart={this.handleCart}/>
+                  </Grid>
+                )
+                })
+              : sortFoundPrice.map((product, index) => {
+                return (
+                  <Grid item xs={12} sm={6} md={4} key={index}>
+                    <ProductCard product={product} uid ={this.props.auth.uid} handleCart={this.handleCart}/>
+               
+                  </Grid>
+                )
+              })
+              }
+              </>
+              : afterSearchProduct.map((product, index) => {
+                return (
+                  <Grid item xs={12} sm={6} md={4} key={index}>
+                     <ProductCard product={product} uid ={this.props.auth.uid} handleCart={this.handleCart}/>
                   </Grid>
                 )
               })}
@@ -167,7 +306,7 @@ class Dashboard extends Component {
               justify="center"
               alignItems="center"
             >
-              {checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1).map((supplier, index) => {
+              {afterSearchSupplier.map((supplier, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
 
@@ -192,10 +331,10 @@ class Dashboard extends Component {
 
                       </div>
                       <div>
-                          <NavLink to = {'/supplier/'+ supplier.id}>
-                              <button>Detail</button>
-                          </NavLink>
-                        </div>
+                        <NavLink to={'/supplier/' + supplier.id}>
+                          <button>Detail</button>
+                        </NavLink>
+                      </div>
                     </Card>
                   </Grid>
                 )
@@ -211,7 +350,7 @@ class Dashboard extends Component {
               justify="center"
               alignItems="center"
             >
-              {checkArray(retailers).filter(retailer => retailer.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1).map((retailer, index) => {
+              {afterSearchRetailer.map((retailer, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
 
@@ -236,10 +375,10 @@ class Dashboard extends Component {
 
                       </div>
                       <div>
-                          <NavLink to = {'/retailer/'+ retailer.id}>
-                              <button>Detail</button>
-                          </NavLink>
-                        </div>
+                        <NavLink to={'/retailer/' + retailer.id}>
+                          <button>Detail</button>
+                        </NavLink>
+                      </div>
                     </Card>
                   </Grid>
                 )
@@ -255,21 +394,24 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = (state) => {
+ 
   return {
     auth: state.firebase.auth,
     products: state.firestore.ordered.products,
     suppliers: state.firestore.ordered.suppliers,
     retailers: state.firestore.ordered.retailers
+  
   }
 };
 
 export default compose(
   connect(mapStateToProps),
   firestoreConnect([
-    { collection: 'products' },
+    { collection: 'products'},
     { collection: 'users', where: [["type", "==", "supplier"]], storeAs: 'suppliers' },
-    { collection: 'users', where: [["type", "==", "retailer"]], storeAs: 'retailers' }
+    { collection: 'users', where: [["type", "==", "retailer"]], storeAs: 'retailers' },
+
   ]),
-  
+
 
 )(withStyles(useStyles)(Dashboard))

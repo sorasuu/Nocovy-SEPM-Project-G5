@@ -208,7 +208,7 @@ function RetailerDetail(props) {
                                         <TableCell>{data[item.id].name}</TableCell>
                                         <TableCell>{data[item.id].category}</TableCell>
                                         <TableCell>{data[item.id].brand}</TableCell>
-                                        <TableCell>{data[item.id].price}</TableCell>
+                                        <TableCell>{data[item.id].price.unitprice}</TableCell>
                                         {data[item.id].supplierId ?
                                             <NavLink to={'/supplier/' + data[item.id].supplierId.id}>
                                                 <Button variant="contained" color="primary" component="span">
