@@ -51,7 +51,8 @@ class App extends Component {
     );
   }
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = (state,ownsProps) => {
+  console.log(ownsProps)
   return {
     auth: state.firebase.auth,
   }
