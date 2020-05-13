@@ -167,7 +167,7 @@ const SignedInLinks = (props) => {
         </Poppers>
       </div>
           </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={3}>
             <LongMenu props={auth} lastContact={props.props.lastContact}/>
         </Grid>
         <Grid item xs={3}>
