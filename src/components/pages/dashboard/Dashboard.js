@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react'
 import { Redirect, NavLink } from 'react-router-dom'
-import { firestoreConnect } from 'react-redux-firebase'
+import { firestoreConnect, populate } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { fade, withStyles } from '@material-ui/core/styles'
@@ -98,7 +98,7 @@ function checkFilter(arr, arrCheck) {
 
 
 export function checkArray(array) {
-  var data = [{ id: 'Loading...', category: ['a', 'b'], pending: true, name: "Loading", displayName: "Loading", businessName: 'Loading', price: 'Loading' }];
+  var data = [{ id: 'Loading...', category: ['a', 'b'], pending: true, name: "Loading", displayName: "Loading", businessName: 'Loading', price: 'Loading'}];
   if (array !== undefined) {
     data = array
   }
@@ -188,6 +188,7 @@ class Dashboard extends Component {
   render() {
   
     const { auth, classes, products, suppliers, retailers } = this.props;
+    console.log('dashboard product', products)
     const { search, value, filter, sortAsc, isFiltered, sortName } = this.state;
     const afterSearchSupplier = checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchProduct = checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
@@ -393,18 +394,20 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = (state) => {
+ 
   return {
     auth: state.firebase.auth,
     products: state.firestore.ordered.products,
     suppliers: state.firestore.ordered.suppliers,
     retailers: state.firestore.ordered.retailers
+  
   }
 };
 
 export default compose(
   connect(mapStateToProps),
   firestoreConnect([
-    { collection: 'products' },
+    { collection: 'products'},
     { collection: 'users', where: [["type", "==", "supplier"]], storeAs: 'suppliers' },
     { collection: 'users', where: [["type", "==", "retailer"]], storeAs: 'retailers' },
 

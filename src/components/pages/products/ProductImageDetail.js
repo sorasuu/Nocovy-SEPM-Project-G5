@@ -30,12 +30,11 @@ const useStyles = makeStyles(() => ({
     // paddingBottom: '56.25%',
   },
   image: {
-    maxWidth: '400px',
+    
     marginTop: '5px',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    justifyContent: 'center',
+    alignItems: 'center',
     display: 'flex',
-    // position: 'absolute',
     zIndex: 10,
     width: '100%',
     height: "500px",
