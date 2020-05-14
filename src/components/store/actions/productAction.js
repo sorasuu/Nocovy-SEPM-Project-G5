@@ -1,4 +1,5 @@
 import firebase from 'firebase/app';
+import { number } from 'prop-types';
 
 
 export const createProduct = (product) => {
@@ -20,6 +21,23 @@ export const createProduct = (product) => {
     }
   };
   
+export const deliverProductToCart = (carts)=>{
+  return(dispatch)=>{
+    var cartfromlocal = JSON.parse(localStorage.getItem('cart'));
+    var numberOfItem;
+    if(cartfromlocal===undefined||cartfromlocal===null||cartfromlocal===[]){
+      numberOfItem=0
+    }else{
+      numberOfItem= cartfromlocal.length
+
+    }
+    const cart = {count:numberOfItem, products:cartfromlocal}
+    console.log('redux cart',cart)
+    dispatch({type:'PRODUCT_TO_CART',payload:cart})
+
+  }
+}
+
 export const editProduct = (product) => {
     return (dispatch, getState) => {
       firebase.firestore().collection('products').doc(product.id).set({

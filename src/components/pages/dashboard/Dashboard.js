@@ -14,6 +14,7 @@ import ProductCard from '../products/ProductCard'
 import SearchIcon from '@material-ui/icons/Search';
 import { TabPanel, a11yProps } from './AdminDashboard'
 import FilterForm from './FilterForm'
+import {deliverProductToCart}from '../../store/actions/productAction'
 const useStyles = theme => ({
 
   search: {
@@ -159,9 +160,9 @@ class Dashboard extends Component {
             localStorage.setItem('cart',JSON.stringify(productitem));
       }
       else{
-      var i=0
+     
       var exist = false
-      for(i<cart.length;i++;){
+      for( var i=0;i<cart.length;i++){
         console.log('the fuck',cart[i].id,productitem.id)
           if (cart[i].id===productitem.id){
             exist= true
@@ -177,7 +178,7 @@ class Dashboard extends Component {
           this.setState({cart:newcart})
           localStorage.setItem('cart', JSON.stringify(newcart));
         }
-        
+        this.props.deliverProductToCart(null)
     }
     var cartfromlocal = JSON.parse(localStorage.getItem('cart'));
     console.log('cart',cartfromlocal)
@@ -403,6 +404,11 @@ class Dashboard extends Component {
     )
   }
 }
+const mapDispatchToProps = dispatch => {
+  return {
+    deliverProductToCart: cart => dispatch(deliverProductToCart(cart)),
+  };
+};
 
 const mapStateToProps = (state) => {
  
@@ -416,7 +422,7 @@ const mapStateToProps = (state) => {
 };
 
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps,mapDispatchToProps),
   firestoreConnect([
     { collection: 'products'},
     { collection: 'users', where: [["type", "==", "supplier"]], storeAs: 'suppliers' },
