@@ -82,7 +82,7 @@ exports.userApproved = functions.firestore
             "dynamic_template_data": {
               name: user.displayName,
               text: user.displayName + " Your account has been approved by our admin. Enjoy our trading platform",
-              subject: 'Acount verification approved',
+              subject: 'Account verification approved',
             }
           }
           notification = {
@@ -99,7 +99,7 @@ exports.userApproved = functions.firestore
             "dynamic_template_data": {
               name: user.displayName,
               text: user.displayName + " Your account has been declined by our admin. Please reupload your business cetificate for verification.",
-              subject: 'Acount verification declined',
+              subject: 'Account verification declined',
             }
           }
           notification = {
