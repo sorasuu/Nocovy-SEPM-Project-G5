@@ -39,7 +39,7 @@ const ProductCard = (props) => {
     const [open, setOpen] = React.useState(false);
     const [number, setNumber] = useState(0);
     const product = props.product
-    console.log('product', product)
+    // console.log('product', product)
     var owner
     if(props.uid ===props.product.supplierId){
         owner= true
