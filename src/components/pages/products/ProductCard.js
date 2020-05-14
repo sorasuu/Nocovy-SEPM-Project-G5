@@ -7,7 +7,7 @@ import {
     DialogContentText, DialogTitle, Grid
 } from '@material-ui/core';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Carousel from 'react-elastic-carousel'
+
 import TextInfoContent from '@mui-treasury/components/content/textInfo';
 import { useFourThreeCardMediaStyles } from '@mui-treasury/styles/cardMedia/fourThree';
 import { useN04TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n04';
@@ -19,8 +19,6 @@ import "../page.css"
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import RemoveRoundedIcon from '@material-ui/icons/RemoveRounded';
 import ProductImageDetail  from './ProductImageDetail'
-import { useSelector } from 'react-redux'
-import { useFirestoreConnect } from 'react-redux-firebase'
 
 const useStyles = makeStyles(() => ({
     card: {
@@ -34,7 +32,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ProductCard = (props) => {
-   
     const classes = useStyles();
     const mediaStyles = useFourThreeCardMediaStyles();
     const textCardContentStyles = useN04TextInfoContentStyles();
@@ -57,8 +54,8 @@ const ProductCard = (props) => {
         setOpen(false);
     };
     const handleBuyProduct = (e,product,number) => {
+        console.log("handle Buy Product:", product)
         props.handleCart(e,product,number)
-        // console.log(product,number)
         setOpen(false);
     };
     const buyLess = () => {
@@ -112,17 +109,18 @@ const ProductCard = (props) => {
                                     </Grid>
                                     <Grid item xs={5} md={5} lg={5}>
                                         <DialogTitle id="responsive-dialog-title">
-                                            <h5>ID:</h5> <div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold' }}>{product.id}</div>
+                                             
+                                            <div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold' }}>ID: {product.id}</div>
                                         </DialogTitle>
                                         <DialogContent>
                                             <Grid container justify="flex-start">
                                                 <Grid item xs={6}><h5>Categories:</h5></Grid>
-                                                <Grid item xs={6}>{product.category.map((item) =><div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold' }}>{item.toUpperCase()} </div>)}</Grid>
+                                                <Grid item xs={6}>{product.category.map((item, key) =><div key={key} style={{textAlign:'right', fontSize:'30px', fontFamily:'bold' }}>{item.toUpperCase()} </div>)}</Grid>
                                                 <br/>
                                                 <Grid item xs={6}> <h5>Unit Price:</h5></Grid>
                                                 <Grid item xs={6}> <div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold'}}> {product.price.unitPrice} </div></Grid>
                                                 <Grid item xs={6}><h5>Calculator</h5></Grid>
-                                                <Grid item xs={6}><h5></h5></Grid>
+                                                <Grid item xs={6}><h5> </h5></Grid>
                                                 <Grid item xs={6}>
                                                     <Grid container direction="row" justify="center" alignItems="center">
                                                         <Grid item xs={4}><Button onClick={buyLess}><RemoveRoundedIcon/></Button></Grid>
