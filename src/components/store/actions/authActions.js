@@ -31,13 +31,16 @@ export const signUp = (newUser) => {
       newUser.password
     ).then(resp => {
       return firebase.firestore().collection('users').doc(resp.user.uid).set({
+        uid:resp.user.uid,
         displayName: newUser.firstName +" "+newUser.lastName,
         email:  newUser.email,
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         phoneNumber: newUser.phoneNumber,
         businessName: newUser.businessName,
-        // image: newUser.image,
+        logo: newUser.logo,
+        businessGenre: newUser.businessGenre,
+        businessDesc:newUser.businessDesc,
         certificate: newUser.certificate,
         pending:true,
         verify:false,

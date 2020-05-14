@@ -3,16 +3,16 @@ import firebase from 'firebase/app';
 
 export const createProduct = (product) => {
     return (dispatch, getState ) => {
-      const profile = getState().firebase.profile;
+
       const author = getState().firebase.auth;
       firebase.firestore().collection('products').add({
         ...product,
-        authorName: profile.displayName,
-        // authorId: author.uid,
         authorEmail: author.email,
-        // authorPhotoURL: author.photoURL,
         createdAt: new Date()
       }).then(() => {
+        firebase.firestore().collection('categories').doc('productcategories').set({
+          categories: firebase.firestore.FieldValue.arrayUnion(product.category)
+        })
         dispatch({ type: 'CREATE_PRODUCT_SUCCESS' });
       }).catch(err => {
         dispatch({ type: 'CREATE_PRODUCT_ERROR' }, err);
@@ -31,9 +31,9 @@ export const editProduct = (product) => {
       });
     }
   };
-export const deleteProduct = (product) => {
+export const deleteProduct = (id) => {
 return (dispatch, getState) => {
-  firebase.firestore().collection('products').doc(product.id).delete()
+  firebase.firestore().collection('products').doc(id).delete()
     .then(() => {
     dispatch({ type: 'DELETE_PRODUCT_SUCCESS' });
     }).catch(err => {

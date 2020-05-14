@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import cx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    Card, CardContent, CardHeader,
+    Card, CardContent, CardHeader, Button, Icon
 } from "@material-ui/core";
 import ProductImageDetail from './ProductImageDetail'
 import Grid from '@material-ui/core/Grid';
@@ -13,6 +13,7 @@ import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import PriceForm from './PriceForm'
 import { checkArray } from '../dashboard/Dashboard';
+import { NavLink } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -92,12 +93,16 @@ export default function ProductDetailCard(props) {
                     key={props.product.id}
                     spacing={2}
                 >
-                    <Grid item xs={12} sm={6} md={6} >
+                    <Grid item xs={12} sm={8} md={8} lg={8}>
                         {/* <ProductImageCard image={ props.product.productImg } /> */}
                         <ProductImageDetail image ={props.product}/>
                     </Grid>
-                    <Grid item xs={12} sm={6} md={6}>
-                        <ProductInfoCard product={props.product} price={price} />
+                    <Grid item xs={12} sm={4} md={4} lg={4}>
+                        <Grid container>
+                            <Grid item xs={12}><ProductInfoCard product={props.product} price={price}/></Grid>
+                            <Grid item xs={12}><DetailTable details={props.product.details} style={{marginBottom: '5px', }}/></Grid>
+                        
+                        </Grid>             
                     </Grid>
 
                 </Grid>
@@ -105,7 +110,7 @@ export default function ProductDetailCard(props) {
 
             </CardContent>
         </Card>
-        <DetailTable details={props.product.details} style={{marginBottom: '5px', }}/>
+        
         </div>
     );
 };
@@ -117,34 +122,57 @@ export default function ProductDetailCard(props) {
 
 export const ProductInfoCard = props => { 
     const classes = useStyles();
+    console.log('product detail card', props)
     return (
-        <div>
+        
         <Grid container spacing={2}>
             <Grid item xs={6} md={6} lg={6}><h4>Author:</h4></Grid>
-            <Grid item xs={6} md={6} lg={6}>{props.product.supplierId.displayName}</Grid>
-            <Grid item xs={6} md={6} lg={6}><PriceForm/></Grid>
+            <Grid item xs={6} md={6} lg={6}><div style={{fontSize:'20px'}}>{props.product.authorName}</div>
+                    <NavLink to={`/supplier/${props.product.supplierId}`}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            className={classes.button}
+                            endIcon={<Icon>send</Icon>}
+                        >
+                            Supplier
+                        </Button>
+                    </NavLink>
+            </Grid>
+            <Grid container>
+                <Grid item xs={12} sm={6} md={4} lg={3}> 
+                    <h4> Price</h4>
+                </Grid>
+                <Grid item xs={12} sm={6} md={8} lg={9}>
+                <TableContainer className={classes.root}>
+                    <TableHead>
+                        <TableRow>
+                            <PriceForm product={props.product}/>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody aria-label="simple table">
+                        {props.price ? props.price.map((detail, key) => {
+                            return (
+                                <TableRow key={key}>
+                                    <TableCell style={{ backgroundColor: `hsla(14, 100%, 53%, 0.6)`, color: 'white' }}>
+                                        {detail.name}
+                                    </TableCell>
+                                    <TableCell>
+                                        {detail.value}
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        }) : null}
+
+                    </TableBody>
+
+
+                </TableContainer>
+                </Grid>
+            </Grid>
+            <Grid item xs={12} md={12} lg={12}></Grid>
         </Grid>
-        <TableContainer className={classes.root}>
- 
-            <TableBody aria-label="simple table">               
-                {props.price? props.price.map((detail, key)=>{
-                    return(
-                        <TableRow key={key}>
-                        <TableCell style={{ backgroundColor: `hsla(14, 100%, 53%, 0.6)`, color: 'white' }}>
-                            {detail.name}
-                        </TableCell>
-                        <TableCell>
-                            {detail.value}
-                        </TableCell>
-                    </TableRow>
-                    )
-                    }):null}
-
-            </TableBody>
-            
-
-        </TableContainer>
-        </div>
+        
     )
 }
 function DetailTable(props) {
@@ -159,7 +187,7 @@ function DetailTable(props) {
                   backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
                   fontSize:15,
                   fontFamily:'Open Sans',
-                  color:'white'
+                  color:'dark'
                   
                 }
               },
@@ -168,7 +196,7 @@ function DetailTable(props) {
                 backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
                 fontSize:15,
                 fontFamily:'Open Sans',
-                color:'white'
+                color:'dark'
             } 
         },         
         ],
@@ -184,7 +212,7 @@ function DetailTable(props) {
 
     return (
         <div>
-        <h4>Detail Table</h4>
+        <h4>Detail</h4>
         <MaterialTable
             title={' '}
             columns={state.columns}

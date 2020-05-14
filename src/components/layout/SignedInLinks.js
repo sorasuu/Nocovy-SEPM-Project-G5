@@ -22,18 +22,21 @@ import Button from "@material-ui/core/Button";
 import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
 const useStyles = makeStyles(styles);
-export  function LongMenu() {
+export  function LongMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [auth, setAuth] = React.useState(null);
   const open = Boolean(anchorEl);
-
+  
   const handleClick = event => {
+    console.log(props)
+    setAuth(props);
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
- 
+//  console.log(props)
 
   return (
     <div>
@@ -53,10 +56,11 @@ export  function LongMenu() {
         open={open}
         onClose={handleClose}
       >
-      <NavLink to='/myproducts' style={{color:"black"}} >
-      <MenuItem onClick={handleClose}>My Products</MenuItem></NavLink>
-      <NavLink to='/reports' style={{color:"black"}}>
-      <MenuItem onClick={handleClose}>Product Reports</MenuItem></NavLink>
+      <NavLink to={`/profile/${props.props.uid}`} style={{color:"black"}} >
+      <MenuItem onClick={handleClose}>My Profile</MenuItem></NavLink>
+      {props.lastContact?
+      <NavLink to={'/chat/'+props.lastContact.id }style={{color:"black"}}>
+      <MenuItem onClick={handleClose}>Chat</MenuItem></NavLink>:null}
       </Menu>
       
     </div>
@@ -76,6 +80,7 @@ const SignedInLinks = (props) => {
   const handleCloseNotification = () => {
     setOpenNotification(null);
   };
+  const {auth} = props 
   return (
     <div>
       <Grid container spacing={3}>
@@ -122,12 +127,14 @@ const SignedInLinks = (props) => {
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseNotification}>
                   <MenuList role="menu">
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}
-                    >
-                      Mike John responded to your message
-                    </MenuItem>
+                    <NavLink to='/chat'>
+                      <MenuItem
+                        onClick={handleCloseNotification}
+                        className={classes.dropdownItem}
+                      >
+                        Mike John responded to your message
+                      </MenuItem>
+                    </NavLink>
                     <MenuItem
                       onClick={handleCloseNotification}
                       className={classes.dropdownItem}
@@ -138,7 +145,7 @@ const SignedInLinks = (props) => {
                       onClick={handleCloseNotification}
                       className={classes.dropdownItem}
                     >
-                      You{"'"}re now able to trade with Andrew
+                      You are now able to trade with Andrew
                     </MenuItem>
                     <MenuItem
                       onClick={handleCloseNotification}
@@ -160,8 +167,8 @@ const SignedInLinks = (props) => {
         </Poppers>
       </div>
           </Grid>
-      <Grid item xs={3}>
-            <LongMenu  />
+      <Grid item xs={4}>
+            <LongMenu props={auth} lastContact={props.props.lastContact}/>
         </Grid>
         <Grid item xs={3}>
       <IconButton onClick={props.signOut} >

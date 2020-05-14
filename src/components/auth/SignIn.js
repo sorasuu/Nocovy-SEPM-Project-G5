@@ -124,7 +124,7 @@ class SignIn extends Component {
                 />
                 <div style={{ fontSize: 11, color: "red" }}>
                   {this.state.passwordError}
-                </div>an
+                </div>
                 <a onClick={this.handleForget}>Forget Password?</a>
               </div>: <button onClick={this.handleForget}>Back</button>}
             </div>
