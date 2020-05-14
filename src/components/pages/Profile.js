@@ -92,10 +92,9 @@ class Profile extends Component {
     freightDesc:'',
     freightRate:'',
     landedCost:0,
-    margin:'',
+    margin:0,
     miscCost:0,
     unitCost:0,
-    unitPrice:0,
     images: [],
     category:'',
     progress: '',
@@ -199,22 +198,6 @@ class Profile extends Component {
       alert('The product name must not exceed 256 characters')
       return false
     }
-    if(this.state.productBrand === ''){
-      alert('The product brand cannot be empty')
-      return false
-    }
-    if(this.state.productBrand.length > 256){
-      alert('The product brand must not exceed 256 characters')
-      return false
-    }
-    if(this.state.productOrigin === ''){
-      alert('The product origin cannot be empty')
-      return false
-    }
-    if(this.state.productOrigin.length > 256){
-      alert('The product origin must not exceed 256 characters')
-      return false
-    }
     if(this.state.productDesc === ''){
       alert('The product description cannot be empty')
       return false
@@ -223,62 +206,15 @@ class Profile extends Component {
       alert('The product category cannot be empty')
       return false
     }
-    if(this.state.dutyCost <= 0){
-      alert('The product duty cost cannot be negative or zero')
-      return false
-    }
     if(this.state.dutyRate <= 0){
       alert('The product duty rate cannot be negative or zero')
       return false
     }
-    if(this.state.FOB === ''){
-      alert('The product FOB point cannot be empty')
-      return false
-    }
-    if(this.state.FOB.length > 256){
-      alert('The product FOB point must not exceed 256 characters')
-      return false
-    }
-    if(this.state.freightCost <= 0){
-      alert('The product freight cost cannot be negative or zero')
-      return false
-    }
-    if(this.state.freightDesc === ''){
-      alert('The product freight description point cannot be empty')
-      return false
-    }
-    if(this.state.freightDesc.length > 256){
-      alert('The product freight description  must not exceed 256 characters')
-      return false
-    }
-    if(this.state.freightRate === ''){
-      alert('The product freight rate cannot be empty')
-      return false
-    }
-    if(this.state.freightRate.length > 256){
-      alert('The product freight rate must not exceed 256 characters')
-      return false
-    }
-    if(this.state.landedCost <= 0){
-      alert('The product landed cost cannot be negative or zero')
-      return false
-    }
-    if(this.state.margin === ''){
-      alert('The product margin cannot be empty')
-      return false
-    }
-    if(this.state.margin.length > 256){
-      alert('The product margin must not exceed 256 characters')
-      return false
-    }
-    if(this.state.miscCost <= 0){
-      alert('The product miscellaneous cost cannot be negative or zero')
+    if(this.state.margin <= 0){
+      alert('The product margin cannot be negative or zero')
     }
     if(this.state.unitCost <= 0){
       alert('The product unit cost cannot be negative or zero')
-    }
-    if(this.state.unitPrice <= 0){
-      alert('The product unit price cannot be negative or zero')
     }
     else{
       return true
@@ -289,7 +225,7 @@ class Profile extends Component {
     if (this.validateForm()){
 
       //FIX THIS TO FIT WITH NEW DATA
-
+      var unitPrice = this.state.unitCost * (100 + this.state.margin + this.state.dutyRate)/100
       var timeStamp = Math.floor(Date.now() / 1000);
       var product = {
         authorEmail: this.props.thisUser.email,
@@ -306,17 +242,10 @@ class Profile extends Component {
           'brand:'+ this.state.productBrand
         ], 
         price: {
-          dutyCost: this.state.dutyCost,
           dutyRate: this.state.dutyRate,
-          FOB: this.state.FOB,
-          freightCost: this.state.freightCost,
-          freightDesc: this.state.freightDesc,
-          freightRate: this.state.freightRate,
-          landedCost: this.state.landedCost,
           margin: this.state.margin,
-          miscCost: this.state.miscCost,
           unitCost: this.state.unitCost,
-          unitPrice: this.state.unitPrice
+          unitPrice: unitPrice
         }
       }
       //Form submit functions go here
@@ -359,7 +288,7 @@ class Profile extends Component {
           website: this.props.thisUser.website,
           businessGenre: this.props.thisUser.businessGenre,
           businessDesc: this.props.thisUser.businessDesc,
-          certificate: this.props.thisUser.certificate,
+          certificates: this.props.thisUser.certificates,
           wholesaler: this.props.thisUser.wholesaler,
           logo: this.props.thisUser.logo,
           newBusinessName: this.props.thisUser.businessName,

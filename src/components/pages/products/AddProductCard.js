@@ -83,14 +83,6 @@ const AddProductCard = (props) => {
                             <input id='name' placeholder='Product Name' defaultValue={props.values.productName} onChange={props.handleChange('productName')}/>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="brand">Brand</label>
-                            <input id='brand' placeholder='Product Brand' defaultValue={props.values.productBrand} onChange={props.handleChange('productBrand')}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="origin">Origin</label>
-                            <input id='origin' placeholder='Product Origin' defaultValue={props.values.productOrigin} onChange={props.handleChange('productOrigin')}/>
-                        </div>
-                        <div className="form-group">
                             <label htmlFor="desc">Description</label>
                             <input id='desc' placeholder='Product Description' defaultValue={props.values.productDesc} onChange={props.handleChange('productDesc')}/>
                         </div>
@@ -99,48 +91,16 @@ const AddProductCard = (props) => {
                             <input id='categories' placeholder='Product Categories' defaultValue={props.values.productCategories} onChange={props.handleCatChange('productCategories')}/>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="dutyCost">Duty Cost</label>
-                            <input className="form-control" type='number' id='dutyCost' defaultValue={props.values.dutyCost} placeholder='Duty Cost' onChange={props.handleChange('dutyCost')}/>
+                            <label htmlFor="dutyRate">Duty Rate (%)</label>
+                            <input type='number' id='dutyRate' defaultValue={props.values.dutyRate} placeholder='Duty Rate (%)' onChange={props.handleChange('dutyRate')}/>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="dutyRate">Duty Rate</label>
-                            <input className="form-control" type='number' id='dutyRate' defaultValue={props.values.dutyRate} placeholder='Duty Rate' onChange={props.handleChange('dutyRate')}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="FOB">FOB Point</label>
-                            <input id='FOB' placeholder='FOB Point' defaultValue={props.values.FOB} onChange={props.handleChange('FOB')}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="freightCost">Freight Cost</label>
-                            <input type='number' id='freightCost' defaultValue={props.values.freightCost} placeholder='Freight Cost' onChange={props.handleChange('freightCost')}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="freightDesc">Freight Description</label>
-                            <input id='freightDesc' defaultValue={props.values.freightDesc} placeholder='Freight Description' onChange={props.handleChange('freightDesc')}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="freightRate">Freight Rate</label>
-                            <input id='freightRate' defaultValue={props.values.freightRate} placeholder='Freight Rate' onChange={props.handleChange('freightRate')}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="landedCost">Landed Cost</label>
-                            <input type='number' id='landedCost' defaultValue={props.values.landedCost} placeholder='Landed Cost' onChange={props.handleChange('landedCost')}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="margin">Margin</label>
-                            <input id='margin' placeholder='Margin' defaultValue={props.values.margin} onChange={props.handleChange('margin')}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="miscCost">Miscellaneous Cost</label>
-                            <input type='number' id='miscCost' defaultValue={props.values.miscCost} placeholder='Miscellaneous Cost' onChange={props.handleChange('miscCost')}/>
+                            <label htmlFor="margin">Margin (%)</label>
+                            <input id='margin' placeholder='Margin (%)' defaultValue={props.values.margin} onChange={props.handleChange('margin')}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="unitCost">Unit Cost</label>
                             <input type='number' id='unitCost' defaultValue={props.values.unitCost} placeholder='Unit Cost' onChange={props.handleChange('unitCost')}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="unitPrice">Unit Price</label>
-                            <input type='number' id='unitPrice' defaultValue={props.values.unitPrice} placeholder='Unit Price' onChange={props.handleChange('unitPrice')}/>
                         </div>
                     </form>    
                 </div>

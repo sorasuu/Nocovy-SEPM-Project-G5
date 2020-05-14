@@ -104,7 +104,7 @@ const ProfileInfoCard = (props) => {
                     <Typography variant='h6'>Business Description:</Typography> 
                     <Typography paragraph>{props.info.businessDesc? props.info.businessDesc : 'Description not available'}</Typography>
                     <Typography variant='h6'>Business Certificate(s):</Typography> 
-                    {props.info.certificate? props.info.certificate.map((value) => (
+                    {props.info.certificates? props.info.certificates.map((value) => (
                         <img key={value} src={value} alt="certificate" height="300"/>
                     )) : 'No certificates available'}
                 </div>
