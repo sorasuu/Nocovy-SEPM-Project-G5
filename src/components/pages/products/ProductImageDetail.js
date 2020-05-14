@@ -84,7 +84,7 @@ const ProductImageDetail = (props) => {
       <div className={classes.indicatorContainer}>
         {checkArray(props.image.productImg).map((image, i) => (
           <DotIndicator
-            key={image+i}
+            key={image.productImg}
             active={i === index}
             onClick={() => onChangeIndex(i)}
           />

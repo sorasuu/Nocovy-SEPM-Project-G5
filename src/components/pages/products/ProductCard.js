@@ -32,6 +32,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ProductCard = (props) => {
+   
     const classes = useStyles();
     const mediaStyles = useFourThreeCardMediaStyles();
     const textCardContentStyles = useN04TextInfoContentStyles();
@@ -103,8 +104,8 @@ const ProductCard = (props) => {
                                 aria-labelledby="responsive-dialog-title"
                             >
                                 <h4 style={{ margin: '40px' }}>{product.name}</h4>
-                                <Grid container style={{margin:'1%'}}>
-                                    <Grid item xs={7} md={7} lg={7}  >
+                                <Grid container style={{margin:'1%'}} style={{width:'fit-content', marginLeft:'2%'}}>
+                                    <Grid item xs={6} md={6} lg={6}  >
                                         <ProductImageDetail image = {product}/>
                                     </Grid>
                                     <Grid item xs={5} md={5} lg={5}>
@@ -113,7 +114,7 @@ const ProductCard = (props) => {
                                             <div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold' }}>ID: {product.id}</div>
                                         </DialogTitle>
                                         <DialogContent>
-                                            <Grid container justify="flex-start">
+                                            <Grid container justify="flex-start" style={{width:'fit-content'}}>
                                                 <Grid item xs={6}><h5>Categories:</h5></Grid>
                                                 <Grid item xs={6}>{product.category.map((item, key) =><div key={key} style={{textAlign:'right', fontSize:'30px', fontFamily:'bold' }}>{item.toUpperCase()} </div>)}</Grid>
                                                 <br/>
@@ -168,7 +169,7 @@ const ProductCard = (props) => {
                 <TextInfoContent
                     classes={textCardContentStyles}
                     overline={product.name}
-                    heading={product.price.unitPrice+' VNĐ'}
+                    heading={product.price.unitPrice? product.price.unitPrice.toLocaleString() +' VNĐ' : null}
         //   body={
         //     product.category
         //   }

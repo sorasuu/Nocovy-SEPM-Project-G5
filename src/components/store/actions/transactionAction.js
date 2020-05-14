@@ -5,7 +5,7 @@ export const createCheckout = (oders) => {
       
       const author = getState().firebase.auth;
       firebase.firestore().collection('users').doc(author.uid).collection('oders').add({
-        ...oders,
+        oders:oders,
         createdAt: new Date()
       }).then(() => {
         dispatch({ type: 'CREATE_TRANSACTION_SUCCESS' });
