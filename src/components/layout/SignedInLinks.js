@@ -80,14 +80,18 @@ const SignedInLinks = (props) => {
   const handleCloseNotification = () => {
     setOpenNotification(null);
   };
-  const {auth} = props 
-  var cart =JSON.parse(window.localStorage.getItem('cart'))
-  window.onstorage = () => {
-    // When local storage changes, dump the list to
-    // the console.
-    cart=JSON.parse(window.localStorage.getItem('cart'))
-  };
-  console.log(cart)
+  const {auth,cart} = props 
+  
+  var cartnav 
+  if(cart===undefined){
+    cartnav =JSON.parse(window.localStorage.getItem('cart'))}else{
+  if(cart.length===0){
+    cartnav =JSON.parse(window.localStorage.getItem('cart'))
+  }
+  else{
+    cartnav=cart
+  }}
+
   return (
     <div>
       <Grid container spacing={3}>
@@ -95,8 +99,8 @@ const SignedInLinks = (props) => {
         <NavLink to={'/cart'}  >
           <IconButton>
           <ShoppingCartIcon style={{color:'black'}} />
-          {cart?
-  <span className={classes.notifications}>{cart.length}</span>:null}
+          {cartnav?
+  <span className={classes.notifications}>{cartnav.length}</span>:null}
   </IconButton>
           </NavLink>
         </Grid>

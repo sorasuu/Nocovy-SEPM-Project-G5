@@ -145,44 +145,7 @@ class Dashboard extends Component {
   handleSortKind(params){
     this.setState({sortName: !this.state.sortName})
   }
-  handleCart=(e, productinfo, num)=>{
-    
-    const { cart } = this.state
-    console.log('state cart',cart)
-    var newcart = cart;
-    var a =[]
-    var productitem ={...productinfo,num}
-    
-      if (cart.length === 0){
-            // console.log('newcart', newcart)
-            this.setState({cart:[productitem]})
-            console.log("productItem", productitem)
-            localStorage.setItem('cart',JSON.stringify(productitem));
-      }
-      else{
-     
-      var exist = false
-      for( var i=0;i<cart.length;i++){
-        console.log('the fuck',cart[i].id,productitem.id)
-          if (cart[i].id===productitem.id){
-            exist= true
-            newcart[i]=productitem
-            this.setState({cart:newcart})
-            localStorage.setItem('cart', JSON.stringify(newcart));
-            break;
-          }
-        }
-        if(exist===false){
-          newcart = [...cart,productitem]
-          console.log(newcart)
-          this.setState({cart:newcart})
-          localStorage.setItem('cart', JSON.stringify(newcart));
-        }
-        this.props.deliverProductToCart(null)
-    }
-    var cartfromlocal = JSON.parse(localStorage.getItem('cart'));
-    console.log('cart',cartfromlocal)
-  }
+
   handleChange(e, newValue) {
     this.setState({ value: newValue });
 
@@ -199,7 +162,7 @@ class Dashboard extends Component {
   render() {
     
     const { auth, classes, products, suppliers, retailers } = this.props;
-    console.log('dashboard product', products)
+    // console.log('dashboard product', products)
     const { search, value, filter, sortAsc, isFiltered, sortName, cart } = this.state;
     
     const afterSearchSupplier = checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
@@ -223,7 +186,7 @@ class Dashboard extends Component {
     )
 
     if (!auth.uid) return <Redirect to='/signin' />
-    console.log('asdasd',this.state)
+    // console.log('asdasd',this.state)
     return (
 
       <div className="container" style={{ textAlign: 'center' }}>
@@ -286,14 +249,14 @@ class Dashboard extends Component {
                 sortFoundName.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                     <ProductCard product={product} uid ={this.props.auth.uid} handleCart={this.handleCart}/>
+                     <ProductCard product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart}/>
                   </Grid>
                 )
                 })
               : sortFoundPrice.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                    <ProductCard key={index} product={product} uid ={this.props.auth.uid} handleCart={this.handleCart}/>
+                    <ProductCard key={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart}/>
                
                   </Grid>
                 )
@@ -303,7 +266,7 @@ class Dashboard extends Component {
               : afterSearchProduct.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                     <ProductCard key ={index} product={product} uid ={this.props.auth.uid} handleCart={this.handleCart}/>
+                     <ProductCard key ={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart}/>
                   </Grid>
                 )
               })}

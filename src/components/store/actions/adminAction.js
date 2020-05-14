@@ -28,4 +28,15 @@ export const approveUser = (id) => {
     }
   };
 
+  export const createEmail = (email) => {
+    return (dispatch  ) => {
+      firebase.firestore().collection('emails').add({
+        ...email,
+      }).then(() => {
+        dispatch({ type: 'CREATE_EMAIL_SUCCESS' });
+      }).catch(err => {
+        dispatch({ type: 'CREATE_EMAIL_ERROR' }, err);
+      });
+    }
+  };
   

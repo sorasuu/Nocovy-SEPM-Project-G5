@@ -1,15 +1,11 @@
 import firebase from 'firebase/app';
 
-export const createTransaction = (transaction) => {
+export const createCheckout = (oders) => {
     return (dispatch, getState ) => {
-      const profile = getState().firebase.profile;
+      
       const author = getState().firebase.auth;
-      firebase.firestore().collection('transactions').add({
-        ...transaction,
-        buyerName: profile.displayName,
-        buyerId: author.uid,
-        buyerEmail: author.email,
-        buyerPhotoURL: author.photoURL,
+      firebase.firestore().collection('users').doc(author.uid).collection('oders').add({
+        ...oders,
         createdAt: new Date()
       }).then(() => {
         dispatch({ type: 'CREATE_TRANSACTION_SUCCESS' });
