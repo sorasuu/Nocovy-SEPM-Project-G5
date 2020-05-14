@@ -19,6 +19,7 @@ import ProductDetail from './components/pages/products/ProductDetail'
 import SupplierDetail from './components/pages/supplier/SupplierDetail';
 import Retailer from './components/pages/retailer/Retailer';
 import "./App.css"
+import ProductCart from './components/pages/products/ProductCart';
 
 
 class App extends Component {
@@ -84,6 +85,7 @@ class App extends Component {
             <Route path='/retailer/:id' component={(props) =><Retailer {...props} class={retailerlist}/>}/>
             <Route path='/signin'component={SignIn}/>
             <Route path='/signup' component={SignUp} />
+            <Route path='/cart' component={ProductCart} />
             <Route path='/profile/:id' component={(props) => <Profile {...props} currentUser={currentUser} chatsesion={chatsession} />} />
             <Route path='/chat/:id' component={(props) => <Chat {...props} currentUser={currentUser} chatsession={chatsession}  />} />
           </Switch>
