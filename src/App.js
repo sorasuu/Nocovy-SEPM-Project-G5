@@ -66,8 +66,8 @@ class App extends Component {
 }
 
 
-const mapStateToProps = (state) => {
-  console.log(state);
+const mapStateToProps = (state,ownProps) => {
+  console.log(ownProps);
   const users = state.firestore.ordered.currentUser
   const currentUser = users ? users[0] : null
   const chatsession = state.firestore.ordered.allchatsesion
