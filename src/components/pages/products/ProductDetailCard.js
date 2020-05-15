@@ -12,7 +12,6 @@ import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/co
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import PriceForm from './PriceForm'
-import { checkArray } from '../dashboard/Dashboard';
 import { NavLink } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -100,7 +99,7 @@ export default function ProductDetailCard(props) {
                     <Grid item xs={12} sm={4} md={4} lg={4}>
                         <Grid container>
                             <Grid item xs={12}><ProductInfoCard product={props.product} price={price}/></Grid>
-                            <Grid item xs={12}><DetailTable details={props.product.details} style={{marginBottom: '5px', }}/></Grid>
+                            <Grid item xs={12}><DetailTable details={props.product.detail} style={{marginBottom: '5px' }}/></Grid>
                         
                         </Grid>             
                     </Grid>
@@ -182,30 +181,26 @@ function DetailTable(props) {
         columns: [
             {
                 title: 'Name', field: 'name',
-                
+                cellStyle: {
+                    backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
+                    color: '#FFF'
+                  },
                 headerStyle: {
                   backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
                   fontSize:15,
                   fontFamily:'Open Sans',
-                  color:'dark'
+                  color:'white'
                   
                 }
               },
             { title: 'Value', field: 'value',
-            headerStyle:{
-                backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
-                fontSize:15,
-                fontFamily:'Open Sans',
-                color:'dark'
-            } 
+            // headerStyle:{
+            //     backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
+            //     fontSize:15,
+            //     fontFamily:'Open Sans',
+            //     color:'white'
+            // } 
         },         
-        ],
-        data: [
-            { name: 'Origin', value: 'China'},
-            {
-                name: 'Brand',
-                value: 'Fashionista',        
-            },
         ],
        
     });
@@ -216,11 +211,14 @@ function DetailTable(props) {
         <MaterialTable
             title={' '}
             columns={state.columns}
-            data={state.data}
+            data={props.details}
             options={{
                 searchFieldAlignment: "left",
                 paging:false,
-                
+                actionsColumnIndex:-1,
+                rowStyle: rowData =>({
+                    backgroundColor: (rowData.tableData.id % 2 ===0)? '#EEE': '#FFF'
+                })
             }}
             editable={{
                 onRowAdd: (newData) =>

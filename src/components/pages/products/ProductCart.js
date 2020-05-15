@@ -4,16 +4,18 @@ import StyledButton from '../../layout/StyledButton'
 import {
   Card, CardContent, Grid, withStyles,
   Table, TableHead, TableBody, Button,
-  TableRow, TableCell, Input,Dialog,
-  DialogTitle, DialogContent, DialogActions
+  TableRow, TableCell, Input, Dialog,
+  DialogTitle, DialogContent, DialogActions, CardHeader
 } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect } from 'react-redux-firebase'
-
+import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
+import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
+import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 const useStyles = theme => ({
   root: {
-    display: 'flex',  
+    display: 'flex',
     margin: '2%'
   },
   details: {
@@ -34,26 +36,26 @@ const useStyles = theme => ({
 });
 
 class ProductCart extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       cart: [],
       number: [],
-      open: false ,
+      open: false,
     };
     this.handleOpen = this.handleOpen.bind(this)
-    this.handleClose= this.handleClose.bind(this)  
+    this.handleClose = this.handleClose.bind(this)
   }
-   componentDidMount() {
+  componentDidMount() {
     this.setState({ cart: JSON.parse(window.localStorage.getItem('cart')) });
     JSON.parse(window.localStorage.getItem('cart')).map(item => this.state.number.push(item.num))
-   
+
   }
-  handleOpen(){
-    this.setState({open: true})
+  handleOpen() {
+    this.setState({ open: true })
   }
-  handleClose(){
-    this.setState({open: false})
+  handleClose() {
+    this.setState({ open: false })
   }
 
   handleOrder(e) {
@@ -61,18 +63,10 @@ class ProductCart extends Component {
     localStorage.removeItem('cart');
     this.setState({ cart: [] })
   }
-  handleChange(e) {
-    this.setState({ number: e.target.value })
-  }
-  buyMore(index) {
-
-    this.setState({ number: this.state.number[index] + 1 })
-  }
-
-  buyLess(index) {
-    if (this.state.number > 0) {
-      this.setState({ number: this.state.number[index] - 1 })
-    }
+  handleChange(e, index) {
+    let numbers = [...this.state.number];
+    numbers[index] =  e.target.value;
+    this.setState({ number: numbers })
   }
 
   render() {
@@ -87,10 +81,14 @@ class ProductCart extends Component {
         {cart ?
           cart.map((item, key) =>
 
-            <Card 
-              key={key}    
+            <Card
+              key={key}
               style={classes.root}
             >
+              <CardHeader 
+                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", width: 'auto', minWidth: '200px', marginLeft:"30px", color:'white'  }}
+                title={item.name}/>
+              <CardContent className={classes.content} style={{paddingTop:'5%'}}>
               <Grid container
                 direction="row"
                 justify="flex-start"
@@ -98,30 +96,31 @@ class ProductCart extends Component {
                 spacing={3}
               >
                 <Grid item xs={2}>
-                  <ImageDialog title={item.name} cover={item.cover} maxWidth='200px'/>
+                  <ImageDialog title={item.name} image={item} maxWidth='200px' />
                 </Grid>
-                <Grid item xs={10}>
+                <Grid style={{marginLeft:'50px'}}item xs={9}>
                   <Grid className={classes.details}>
-                    <CardContent className={classes.content}>
+                    
                       <Table style={{ display: 'block', overflowX: 'auto' }}
                       >
                         <TableHead>
                           <TableRow>
-                            <TableCell> Item </TableCell>
+                
                             <TableCell> ID </TableCell>
                             <TableCell>Author Name</TableCell>
                             <TableCell>Author Email</TableCell>
                             <TableCell>Unit Price</TableCell>
                             <TableCell>Quantity</TableCell>
                             <TableCell>Cost</TableCell>
+                            <TableCell>Action</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          <TableCell>{item.name}</TableCell>
+                          
                           <TableCell style={{ width: '30px' }}>{item.id}</TableCell>
                           <TableCell>{item.authorName}</TableCell>
                           <TableCell>{item.authorEmail}</TableCell>
-                          <TableCell>{item.price.unitPrice.toLocaleString()} VND</TableCell>
+                          <TableCell>$ {item.price.unitPrice.toLocaleString()} </TableCell>
                           <TableCell>
                             <Grid container direction='row' justify='space-between' alignItems="center">
 
@@ -134,20 +133,21 @@ class ProductCart extends Component {
                                   justifyContent: 'center',
                                   alignItems: 'center'
                                 }}
-                                onChange={e => this.handleChange(e)}
+                                onChange={e => this.handleChange(e, key)}
                               />
 
                             </Grid>
                           </TableCell>
-                          <TableCell>{item.price.unitPrice * number[key]} </TableCell>
+                          <TableCell> $ {(item.price.unitPrice * number[key]).toLocaleString()}</TableCell>
+                          <TableCell><Button variant="outlined" color="secondary" >Remove</Button></TableCell>
                         </TableBody>
                       </Table>
-                      </CardContent>
                     
+
                   </Grid>
                 </Grid>
               </Grid>
-
+              </CardContent>
             </Card>
 
           )
@@ -165,39 +165,51 @@ function ImageDialog(props) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
-      setOpen(true);
+    setOpen(true);
   };
 
   const handleClose = () => {
-      setOpen(false);
+    setOpen(false);
   };
 
   return (
-      <React.Fragment>
-          <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-              <img style={{ width: 'fit-content', maxWidth: `${props.maxWidth}` }} src={props.cover} />
+    <React.Fragment>
+      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+        <img style={{ minWidth:'50px', width: `${props.maxWidth}` }} src={props.image.cover} />
+      </Button>
+      <Dialog
+        style={{ width: 'fit-content', direction: 'flex' }}
+        fullWidth={true}
+        maxWidth={'lg'}
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="max-width-dialog-title"
+      >
+        <DialogTitle id="max-width-dialog-title">Product: {props.title}</DialogTitle>
+        <DialogContent>
+          <Grid container direction='row' >
+            <Grid item>
+              <div style={{ fontSize: '20px' }}>Detail Pictures</div>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container direction='row'>
+                {props.image.productImg.map((image, key) =>
+                  <Grid key={key} item xs={4}>
+                    <img style={{ width: 'fit-content', maxWidth:'300px' }} src={image} />
+                  </Grid>
+                )}
+              </Grid>
+            </Grid>
+          </Grid>
+
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Close
           </Button>
-          <Dialog
-              style={{ width: 'fit-content', direction: 'flex' }}
-              fullWidth={true}
-              maxWidth={'md'}
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="max-width-dialog-title"
-          >
-              <DialogTitle id="max-width-dialog-title">{props.title}</DialogTitle>
-              <DialogContent>
-                  <Grid container>
-                    <img src={props.cover} />
-                  </Grid>             
-              </DialogContent>
-              <DialogActions>
-                  <Button onClick={handleClose} color="primary">
-                      Close
-          </Button>
-              </DialogActions>
-          </Dialog>
-      </React.Fragment>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
   );
 }
 

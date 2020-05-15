@@ -4,7 +4,7 @@ import { makeStyles, useTheme } from '@material-ui/styles';
 import {
     Card, CardContent, CardMedia ,
     Button, Dialog, DialogContent, DialogActions,
-    DialogContentText, DialogTitle, Grid
+    Chip, DialogTitle, Grid, Input
 } from '@material-ui/core';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
 
@@ -68,6 +68,11 @@ const ProductCard = (props) => {
         setNumber(number + 1)
     }
 
+    const handleChange = (e) => {
+        setNumber(e.target.value)
+        
+      }
+    
     return (
         // <NavLink to = {'/product/'+ props.product.id}>
 
@@ -111,21 +116,28 @@ const ProductCard = (props) => {
                                     <Grid item xs={5} md={5} lg={5}>
                                         <DialogTitle id="responsive-dialog-title">
                                              
-                                            <div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold' }}>ID: {product.id}</div>
+                                            <div style={{textAlign:'left', fontSize:'30px' }}>ID: {product.id}</div>
                                         </DialogTitle>
                                         <DialogContent>
                                             <Grid container justify="flex-start" style={{width:'fit-content'}}>
                                                 <Grid item xs={6}><h5>Categories:</h5></Grid>
-                                                <Grid item xs={6}>{product.category.map((item, key) =><div key={key} style={{textAlign:'right', fontSize:'30px', fontFamily:'bold' }}>{item.toUpperCase()} </div>)}</Grid>
+                                                <Grid item xs={6}>{product.category.map((item, key) =><Chip label={item} variant="outlined"/>)}</Grid>
                                                 <br/>
                                                 <Grid item xs={6}> <h5>Unit Price:</h5></Grid>
-                                                <Grid item xs={6}> <div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold'}}> {product.price.unitPrice} </div></Grid>
-                                                <Grid item xs={6}><h5>Calculator</h5></Grid>
-                                                <Grid item xs={6}><h5> </h5></Grid>
+                                                <Grid item xs={6}> <div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold'}}> ${product.price.unitPrice} </div></Grid>
+                                                <Grid item xs={6}><h5>Quantity</h5></Grid>
+                                                <Grid item xs={6}><h5 style={{textAlign:'right'}}>Cost</h5></Grid>
                                                 <Grid item xs={6}>
                                                     <Grid container direction="row" justify="center" alignItems="center">
                                                         <Grid item xs={4}><Button onClick={buyLess}><RemoveRoundedIcon/></Button></Grid>
-                                                        <Grid item xs={4}>   <div style={{textAlign:'right', fontSize:'30px', fontFamily:'bold'}}>{number} </div></Grid>
+                                                        <Grid item xs={4}>
+                                                            <Input
+                                                                style={{ width: '20px' }}
+                                                                disableUnderline="true"
+                                                                value={number}
+                                                                onChange={e => handleChange(e)}
+                                                            />
+                                                        </Grid>
                                                         <Grid item xs={4}><Button onClick={buyMore}><AddRoundedIcon/></Button></Grid>
                                                     </Grid>
                                                 </Grid>
@@ -169,11 +181,9 @@ const ProductCard = (props) => {
                 <TextInfoContent
                     classes={textCardContentStyles}
                     overline={product.name}
-                    heading={product.price.unitPrice? product.price.unitPrice.toLocaleString() +' VNĐ' : null}
-        //   body={
-        //     product.category
-        //   }
-        />
+                    heading={product.price.unitPrice? '$' + product.price.unitPrice.toLocaleString() : null}
+       
+                />
             </CardContent>
         </Card>
 

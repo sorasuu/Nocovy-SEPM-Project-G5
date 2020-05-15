@@ -7,7 +7,7 @@ import { fade, withStyles } from '@material-ui/core/styles'
 import {
   Grid, InputBase,
   Tabs, Tab, CardContent, Typography,
-  CardMedia, Card, Switch
+  CardMedia, Card, Chip
 } from '@material-ui/core'
 // import StyledButton from '../../layout/StyledButton'
 import ProductCard from '../products/ProductCard'
@@ -248,14 +248,14 @@ class Dashboard extends Component {
                 sortName ?
                 sortFoundName.map((product, index) => {
                 return (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
+                  <Grid item xs={12} sm={6} md={6} lg={6} xl={4}key={index}>
                      <ProductCard product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart}/>
                   </Grid>
                 )
                 })
               : sortFoundPrice.map((product, index) => {
                 return (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
+                  <Grid item xs={12} sm={6} md={6} lg={6} xl={4} key={index}>
                     <ProductCard key={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart}/>
                
                   </Grid>
