@@ -112,16 +112,17 @@ export const ChatContact = (props) => {
                 <Divider style={{marginTop:'3%', marginBottom:'1%'}} />
                 <List>
                     {props.chatsesion&&props.chatuser?props.chatsesion.map((contact) => {
+                        // console.log(props.uid)
                         var receiver;
-                        if(contact.user1===props.uid){
-                             receiver =props.chatuser[ contact.user1]
+                        if(contact.user1!==props.uid){
+                             receiver = props.chatuser[contact.user1]
+                             
                         }else{
-                        receiver = props.chatuser[ contact.user2]
+                            receiver = props.chatuser[contact.user2]
                             }
-                        
+                    
+                        if(receiver!==undefined&& receiver!==null){
                         return(
-                        
-
 
                         <ListItem divider dense button alignItems="flex-start" selected={selectedIndex === contact.id} onClick={(event) => handleListItemClick(event, contact.id)}>
                             <ListItemAvatar>
@@ -134,7 +135,7 @@ export const ChatContact = (props) => {
                                     <Typography variant='subtitle'> {contact.lastchat}</Typography>}
                             />
                         </ListItem>
-                     ) }):null}
+                     )} }):null}
                 </List>
             </CardContent>
         </Card>
@@ -252,7 +253,7 @@ class Chat extends Component {
                 <Container>
                     <h3>Chat menu</h3>
                     <Grid container spacing={3}>
-                        <Grid item xs={4}><ChatContact props={this.props} handleChange={this.handleChange} currentchatsession={this.props.currentchatsession} chatsesion={this.props.chatsessionorder}  search={search} chatuser={this.props.chatuser} /></Grid>
+                        <Grid item xs={4}><ChatContact props={this.props} handleChange={this.handleChange} currentchatsession={this.props.currentchatsession} chatsesion={this.props.chatsessionorder}  search={search} chatuser={this.props.chatuser}uid={this.props.auth.uid} /></Grid>
                         <Grid item xs={8}><Paper>
                             <div className='chat-box'>
                                 <div className='msg-page'>

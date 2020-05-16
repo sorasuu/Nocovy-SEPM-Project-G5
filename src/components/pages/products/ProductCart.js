@@ -47,10 +47,14 @@ class ProductCart extends Component {
     this.handleClose = this.handleClose.bind(this)
   }
   componentDidMount() {
+    if( JSON.parse(window.localStorage.getItem('cart'))!== undefined&&JSON.parse(window.localStorage.getItem('cart'))!== null){
     this.setState({ cart: JSON.parse(window.localStorage.getItem('cart')) });
-    JSON.parse(window.localStorage.getItem('cart')).map(item => this.state.number.push(item.num))
-
+   
+     JSON.parse(window.localStorage.getItem('cart')).map(item => this.state.number.push(item.num))
+  }else{
+    this.setState({cart:null})
   }
+}
   handleOpen() {
     this.setState({ open: true })
   }
@@ -147,6 +151,7 @@ class ProductCart extends Component {
                   </Grid>
                 </Grid>
               </Grid>
+              
               </CardContent>
             </Card>
 
@@ -154,8 +159,8 @@ class ProductCart extends Component {
 
           : <p>cart empty</p>
         }
-
-        <StyledButton onClick={(e) => this.handleOrder(e)} >Place Order</StyledButton>
+{cart ?<StyledButton onClick={(e) => this.handleOrder(e)} >Place Order</StyledButton>:null}
+       
       </>
     )
   }
