@@ -194,12 +194,6 @@ function DetailTable(props) {
                 }
               },
             { title: 'Value', field: 'value',
-            // headerStyle:{
-            //     backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
-            //     fontSize:15,
-            //     fontFamily:'Open Sans',
-            //     color:'white'
-            // } 
         },         
         ],
        

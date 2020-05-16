@@ -37,7 +37,8 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     zIndex: 10,
     width: '100%',
-    height: "500px",
+    height: "fit-content",
+    maxHeight:'800px',
     objectFit: 'cover',  
     
   },
