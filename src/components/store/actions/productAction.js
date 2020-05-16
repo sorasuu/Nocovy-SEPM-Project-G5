@@ -50,6 +50,17 @@ export const editProduct = (product) => {
       });
     }
   };
+  export const editDetails = (details) => {
+    return (dispatch, getState) => {
+      firebase.firestore().collection('products').doc(details.id).update({
+        detail: details.details
+      }).then(() => {
+        dispatch({ type: 'EDIT_PRODUCT_SUCCESS' });
+      }).catch(err => {
+        dispatch({ type: 'EDIT_PRODUCT_ERROR' }, err);
+      });
+    }
+  };
 export const deleteProduct = (id) => {
 return (dispatch, getState) => {
   firebase.firestore().collection('products').doc(id).delete()

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Component } from 'react';
 import cx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -6,13 +6,14 @@ import {
 } from "@material-ui/core";
 import ProductImageDetail from './ProductImageDetail'
 import Grid from '@material-ui/core/Grid';
-import MaterialTable from 'material-table';
+import DetailTable from './DetailTable'
 import { Table, TableContainer, TableBody, TableRow, TableCell, TableHead } from '@material-ui/core';
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import PriceForm from './PriceForm'
 import { NavLink } from 'react-router-dom';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -99,7 +100,7 @@ export default function ProductDetailCard(props) {
                     <Grid item xs={12} sm={4} md={4} lg={4}>
                         <Grid container>
     <Grid item xs={12}><ProductInfoCard product={props.product} price={price} id={props.id} owner={props.owner}/> </Grid>
-                            <Grid item xs={12}><DetailTable details={props.product.detail} style={{marginBottom: '5px' }}/></Grid>
+                            <Grid item xs={12}><DetailTable details={props.product.detail} id={props.id} style={{marginBottom: '5px' }}/></Grid>
                         
                         </Grid>             
                     </Grid>
@@ -173,91 +174,4 @@ export const ProductInfoCard = props => {
         </Grid>
         
     )
-}
-function DetailTable(props) {
-    // console.log('detail table props', props.details)
-
-    const [state, setState] = React.useState({
-        columns: [
-            {
-                title: 'Name', field: 'name',
-                cellStyle: {
-                    backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
-                    color: '#FFF'
-                  },
-                headerStyle: {
-                  backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
-                  fontSize:15,
-                  fontFamily:'Open Sans',
-                  color:'white'
-                  
-                }
-              },
-            { title: 'Value', field: 'value',
-            // headerStyle:{
-            //     backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
-            //     fontSize:15,
-            //     fontFamily:'Open Sans',
-            //     color:'white'
-            // } 
-        },         
-        ],
-       
-    });
-
-    return (
-        <div>
-        <h4>Detail</h4>
-        <MaterialTable
-            title={' '}
-            columns={state.columns}
-            data={props.details}
-            options={{
-                searchFieldAlignment: "left",
-                paging:false,
-                actionsColumnIndex:-1,
-                rowStyle: rowData =>({
-                    backgroundColor: (rowData.tableData.id % 2 ===0)? '#EEE': '#FFF'
-                })
-            }}
-            editable={{
-                onRowAdd: (newData) =>
-                    new Promise((resolve) => {
-                        setTimeout(() => {
-                            resolve();
-                            setState((prevState) => {
-                                const data = [...prevState.data];
-                                data.push(newData);
-                                return { ...prevState, data };
-                            });
-                        }, 600);
-                    }),
-                onRowUpdate: (newData, oldData) =>
-                    new Promise((resolve) => {
-                        setTimeout(() => {
-                            resolve();
-                            if (oldData) {
-                                setState((prevState) => {
-                                    const data = [...prevState.data];
-                                    data[data.indexOf(oldData)] = newData;
-                                    return { ...prevState, data };
-                                });
-                            }
-                        }, 600);
-                    }),
-                onRowDelete: (oldData) =>
-                    new Promise((resolve) => {
-                        setTimeout(() => {
-                            resolve();
-                            setState((prevState) => {
-                                const data = [...prevState.data];
-                                data.splice(data.indexOf(oldData), 1);
-                                return { ...prevState, data };
-                            });
-                        }, 600);
-                    }),
-            }}
-        />
-        </div>
-    );
 }
