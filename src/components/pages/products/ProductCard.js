@@ -19,7 +19,7 @@ import "../page.css"
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import RemoveRoundedIcon from '@material-ui/icons/RemoveRounded';
 import ProductImageDetail  from './ProductImageDetail'
-
+import { ColorButton } from '../retailer/RetailerCard'
 const useStyles = makeStyles(() => ({
     card: {
         marginTop: "10%",
@@ -166,13 +166,13 @@ const ProductCard = (props) => {
                                 </Grid>
                             </Dialog>
                             <NavLink to={'/product/' + product.id}>
-                                <Button
+                                <ColorButton
                                     variant="contained"
                                     color="primary"
                                     startIcon={<SendOutlinedIcon />}
                                 >
                                     Detail
-                                </Button>
+                                </ColorButton>
                             </NavLink>
 
                         </div>

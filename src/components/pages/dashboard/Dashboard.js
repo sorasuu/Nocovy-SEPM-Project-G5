@@ -11,6 +11,8 @@ import {
 } from '@material-ui/core'
 // import StyledButton from '../../layout/StyledButton'
 import ProductCard from '../products/ProductCard'
+import SupplierCard from '../supplier/SupplierCard'
+import RetailerCard from '../retailer/RetailerCard'
 import SearchIcon from '@material-ui/icons/Search';
 import { TabPanel, a11yProps } from './AdminDashboard'
 import FilterForm from './FilterForm'
@@ -238,7 +240,7 @@ class Dashboard extends Component {
               spacing={2}
               direction="row"
               justify="center"
-              alignItems="center"
+              alignItems="flex-start"
               style={{ marginTop: '30px' }}
             >
 
@@ -279,39 +281,14 @@ class Dashboard extends Component {
               spacing={2}
               direction="row"
               justify="center"
-              alignItems="center"
+              alignItems="flex-start"
             >
               {afterSearchSupplier.map((supplier, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-
-                    <Card className={classes.root}>
-                      <CardMedia
-                        className={classes.cover}
-                        image={supplier.logo}
-                        title="Live from space album cover"
-                      />
-                      <div className={classes.details}>
-                        <CardContent className={classes.content}>
-                          <Typography component="h5" variant="h5">
-                            {supplier.businessName}
-                          </Typography>
-                          <Typography variant="subtitle1" color="textSecondary">
-                            {supplier.email}
-                          </Typography>
-                          <Typography variant="subtitle1" color="textSecondary">
-                            {supplier.address}
-                          </Typography>
-                        </CardContent>
-
-                      </div>
-                      <div>
-                        <NavLink to={'/supplier/' + supplier.id}>
-                          <button>Detail</button>
-                        </NavLink>
-                      </div>
-                    </Card>
+                     <SupplierCard supplier={supplier}/>
                   </Grid>
+                  
                 )
 
               })}
@@ -323,38 +300,12 @@ class Dashboard extends Component {
               spacing={2}
               direction="row"
               justify="center"
-              alignItems="center"
+              alignItems="flex-start"
             >
               {afterSearchRetailer.map((retailer, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-
-                    <Card className={classes.root}>
-                      <CardMedia
-                        className={classes.cover}
-                        image={retailer.logo}
-                        title="Live from space album cover"
-                      />
-                      <div className={classes.details}>
-                        <CardContent className={classes.content}>
-                          <Typography component="h5" variant="h5">
-                            {retailer.displayName}
-                          </Typography>
-                          <Typography variant="subtitle1" color="textSecondary">
-                            {retailer.email}
-                          </Typography>
-                          <Typography variant="subtitle1" color="textSecondary">
-                            {retailer.address}
-                          </Typography>
-                        </CardContent>
-
-                      </div>
-                      <div>
-                        <NavLink to={'/retailer/' + retailer.id}>
-                          <button>Detail</button>
-                        </NavLink>
-                      </div>
-                    </Card>
+                      <RetailerCard retailer={retailer}/>
                   </Grid>
                 )
 
