@@ -276,23 +276,7 @@ class ChatWidget extends Component {
         const { auth, classes } = this.props;
         const { search, users } = this.state;
         console.log(this.props)
-        var noContact = <div></div>;
         if (!auth.uid) return <Redirect to='/signin' />
-        if (this.props.loaded === true && this.props.chatsession === null) {
-            if (this.props.chatsession.length === 0) {
-                noContact = <div>
-                    <Modal
-                        open={this.state.open}
-                        onClose={this.handleClose}
-                        style={{ width: '50%', height: '20%', textAlign: 'center', top: '40%', left: '40%' }}
-                    >
-                        <Paper style={{ width: '50%', height: '20%', textAlign: 'center' }}><p> You don't have any chat available</p></Paper>
-
-
-                    </Modal>
-                </div>
-            }
-        } else { noContact = <div></div> }
         return (
             <div>
                 {this.props.chatId && this.state.chatId && this.props.chatsession && this.props.chatsesiondata ? <div>
@@ -306,7 +290,7 @@ class ChatWidget extends Component {
                      handleChangeChatSession={this.handleChangeChatSession}/> : null}
                 </div>
                     : null}
-                {noContact}
+               
                 {/* <Container>
                     <Grid container spacing={3}>
                        
@@ -360,7 +344,7 @@ export default compose(
         return [
             {
                 collection, where: [['chatsesion', 'array-contains', props.auth.uid]], queryParams: ['orderByChild=lastMod'], storeAs: 'chatsesion',
-                populates,
+                populates,orderBy: ['lastMod', 'desc']
             }]
     })
 )(ChatWidget)
