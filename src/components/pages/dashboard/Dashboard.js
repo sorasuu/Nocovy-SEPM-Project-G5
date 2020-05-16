@@ -289,35 +289,6 @@ class Dashboard extends Component {
                      <SupplierCard supplier={supplier}/>
                   </Grid>
                   
-                  // <Grid item xs={12} sm={6} md={4} key={index}>
-
-                  //   <Card className={classes.root}>
-                  //     <CardMedia
-                  //       className={classes.cover}
-                  //       image={supplier.logo}
-                  //       title="Live from space album cover"
-                  //     />
-                  //     <div className={classes.details}>
-                  //       <CardContent className={classes.content}>
-                  //         <Typography component="h5" variant="h5">
-                  //           {supplier.businessName}
-                  //         </Typography>
-                  //         <Typography variant="subtitle1" color="textSecondary">
-                  //           {supplier.email}
-                  //         </Typography>
-                  //         <Typography variant="subtitle1" color="textSecondary">
-                  //           {supplier.address}
-                  //         </Typography>
-                  //       </CardContent>
-
-                  //     </div>
-                  //     <div>
-                  //       <NavLink to={'/supplier/' + supplier.id}>
-                  //         <button>Detail</button>
-                  //       </NavLink>
-                  //     </div>
-                  //   </Card>
-                  // </Grid>
                 )
 
               })}
@@ -335,32 +306,6 @@ class Dashboard extends Component {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
                       <RetailerCard retailer={retailer}/>
-                    {/* <Card className={classes.root}>
-                      <CardMedia
-                        className={classes.cover}
-                        image={retailer.logo}
-                        title="Live from space album cover"
-                      />
-                      <div className={classes.details}>
-                        <CardContent className={classes.content}>
-                          <Typography component="h5" variant="h5">
-                            {retailer.displayName}
-                          </Typography>
-                          <Typography variant="subtitle1" color="textSecondary">
-                            {retailer.email}
-                          </Typography>
-                          <Typography variant="subtitle1" color="textSecondary">
-                            {retailer.address}
-                          </Typography>
-                        </CardContent>
-
-                      </div>
-                      <div>
-                        <NavLink to={'/retailer/' + retailer.id}>
-                          <button>Detail</button>
-                        </NavLink>
-                      </div>
-                    </Card> */}
                   </Grid>
                 )
 
