@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import Button from '@material-ui/core/Button';
-
+import { connect } from 'react-redux'
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -8,10 +8,10 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {Typography} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid'
+import {deleteProduct} from '../../store/actions/productAction'
+import history from '../../utils/history'
 
-
-
-export default class PriceForm extends React.Component{
+export class PriceForm extends React.Component{
   constructor(props){
     super(props);
     this.state ={
@@ -26,7 +26,9 @@ export default class PriceForm extends React.Component{
 
   handleDelete =() => {
     // console.log(this.props.product)
-    this.props.deleteProduct(this.props.product)
+    this.props.deleteProduct(this.props.id)
+    history.push('/')
+    window.location.reload()
   }
 
   handleClickForm =() => {
@@ -48,7 +50,7 @@ export default class PriceForm extends React.Component{
   // }
 
   render(){
-    
+    console.log(this.props.product)
     const { open, openDelete } = this.state
     return <Fragment>
       
@@ -103,3 +105,9 @@ export default class PriceForm extends React.Component{
       </Fragment>
   }
 }
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteProduct: cart => dispatch(deleteProduct(cart)),
+  };
+};
+export default connect(null,mapDispatchToProps) (PriceForm)

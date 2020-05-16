@@ -98,7 +98,7 @@ export default function ProductDetailCard(props) {
                     </Grid>
                     <Grid item xs={12} sm={4} md={4} lg={4}>
                         <Grid container>
-                            <Grid item xs={12}><ProductInfoCard product={props.product} price={price}/></Grid>
+    <Grid item xs={12}><ProductInfoCard product={props.product} price={price} id={props.id}/> </Grid>
                             <Grid item xs={12}><DetailTable details={props.product.detail} style={{marginBottom: '5px' }}/></Grid>
                         
                         </Grid>             
@@ -127,7 +127,7 @@ export const ProductInfoCard = props => {
         <Grid container spacing={2}>
             <Grid item xs={6} md={6} lg={6}><h4>Author:</h4></Grid>
             <Grid item xs={6} md={6} lg={6}><div style={{fontSize:'20px'}}>{props.product.authorName}</div>
-                    <NavLink to={`/supplier/${props.product.supplierId}`}>
+                    <NavLink to={`/supplier/${props.product.supplierId.uid}`}>
                         <Button
                             variant="contained"
                             color="primary"
@@ -146,7 +146,7 @@ export const ProductInfoCard = props => {
                 <TableContainer className={classes.root}>
                     <TableHead>
                         <TableRow>
-                            <PriceForm product={props.product}/>
+                            <PriceForm product={props.product} id={props.id}/>
                         </TableRow>
                     </TableHead>
                     <TableBody aria-label="simple table">

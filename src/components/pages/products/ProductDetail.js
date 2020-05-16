@@ -38,7 +38,7 @@ class ProductDetail extends Component {
       <div className="container">
         {product ?
           
-            <ProductDetailCard product={product} />
+            <ProductDetailCard product={product} id={this.props.match.params.id}/>
          
           :<div>Loading...</div>
         }        
