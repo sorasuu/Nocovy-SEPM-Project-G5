@@ -97,11 +97,13 @@ const ContactPanel = (props) => {
                     {props.chatsession&&props.chatsesiondata?props.chatsession.map(chatse=>{
                         const chatses = props.chatsesiondata[chatse.id]
                         var receiver;
-                        if(chatses.user1===props.uid){
-                            receiver = chatses.user1
-                        }else{
+                        console.log(chatses)
+                        if(chatses.user1.id==props.uid){
                             receiver = chatses.user2
+                        }else{
+                            receiver = chatses.user1
                         }
+                        console.log(receiver)
                         return(
                         <div>
                         <ListItem 
