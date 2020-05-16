@@ -91,6 +91,10 @@ const SignedInLinks = (props) => {
   else{
     cartnav=cart
   }}
+  const handelSignOut=(e)=>{
+    props.signOut()
+    window.location.reload()
+  }
 
   return (
     <div>
@@ -186,7 +190,7 @@ const SignedInLinks = (props) => {
             <LongMenu props={auth} lastContact={props.props.lastContact}/>
         </Grid>
         <Grid item xs={3}>
-      <IconButton onClick={props.signOut} >
+      <IconButton onClick={(e)=>handelSignOut(e)} >
             <InputIcon  />
           </IconButton>
         </Grid>

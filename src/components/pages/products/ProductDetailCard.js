@@ -98,7 +98,7 @@ export default function ProductDetailCard(props) {
                     </Grid>
                     <Grid item xs={12} sm={4} md={4} lg={4}>
                         <Grid container>
-    <Grid item xs={12}><ProductInfoCard product={props.product} price={price} id={props.id}/> </Grid>
+    <Grid item xs={12}><ProductInfoCard product={props.product} price={price} id={props.id} owner={props.owner}/> </Grid>
                             <Grid item xs={12}><DetailTable details={props.product.detail} style={{marginBottom: '5px' }}/></Grid>
                         
                         </Grid>             
@@ -146,7 +146,7 @@ export const ProductInfoCard = props => {
                 <TableContainer className={classes.root}>
                     <TableHead>
                         <TableRow>
-                            <PriceForm product={props.product} id={props.id}/>
+                           {props.owner? <PriceForm product={props.product} id={props.id}/>:null}
                         </TableRow>
                     </TableHead>
                     <TableBody aria-label="simple table">

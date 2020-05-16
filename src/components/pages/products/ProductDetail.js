@@ -38,7 +38,7 @@ class ProductDetail extends Component {
       <div className="container">
         {product ?
           
-            <ProductDetailCard product={product} id={this.props.match.params.id}/>
+            <ProductDetailCard product={product} id={this.props.match.params.id} owner={this.props.owner}/>
          
           :<div>Loading...</div>
         }        
@@ -64,13 +64,14 @@ const mapStateToProps = (state, ownProps) => {
   const auth = state.firebase.auth
   var owner = null
   if (auth!==null&&auth!== undefined&& product!==null&& product!==undefined){
-    if (auth.uid === product.supplierId){
+    if (auth.uid === product.supplierId.id){
       owner=true
     }
     else{
       owner=false
     }
   }
+  console.log(owner)
   return {
     auth: auth,
     product: product,
