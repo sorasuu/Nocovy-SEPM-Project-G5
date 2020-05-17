@@ -14,6 +14,7 @@ import { Redirect, NavLink } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade } from '@material-ui/core/styles'
 import firebase from 'firebase/app';
+import ChatMsg from '@mui-treasury/components/chatMsg/ChatMsg';
 import {
     Card, 
     CardContent, 
@@ -57,21 +58,6 @@ const useStyles = makeStyles((theme) => ({
         transform: 'translate(-50%)'
     },
 }));
-
-export const DUMMY_DATA = [
-    {
-        senderId: "perborgen",
-        text: "who'll win?",
-    },
-    {
-        senderId: "janedoe",
-        text: "who'll win?",
-    },
-    {
-        senderId: "placeholder",
-        text: "hello world",
-    }
-]
 
 //CONTACTS COMPONENT
 export const ChatContact = (props) => {
@@ -143,27 +129,42 @@ export const ChatContact = (props) => {
 };
 
 export const MessageList = (props) => {
+
+    const receiverId = props.chatId.replace(props.uid, '');
+    const currentchatsession = props.currentchatsession ? props.currentchatsession : null
+    var receiver
+    if (currentchatsession !== undefined && currentchatsession !== null &&props.chatuser!==undefined) {
+        if (currentchatsession.user1 === receiverId) {
+            receiver = props.chatuser[currentchatsession.user1]
+        } else { receiver = props.chatuser[currentchatsession.user2] }
+    }
     console.log(props)
     return (
         <div>
-        <br/>
-        <p>Messages go here</p>
-        <br/>
-        </div>
-        // <ul className="message-list">                 
-        //     {this.state.messages.map(message => {
-        //       return (
-        //        <li key={message.id}>
-        //          <div>
-        //            {message.senderId}
-        //          </div>
-        //          <div>
-        //            {message.text}
-        //          </div>
-        //        </li>
-        //      )
-        //    })}
-        //  </ul>
+        {props.messages ? props.messages.map(message => {
+            if (message.sender === props.uid) {
+                return (
+                    <ChatMsg
+                        key={message.id}
+                        side={'right'}
+                        messages={[
+                            message.context
+                        ]}
+                    />
+                )
+            } else {
+                return (
+                    <ChatMsg
+                        key={message.id}
+                        avatar={receiver? receiver.logo:null}
+                        messages={[
+                            message.context
+                        ]}
+                    />)
+            }
+        }) : null}
+
+    </div>
     )
 }
 
@@ -206,16 +207,6 @@ class Chat extends Component {
         }
     }
 
-  
-
-    // componentDidUpdate(prevProps, prevState) {
-    //     if (prevState.message !== this.state.message && this.props.typingListener) {
-    //         this.props.typingListener();
-    //     }
-    //     // this.scrollToBottom();
-    // }
-
-    // dunno where to place this handleSendMessage
     handleSendMessage = event => {
         event.preventDefault();
         const receiver = this.props.match.params.id.replace(this.props.auth.uid,'');
@@ -258,7 +249,7 @@ class Chat extends Component {
                             <div className='chat-box'>
                                 <div className='msg-page'>
                                 <h5 style={{alignContent:'center'}}>Messages</h5>
-                                    <MessageList messages={this.props.messages} />
+                                    <MessageList messages={this.props.messages} uid={this.props.auth.uid} chatId={this.props.match.params.id} currentchatsession={this.props.currentchatsession}  chatsesion={this.props.chatsessionorder}chatuser={this.props.chatuser}/>
                                 </div>
                                 <div className='msg-footer'>
                                     <SendMessageForm handleSendMessage={this.handleSendMessage} handleChange={this.handleChange} context={this.state.context}/>
@@ -308,6 +299,7 @@ const mapStateToProps = (state,ownProps) => {
         messages: messages,
         currentchatsession: currentchatsession,
         chatsessionorder:chatsessionorder,
+        chatsesiondata: state.firestore.data.chatsesion,
         userIdlist:userIdlist,
         chatuser: state.firestore.data.chatuser
     }
