@@ -1,14 +1,5 @@
 import React, { Component } from 'react'
-import { Redirect, NavLink } from 'react-router-dom'
-import { firestoreConnect } from 'react-redux-firebase'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
-import { Button, Paper, Grid } from '@material-ui/core'
-// import AddIcon from '@material-ui/icons/Add';
-// import StyledButton from '../layout/StyledButton'
-// import ProductDetailCard from '../layout/ProductDetailCard'
-// import ColorLinearProgress from '../layout/ColorLinearProgress'
-// import { makeStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -116,8 +107,7 @@ export class FAQ extends Component {
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <Typography>
-                        Click here for our privacy policy and here for terms of service.
-                        {/* PP and TOS link here */}
+                        Click <Link to="/privacypolicy">here</Link> for our privacy policy and <Link to="/tos">here</Link> for terms of service.
                         </Typography>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>

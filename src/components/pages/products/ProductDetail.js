@@ -4,7 +4,6 @@ import { firestoreConnect, populate } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Grid, withStyles } from '@material-ui/core'
-
 import  ProductDetailCard  from './ProductDetailCard'
 
 const useStyles = (theme) => ({

@@ -9,7 +9,6 @@ import {
   Tabs, Tab, CardContent, Typography,
   CardMedia, Card, Chip
 } from '@material-ui/core'
-// import StyledButton from '../../layout/StyledButton'
 import ProductCard from '../products/ProductCard'
 import SupplierCard from '../supplier/SupplierCard'
 import RetailerCard from '../retailer/RetailerCard'

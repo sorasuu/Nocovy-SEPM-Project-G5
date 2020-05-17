@@ -16,7 +16,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 const useStyles = makeStyles((theme) => ({
     root: {
-        // flexGrow: 1,
         backgroundColor: theme.palette.background.paper,
         display: "flex",
         minHeight: 800,
@@ -33,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: fade(theme.palette.common.white, 0.25),
         },
         marginTop: "2%",
-        // marginRight: theme.spacing(2),
         justify: 'center',
         alignItems: 'center',
         direction: 'flex',

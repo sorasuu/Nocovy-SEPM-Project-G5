@@ -64,12 +64,10 @@ export function LongMenu(props) {
             <MenuItem onClick={handleClose}>Chat</MenuItem></NavLink> : null
             }
           <NavLink to ='/faq' style={{ color: "black" }}> <MenuItem onClick={handleClose}>FAQ</MenuItem> </NavLink>
-          <NavLink to ='/privacypolicy' style={{ color: "black" }}> <MenuItem onClick={handleClose}>Privacy Policy</MenuItem> </NavLink>
           <NavLink to ='/rules' style={{ color: "black" }}> <MenuItem onClick={handleClose}>Transaction Rules</MenuItem> </NavLink>
+          <NavLink to ='/privacypolicy' style={{ color: "black" }}> <MenuItem onClick={handleClose}>Privacy Policy</MenuItem> </NavLink>
           <NavLink to ='/tos' style={{ color: "black" }}> <MenuItem onClick={handleClose}>Term of Service</MenuItem> </NavLink>
 
-
-            
       </Menu>
 
     </div>

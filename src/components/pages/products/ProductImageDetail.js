@@ -7,27 +7,22 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import ParallaxSlide from '@mui-treasury/components/slide/parallax';
 import DotIndicator from '@mui-treasury/components/indicator/dot';
-// import { useArrowDarkButtonStyles } from '@mui-treasury/styles/button/arrowDark';
 import { checkArray } from '../dashboard/Dashboard'
 
 const useStyles = makeStyles(() => ({
   root: {
-    // a must if you want to set arrows, indicator as absolute
     position: 'relative',
     width: '100%',
   },
   slide: {
-    perspective: 1000, // create perspective
+    perspective: 1000, 
     overflow: 'hidden',
-    // relative is a must if you want to create overlapping layers in children
     position: 'relative',
-    // paddingTop: spacing(8),
   },
   imageContainer: {
     display: 'block',
     position: 'relative',
     zIndex: 2,
-    // paddingBottom: '56.25%',
   },
   image: {
     
@@ -43,7 +38,6 @@ const useStyles = makeStyles(() => ({
     
   },
   arrow: {
-    // display: 'none',
     position: 'absolute',
     top:'98%',
     transform: 'translateY(-50%)',
@@ -68,7 +62,6 @@ const ProductImageDetail = (props) => {
     <>
       <Button
         className={cx(classes.arrow, classes.arrowLeft)}
-        // classes={arrowStyles}
         disabled={index === 0}
         onClick={() => onChangeIndex(index - 1)}
       >
@@ -76,7 +69,6 @@ const ProductImageDetail = (props) => {
       </Button>
       <Button
         className={cx(classes.arrow, classes.arrowRight)}
-        // classes={arrowStyles}
         disabled={index === props.image.productImg.length - 1}
         onClick={() => onChangeIndex(index + 1)}
       >
@@ -107,7 +99,6 @@ const ProductImageDetail = (props) => {
       <ParallaxSlide renderElements={renderElements}>
         {renderChildren}
       </ParallaxSlide>
-      {/* <img className={ classes.image }src={props.image.cover}/> */}
     </div>
   );
 };

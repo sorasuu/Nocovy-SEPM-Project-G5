@@ -63,13 +63,9 @@ const useStyles = makeStyles((theme) => ({
 
 const useStyles1 = theme => ({
     chatMenu: {
-        // marginTop: "10%",
-        // display: 'flex',
-        // position: "relative"
         overflow: 'initial',
         background: '#ffffff',
         borderRadius: 16,
-        // height: '100%',
         paddingTop: "5px",
         paddingLeft: "5%",
         paddingRight: "5%",
@@ -209,7 +205,6 @@ export const SendMessageForm = (props) => {
     return (
         <form
             className='message-form'
-        // onSubmit={this.handleSendMessage}
         >
             <div className='input-group'>
                 <Grid container spacing={3}>
@@ -243,16 +238,6 @@ class Chat extends Component {
         }
     }
 
-
-
-    // componentDidUpdate(prevProps, prevState) {
-    //     if (prevState.message !== this.state.message && this.props.typingListener) {
-    //         this.props.typingListener();
-    //     }
-    //     // this.scrollToBottom();
-    // }
-
-    // dunno where to place this handleSendMessage
     handleSendMessage = event => {
         event.preventDefault();
         const receiver = this.props.match.params.id.replace(this.props.auth.uid, '');
@@ -279,10 +264,6 @@ class Chat extends Component {
     render() {
         const { auth, classes } = this.props;
         const { search, users } = this.state;
-        // somehow search function broke dafuk
-        // const filteredUsers = users.filter(product => {
-        //     return product.title.toLowerCase().indexOf(search.toLowerCase()) !== -1
-        // })
         if (!auth.uid) return <Redirect to='/signin' />
         console.log(this.props.match.params.id)
         return (
@@ -342,8 +323,6 @@ const mapStateToProps = (state, ownProps) => {
             }
         }
     }
-    // console.log(userIdlist)
-    // console.log(state.firestore.ordered.chatuser)
     return {
         auth: state.firebase.auth,
         messages: messages,

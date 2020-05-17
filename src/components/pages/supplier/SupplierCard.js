@@ -5,8 +5,6 @@ import {
     Card, CardContent, CardMedia ,
     Button,
 } from '@material-ui/core';
-// import useMediaQuery from '@material-ui/core/useMediaQuery';
-
 import TextInfoContent from '@mui-treasury/components/content/textInfo';
 import { useFourThreeCardMediaStyles } from '@mui-treasury/styles/cardMedia/fourThree';
 import { useN04TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n04';

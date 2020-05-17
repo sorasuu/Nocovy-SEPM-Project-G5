@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { makeStyles } from '@material-ui/styles';
 import { withStyles } from '@material-ui/core'
 
 const useStyles = theme => ({
@@ -21,7 +20,6 @@ const useStyles = theme => ({
 const notfound = {
     fontFamily: 'Kanit',
     position: "relative",
-    // marginBottom: "50%",
     marginTop: "8%",
     textAlign: 'center',
     lineHeight: "1.4",
@@ -29,7 +27,6 @@ const notfound = {
 
 
 class NotFound extends Component {
-    // const classes = useStyles();
 
     render() {
 

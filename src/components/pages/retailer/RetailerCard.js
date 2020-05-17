@@ -5,7 +5,6 @@ import {
     Card, CardContent, CardMedia ,
     Button, withStyles
 } from '@material-ui/core';
-// import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import TextInfoContent from '@mui-treasury/components/content/textInfo';
 import { useFourThreeCardMediaStyles } from '@mui-treasury/styles/cardMedia/fourThree';
@@ -52,18 +51,17 @@ const RetailerCard = (props) => {
     
     
     return (
-        // <NavLink to = {'/product/'+ props.product.id}>
 
         <Card className={cx(classes.root, shadowStyles.root)} style={{ position: "relative", marginBottom: '10px' }}>
             
             <CardContent className={classes.content}
-            // ref={hoverRef}
+
             >
                 <div style={{ marginTop: "2%" }}>
-                    {/* put image and info */}
+                    
                     <div className='image'>
                     <CardMedia
-                    // component="img"
+                    
                     alt="product"
                         className={cx(classes.media, mediaStyles.root)}
                         image={retailer.logo}
