@@ -104,7 +104,9 @@ const SignedInLinks = (props) => {
   }
   const handelSignOut = (e) => {
     props.signOut()
+    localStorage.removeItem('cart');
     window.location.reload()
+
   }
 
   return (
