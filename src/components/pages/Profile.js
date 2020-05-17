@@ -129,18 +129,14 @@ class Profile extends Component {
       }
       this.props.createChatSession(chat)
     }
-
   }
 
   handleChange = input => e => {
     this.setState({ [input]: e.target.value })
   }
 
-  handleCatChange = input => e => {
-    var a = [e.target.value, 'helloWorld']
-    this.setState({ [input]: a })
-    console.log(this.state)
-    //Write function to parse string input into array of tags
+  handleCatChange = (chips) => {
+    this.setState({ productCategories: chips })
   }
   handleChangeImg(files){
     console.log(files)

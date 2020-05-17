@@ -1,14 +1,19 @@
-import React from 'react';
-import cx from 'clsx';
-import { makeStyles } from '@material-ui/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
-import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
-import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
-import StyledButton from '../../layout/StyledButton';
+import React from 'react'
+import cx from 'clsx'
+import { makeStyles } from '@material-ui/styles'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import CardHeader from '@material-ui/core/CardHeader'
+import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained'
+import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over'
+import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded'
+import StyledButton from '../../layout/StyledButton'
 import {DropzoneArea} from 'material-ui-dropzone'
+import ChipInput from 'material-ui-chip-input'
+import {TextField, InputAdornment} from '@material-ui/core'
+
+//SET DEFAULT VALUES FOR DROPZONE AND NEW INFO. SHIT DON'T GET RESET WHEN YOU CLICK OFF THE PAGE AND CLICK ON AGAIN
+
 const useStyles = makeStyles(() => ({
     card: {
         display: 'flex',
@@ -21,7 +26,7 @@ const useStyles = makeStyles(() => ({
         background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)",
         position: "absolute",
         left: "50%",
-        width: '250px',
+        width: 'auto',
         textAlign:'center',
         transform: 'translate(-50%, 15%)'
     },
@@ -77,31 +82,43 @@ const AddProductCard = (props) => {
             
             2: <div>
                 <div className={classes.form}>
-                    <form style={{margin:'2%'}}>
-                        <div className="form-group">
-                            <label htmlFor="title">Name</label>
-                            <input id='name' placeholder='Product Name' defaultValue={props.values.productName} onChange={props.handleChange('productName')}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="desc">Description</label>
-                            <input id='desc' placeholder='Product Description' defaultValue={props.values.productDesc} onChange={props.handleChange('productDesc')}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="categories">Categories</label>
-                            <input id='categories' placeholder='Product Categories' defaultValue={props.values.productCategories} onChange={props.handleCatChange('productCategories')}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="dutyRate">Duty Rate (%)</label>
-                            <input type='number' id='dutyRate' defaultValue={props.values.dutyRate} placeholder='Duty Rate (%)' onChange={props.handleChange('dutyRate')}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="margin">Margin (%)</label>
-                            <input id='margin' placeholder='Margin (%)' defaultValue={props.values.margin} onChange={props.handleChange('margin')}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="unitCost">Unit Cost</label>
-                            <input type='number' id='unitCost' defaultValue={props.values.unitCost} placeholder='Unit Cost' onChange={props.handleChange('unitCost')}/>
-                        </div>
+                    <form style={{margin:'2%', textAlign:'left'}}>
+                        <TextField style={{marginBottom:'2%'}} label='Product Name' onChange={props.handleChange('productName')}></TextField>
+                        <ChipInput
+                            style={{marginBottom:'2%'}}
+                            label='Categories'
+                            placeholder='Product Categories'
+                            fullWidth
+                            onChange={(chips) => props.handleCatChange(chips)}
+                        />
+                        <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Product Description' onChange={props.handleChange('productDesc')}></TextField>
+                        <TextField type='number' style={{marginBottom:'2%'}} label='Unit Cost' onChange={props.handleChange('unitCost')}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        VND
+                                    </InputAdornment>
+                                ),
+                            }}
+                        ></TextField><br/>
+                        <TextField type='number' style={{marginBottom:'2%'}} label='Duty Rate (%)' onChange={props.handleChange('dutyRate')}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        %
+                                    </InputAdornment>
+                                ),
+                            }}
+                        ></TextField><br/>
+                        <TextField type='number' style={{marginBottom:'2%'}} label='Margin (%)' onChange={props.handleChange('margin')}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        %
+                                    </InputAdornment>
+                                ),
+                            }}
+                        ></TextField>
                     </form>    
                 </div>
                 <div className={classes.buttonGroup}>

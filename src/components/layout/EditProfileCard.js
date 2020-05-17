@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
         background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)",
         position: "absolute",
         left: "50%",
-        width: '250px',
+        width: 'auto',
         textAlign:'center',
         transform: 'translate(-50%, 15%)'
     },
@@ -62,12 +62,12 @@ const EditProfileCard = (props) => {
             <div>
                 <div className={classes.form}>
                     <form style={{margin:'2%'}}>
-                        <TextField style={{marginBottom:'2%'}} fullWidth label='Business Name' placeholder='Business Name' defaultValue={props.values.businessName} onChange={props.handleChange('newBusinessName')}></TextField>
-                        <TextField style={{marginBottom:'2%'}} fullWidth label='Phone Number' placeholder='Phone Number' defaultValue={props.values.phoneNumber} onChange={props.handleChange('newPhoneNumber')}></TextField>
-                        <TextField style={{marginBottom:'2%'}} fullWidth label='Address' placeholder='Address' defaultValue={props.values.address} onChange={props.handleChange('newAddress')}></TextField>
-                        <TextField style={{marginBottom:'2%'}} fullWidth label='Website' placeholder='Website' defaultValue={props.values.website} onChange={props.handleChange('newWebsite')}></TextField>
-                        <TextField style={{marginBottom:'2%'}} fullWidth label='Business Genre' placeholder='Business Genre' defaultValue={props.values.businessGenre} onChange={props.handleChange('newBusinessGenre')}></TextField>
-                        <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Description' placeholder='Description' defaultValue={props.values.businessDesc} onChange={props.handleChange('newDescription')}></TextField>
+                        <TextField style={{marginBottom:'2%'}} fullWidth label='Business Name' defaultValue={props.values.businessName} onChange={props.handleChange('newBusinessName')}></TextField>
+                        <TextField style={{marginBottom:'2%'}} fullWidth label='Phone Number' defaultValue={props.values.phoneNumber} onChange={props.handleChange('newPhoneNumber')}></TextField>
+                        <TextField style={{marginBottom:'2%'}} fullWidth label='Address' defaultValue={props.values.address} onChange={props.handleChange('newAddress')}></TextField>
+                        <TextField style={{marginBottom:'2%'}} fullWidth label='Website' defaultValue={props.values.website} onChange={props.handleChange('newWebsite')}></TextField>
+                        <TextField style={{marginBottom:'2%'}} fullWidth label='Business Genre' defaultValue={props.values.businessGenre} onChange={props.handleChange('newBusinessGenre')}></TextField>
+                        <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Description' defaultValue={props.values.businessDesc} onChange={props.handleChange('newDescription')}></TextField>
                     </form>    
                 </div>
                 <div className={classes.buttonGroup}>

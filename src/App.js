@@ -24,6 +24,7 @@ import TermOfService from './components/pages/TermOfService'
 import TransactionRules from './components/pages/TransactionRules'
 import PrivacyPolicy from './components/pages/PrivacyPolicy'
 import NotFound from './components/pages/NotFound'
+import CancelIcon from '@material-ui/icons/Cancel';
 
 
 class App extends Component {
@@ -104,9 +105,10 @@ class App extends Component {
             right: '20px',
             bottom: '20px',
             display: 'block',
-            position: 'fixed'
+            position: 'fixed',
+            zIndex:1
           }} onClick={(e) => { this.handleClicked(e) }} >
-            <ChatBubbleIcon />
+            {!this.state.chatwindow? <ChatBubbleIcon /> : <CancelIcon />}
           </Fab>:null}
           {this.state.chatwindow ? <ChatWidget /> : null}
         </div>
