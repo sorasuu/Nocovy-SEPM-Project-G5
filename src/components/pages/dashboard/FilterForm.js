@@ -14,7 +14,7 @@ import AttachMoneyOutlinedIcon from '@material-ui/icons/AttachMoneyOutlined';
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'left',
         flexWrap: 'wrap',
         listStyle: 'none',
         padding: theme.spacing(0.5),
@@ -45,7 +45,7 @@ const MenuProps = {
     PaperProps: {
         style: {
             maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
+            width: 300,
         },
     },
 };
@@ -67,10 +67,10 @@ function Form(props) {
         props.setCategory(event.target.value);
     };
     return (
-        <Dialog aria-labelledby="simple-dialog-title" open={open}>
-            <DialogTitle id="simple-dialog-title">Choose Product Categories:</DialogTitle>
+        <Dialog aria-labelledby="simple-dialog-title"  open={open}>
+            <DialogTitle id="simple-dialog-title">Filter Products</DialogTitle>
             <FormControl className={classes.formControl}>
-                <InputLabel id="demo-mutiple-chip-label">Chip</InputLabel>
+                <InputLabel id="demo-mutiple-chip-label">Categories</InputLabel>
                 <Select
                     labelId="demo-mutiple-chip-label"
                     id="demo-mutiple-chip"
@@ -93,15 +93,18 @@ function Form(props) {
                         </MenuItem>
                     ))}
                 </Select>
+                <br />
+                <label>Sort by</label>
+
                 <Grid container justify='center' alignItems="center" display="flex" spacing={2}>
                     <Grid item xs={6} ><Button onClick={props.handleSortKind}>{props.sortName ?
-                        <SortByAlphaOutlinedIcon />
-                        : <AttachMoneyOutlinedIcon />}</Button></Grid>
-                        <Grid item xs={6} >
-                    {props.sortName ?
-                        <Button onClick={props.handleSort}>{props.sortAsc ? <>A to Z</> : <>Z to A</>}</Button>
-                        : <Button onClick={props.handleSort}>{props.sortAsc ? <><TrendingUpOutlinedIcon/></> : <><TrendingDownOutlinedIcon/></>}</Button>                }
-                        </Grid>
+                        <p><SortByAlphaOutlinedIcon />Sort by Alphabet</p>
+                        : <p><AttachMoneyOutlinedIcon />Sort by Price</p>}</Button></Grid>
+                    <Grid item xs={6} >
+                        {props.sortName ?
+                            <Button onClick={props.handleSort}>{props.sortAsc ? <>A to Z</> : <>Z to A</>}</Button>
+                            : <Button onClick={props.handleSort}>{props.sortAsc ? <><TrendingUpOutlinedIcon /></> : <><TrendingDownOutlinedIcon /></>}</Button>}
+                    </Grid>
                 </Grid>
                 <Button onClick={props.onCancel}>Cancel</Button>
                 <Button onClick={props.onSubmit}>Submit</Button>
@@ -123,7 +126,7 @@ export default function FilterForm(props) {
     const handleSubmit = (value) => {
         setOpen(false);
         props.handleFilter(selectedCategories);
-        
+
     };
     const handleCancel = () => {
         setOpen(false)
@@ -139,7 +142,7 @@ export default function FilterForm(props) {
         <div>
             <br />
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                Open Filter dialog
+                Filter
             </Button>
             <Form
                 categories={props.allCategories}

@@ -20,6 +20,11 @@ import SupplierDetail from './components/pages/supplier/SupplierDetail';
 import Retailer from './components/pages/retailer/Retailer';
 import "./App.css"
 import ProductCart from './components/pages/products/ProductCart';
+import FAQ from './components/pages/FAQ'
+import TermOfService from './components/pages/TermOfService'
+import TransactionRules from './components/pages/TransactionRules'
+import PrivacyPolicy from './components/pages/PrivacyPolicy'
+import NotFound from './components/pages/NotFound'
 
 
 class App extends Component {
@@ -88,6 +93,12 @@ class App extends Component {
             <Route path='/cart' component={ProductCart} />
             <Route path='/profile/:id' component={(props) => <Profile {...props} currentUser={currentUser} chatsesion={chatsession} />} />
             <Route path='/chat/:id' component={(props) => <Chat {...props} currentUser={currentUser} chatsession={chatsession}  />} />
+            <Route path='/faq' component={FAQ} />
+            <Route path='/privacypolicy' component={PrivacyPolicy} />
+            <Route path='/rules' component={TransactionRules}/>
+            <Route path='/tos' component={TermOfService} />
+            <Route component={NotFound} />
+
           </Switch>
           {this.props.auth.uid&&this.props.chatsession?
           <Fab style={{
