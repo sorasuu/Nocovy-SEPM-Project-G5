@@ -8,7 +8,6 @@ import Profile from './components/pages/Profile'
 import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
 import Chat from './components/pages/Chat'
-
 import { Fab} from '@material-ui/core';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import "./App.css"
