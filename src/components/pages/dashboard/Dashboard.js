@@ -222,7 +222,7 @@ class Dashboard extends Component {
           />
         </div>
 
-        <div style={{ marginTop: '10%' }}>
+        <div style={{ marginTop: '2%' }}>
           <TabPanel value={value} index={0}>
 
             <FilterForm products={products}
