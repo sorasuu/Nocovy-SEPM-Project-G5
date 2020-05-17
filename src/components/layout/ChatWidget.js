@@ -48,8 +48,8 @@ const useStylesCard = makeStyles(() => ({
     card: {
         marginTop: "10%",
         transition: '0.3s',
-        width: '500px',
-        height: '550px',
+        width: '350px',
+        height: '400px',
         overflow: 'initial',
         background: '#ffffff',
         right: '30px',
@@ -89,7 +89,7 @@ const ContactPanel = (props) => {
                 title={"Contact"}
                 style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", left: "5%", width: '200px', }}
             />
-            <CardContent className={classes.content} style={{ maxHeight: 450, height: 450, overflow: 'auto', marginTop: '5%' }} >
+            <CardContent className={classes.content} style={{ maxHeight: 300, height: 300, overflow: 'auto', marginTop: '5%' }} >
 
                 <div >
                     
@@ -179,7 +179,7 @@ const ChatPanel = (props) => {
                 subheader={receiver ? receiver.displayName : null}
                 style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", top: "-5%", left: "5%", width: '200px', }}
             />
-            <CardContent className={classes.content} style={{ maxHeight: 450, height: 450, overflow: 'auto', marginTop: '5%' }} >
+            <CardContent className={classes.content} style={{ maxHeight: 300, height: 300, overflow: 'auto', marginTop: '5%' }} >
 
                 <div >
                     <DefaultChatMsg messages={message} uid={props.uid} receiver={receiver} />
@@ -282,7 +282,7 @@ class ChatWidget extends Component {
                 {this.props.chatId && this.state.chatId && this.props.chatsession && this.props.chatsesiondata ? <div>
                     {this.state.chatwindow ? <ChatPanel handleChange={this.handleChange} chatId={this.state.chatId} context={this.state.context}
                         uid={this.props.auth.uid} handleSendMessage={this.handleSendMessage} chatsesiondata={this.props.chatsesiondata} /> : null}
-                    <Paper style={{ width: '100px', right: '250px', bottom: '10px', position: 'fixed' }} >
+                    <Paper style={{ width: '100px', right: '200px', bottom: '10px', position: 'fixed' }} >
                         <Button variant="outlined" color="primary" style={{ width: '100px' }} onClick={(e) => this.handleContactClicked(e)}>
                             Contacts
                     </Button></Paper>

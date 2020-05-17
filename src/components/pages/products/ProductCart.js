@@ -240,17 +240,4 @@ const mapStateToProps = (state) => {
 export default compose(
 
   connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect((props) => {
-    if (!props.auth.uid) {
-      props.history.push("/")
-    }
-    else {
-      return [
-        { collection: 'users' },
-        // { collection: 'users', where:[["pending","==",true]], storeAs:'usersPending' },
-        // { collection: 'users', where:[["pending","==",false]], storeAs:'usersApprove' },
-
-      ]
-    }
-  })
 )(withStyles(useStyles)(ProductCart))
