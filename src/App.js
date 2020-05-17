@@ -89,7 +89,7 @@ class App extends Component {
             <Route path='/profile/:id' component={(props) => <Profile {...props} currentUser={currentUser} chatsesion={chatsession} />} />
             <Route path='/chat/:id' component={(props) => <Chat {...props} currentUser={currentUser} chatsession={chatsession}  />} />
           </Switch>
-          {this.props.auth.uid?
+          {this.props.auth.uid&&this.props.chatsesion?
           <Fab style={{
             right: '20px',
             bottom: '20px',
