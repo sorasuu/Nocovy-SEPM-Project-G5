@@ -136,13 +136,13 @@ export const ChatContact = (props) => {
                             <NavLink to={'/chat/'+contact.id}>
                             <ListItem divider dense button alignItems="flex-start" selected={contact.id === props.currentchatsession.id}>
                                 <ListItemAvatar>
-                                    <Avatar src={receiver.logo} />
+                                    <Avatar src={receiver?receiver.logo:null} />
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={
-                                        <Typography variant='h6'>{receiver.displayName}</Typography>}
+                                        <Typography variant='h6'>{receiver?receiver.displayName:null}</Typography>}
                                     secondary={
-                                        <Typography variant='subtitle'> {contact.lastchat}</Typography>}
+                                        <Typography variant='subtitle'> {receiver?contact.lastchat:null}</Typography>}
                                 />
                             </ListItem>
                             </NavLink>
