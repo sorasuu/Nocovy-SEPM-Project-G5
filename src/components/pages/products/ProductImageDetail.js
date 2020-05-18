@@ -33,7 +33,7 @@ const useStyles = makeStyles(() => ({
     zIndex: 10,
     width: '100%',
     height: "fit-content",
-    maxHeight:'800px',
+    maxHeight:'600px',
     objectFit: 'cover',  
     
   },

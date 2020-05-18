@@ -45,7 +45,7 @@ class DetailTable extends Component {
   }
 
 render(){
-    console.log(this.props)
+    console.log('detail ne',this.props)
     return (
         <div>
         <h4>Detail</h4>
@@ -58,8 +58,11 @@ render(){
                 paging:false,
                 actionsColumnIndex:-1,
                 rowStyle: rowData =>({
-                    backgroundColor: (rowData.tableData.id % 2 ===0)? '#EEE': '#FFF'
+                    backgroundColor: (rowData.tableData.id % 2 ===0)? '#EEE': '#FFF',
+                
                 })
+
+                
             }}
             editable={{
                 onRowAdd: (newData) =>

@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import {InputBase, Container, Typography, Grid, withStyles} from '@material-ui/core'
+import {InputBase, Container, Typography, Grid, withStyles, Modal} from '@material-ui/core'
 import ProfileInfoCard from './supplier/ProfileInfoCard'
 import { firestoreConnect } from 'react-redux-firebase'
 import { storeProducts } from "./data"
 import AddProductCard from './products/AddProductCard'
-import EditProfileCard from '../layout/EditProfileCard'
+import EditProfileCard from './supplier/EditProfileCard'
 import ProductCard from './products/ProductCard'
-import Modal from '@material-ui/core/Modal'
 import { Redirect } from 'react-router-dom'
 import {createProduct } from '../store/actions/productAction'
 import {editUser } from '../store/actions/userActions'
@@ -81,22 +80,12 @@ class Profile extends Component {
     step:1,
     owner:false,
     productName:'',
-    productBrand:'',
-    productOrigin:'',
     productDesc:'',
     productCategories: [],
-    dutyCost:0,
     dutyRate:0,
-    FOB:'',
-    freightCost:0,
-    freightDesc:'',
-    freightRate:'',
-    landedCost:0,
     margin:0,
-    miscCost:0,
     unitCost:0,
     images: [],
-    category:'',
     progress: '',
   }
 
@@ -129,19 +118,16 @@ class Profile extends Component {
       }
       this.props.createChatSession(chat)
     }
-
   }
 
   handleChange = input => e => {
     this.setState({ [input]: e.target.value })
   }
 
-  handleCatChange = input => e => {
-    var a = [e.target.value, 'helloWorld']
-    this.setState({ [input]: a })
-    console.log(this.state)
-    //Write function to parse string input into array of tags
+  handleCatChange = (chips) => {
+    this.setState({ productCategories: chips })
   }
+
   handleChangeImg(files){
     console.log(files)
     this.setState({
@@ -225,7 +211,7 @@ class Profile extends Component {
     if (this.validateForm()){
 
       //FIX THIS TO FIT WITH NEW DATA
-      var unitPrice = this.state.unitCost * (100 + this.state.margin + this.state.dutyRate)/100
+      var unitPrice = Number(this.state.unitCost) * ((100 + Number(this.state.margin) + Number(this.state.dutyRate))/100)
       var timeStamp = Math.floor(Date.now() / 1000);
       var product = {
         authorEmail: this.props.thisUser.email,
@@ -237,10 +223,6 @@ class Profile extends Component {
         name: this.state.productName, 
         createdAt: timeStamp,
         description: this.state.productDesc, 
-        detail: [
-          'origin: '+ this.state.productOrigin,
-          'brand:'+ this.state.productBrand
-        ], 
         price: {
           dutyRate: this.state.dutyRate,
           margin: this.state.margin,
@@ -279,6 +261,7 @@ class Profile extends Component {
     }
 
   }
+
   componentDidUpdate(prevState, prevProps) {
     if (prevProps.thisUser !== this.props.thisUser && prevState.thisUser!== this.props.thisUser && this.props.thisUser!==undefined&& this.props.thisUser!==null) {
         this.setState({ type: this.props.thisUser.type,
@@ -298,7 +281,8 @@ class Profile extends Component {
           newBusinessGenre: this.props.thisUser.businessGenre,
           newDescription: this.props.thisUser.businessDesc,})
     }
-}
+  }
+
 static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.thisUser !== prevState.thisUser) {
         return { thisUser: nextProps.thisUser };

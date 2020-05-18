@@ -267,7 +267,7 @@ class Dashboard extends Component {
               : afterSearchProduct.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                     <ProductCard key ={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart}/>
+                     <ProductCard key ={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart} currentUser ={ this.props.currentUser}/>
                   </Grid>
                 )
               })}
@@ -324,8 +324,10 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = (state) => {
- 
+  const users = state.firestore.ordered.currentUser
+  const currentUser = users ? users[0] : null
   return {
+    currentUser: currentUser,
     auth: state.firebase.auth,
     products: state.firestore.ordered.products,
     suppliers: state.firestore.ordered.suppliers,

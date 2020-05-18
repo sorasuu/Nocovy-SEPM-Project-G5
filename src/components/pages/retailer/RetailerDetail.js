@@ -1,4 +1,5 @@
 import React, { Component, useState, useRef } from 'react'
+import cx from 'clsx';
 import { Redirect, NavLink } from 'react-router-dom'
 import clsx from 'clsx';
 import { makeStyles, fade } from '@material-ui/core/styles'
@@ -6,6 +7,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import {
+    Card, CardContent, CardHeader, Divider,
     Popover, Grid, Button, Grow, Popper, MenuItem, MenuList,
     ButtonGroup, Table, TableHead, TableRow, Typography,
     TableCell, TableBody, Paper, ClickAwayListener, Icon
@@ -14,6 +16,9 @@ import { checkArray } from '../dashboard/Dashboard'
 import SearchIcon from '@material-ui/icons/Search';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
+import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
+import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 const useStyles = makeStyles((theme) => ({
     root: {
         backgroundColor: theme.palette.background.paper,
@@ -22,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
         width: '90%',
         justifyContent: 'left',
         alignItems: 'top',
-        marginLeft: '5%'
+        marginLeft: '5%',
     },
     search: {
         position: 'relative',
@@ -53,11 +58,6 @@ const useStyles = makeStyles((theme) => ({
     inputRoot: {
         color: 'inherit',
     },
-    paper: {
-        padding: theme.spacing(2),
-        marginTop: "2%",
-        width: 'auto'
-    },
     img: {
         width: 100,
         height: 100
@@ -65,18 +65,30 @@ const useStyles = makeStyles((theme) => ({
     popover: {
         pointerEvents: 'none',
     },
+    card: {
+        borderRadius: 16,
+        // marginTop:'2%',
+        height:'80vh'
+    },
+    content: {
+        overflowX: 'auto',
+        width:'100%'
+    },
 }));
 
 const options = ['Your Sell', 'Your Cart'];
 
 function RetailerDetail(props) {
+    const classes = useStyles();
+    const cardHeaderStyles = useContainedCardHeaderStyles();
+    const cardShadowStyles =  useOverShadowStyles({ inactive: true });
+    const cardHeaderShadowStyles = useFadedShadowStyles();
 
-    console.log("retailer Detail: ", props.sellProduct)
+    // console.log("retailer Detail: ", props.sellProduct)
     const data = props.data ? props.data: null
-    console.log("daattata", data)
+    // console.log("daattata", data)
    
     const sellList = props.sellProduct
-    const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null); 
     const [openedPopoverId, setOpenPopoverId] = useState(null);
     const [openOpt, setOpenOpt] = useState(false);
@@ -120,10 +132,13 @@ function RetailerDetail(props) {
     }
 
     return (
-
-        <Grid container direction="column" alignItems="center">
-            <Grid item xs={12}>
-                <ButtonGroup variant="contained" color="primary" ref={anchorRef} aria-label="split button">
+        <Card className={cx(classes.card, cardShadowStyles.root)} style={{ position: "relative", marginBottom: '2%' }}>
+            <CardContent className={classes.content}>
+            <Typography paragraph variant='h4'>Selling</Typography>
+            <Divider/>
+        {/* <Grid container direction="column" alignItems="center">
+            <Grid item xs={12}> */}
+                {/* <ButtonGroup variant="contained" color="primary" ref={anchorRef} aria-label="split button">
                     <Button onClick={handleClick}>{options[selectedIndex]}</Button>
                     <Button
                         color="primary"
@@ -163,56 +178,52 @@ function RetailerDetail(props) {
                             </Paper>
                         </Grow>
                     )}
-                </Popper>
-            </Grid>
-
-
-            {optionSelected == 'Your Sell' ?
-                <Grid item xs={12} md={12} lg={12}>
-                    <Table >
-                        <TableHead className={classes.header} style={{ fontStyle: 'bold' }}>
-                            <TableRow >
-                                <TableCell>ID</TableCell>
-                                <TableCell>AVATAR</TableCell>
-                                <TableCell>NAME</TableCell>
-                                <TableCell>Category</TableCell>
-                                <TableCell>BRAND</TableCell>
-                                <TableCell>PRICE</TableCell>
-                                <TableCell>SUPPLIER</TableCell>
-
+                </Popper> */}
+            {/* </Grid>
+                <Grid item xs={12} md={12} lg={12}> */}
+                    <Table style={{width:'100%', overflowY: 'auto',}}>
+                        <TableHead style={{ fontStyle: 'bold' }}>
+                            <TableRow hover>
+                                <TableCell align="left">ID</TableCell>
+                                <TableCell align="left">AVATAR</TableCell>
+                                <TableCell align="left">NAME</TableCell>
+                                <TableCell align="left">TYPE</TableCell>
+                                <TableCell align="left">PRICE</TableCell>
+                                {/* <TableCell>SUPPLIER</TableCell> */}
                             </TableRow>
                         </TableHead>
                       
                         {sellList ? sellList.map((item, key) =>
-                                 <TableBody >
+                                 <TableBody>
                                 {data ?
                                     <TableRow  
                                     // aria-owns={openBuyer ? 'mouse-over-popover' : undefined}
+                                    hover
                                     aria-haspopup="true"
                                     onMouseEnter={e => handlePopoverOpen(e, key)}
                                     onMouseLeave={handlePopoverClose}
                                     key= {key}>
-                                        <TableCell>
-                                            <NavLink to={'/product/'+ item.id}>
+                                        <TableCell align="left">
                                             <Button
+                                                href={'/product/'+ item.id}
                                                 variant="contained"
                                                 color="primary"
                                                 className={classes.button}
                                                 endIcon={<Icon>send</Icon>}
                                             >
-                                                {item.id}
-                                        </Button></NavLink></TableCell>
-                                        <TableCell><img className={classes.img} src={data[item.id].cover} /></TableCell>
-                                        <TableCell>{data[item.id].name}</TableCell>
-                                        <TableCell>{data[item.id].category}</TableCell>
-                                        <TableCell>{data[item.id].brand}</TableCell>
-                                        <TableCell>{data[item.id].price.unitprice}</TableCell>
-                                        {data[item.id].supplierId ?
+                                                {key+1}
+                                        </Button></TableCell>
+                                        <TableCell align="left"><img className={classes.img} src={data[item.id].cover} /></TableCell>
+                                        <TableCell align="left">{data[item.id].name}</TableCell>
+                                        <TableCell align="left">{data[item.id].category}</TableCell>
+                                        <TableCell align="left">{'$ '+ data[item.id].price.unitPrice}</TableCell>
+
+                                        {/* {data[item.id].supplierId ?
                                             <NavLink to={'/supplier/' + data[item.id].supplierId.id}>
                                                 <Button variant="contained" color="primary" component="span">
                                                     {data[item.id].supplierId.businessName}
                                                 </Button>
-                                            </NavLink> : null}
+                                            </NavLink> : null} */}
 
                                         <Popover
                                             className={classes.popover}
@@ -249,12 +260,10 @@ function RetailerDetail(props) {
                         
                         
                     </Table>
-                </Grid>
-                : <div>YourCart</div>}
-
-        </Grid>
-
-
+                {/* </Grid>
+        </Grid> */}
+        </CardContent>
+        </Card>
     )
 }
 

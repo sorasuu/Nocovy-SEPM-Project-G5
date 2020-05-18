@@ -53,10 +53,9 @@ const useStyles = makeStyles((theme) => ({
     contactsHeader: {
         background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)",
         position: "absolute",
-        top: "2%",
         left: "50%",
-        width: '40%',
-        transform: 'translate(-50%)'
+        width:'40%',
+        transform: 'translate(-50%, 15%)'
     },
 
 }));
@@ -91,17 +90,11 @@ export const DUMMY_DATA = [
 
 //CONTACTS COMPONENT
 export const ChatContact = (props) => {
-    console.log(props)
+    console.log('CHAT contact'+ props)
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles({ inactive: true });
     const cardHeaderShadowStyles = useFadedShadowStyles();
-
-    const [selectedIndex, setSelectedIndex] = React.useState(1);
-
-    const handleListItemClick = (event, index) => {
-        setSelectedIndex(index);
-    };
 
     return (
         <Card className={cx(classes.contactsCard, cardShadowStyles.root)}>
@@ -136,10 +129,8 @@ export const ChatContact = (props) => {
                         }
 
                         return (
-
-
-
-                            <ListItem divider dense button alignItems="flex-start" selected={selectedIndex === contact.id} onClick={(event) => handleListItemClick(event, contact.id)}>
+                            <NavLink to={'/chat/'+contact.id}>
+                            <ListItem divider dense button alignItems="flex-start" selected={contact.id === props.currentchatsession.id}>
                                 <ListItemAvatar>
                                     <Avatar src={receiver.logo} />
                                 </ListItemAvatar>
@@ -150,6 +141,7 @@ export const ChatContact = (props) => {
                                         <Typography variant='subtitle'> {contact.lastchat}</Typography>}
                                 />
                             </ListItem>
+                            </NavLink>
                         )
                     }) : null}
                 </List>
@@ -272,7 +264,7 @@ class Chat extends Component {
                     <h3>Chat menu</h3>
                     <Grid container spacing={3}>
                         <Grid item xs={4}><ChatContact props={this.props} handleChange={this.handleChange} currentchatsession={this.props.currentchatsession} chatsesion={this.props.chatsessionorder} search={search} chatuser={this.props.chatuser} /></Grid>
-                        <Grid item xs={8} style={{marginTop:"34px"}}><Paper className={classes.chatMenu}>
+                        <Grid item xs={8} style={{marginTop:"3%"}}><Paper className={classes.chatMenu}>
                             <div className='chat-box'>
                                 <div className='msg-page'>
                                 {this.props.chatuser&&this.props.auth&&this.props.match.params.id?
