@@ -52,7 +52,7 @@ export class PriceForm extends React.Component{
   }
 
   handleSubmit =() => {
-    var newUnitPrice = Number(this.state.unitCost) * ((100 + Number(this.state.margin) + Number(this.state.dutyRate))/100)
+    var newUnitPrice = Number(this.state.newUnitCost) * ((100 + Number(this.state.newMargin) + Number(this.state.newDutyRate))/100)
     var product = {
       id: this.props.id,
       category: this.state.newCategory, 
@@ -87,10 +87,8 @@ export class PriceForm extends React.Component{
             Delete
           </Button>
         </Grid>
-       
-     
-        
       </Grid>
+
         <Dialog open={this.state.openDelete} onClose={this.handleDeleteDialog} aria-labelledby="del-dialog-title">
           <DialogTitle id="del-dialog-title">Confirm deletion</DialogTitle>
           <DialogContent>
@@ -128,8 +126,6 @@ export class PriceForm extends React.Component{
               <EditProductCard props={this.props} values={this.state} saveEdit={this.handleSubmit} closeModal={this.handleClickForm} handleChange={this.handleChange} handleCatChange={this.handleCatChange}/>
             </div>
           </Modal>
-        }
-        
       </Fragment>
   }
 }

@@ -6,7 +6,7 @@ import ProfileInfoCard from './supplier/ProfileInfoCard'
 import { firestoreConnect } from 'react-redux-firebase'
 import { storeProducts } from "./data"
 import AddProductCard from './products/AddProductCard'
-import EditProfileCard from '../layout/EditProfileCard'
+import EditProfileCard from './supplier/EditProfileCard'
 import ProductCard from './products/ProductCard'
 import { Redirect } from 'react-router-dom'
 import {createProduct } from '../store/actions/productAction'

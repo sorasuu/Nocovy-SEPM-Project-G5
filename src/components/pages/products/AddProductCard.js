@@ -83,16 +83,17 @@ const AddProductCard = (props) => {
             2: <div>
                 <div className={classes.form}>
                     <form style={{margin:'2%', textAlign:'left'}}>
-                        <TextField style={{marginBottom:'2%'}} label='Product Name' onChange={props.handleChange('productName')}></TextField>
+                        <TextField required multiline style={{marginBottom:'2%'}} label='Product Name' onChange={props.handleChange('productName')}></TextField>
                         <ChipInput
+                            required
+                            disableUnderline
                             style={{marginBottom:'2%'}}
                             label='Categories'
-                            placeholder='Product Categories'
                             fullWidth
                             onChange={(chips) => props.handleCatChange(chips)}
                         />
                         <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Product Description' onChange={props.handleChange('productDesc')}></TextField>
-                        <TextField type='number' style={{marginBottom:'2%'}} label='Unit Cost' value={props.values.unitCost} onChange={props.handleChange('unitCost')}
+                        <TextField required multiline type='number' style={{marginBottom:'2%'}} label='Unit Cost' value={props.values.unitCost} onChange={props.handleChange('unitCost')}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
@@ -101,7 +102,7 @@ const AddProductCard = (props) => {
                                 ),
                             }}
                         ></TextField><br/>
-                        <TextField type='number' style={{marginBottom:'2%'}} label='Duty Rate (%)' value={props.values.dutyRate} onChange={props.handleChange('dutyRate')}
+                        <TextField multiline type='number' style={{marginBottom:'2%'}} label='Duty Rate (%)' value={props.values.dutyRate} onChange={props.handleChange('dutyRate')}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -110,7 +111,7 @@ const AddProductCard = (props) => {
                                 ),
                             }}
                         ></TextField><br/>
-                        <TextField type='number' style={{marginBottom:'2%'}} label='Margin (%)' value={props.values.margin} onChange={props.handleChange('margin')}
+                        <TextField multiline type='number' style={{marginBottom:'2%'}} label='Margin (%)' value={props.values.margin} onChange={props.handleChange('margin')}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -119,7 +120,7 @@ const AddProductCard = (props) => {
                                 ),
                             }}
                         ></TextField><br/>
-                        <TextField type='number' style={{marginBottom:'2%'}} label='Unit Price' disabled value={Number(props.values.unitCost) * ((100 + Number(props.values.margin) + Number(props.values.dutyRate))/100)}
+                        <TextField multiline type='number' style={{marginBottom:'2%'}} label='Unit Price' disabled value={Number(props.values.unitCost) * ((100 + Number(props.values.margin) + Number(props.values.dutyRate))/100)}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
