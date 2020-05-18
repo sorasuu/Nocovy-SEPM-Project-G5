@@ -139,9 +139,7 @@ export const BuyDialog = (props) => {
     }}
     return (
         <div>
-
-            {
-                owner ? null :
+            {owner ? null :
                     <Button
                         variant="contained"
                         color="secondary"
@@ -170,9 +168,12 @@ export const BuyDialog = (props) => {
                     </DialogTitle>
                     <DialogContent>
                         <Grid container justify="flex-start" style={{ width: 'fit-content' }}>
+                            <Grid item><h5>Description:</h5></Grid>
+                            <Grid item>{props.product.description}</Grid>
                             <Grid item xs={6}><h5>Categories:</h5></Grid>
                             <Grid item xs={6}>{product.category.map((item, key) => <Chip key={key} label={item} variant="outlined" />)}</Grid>
                             <br />
+                            
                             <Grid item xs={6}> <h5>Unit Price:</h5></Grid>
                             <Grid item xs={6}> <div style={{ textAlign: 'right', fontSize: '30px', fontFamily: 'bold' }}> ${product.price.unitPrice} </div></Grid>
                             <Grid item xs={12}>
@@ -216,7 +217,7 @@ export const BuyDialog = (props) => {
                     justify="flex-end">
                     <DialogActions>
                         {currentUser  ? currentUser.type === 'retailer'&& register == false ? 
-                            <Button onClick={handleRegister}>Register</Button>
+                            <Button variant='outlined' color='secondary' onClick={handleRegister}>Register</Button>
                              : null :null}
                         <Button autoFocus onClick={handleCloseDialog} color="primary">
                             Cancel

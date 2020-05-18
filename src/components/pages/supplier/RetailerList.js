@@ -12,7 +12,8 @@ function RetailerList(props){
     return(
         <div key={productkey}>
             {retailerList ? retailerList.map((item, key)=>
-                    <TabPanel value={value} index={productkey} key={key}>
+        
+                <TabPanel value={value} index={productkey} key={key}>
                         <Table>
                             <TableHead>
                                 <TableCell>Avatar</TableCell>
@@ -21,20 +22,23 @@ function RetailerList(props){
                                 <TableCell>Email</TableCell>
                                 <TableCell>Address</TableCell>
                             </TableHead>
-                        </Table>
+                        
                         <TableBody>
                         
                             <TableRow>
-                                <TableCell><img style={{width:"30px", height:'30px'}}src={item.logo}/></TableCell>
+                                <TableCell><img style={{width:"100px", height:'100px'}}src={item.logo}/></TableCell>
                                 <TableCell>{item.businessName}</TableCell>
                                 <TableCell>{item.displayName}</TableCell>
                                 <TableCell>{item.email}</TableCell>
                                 <TableCell>{item.address}</TableCell>
                             </TableRow> 
-                    </TableBody>
-                        
+
+                        </TableBody>
+                        </Table>
                     </TabPanel>
-                ):<div>No Retailer</div>}
+            )
+                    
+                :null}
         </div>
     )
 }

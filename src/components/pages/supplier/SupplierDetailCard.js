@@ -272,7 +272,7 @@ export default function SupplierDetailCard(props) {
                 <Table>
                     <TableHead className={classes.header}>
                         <TableRow>
-                            <TableCell>Products </TableCell>
+                            <TableCell size="small">Products </TableCell>
                             <TableCell>Retailers </TableCell>
                         </TableRow>   
                     </TableHead>
@@ -280,29 +280,29 @@ export default function SupplierDetailCard(props) {
 
                     {/* Can't we just map into 2 TableCells instead of mapping twice? */}
                     <TableRow>
-                    <TableCell>
-                        <Tabs
-                            orientation="vertical"
-                            variant="scrollable"
-                            value={value}
-                            onChange={handleChange}
-                            className={classes.tabs}
-                        >
-                            {filterProducts.map((product, key) =>
-                                <Tab label={product.name} {...a11yProps(key)} />
-                            )}
-                        </Tabs>
-                    </TableCell>
-                    <TableCell>
-                        {filterProducts.map((product,productkey)=>
+                        <TableCell size="small">
+                            <Tabs
+                                orientation="vertical"
+                                variant="scrollable"
+                                value={value}
+                                onChange={handleChange}
+                                className={classes.tabs}
+                            >
+                                {filterProducts.map((product, key) =>
+                                    <Tab label={product.name} {...a11yProps(key)} />
+                                )}
+                            </Tabs>
+                        </TableCell>
+                        <TableCell>
+                            {filterProducts.map((product,productkey)=>
 
-                            <RetailerList   product={product}
-                                            data = {props.data}
-                                            productkey ={productkey}
-                                            value={value}
-                            />
-                        )}
-                    </TableCell>
+                                <RetailerList   product={product}
+                                                data = {props.data}
+                                                productkey ={productkey}
+                                                value={value}
+                                />
+                            )}
+                        </TableCell>
                     </TableRow>
                 </TableBody>
                 </Table>

@@ -59,10 +59,7 @@ render(){
                 actionsColumnIndex:-1,
                 rowStyle: rowData =>({
                     backgroundColor: (rowData.tableData.id % 2 ===0)? '#EEE': '#FFF',
-                
                 })
-
-                
             }}
             editable={{
                 onRowAdd: (newData) =>

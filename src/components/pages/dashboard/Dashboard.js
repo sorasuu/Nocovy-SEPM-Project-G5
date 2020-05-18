@@ -225,7 +225,8 @@ class Dashboard extends Component {
         <div style={{ marginTop: '2%' }}>
           <TabPanel value={value} index={0}>
 
-            <FilterForm products={products}
+            <FilterForm 
+              products={products}
               allCategories={allCategories}
               handleFilter={item => this.handleSelectFilter(item)}
               handleFilterForm={this.handleFilterForm}
