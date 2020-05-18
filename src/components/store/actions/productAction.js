@@ -43,7 +43,7 @@ export const editProduct = (product) => {
     return (dispatch, getState) => {
       firebase.firestore().collection('products').doc(product.id).set({
         ...product,
-      }).then(() => {
+      }, {merge: true}).then(() => {
         dispatch({ type: 'EDIT_PRODUCT_SUCCESS' });
       }).catch(err => {
         dispatch({ type: 'EDIT_PRODUCT_ERROR' }, err);

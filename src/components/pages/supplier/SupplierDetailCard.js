@@ -7,7 +7,7 @@ import {
     Avatar, CardActions, IconButton,
     Typography, makeStyles, Box,
     InputBase, Tabs, Tab,
-    Collapse, Grid
+    Collapse, Grid, Divider
 } from "@material-ui/core";
 import {
     Table, TableBody, TableRow,
@@ -21,6 +21,10 @@ import { fade } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { checkArray } from '../dashboard/Dashboard'
 import RetailerList from './RetailerList'
+import StyledButton from '../../layout/StyledButton'
+import { Redirect, NavLink } from 'react-router-dom';
+
+
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -59,8 +63,7 @@ const useStyles = makeStyles((theme) => ({
         transition: '0.3s',
         textAlign: 'left',
         overflowX: 'auto',
-        marginLeft: "5%",
-        margintTop: "5%",
+        margin:'3%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -79,8 +82,8 @@ const useStyles = makeStyles((theme) => ({
     },
 
     avatar: {
-        width: 100,
-        height: 100
+        width: 80,
+        height: 80
     },
     search: {
         position: 'relative',
@@ -125,6 +128,11 @@ const useStyles = makeStyles((theme) => ({
             duration: theme.transitions.duration.shortest,
         }),
     },
+    buttons:{
+        marginTop:'5%',
+        display:'flex',
+
+    },
 
 }));
  export function TabPanel(props) {
@@ -164,7 +172,7 @@ export default function SupplierDetailCard(props) {
     const [expanded, setExpanded] = React.useState(false);
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
-    const cardShadowStyles = useOverShadowStyles();
+    const cardShadowStyles = useOverShadowStyles({inactive: true});
     const cardHeaderShadowStyles = useFadedShadowStyles();
     // const allProducts = [{name:'a',value:'b'}, {name:'b',value:'c'}]
     const allProducts = checkArray(props.products)
@@ -187,19 +195,34 @@ export default function SupplierDetailCard(props) {
 
     return (
         <Card className={cx(classes.card, cardShadowStyles.root)}
-            style={{ position: "relative", marginBottom: '5px' }}>
+            style={{ position: "relative", marginBottom: '5px', borderRadius:16 }}>
             <CardHeader
                 className={cardHeaderShadowStyles.root}
                 classes={cardHeaderStyles}
-                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", width: 'auto', minWidth: '200px' }}
+                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", width: 'auto', minWidth: '200px', left: "5%", transform: 'translate(0, -30%)'}}
                 title={<h4>{props.supplier.businessName}</h4>}
                 avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
-                        <img style={{ width: '100%', height: '100%' }} src={props.supplier.logo} />
-                    </Avatar>
+                    <Avatar aria-label="logo" className={classes.avatar} src={props.supplier.logo}/>
                 }
             />
             <CardContent className={classes.content} >
+                <div className={classes.buttons}>
+
+                    {/* THIS MIGHT LOOK BETTER? */}
+                    {/* <StyledButton style={{marginRight:'5%'}}>
+                        Profile
+                    </StyledButton>
+                    <StyledButton>
+                        Partner
+                    </StyledButton> */}
+                    <NavLink to={'/profile/'+props.supplier.id} style={{marginRight:75}}>
+                        <Typography variant='h5'>Profile</Typography>
+                    </NavLink>
+                    <NavLink to='/'>
+                        <Typography variant='h5'>Partner</Typography>
+                    </NavLink>
+                    
+                </div>
                 <Grid container
                     direction="row"
                     justify="flex-end"
@@ -232,26 +255,31 @@ export default function SupplierDetailCard(props) {
                             onChange={onChange}
                         />
                     </div>
-
-
                 </Grid>
             </CardContent>
-
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    {/* <SupplierInfo/> */}
-
+                    <div className={classes.description}>
+                        <Divider style={{margin:10}} light />
+                        <Typography variant='h6'>Business Genre:</Typography> 
+                        <Typography paragraph>{props.supplier.businessGenre ? props.supplier.businessGenre : 'Business genre not available'}</Typography>
+                        <Typography variant='h6'>Business Description:</Typography> 
+                        <Typography>{props.supplier.businessDesc? props.supplier.businessDesc  : 'Description not available'}</Typography>
+                </div>
                 </CardContent>
             </Collapse>
             <CardContent>
-
                 <Table>
                     <TableHead className={classes.header}>
-                        <TableCell>Products </TableCell>
-                        <TableCell>Retailers </TableCell>
+                        <TableRow>
+                            <TableCell>Products </TableCell>
+                            <TableCell>Retailers </TableCell>
+                        </TableRow>   
                     </TableHead>
-                </Table>
                 <TableBody>
+
+                    {/* Can't we just map into 2 TableCells instead of mapping twice? */}
+                    <TableRow>
                     <TableCell>
                         <Tabs
                             orientation="vertical"
@@ -275,8 +303,9 @@ export default function SupplierDetailCard(props) {
                             />
                         )}
                     </TableCell>
+                    </TableRow>
                 </TableBody>
-
+                </Table>
             </CardContent>
         </Card>
     )

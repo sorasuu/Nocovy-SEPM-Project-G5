@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-
+import cx from 'clsx';
 import { firestoreConnect, populate } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { fade } from '@material-ui/core/styles'
 import {
-  Grid, withStyles, Card, CardActionArea, CardMedia,
+  Container, Grid, withStyles, Card, CardActionArea, CardMedia,
   CardContent, Typography, CardActions, Button
 } from '@material-ui/core'
 import RetailerDetail from './RetailerDetail'
+import { CardHeader } from 'material-ui'
+import RetailerDetailCard from './RetailerDetailCard'
 
 
 const useStyles = theme => ({
@@ -19,21 +21,6 @@ const useStyles = theme => ({
     alignItems: 'center',
     direction: 'flex',
     maxWidth: '100',
-  },
- 
-  media: {
-    padding: '2% 1% 1% 1%',
-    justify: 'center',
-    alignItems: 'center',
-    direction: 'flex',
-  },
-  img: {
-    width: 100,
-    height: 100
-  },
-  
-  paper: {
-    padding: theme.spacing(2),
   },
 });
 
@@ -60,10 +47,11 @@ class Retailer extends Component {
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl)
     const id = open ? 'popover' : undefined;
+
     if (!auth.uid) return <Redirect to='/signin' />
 
     return (
-      <div className="container" style={{ textAlign: 'center' }}>
+      <Container>
         <div style={{ marginTop: '10%' }}>
         {retailer?
           <Grid
@@ -73,41 +61,10 @@ class Retailer extends Component {
             justify="flex-start"
             alignItems="flex-start"
           >
-            <Grid item xs={4} md={4} lg={3}>
-              <Card className={classes.root}>
-                <CardActionArea>
-                  <CardMedia
-                    className={classes.media}
-
-                    title="Contemplative Reptile"
-                  ><img src={retailer.logo} /></CardMedia>
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {retailer.displayName}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                      Hello, Im selling vehicles in Vietnam
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions>
-                  <Grid
-                    container
-                    justify='space-between'
-                  >
-                    <Button size="small" color="primary">
-                      haha
-                  </Button>
-                    <Button size="small" color="primary">
-                      hoho
-                  </Button>
-                  </Grid>
-
-                </CardActions>
-              </Card>
-
+            <Grid item xs={3} md={3} lg={3}>
+              <RetailerDetailCard info={retailer}/>
             </Grid>
-            <Grid className={classes.root} item xs={8} md={8} lg={8}>
+            <Grid className={classes.root} item xs={9} md={9} lg={9}>
                 <RetailerDetail 
                   retailer={retailer}
                   sellProduct={sellProduct}
@@ -117,7 +74,7 @@ class Retailer extends Component {
           </Grid>
           :null}
         </div>
-      </div>
+      </Container>
 
     )
   }
@@ -132,7 +89,7 @@ const mapStateToProps = (state, ownProps) => {
   const retailer = retailers? retailers[0]:null;
   const sellProductData = populate(state.firestore,'sellList',populates)
   const sellProduct = state.firestore.ordered.sellList
-  console.log('hahha', sellProduct)
+  // console.log('hahha', sellProduct)
   return {
     auth: state.firebase.auth,
     retailer: retailer,

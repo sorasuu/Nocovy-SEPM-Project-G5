@@ -78,7 +78,7 @@ const ContactPanel = (props) => {
 
     const classes = useStylesCard();
     const cardHeaderStyles = useContainedCardHeaderStyles();
-    const cardShadowStyles = useOverShadowStyles();
+    const cardShadowStyles = useOverShadowStyles({ inactive: true });
     const cardHeaderShadowStyles = useFadedShadowStyles();
     
     return (
@@ -168,7 +168,7 @@ const ChatPanel = (props) => {
     console.log(message)
     const classes = useStylesCard();
     const cardHeaderStyles = useContainedCardHeaderStyles();
-    const cardShadowStyles = useOverShadowStyles();
+    const cardShadowStyles = useOverShadowStyles({ inactive: true });
     const cardHeaderShadowStyles = useFadedShadowStyles();
     return (
         <Card className={cx(classes.card, cardShadowStyles.root)} style={{ position: "fixed", marginBottom: '2%', marginRight: '1%' }}>
@@ -284,7 +284,7 @@ class ChatWidget extends Component {
                         uid={this.props.auth.uid} handleSendMessage={this.handleSendMessage} chatsesiondata={this.props.chatsesiondata} /> : null}
                     <Paper style={{ width: '100px', right: '200px', bottom: '10px', position: 'fixed' }} >
                         <Button variant="outlined" color="primary" style={{ width: '100px' }} onClick={(e) => this.handleContactClicked(e)}>
-                            Contacts
+                            {this.state.contactwindow? 'Chat' : 'Contacts'}
                     </Button></Paper>
                     {this.state.contactwindow ? <ContactPanel chatsession={this.props.chatsession} uid={this.props.auth.uid} chatsesiondata={this.props.chatsesiondata}
                      handleChangeChatSession={this.handleChangeChatSession}/> : null}
