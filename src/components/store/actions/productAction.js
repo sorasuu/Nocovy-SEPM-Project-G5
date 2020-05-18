@@ -38,7 +38,19 @@ export const deliverProductToCart = (carts)=>{
 
   }
 }
-
+export const registerRetailers = (id) => {
+  
+  return (dispatch, getState) => {
+    const author = getState().firebase.auth;
+    firebase.firestore().collection('products').doc(id).update({
+      retailerId:firebase.firestore.FieldValue.arrayUnion(author.uid)
+    }).then(() => {
+      dispatch({ type: 'EDIT_PRODUCT_SUCCESS' });
+    }).catch(err => {
+      dispatch({ type: 'EDIT_PRODUCT_ERROR' }, err);
+    });
+  }
+};
 export const editProduct = (product) => {
     return (dispatch, getState) => {
       firebase.firestore().collection('products').doc(product.id).set({
