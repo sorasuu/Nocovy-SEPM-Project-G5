@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         overflow: 'initial',
         background: '#ffffff',
+        borderRadius:16
     },
     content: {
         transition: '0.3s',
@@ -70,7 +71,7 @@ export default function ProductDetailCard(props) {
         price =[{name:'Unit Cost',value:props.product.price.unitCost},{name:'Margin',value:props.product.price.margin},{name:'Duty Rate',value:props.product.price.dutyRate}]
     }
     const cardHeaderStyles = useContainedCardHeaderStyles();
-    const cardShadowStyles = useOverShadowStyles();
+    const cardShadowStyles = useOverShadowStyles({inactive: true});
     const cardHeaderShadowStyles = useFadedShadowStyles();
     // {props.product?props.product.price.map(price => console.log('price',price))}
     // console.log('hello', props.product.price[0])

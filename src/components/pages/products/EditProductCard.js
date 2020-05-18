@@ -48,7 +48,7 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-const AddProductCard = (props) => {
+const EditProductCard = (props) => {
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles =  useOverShadowStyles({ inactive: true });
@@ -59,40 +59,22 @@ const AddProductCard = (props) => {
             <CardHeader
                 className={cx(classes.header, cardHeaderShadowStyles.root)}
                 classes={cardHeaderStyles}
-                title='Create Product'
+                title='Edit Product'
             />
             <CardContent className={classes.content}>
-            {{ 1: <div>
-                <div className="form-group">
-                    <label htmlFor="image" >Image(s)</label>
-                    <br/>
-                    <DropzoneArea
-                            onChange={props.handleChangeImg}
-                            acceptedFiles={['image/*']}
-                            maxFileSize={500000}
-                            filesLimit = {4}
-                            dropzoneText={'Upload your product Image here'}
-                    />
-                </div>
-                <div className={classes.buttonGroup}>
-                    <StyledButton onClick={(e) =>{props.closeModal()}} style={{marginRight:10}}>Cancel</StyledButton>
-                    <StyledButton onClick={(e) =>{props.handleUpload(e)}}>Next</StyledButton>
-                </div>
-            </div>,
-            
-            2: <div>
+            <div>
                 <div className={classes.form}>
                     <form style={{margin:'2%', textAlign:'left'}}>
-                        <TextField style={{marginBottom:'2%'}} label='Product Name' onChange={props.handleChange('productName')}></TextField>
+                        <TextField style={{marginBottom:'2%'}} label='Product Name' defaultValue={props.values.newProductName} onChange={props.handleChange('newProductName')}></TextField>
                         <ChipInput
                             style={{marginBottom:'2%'}}
                             label='Categories'
-                            placeholder='Product Categories'
                             fullWidth
+                            defaultValue={props.values.newCategory}
                             onChange={(chips) => props.handleCatChange(chips)}
                         />
-                        <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Product Description' onChange={props.handleChange('productDesc')}></TextField>
-                        <TextField type='number' style={{marginBottom:'2%'}} label='Unit Cost' value={props.values.unitCost} onChange={props.handleChange('unitCost')}
+                        <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Product Description' defaultValue={props.values.newProductDesc} onChange={props.handleChange('newProductDesc')}></TextField>
+                        <TextField type='number' style={{marginBottom:'2%'}} label='Unit Cost' defaultValue={props.values.newUnitCost} onChange={props.handleChange('newUnitCost')}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
@@ -101,7 +83,7 @@ const AddProductCard = (props) => {
                                 ),
                             }}
                         ></TextField><br/>
-                        <TextField type='number' style={{marginBottom:'2%'}} label='Duty Rate (%)' value={props.values.dutyRate} onChange={props.handleChange('dutyRate')}
+                        <TextField type='number' style={{marginBottom:'2%'}} label='Duty Rate (%)' defaultValue={props.values.newDutyRate} onChange={props.handleChange('newDutyRate')}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -110,7 +92,7 @@ const AddProductCard = (props) => {
                                 ),
                             }}
                         ></TextField><br/>
-                        <TextField type='number' style={{marginBottom:'2%'}} label='Margin (%)' value={props.values.margin} onChange={props.handleChange('margin')}
+                        <TextField type='number' style={{marginBottom:'2%'}} label='Margin (%)' defaultValue={props.values.newMargin} onChange={props.handleChange('newMargin')}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -119,7 +101,7 @@ const AddProductCard = (props) => {
                                 ),
                             }}
                         ></TextField><br/>
-                        <TextField type='number' style={{marginBottom:'2%'}} label='Unit Price' disabled value={Number(props.values.unitCost) * ((100 + Number(props.values.margin) + Number(props.values.dutyRate))/100)}
+                        <TextField type='number' style={{marginBottom:'2%'}} label='Unit Price' disabled value={Number(props.values.newUnitCost) * ((100 + Number(props.values.newMargin) + Number(props.values.newDutyRate))/100)}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
@@ -131,15 +113,14 @@ const AddProductCard = (props) => {
                     </form>    
                 </div>
                 <div className={classes.buttonGroup}>
-                        <StyledButton onClick={(e) =>{props.prevStep()}} style={{marginRight:10}}>Back</StyledButton>
-                        <StyledButton onClick={(e) =>{props.formSubmit(e)}}>Create</StyledButton>
+                        <StyledButton onClick={(e) =>{props.closeModal()}} style={{marginRight:10}}>Cancel</StyledButton>
+                        <StyledButton onClick={(e) =>{props.saveEdit()}}>Save</StyledButton>
                 </div>
             </div>
-            }[props.step]}
             </CardContent>
         </Card>
     );
 };
 
 
-export default AddProductCard;
+export default EditProductCard;

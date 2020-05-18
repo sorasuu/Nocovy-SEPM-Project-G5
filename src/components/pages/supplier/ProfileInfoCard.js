@@ -6,6 +6,8 @@ import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/co
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import StyledButton from '../../layout/StyledButton'
+import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles(() => ({
     card: {
@@ -83,9 +85,9 @@ const ProfileInfoCard = (props) => {
                     { props.info.owner?
                     <div className={classes.buttons}>
                    
-                        <StyledButton onClick={props.handleProductOpen} style={{marginBottom:10}}>New Listing</StyledButton>
+                        <StyledButton onClick={props.handleProductOpen} startIcon={<AddIcon />} style={{marginBottom:10}}> Create New Product </StyledButton>
                         <Divider light/>
-                        <StyledButton onClick={props.handleEditOpen}>Edit Profile</StyledButton>
+                        <StyledButton onClick={props.handleEditOpen} startIcon={<EditIcon />}>Edit Profile</StyledButton>
                       
                     </div>
                     :<div className={classes.buttons}>

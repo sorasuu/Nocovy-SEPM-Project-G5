@@ -6,10 +6,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {Typography} from '@material-ui/core';
+import {Typography, Modal} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid'
-import {deleteProduct} from '../../store/actions/productAction'
+import {deleteProduct, editProduct} from '../../store/actions/productAction'
 import history from '../../utils/history'
+import EditProductCard from './EditProductCard'
 
 export class PriceForm extends React.Component{
   constructor(props){
@@ -17,6 +18,13 @@ export class PriceForm extends React.Component{
     this.state ={
       openDelete:false,
       open: false,
+      newProductName: this.props.product.name,
+      newProductDesc: this.props.product.description,
+      newDutyRate: this.props.product.price.dutyRate,
+      newMargin: this.props.product.price.margin,
+      newUnitCost: this.props.product.price.unitCost,
+      newImages: this.props.product.images,
+      newCategory: this.props.product.category,
     }
   }
 
@@ -34,24 +42,37 @@ export class PriceForm extends React.Component{
   handleClickForm =() => {
     this.setState({open: !this.state.open})
   }
-  handleChange = name => ({ target: { value } }) => {
-    this.setState({
-      price: {
-        ...this.state.price,
-        [name]: value
-      }
-    })
 
+  handleChange = input => e => {
+    this.setState({ [input]: e.target.value })
   }
-  // handleSubmit =() => {
-  //   const {price} = this.state
 
-  //   this.props.onCreate(price)  
-  // }
+  handleCatChange = (chips) => {
+    this.setState({ newCategory: chips })
+  }
+
+  handleSubmit =() => {
+    var newUnitPrice = Number(this.state.unitCost) * ((100 + Number(this.state.margin) + Number(this.state.dutyRate))/100)
+    var product = {
+      id: this.props.id,
+      category: this.state.newCategory, 
+      // cover: this.props.newImages[0],
+      // productImg: this.props.newImages,
+      name: this.state.newProductName, 
+      description: this.state.newProductDesc,
+      price: {
+        dutyRate: this.state.newDutyRate,
+        margin: this.state.newMargin,
+        unitCost: this.state.newUnitCost,
+        unitPrice: newUnitPrice
+      }
+    }
+    // console.log(product)
+    this.props.editProduct(product)
+    this.handleClickForm()
+  }
 
   render(){
-    console.log(this.props.product)
-    const { open, openDelete } = this.state
     return <Fragment>
       
       <Grid container direction='row' justify='flex-end' alignItems="center">
@@ -70,7 +91,7 @@ export class PriceForm extends React.Component{
      
         
       </Grid>
-        <Dialog open={openDelete} onClose={this.handleDeleteDialog} aria-labelledby="del-dialog-title">
+        <Dialog open={this.state.openDelete} onClose={this.handleDeleteDialog} aria-labelledby="del-dialog-title">
           <DialogTitle id="del-dialog-title">Confirm deletion</DialogTitle>
           <DialogContent>
             <Typography>Are you sure you wish to delete this product?</Typography>
@@ -85,7 +106,7 @@ export class PriceForm extends React.Component{
           </DialogActions>
         </Dialog>
        
-        <Dialog open={open} onClose={this.handleClickForm} aria-labelledby="form-dialog-title">
+        {/* <Dialog open={open} onClose={this.handleClickForm} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Price Form</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -100,14 +121,23 @@ export class PriceForm extends React.Component{
               Done
             </Button>
           </DialogActions>
-        </Dialog> 
+        </Dialog>  */}
+
+          <Modal open={this.state.open} onClose={this.handleClickForm}>
+            <div style={{maxWidth:'50%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%',}}>
+              <EditProductCard props={this.props} values={this.state} saveEdit={this.handleSubmit} closeModal={this.handleClickForm} handleChange={this.handleChange} handleCatChange={this.handleCatChange}/>
+            </div>
+          </Modal>
+        }
         
       </Fragment>
   }
 }
+
 const mapDispatchToProps = dispatch => {
   return {
     deleteProduct: cart => dispatch(deleteProduct(cart)),
+    editProduct: (newProductInfo) => dispatch(editProduct(newProductInfo)),
   };
 };
 export default connect(null,mapDispatchToProps) (PriceForm)

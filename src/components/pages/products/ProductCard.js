@@ -58,7 +58,7 @@ const ProductCard = (props) => {
         console.log("handle Buy Product:", product)
         props.handleCart(e,product,number)
         setOpen(false);
-    };
+    }
     const buyLess = () => {
         if (number > 0) {
             setNumber(number - 1)
@@ -91,7 +91,7 @@ const ProductCard = (props) => {
                         image={product.cover}
                     />
 
-                        <div className="overlay" style={{borderRadius: 16}}>
+                        <div className="overlay" style={{borderRadius: 16, display: 'flex', justifyContent:'space-evenly'}}>
                         {owner?null:
                             <Button
                                 variant="contained"

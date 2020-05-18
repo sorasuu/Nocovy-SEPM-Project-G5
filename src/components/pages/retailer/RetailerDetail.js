@@ -217,7 +217,7 @@ function RetailerDetail(props) {
                                         <TableCell align="left"><img className={classes.img} src={data[item.id].cover} /></TableCell>
                                         <TableCell align="left">{data[item.id].name}</TableCell>
                                         <TableCell align="left">{data[item.id].category}</TableCell>
-                                        <TableCell align="left">{'VND '+ data[item.id].price.unitPrice}</TableCell>
+                                        <TableCell align="left">{'$ '+ data[item.id].price.unitPrice}</TableCell>
 
                                         {/* {data[item.id].supplierId ?
                                             <NavLink to={'/supplier/' + data[item.id].supplierId.id}>
