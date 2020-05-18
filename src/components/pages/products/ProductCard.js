@@ -61,7 +61,7 @@ const ProductCard = (props) => {
 
                         <div className="overlay" style={{ borderRadius: 16 }}>
 
-                            <BuyDialog product={product} currentUser={props.currentUser}/>
+                            <BuyDialog uid={props.uid} product={product} currentUser={props.currentUser}/>
                             <NavLink to={'/product/' + product.id}>
                                 <ColorButton
                                     variant="contained"
@@ -135,9 +135,7 @@ export const BuyDialog = (props) => {
     }
     return (
         <div>
-
-            {
-                owner ? null :
+            {owner ? null :
                     <Button
                         variant="contained"
                         color="secondary"
