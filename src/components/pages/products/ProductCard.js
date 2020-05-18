@@ -212,7 +212,7 @@ export const BuyDialog = (props) => {
                     justify="flex-end">
                     <DialogActions>
                         {currentUser  ? currentUser.type === 'retailer'&& register == false ? 
-                            <Button onClick={handleRegister}>Register</Button>
+                            <Button variant='outlined' color='secondary' onClick={handleRegister}>Register</Button>
                              : null :null}
                         <Button autoFocus onClick={handleCloseDialog} color="primary">
                             Cancel

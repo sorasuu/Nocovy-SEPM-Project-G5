@@ -7,15 +7,11 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import {
-    Card, CardContent, CardHeader, Divider,
-    Popover, Grid, Button, Grow, Popper, MenuItem, MenuList,
-    ButtonGroup, Table, TableHead, TableRow, Typography,
+    Card, CardContent, CardHeader, Divider, Chip,
+    Popover, Grid, Button, Table, TableHead, TableRow, Typography,
     TableCell, TableBody, Paper, ClickAwayListener, Icon
 } from '@material-ui/core'
-import { checkArray } from '../dashboard/Dashboard'
-import SearchIcon from '@material-ui/icons/Search';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
@@ -131,64 +127,21 @@ function RetailerDetail(props) {
     const onChange = e => {
         // this.setState({ search: e.target.value })
     }
-
+    console.log(data)
     return (
+        
         <Card className={cx(classes.card, cardShadowStyles.root)} style={{ position: "relative", marginBottom: '2%' }}>
             <CardContent className={classes.content}>
-            <Typography paragraph variant='h4'>Selling</Typography>
+            <Typography paragraph variant='h4'>Product List</Typography>
             <Divider/>
-        {/* <Grid container direction="column" alignItems="center">
-            <Grid item xs={12}> */}
-                {/* <ButtonGroup variant="contained" color="primary" ref={anchorRef} aria-label="split button">
-                    <Button onClick={handleClick}>{options[selectedIndex]}</Button>
-                    <Button
-                        color="primary"
-                        size="small"
-                        aria-controls={openOpt ? 'split-button-menu' : undefined}
-                        aria-expanded={openOpt ? 'true' : undefined}
-                        aria-label="select merge strategy"
-                        aria-haspopup="menu"
-                        onClick={handleToggle}
-                    >
-                        <ArrowDropDownIcon />
-                    </Button>
-                </ButtonGroup>
-                <Popper open={openOpt} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
-                    {({ TransitionProps, placement }) => (
-                        <Grow
-                            {...TransitionProps}
-                            style={{
-                                transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
-                            }}
-                        >
-                            <Paper>
-                                <ClickAwayListener onClickAway={handleCloseOpt}>
-                                    <MenuList id="split-button-menu">
-                                        {options.map((option, index) => (
-                                            <MenuItem
-                                                key={option}
-                                                disabled={index === 2}
-                                                selected={index === selectedIndex}
-                                                onClick={(event) => handleMenuItemClick(event, index)}
-                                            >
-                                                {option}
-                                            </MenuItem>
-                                        ))}
-                                    </MenuList>
-                                </ClickAwayListener>
-                            </Paper>
-                        </Grow>
-                    )}
-                </Popper> */}
-            {/* </Grid>
-                <Grid item xs={12} md={12} lg={12}> */}
+        
                     <Table style={{width:'100%'}}>
                         <TableHead style={{ fontStyle: 'bold' }}>
                             <TableRow hover>
                                 <TableCell align="left">ID</TableCell>
                                 <TableCell align="left">AVATAR</TableCell>
                                 <TableCell align="left">NAME</TableCell>
-                                <TableCell align="left">TYPE</TableCell>
+                                <TableCell align="left">CATEGORY</TableCell>
                                 <TableCell align="left">PRICE</TableCell>
                                 {/* <TableCell>SUPPLIER</TableCell> */}
                             </TableRow>
@@ -216,15 +169,11 @@ function RetailerDetail(props) {
                                         </Button></TableCell>
                                         <TableCell align="left"><img className={classes.img} src={data[item.id].cover} /></TableCell>
                                         <TableCell align="left">{data[item.id].name}</TableCell>
-                                        <TableCell align="left">{data[item.id].category}</TableCell>
+                                        <TableCell align="left">{data[item.id].category.map((item, key) => <li key={key}><Chip label={item}/></li>)}</TableCell>
+                                        
                                         <TableCell align="left">{'$ '+ data[item.id].price.unitPrice}</TableCell>
 
-                                        {/* {data[item.id].supplierId ?
-                                            <NavLink to={'/supplier/' + data[item.id].supplierId.id}>
-                                                <Button variant="contained" color="primary" component="span">
-                                                    {data[item.id].supplierId.businessName}
-                                                </Button>
-                                            </NavLink> : null} */}
+                                        
 
                                         <Popover
                                             className={classes.popover}
