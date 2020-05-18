@@ -210,7 +210,7 @@ export const ProductInfoCard = props => {
             </Grid>
 
             <Grid item>
-                <BuyDialog product={props.product} />
+            {props.owner ?null: <BuyDialog product={props.product} />}
             </Grid>
         </Grid>
 
