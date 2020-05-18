@@ -92,6 +92,10 @@ export const DUMMY_DATA = [
     }
 ]
 
+function ListItemLink(props) {
+    return <ListItem button component="a" {...props} />;
+  }
+
 //CONTACTS COMPONENT
 export const ChatContact = (props) => {
     console.log('CHAT contact', props)
@@ -133,8 +137,8 @@ export const ChatContact = (props) => {
                         }
 
                         return (
-                            <NavLink to={'/chat/'+contact.id}>
-                            <ListItem divider dense button alignItems="flex-start" selected={contact.id === props.currentchatsession.id}>
+                            // <NavLink to={'/chat/'+contact.id}>
+                            <ListItemLink href={'/chat/'+contact.id} divider dense button alignItems="flex-start" selected={contact.id === props.currentchatsession.id}>
                                 <ListItemAvatar>
                                     <Avatar src={receiver?receiver.logo:null} />
                                 </ListItemAvatar>
@@ -144,8 +148,8 @@ export const ChatContact = (props) => {
                                     secondary={
                                         <Typography variant='subtitle'> {receiver?contact.lastchat:null}</Typography>}
                                 />
-                            </ListItem>
-                            </NavLink>
+                            </ListItemLink>
+                            // </NavLink>
                         )
                     }) : null}
                 </List>
