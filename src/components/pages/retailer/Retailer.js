@@ -51,8 +51,7 @@ class Retailer extends Component {
     if (!auth.uid) return <Redirect to='/signin' />
 
     return (
-      <Container>
-        <div style={{ marginTop: '10%' }}>
+      <Container style={{ marginTop: '2%' }}>
         {retailer?
           <Grid
             container
@@ -73,7 +72,6 @@ class Retailer extends Component {
             </Grid>
           </Grid>
           :null}
-        </div>
       </Container>
 
     )

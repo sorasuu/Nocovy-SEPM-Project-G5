@@ -69,7 +69,8 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         borderRadius: 16,
-        marginTop:'2%'
+        // marginTop:'2%',
+        height:'80vh'
     },
     content: {
         overflowX: 'auto',
@@ -182,7 +183,7 @@ function RetailerDetail(props) {
                 </Popper> */}
             {/* </Grid>
                 <Grid item xs={12} md={12} lg={12}> */}
-                    <Table style={{width:'100%'}}>
+                    <Table style={{width:'100%', overflowY: 'auto',}}>
                         <TableHead style={{ fontStyle: 'bold' }}>
                             <TableRow hover>
                                 <TableCell align="left">ID</TableCell>
