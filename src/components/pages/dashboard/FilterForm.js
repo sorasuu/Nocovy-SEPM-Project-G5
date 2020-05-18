@@ -153,6 +153,7 @@ export default function FilterForm(props) {
                 handleSort={props.handleSort}
                 handleSortKind={props.handleSortKind}
                 open={open} onSubmit={handleSubmit} onCancel={handleCancel} />
+                {selectedCategories?selectedCategories.length!==0?
             <Paper className={classes.root}>
                 {selectedCategories.map((data, key) => {
                     let icon;
@@ -168,7 +169,7 @@ export default function FilterForm(props) {
                     );
                 })}
 
-            </Paper>
+            </Paper>:null:null}
         </div>
     );
 }

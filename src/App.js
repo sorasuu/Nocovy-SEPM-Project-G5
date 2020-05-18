@@ -151,7 +151,7 @@ export default compose(
     else {
       return [{ collection: 'users', doc: props.auth.uid, storeAs: 'currentUser' },
       {
-        collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]],queryParams:['orderByChild=lastMod'] ,storeAs:'allchatsesion',
+        collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]],queryParams:['orderByChild=lastMod'] ,storeAs:'allchatsesion'
       },
       { collection: 'notifications', where: [['uid', '==', props.auth.uid]] }]
     }

@@ -49,6 +49,7 @@ render(){
     return (
         <div>
         <h4>Detail</h4>
+        {this.props.owner?
         <MaterialTable
             title={' '}
             columns={this.state.columns}
@@ -104,7 +105,20 @@ render(){
                      
                     }),
             }}
-        />
+        />:  <MaterialTable
+        title={' '}
+        columns={this.state.columns}
+        data={this.state.details}
+        options={{
+            searchFieldAlignment: "left",
+            paging:false,
+            actionsColumnIndex:-1,
+            rowStyle: rowData =>({
+                backgroundColor: (rowData.tableData.id % 2 ===0)? '#EEE': '#FFF',
+            })
+        }}
+
+    />}
         </div>
     );
 }
