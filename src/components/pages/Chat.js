@@ -92,9 +92,13 @@ export const DUMMY_DATA = [
     }
 ]
 
+function ListItemLink(props) {
+    return <ListItem button component="a" {...props} />;
+  }
+
 //CONTACTS COMPONENT
 export const ChatContact = (props) => {
-    console.log('CHAT contact'+ props)
+    console.log('CHAT contact', props)
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles({ inactive: true });
@@ -127,25 +131,25 @@ export const ChatContact = (props) => {
                     {props.chatsesion && props.chatuser ? props.chatsesion.map((contact) => {
                         var receiver;
                         if (contact.user1 === props.uid) {
-                            receiver = props.chatuser[contact.user1]
-                        } else {
                             receiver = props.chatuser[contact.user2]
+                        } else {
+                            receiver = props.chatuser[contact.user1]
                         }
 
                         return (
-                            <NavLink to={'/chat/'+contact.id}>
-                            <ListItem divider dense button alignItems="flex-start" selected={contact.id === props.currentchatsession.id}>
+                            // <NavLink to={'/chat/'+contact.id}>
+                            <ListItemLink href={'/chat/'+contact.id} divider dense button alignItems="flex-start" selected={contact.id === props.currentchatsession.id}>
                                 <ListItemAvatar>
-                                    <Avatar src={receiver.logo} />
+                                    <Avatar src={receiver?receiver.logo:null} />
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={
-                                        <Typography variant='h6'>{receiver.displayName}</Typography>}
+                                        <Typography variant='h6'>{receiver?receiver.displayName:null}</Typography>}
                                     secondary={
-                                        <Typography variant='subtitle'> {contact.lastchat}</Typography>}
+                                        <Typography variant='subtitle'> {receiver?contact.lastchat:null}</Typography>}
                                 />
-                            </ListItem>
-                            </NavLink>
+                            </ListItemLink>
+                            // </NavLink>
                         )
                     }) : null}
                 </List>
@@ -158,7 +162,7 @@ export const MessageList = (props) => {
     console.log(props)
     var receiver;
 
-    console.log(receiver)
+   
     return (
         <div>
             {props.messages && props.chatuser ? props.messages.map(message => {
@@ -166,6 +170,7 @@ export const MessageList = (props) => {
 
                 if (message.sender === props.uid) {
                     receiver = props.chatuser[message.receiver]
+                    console.log(receiver)
                     return (
                         <ChatMsg
                             key={message.id}
@@ -177,16 +182,18 @@ export const MessageList = (props) => {
                     )
                 } else {
                     receiver = props.chatuser[message.sender]
+                    console.log(receiver)
                     return (
                         <ChatMsg
                             key={message.id}
-                            avatar={receiver.logo}
+                            avatar={receiver?receiver.logo:null}
                             messages={[
                                 message.context
                             ]}
                         />)
                 }
                
+                
             })
                 : null
             }
@@ -275,6 +282,7 @@ class Chat extends Component {
         // const filteredUsers = users.filter(product => {
         //     return product.title.toLowerCase().indexOf(search.toLowerCase()) !== -1
         // })
+        
         if (!auth.uid) return <Redirect to='/signin' />
         console.log(this.props.match.params.id)
         return (
@@ -282,13 +290,13 @@ class Chat extends Component {
                 <Container>
                     <h3>Chat menu</h3>
                     <Grid container spacing={3}>
-                        <Grid item xs={4}><ChatContact props={this.props} handleChange={this.handleChange} currentchatsession={this.props.currentchatsession} chatsesion={this.props.chatsessionorder} search={search} chatuser={this.props.chatuser} /></Grid>
+                        <Grid item xs={4}><ChatContact props={this.props} handleChange={this.handleChange} currentchatsession={this.props.currentchatsession} chatsesion={this.props.chatsessionorder} search={search} chatuser={this.props.chatuser} uid={this.props.auth.uid} /></Grid>
                         <Grid item xs={8} style={{marginTop:"3%"}}><Paper className={classes.chatMenu}>
                             <div className='chat-box'>
                                 <div className='msg-page'>
                                 {this.props.chatuser&&this.props.auth&&this.props.match.params.id?
                                 
-                                    <h5 style={{ alignContent: 'center' }}>{this.props.chatuser[this.props.match.params.id.replace(this.props.auth.uid, '')].displayName}</h5>:null
+                                    <h5 style={{ alignContent: 'center' }}>{this.props.chatuser[this.props.match.params.id.replace(this.props.auth.uid, '')]?this.props.chatuser[this.props.match.params.id.replace(this.props.auth.uid, '')].displayName:null}</h5>:null
                                 }
                                 
                                     <MessageList messages={this.props.messages} chatuser={this.props.chatuser} uid={this.props.auth.uid} />
