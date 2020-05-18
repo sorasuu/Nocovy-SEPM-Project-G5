@@ -24,7 +24,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Navbar = (props) => {
-  console.log('navbar',props)
   const { auth } = props;
   const classes = useStyles();
   const links = auth.uid ? <SignedInLinks props={props} /> : <SignedOutLinks/>;
