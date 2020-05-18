@@ -160,7 +160,7 @@ export const MessageList = (props) => {
 
    
     return (
-        <div>
+        <div style={{maxHeight:'400px', height:'400px'}}>
             {props.messages && props.chatuser ? props.messages.map(message => {
                 console.log(message)
 
@@ -270,7 +270,7 @@ class Chat extends Component {
                 <Container>
                     <h3>Chat menu</h3>
                     <Grid container spacing={3}>
-                        <Grid item xs={4}><ChatContact props={this.props} handleChange={this.handleChange} currentchatsession={this.props.currentchatsession} chatsesion={this.props.chatsessionorder} search={search} chatuser={this.props.chatuser} uid={this.props.auth.uid} /></Grid>
+                        <Grid item xs={4}><ChatContact style={{maxHeight:'400px', height:'400px'}} props={this.props} handleChange={this.handleChange} currentchatsession={this.props.currentchatsession} chatsesion={this.props.chatsessionorder} search={search} chatuser={this.props.chatuser} uid={this.props.auth.uid} /></Grid>
                         <Grid item xs={8} style={{marginTop:"3%"}}><Paper className={classes.chatMenu}>
                             <div className='chat-box'>
                                 <div className='msg-page'>

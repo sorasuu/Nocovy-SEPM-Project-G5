@@ -75,6 +75,7 @@ export function LongMenu(props) {
 }
 
 const SignedInLinks = (props) => {
+  console.log(props)
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
   const handleClickNotification = event => {
@@ -113,7 +114,7 @@ const SignedInLinks = (props) => {
         <Grid item xs={3} style={{ marginTop: "1%", marginRight: '-1%' }}>
           <NavLink to={'/cart'}  >
             <IconButton>
-              <ShoppingCartIcon style={{ color: 'black' }} />
+              <ShoppingCartIcon  className={classes.icons} />
               {cartnav ?
                 <span className={classes.notifications}>{cartnav.length}</span> : null}
             </IconButton>
@@ -123,15 +124,13 @@ const SignedInLinks = (props) => {
           <div className={classes.manager}>
             <IconButton
               color={window.innerWidth > 959 ? "transparent" : "secondary"}
-              // justIcon={window.innerWidth > 959}
-              // simple={!(window.innerWidth > 959)}
               aria-owns={openNotification ? "notification-menu-list-grow" : null}
               aria-haspopup="true"
               onClick={handleClickNotification}
               className={classes.buttonLink}
             >
               <Notifications className={classes.icons} />
-              <span className={classes.notifications}>5</span>
+              {props.props.notifications?<span className={classes.notifications}>{props.props.notifications.length}</span>:null}
               <Hidden mdUp implementation="css">
                 <p onClick={handleCloseNotification} className={classes.linkText}>
                   Notification
@@ -156,39 +155,22 @@ const SignedInLinks = (props) => {
                 >
                   <Paper>
                     <ClickAwayListener onClickAway={handleCloseNotification}>
+
                       <MenuList role="menu">
-                        <NavLink to='/chat'>
-                          <MenuItem
-                            onClick={handleCloseNotification}
-                            className={classes.dropdownItem}
-                          >
-                            Mike John responded to your message
-                      </MenuItem>
-                        </NavLink>
+                      {props.props.notifications?props.props.notifications.map(noti=> {return(
                         <MenuItem
+                        onClick={handleCloseNotification}
+                        className={classes.dropdownItem}
+                      >
+                        {noti.content}
+                  </MenuItem>
+                        )})
+                        :<MenuItem
                           onClick={handleCloseNotification}
                           className={classes.dropdownItem}
                         >
-                          You have 5 new transaction
-                    </MenuItem>
-                        <MenuItem
-                          onClick={handleCloseNotification}
-                          className={classes.dropdownItem}
-                        >
-                          You are now able to trade with Andrew
-                    </MenuItem>
-                        <MenuItem
-                          onClick={handleCloseNotification}
-                          className={classes.dropdownItem}
-                        >
-                          Another Notification
-                    </MenuItem>
-                        <MenuItem
-                          onClick={handleCloseNotification}
-                          className={classes.dropdownItem}
-                        >
-                          Another One
-                    </MenuItem>
+                          You have no notification
+                    </MenuItem>}
                       </MenuList>
                     </ClickAwayListener>
                   </Paper>
