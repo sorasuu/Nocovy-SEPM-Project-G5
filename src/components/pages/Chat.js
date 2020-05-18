@@ -114,7 +114,7 @@ export const ChatContact = (props) => {
                     {props.chatsesion&&props.chatuser?props.chatsesion.map((contact) => {
                         // console.log(props.uid)
                         var receiver;
-                        if(contact.user1!==props.uid){
+                        if(contact.user1.uid!==props.uid){
                              receiver = props.chatuser[contact.user1]
                              
                         }else{

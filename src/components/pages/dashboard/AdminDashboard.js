@@ -380,7 +380,7 @@ class AdminDashboard extends Component {
                                     label="Subject"
                                     type="text"
                                     fullWidth
-                                    disableUnderline
+                                    disableUnderline='true'
                                 />
                             </DialogContentText>
 
@@ -397,7 +397,7 @@ class AdminDashboard extends Component {
                         <DialogActions>
                             <Button onClick={this.handleClose} color="primary">
                                 Cancel
-          </Button>
+                        </Button>
 
                             <Button
                                 onClick={this.handleSendEmail}

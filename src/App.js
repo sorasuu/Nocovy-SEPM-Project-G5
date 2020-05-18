@@ -70,8 +70,7 @@ class App extends Component {
   }
   render() {
     const {  productlist, supplierlist, retailerlist, currentUser, chatsession, notifications,lastContact}= this.props
-  
-    
+   
     return (
       <BrowserRouter>
         <div className="App">
