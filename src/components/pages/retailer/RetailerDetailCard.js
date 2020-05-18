@@ -11,22 +11,28 @@ import { Redirect, NavLink } from 'react-router-dom';
 const useStyles = makeStyles(() => ({
     card: {
         display: 'flex',
-        marginTop: "5%",
+        // marginTop: "5%",
         overflow: 'initial',
         background: '#ffffff',
         borderRadius: 16,
+        height:'80vh'
     },
     content: {
-        overflowX: 'auto',
-        marginTop: "10%",
-        width:'100%'
+        // display:'flex',
+        // flexDirection:'column',
+        // justifyContent:'space-between',
+        marginTop: "12%",
+        marginBottom:'1%',
+        width:'100%',
+        overflowY: 'auto',
     },
     header:{
         background: "linear-gradient(45deg, #019179 30%, #0074A7 90%)",
         position: "absolute",
         left: "50%",
-        width: 'auto',
-        transform: 'translate(-50%, 15%)'
+        maxWidth: '80%',
+        transform: 'translate(-50%, 15%)',
+        zIndex:1
     },
     media: {
         justify: 'center',
@@ -53,25 +59,22 @@ const RetailerDetailCard = (props) => {
                     className={classes.media}
                     title="Business Logo"
                   > */}
-                  <Avatar style={{height:'100%', width:'100%', maxHeight:300}} src={props.info.logo} />
+                  <Avatar style={{height:'100%', width:'100%', maxHeight:300, marginBottom:15}} src={props.info.logo} />
                   {/* </CardMedia> */}
-                  <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                       {/* {retailer.displayName} */}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                       {props.info.businessDesc? props.info.businessDesc : 'No business description available'}
                     </Typography>
-                  </CardContent>
                 <CardActions>
                   <Grid
                     container
                     justify='space-between'
                   >
-                      <Button size="large" color="primary" href={"/profile"+props.info.id}>Profile</Button>
+                      <Button size="large" color="primary" href={"/profile/"+props.info.id}>Profile</Button>
                       <Button size="large" color="primary" href={"/"}>Partner</Button>
                   </Grid>
-
                 </CardActions>
             </CardContent>
         </Card>

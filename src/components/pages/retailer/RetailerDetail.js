@@ -65,7 +65,8 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         borderRadius: 16,
-        marginTop:'2%'
+        // marginTop:'2%',
+        height:'80vh'
     },
     content: {
         overflowX: 'auto',
