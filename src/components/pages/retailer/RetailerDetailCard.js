@@ -68,7 +68,7 @@ const RetailerDetailCard = (props) => {
                     container
                     justify='space-between'
                   >
-                      <Button size="large" color="primary" href={"/profile"+props.info.id}>Profile</Button>
+                      <Button size="large" color="primary" href={"/profile/"+props.info.id}>Profile</Button>
                       <Button size="large" color="primary" href={"/"}>Partner</Button>
                   </Grid>
 
