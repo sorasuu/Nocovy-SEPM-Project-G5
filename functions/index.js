@@ -27,6 +27,26 @@ exports.productCreated = functions.firestore
     return createNotification(notification);
 
   });
+
+  exports.emailCreated = functions.firestore
+  .document('emails/{emailId}')
+  .onCreate((snap, context) => {
+
+    const email = snap.data();
+    msgbody = {
+      to: email.emailTo,
+      from: 'auto-no-reply@nocovy.com',
+      templateId: 'd-622edc49b16e439280f4cd828c223aed',
+      "dynamic_template_data": {
+        name: email.displayName,
+        text: email.content,
+        subject: email.subject,
+      }}
+      return sendgridemail.send(msgbody)
+      .then(() => console.log('email sent'))
+      .catch(err => console.log(err))
+
+  });
 exports.userJoined = functions.auth.user()
   .onCreate(user => {
     
@@ -62,7 +82,7 @@ exports.userApproved = functions.firestore
             "dynamic_template_data": {
               name: user.displayName,
               text: user.displayName + " Your account has been approved by our admin. Enjoy our trading platform",
-              subject: 'Acount verification approved',
+              subject: 'Account verification approved',
             }
           }
           notification = {
@@ -79,7 +99,7 @@ exports.userApproved = functions.firestore
             "dynamic_template_data": {
               name: user.displayName,
               text: user.displayName + " Your account has been declined by our admin. Please reupload your business cetificate for verification.",
-              subject: 'Acount verification declined',
+              subject: 'Account verification declined',
             }
           }
           notification = {

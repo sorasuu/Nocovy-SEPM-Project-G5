@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import {InputBase, Container, Typography, Grid, withStyles} from '@material-ui/core'
+import {InputBase, Container, Typography, Grid, withStyles, Modal} from '@material-ui/core'
 import ProfileInfoCard from './supplier/ProfileInfoCard'
 import { firestoreConnect } from 'react-redux-firebase'
 import { storeProducts } from "./data"
 import AddProductCard from './products/AddProductCard'
-import EditProfileCard from '../layout/EditProfileCard'
+import EditProfileCard from './supplier/EditProfileCard'
 import ProductCard from './products/ProductCard'
-import Modal from '@material-ui/core/Modal'
 import { Redirect } from 'react-router-dom'
 import {createProduct } from '../store/actions/productAction'
 import {editUser } from '../store/actions/userActions'
@@ -17,7 +16,7 @@ import { fade } from '@material-ui/core/styles'
 import {uploadToStorage} from '../store/actions/uploadAction'
 import {withRouter} from 'react-router-dom';
 import {createChatSession} from '../store/actions/chatActions'
-
+import { checkArray } from './dashboard/Dashboard'
 const useStyles = theme => ({
   search: {
     position: 'relative',
@@ -61,7 +60,7 @@ class Profile extends Component {
     website: '',
     businessGenre: '',
     businessDesc: '',
-    certificate: '',
+    certificates: '',
     wholesaler: '',
     logo: '',
     newBusinessName: '',
@@ -81,23 +80,12 @@ class Profile extends Component {
     step:1,
     owner:false,
     productName:'',
-    productBrand:'',
-    productOrigin:'',
     productDesc:'',
     productCategories: [],
-    dutyCost:0,
     dutyRate:0,
-    FOB:'',
-    freightCost:0,
-    freightDesc:'',
-    freightRate:'',
-    landedCost:0,
-    margin:'',
-    miscCost:0,
+    margin:0,
     unitCost:0,
-    unitPrice:0,
     images: [],
-    category:'',
     progress: '',
   }
 
@@ -130,19 +118,16 @@ class Profile extends Component {
       }
       this.props.createChatSession(chat)
     }
-
   }
 
   handleChange = input => e => {
     this.setState({ [input]: e.target.value })
   }
 
-  handleCatChange = input => e => {
-    var a = [e.target.value, 'helloWorld']
-    this.setState({ [input]: a })
-    console.log(this.state)
-    //Write function to parse string input into array of tags
+  handleCatChange = (chips) => {
+    this.setState({ productCategories: chips })
   }
+
   handleChangeImg(files){
     console.log(files)
     this.setState({
@@ -199,22 +184,6 @@ class Profile extends Component {
       alert('The product name must not exceed 256 characters')
       return false
     }
-    if(this.state.productBrand === ''){
-      alert('The product brand cannot be empty')
-      return false
-    }
-    if(this.state.productBrand.length > 256){
-      alert('The product brand must not exceed 256 characters')
-      return false
-    }
-    if(this.state.productOrigin === ''){
-      alert('The product origin cannot be empty')
-      return false
-    }
-    if(this.state.productOrigin.length > 256){
-      alert('The product origin must not exceed 256 characters')
-      return false
-    }
     if(this.state.productDesc === ''){
       alert('The product description cannot be empty')
       return false
@@ -223,62 +192,15 @@ class Profile extends Component {
       alert('The product category cannot be empty')
       return false
     }
-    if(this.state.dutyCost <= 0){
-      alert('The product duty cost cannot be negative or zero')
-      return false
-    }
     if(this.state.dutyRate <= 0){
       alert('The product duty rate cannot be negative or zero')
       return false
     }
-    if(this.state.FOB === ''){
-      alert('The product FOB point cannot be empty')
-      return false
-    }
-    if(this.state.FOB.length > 256){
-      alert('The product FOB point must not exceed 256 characters')
-      return false
-    }
-    if(this.state.freightCost <= 0){
-      alert('The product freight cost cannot be negative or zero')
-      return false
-    }
-    if(this.state.freightDesc === ''){
-      alert('The product freight description point cannot be empty')
-      return false
-    }
-    if(this.state.freightDesc.length > 256){
-      alert('The product freight description  must not exceed 256 characters')
-      return false
-    }
-    if(this.state.freightRate === ''){
-      alert('The product freight rate cannot be empty')
-      return false
-    }
-    if(this.state.freightRate.length > 256){
-      alert('The product freight rate must not exceed 256 characters')
-      return false
-    }
-    if(this.state.landedCost <= 0){
-      alert('The product landed cost cannot be negative or zero')
-      return false
-    }
-    if(this.state.margin === ''){
-      alert('The product margin cannot be empty')
-      return false
-    }
-    if(this.state.margin.length > 256){
-      alert('The product margin must not exceed 256 characters')
-      return false
-    }
-    if(this.state.miscCost <= 0){
-      alert('The product miscellaneous cost cannot be negative or zero')
+    if(this.state.margin <= 0){
+      alert('The product margin cannot be negative or zero')
     }
     if(this.state.unitCost <= 0){
       alert('The product unit cost cannot be negative or zero')
-    }
-    if(this.state.unitPrice <= 0){
-      alert('The product unit price cannot be negative or zero')
     }
     else{
       return true
@@ -289,11 +211,11 @@ class Profile extends Component {
     if (this.validateForm()){
 
       //FIX THIS TO FIT WITH NEW DATA
-
+      var unitPrice = Number(this.state.unitCost) * ((100 + Number(this.state.margin) + Number(this.state.dutyRate))/100)
       var timeStamp = Math.floor(Date.now() / 1000);
       var product = {
-        authorEmail: this.props.user.email,
-        authorName: this.props.user.displayName,
+        authorEmail: this.props.thisUser.email,
+        authorName: this.props.thisUser.displayName,
         category: this.state.productCategories, 
         cover: this.props.productImg[0],
         supplierId: this.props.auth.uid,
@@ -301,22 +223,11 @@ class Profile extends Component {
         name: this.state.productName, 
         createdAt: timeStamp,
         description: this.state.productDesc, 
-        detail: [
-          'origin: '+ this.state.productOrigin,
-          'brand:'+ this.state.productBrand
-        ], 
         price: {
-          dutyCost: this.state.dutyCost,
           dutyRate: this.state.dutyRate,
-          FOB: this.state.FOB,
-          freightCost: this.state.freightCost,
-          freightDesc: this.state.freightDesc,
-          freightRate: this.state.freightRate,
-          landedCost: this.state.landedCost,
           margin: this.state.margin,
-          miscCost: this.state.miscCost,
           unitCost: this.state.unitCost,
-          unitPrice: this.state.unitPrice
+          unitPrice: unitPrice
         }
       }
       //Form submit functions go here
@@ -350,6 +261,7 @@ class Profile extends Component {
     }
 
   }
+
   componentDidUpdate(prevState, prevProps) {
     if (prevProps.thisUser !== this.props.thisUser && prevState.thisUser!== this.props.thisUser && this.props.thisUser!==undefined&& this.props.thisUser!==null) {
         this.setState({ type: this.props.thisUser.type,
@@ -359,7 +271,7 @@ class Profile extends Component {
           website: this.props.thisUser.website,
           businessGenre: this.props.thisUser.businessGenre,
           businessDesc: this.props.thisUser.businessDesc,
-          certificate: this.props.thisUser.certificate,
+          certificates: this.props.thisUser.certificates,
           wholesaler: this.props.thisUser.wholesaler,
           logo: this.props.thisUser.logo,
           newBusinessName: this.props.thisUser.businessName,
@@ -369,7 +281,8 @@ class Profile extends Component {
           newBusinessGenre: this.props.thisUser.businessGenre,
           newDescription: this.props.thisUser.businessDesc,})
     }
-}
+  }
+
 static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.thisUser !== prevState.thisUser) {
         return { thisUser: nextProps.thisUser };
@@ -378,11 +291,11 @@ static getDerivedStateFromProps(nextProps, prevState) {
 }
   
   render() {
-    const { auth, classes} = this.props;
+    const { auth, classes, products } = this.props;
     console.log(this.props)
-    const { search, products } = this.state;
-    const filteredProducts = products.filter(product =>{
-        return product.title.toLowerCase().indexOf(search.toLowerCase())!== -1
+    const { search } = this.state;
+    const filteredProducts = checkArray(products).filter(product =>{
+        return product.name.toLowerCase().indexOf(search.toLowerCase())!== -1
     })
     if (!auth.uid) return <Redirect to='/signin' />
 

@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, Component } from 'react';
 import cx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    Card, CardContent, CardHeader,
+    Card, CardContent, CardHeader, Button, Icon
 } from "@material-ui/core";
 import ProductImageDetail from './ProductImageDetail'
 import Grid from '@material-ui/core/Grid';
-import MaterialTable from 'material-table';
+import DetailTable from './DetailTable'
 import { Table, TableContainer, TableBody, TableRow, TableCell, TableHead } from '@material-ui/core';
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import PriceForm from './PriceForm'
-import { checkArray } from '../dashboard/Dashboard';
+import { NavLink } from 'react-router-dom';
+import { BuyDialog } from './ProductCard'
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -35,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         overflow: 'initial',
         background: '#ffffff',
+        borderRadius: 16
     },
     content: {
         transition: '0.3s',
@@ -62,50 +64,79 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProductDetailCard(props) {
-    
+
     const classes = useStyles();
-    var price 
-    if (props.product!==undefined&& props.product!=null){
-        price =[{name:'Unit Cost',value:props.product.price.unitCost},{name:'Margin',value:props.product.price.margin},{name:'Duty Rate',value:props.product.price.dutyRate}]
+    var price
+    if (props.product !== undefined && props.product != null) {
+        price = [{ name: 'Unit Cost ($)', value: props.product.price.unitCost }, { name: 'Margin (%)', value: props.product.price.margin }, { name: 'Duty Rate (%)', value: props.product.price.dutyRate }]
     }
     const cardHeaderStyles = useContainedCardHeaderStyles();
-    const cardShadowStyles = useOverShadowStyles();
+    const cardShadowStyles = useOverShadowStyles({ inactive: true });
     const cardHeaderShadowStyles = useFadedShadowStyles();
-    // {props.product?props.product.price.map(price => console.log('price',price))}
-    // console.log('hello', props.product.price[0])
-  
+    const [see, setSee] = useState(true);
+    const handleSee = () => {
+        setSee(!see)
+    }
     return (
-        <div style={{textAlign:'center'}}>
-        <Card className={cx(classes.card, cardShadowStyles.root)}
-            style={{ position: "relative", marginBottom: '5px', }}>
-            <CardHeader
-                className={cardHeaderShadowStyles.root}
-                classes={cardHeaderStyles}
-                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", width: 'auto', minWidth: '200px', marginLeft:"30px"  }}
-                title={props.product.name}
-            />
-            <CardContent className={classes.content} >
-                <Grid
-                    className={classes.root}
-                    container
-                    alignItems="flex-start"
-                    key={props.product.id}
-                    spacing={2}
-                >
-                    <Grid item xs={12} sm={6} md={6} >
-                        {/* <ProductImageCard image={ props.product.productImg } /> */}
-                        <ProductImageDetail image ={props.product}/>
+        <div style={{ textAlign: 'center' }}>
+            <Card className={cx(classes.card, cardShadowStyles.root)}
+                style={{ position: "relative", marginBottom: '5px', }}>
+                <CardHeader
+                    className={cardHeaderShadowStyles.root}
+                    classes={cardHeaderStyles}
+                    style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", width: 'auto', minWidth: '200px', marginLeft: "30px" }}
+                    title={props.product.name}
+                />
+                <CardContent className={classes.content} >
+                    <Grid
+                        className={classes.root}
+                        container
+                        alignItems="flex-start"
+                        key={props.product.id}
+                        spacing={2}
+                    >
+                        <Grid item xs={12} sm={8} md={8} lg={8}>
+                            <Grid container>
+                                {/* <ProductImageCard image={ props.product.productImg } /> */}
+                                <ProductImageDetail image={props.product} />
+
+                            </Grid>
+                        </Grid>
+
+                        <Grid item xs={12} sm={4} md={4} lg={4}>
+                            <Grid container>
+                                <Grid item xs={12}><ProductInfoCard product={props.product} price={price} id={props.id} owner={props.owner} unitPrice={props.product.price.unitPrice} /> </Grid>
+
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={5}>
+                            <Grid item>
+                                <h4>Description</h4>
+                            </Grid>
+                            <Grid id="description" item xs={12}>
+                                {props.product.description ?
+                                    <>{props.product.description.length > 20 ?
+                                        <> {see ?
+                                            <>{props.product.description.slice(0, 20)} <a onClick={handleSee}>See more...</a></>
+                                            :
+                                            <> {props.product.description} <a onClick={handleSee}>Less</a></>
+                                        }
+                                        </>
+                                        : <p>{props.product.description}</p>
+                                    }
+                                    </> : <p>Product Description is not available</p>
+                                }
+
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={7}><DetailTable details={props.product.detail} id={props.id} owner={props.owner} style={{ marginBottom: '5px' }} /></Grid>
+
                     </Grid>
-                    <Grid item xs={12} sm={6} md={6}>
-                        <ProductInfoCard product={props.product} price={price} />
-                    </Grid>
-
-                </Grid>
 
 
-            </CardContent>
-        </Card>
-        <DetailTable details={props.product.details} style={{marginBottom: '5px', }}/>
+                </CardContent>
+            </Card>
+
         </div>
     );
 };
@@ -115,123 +146,73 @@ export default function ProductDetailCard(props) {
 
 // table detail
 
-export const ProductInfoCard = props => { 
+export const ProductInfoCard = props => {
     const classes = useStyles();
+    console.log('product detail card...', props.product)
+
     return (
-        <div>
+
         <Grid container spacing={2}>
             <Grid item xs={6} md={6} lg={6}><h4>Author:</h4></Grid>
-            <Grid item xs={6} md={6} lg={6}>{props.product.supplierId.displayName}</Grid>
-            <Grid item xs={6} md={6} lg={6}><PriceForm product={props.product}/></Grid>
+            <Grid item xs={6} md={6} lg={6}><div style={{ fontSize: '20px' }}>{props.product.authorName}</div>
+                <NavLink to={`/supplier/${props.product.supplierId.uid}`}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        endIcon={<Icon>send</Icon>}
+                    >
+                        Supplier
+                        </Button>
+                </NavLink>
+            </Grid>
+            <Grid container>
+                <Grid item xs={12} sm={12} md={12} lg={12}>
+                    <h4 > Price</h4>
+                </Grid>
+                <Grid item xs={12} sm={12} md={12} lg={12}>
+                    <TableContainer className={classes.root}>
+                        <TableHead>
+                            <TableRow>
+                                {props.owner ? <PriceForm product={props.product} id={props.id} /> : null}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody aria-label="simple table">
+                            {props.price ? props.price.map((detail, key) => {
+                                return (
+                                    <TableRow key={key}>
+                                        <TableCell style={{ backgroundColor: `hsla(14, 100%, 53%, 0.6)`, color: 'white' }}>
+                                            {detail.name}
+                                        </TableCell>
+                                        <TableCell>
+                                            {detail.value}
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            }) : null}
+
+                        </TableBody>
+
+
+                    </TableContainer>
+                </Grid>
+            </Grid>
+
+            <Grid item xs={12} md={12} lg={12}>
+                <Grid container justify='space-between' alignItems="center">
+                    <Grid item xs={4}>
+                        <h4>Total</h4>
+                    </Grid>
+                    <Grid item xs={8}>
+                        <h4 style={{ textAlign: 'right' }}>$ {props.unitPrice}</h4>
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <Grid item>
+                <BuyDialog product={props.product} />
+            </Grid>
         </Grid>
-        <TableContainer className={classes.root}>
- 
-            <TableBody aria-label="simple table">               
-                {props.price? props.price.map((detail, key)=>{
-                    return(
-                        <TableRow key={key}>
-                        <TableCell style={{ backgroundColor: `hsla(14, 100%, 53%, 0.6)`, color: 'white' }}>
-                            {detail.name}
-                        </TableCell>
-                        <TableCell>
-                            {detail.value}
-                        </TableCell>
-                    </TableRow>
-                    )
-                    }):null}
 
-            </TableBody>
-            
-
-        </TableContainer>
-        </div>
     )
-}
-function DetailTable(props) {
-    // console.log('detail table props', props.details)
-
-    const [state, setState] = React.useState({
-        columns: [
-            {
-                title: 'Name', field: 'name',
-                
-                headerStyle: {
-                  backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
-                  fontSize:15,
-                  fontFamily:'Open Sans',
-                  color:'white'
-                  
-                }
-              },
-            { title: 'Value', field: 'value',
-            headerStyle:{
-                backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
-                fontSize:15,
-                fontFamily:'Open Sans',
-                color:'white'
-            } 
-        },         
-        ],
-        data: [
-            { name: 'Origin', value: 'China'},
-            {
-                name: 'Brand',
-                value: 'Fashionista',        
-            },
-        ],
-       
-    });
-
-    return (
-        <div>
-        <h4>Detail Table</h4>
-        <MaterialTable
-            title={' '}
-            columns={state.columns}
-            data={state.data}
-            options={{
-                searchFieldAlignment: "left",
-                paging:false,
-                
-            }}
-            editable={{
-                onRowAdd: (newData) =>
-                    new Promise((resolve) => {
-                        setTimeout(() => {
-                            resolve();
-                            setState((prevState) => {
-                                const data = [...prevState.data];
-                                data.push(newData);
-                                return { ...prevState, data };
-                            });
-                        }, 600);
-                    }),
-                onRowUpdate: (newData, oldData) =>
-                    new Promise((resolve) => {
-                        setTimeout(() => {
-                            resolve();
-                            if (oldData) {
-                                setState((prevState) => {
-                                    const data = [...prevState.data];
-                                    data[data.indexOf(oldData)] = newData;
-                                    return { ...prevState, data };
-                                });
-                            }
-                        }, 600);
-                    }),
-                onRowDelete: (oldData) =>
-                    new Promise((resolve) => {
-                        setTimeout(() => {
-                            resolve();
-                            setState((prevState) => {
-                                const data = [...prevState.data];
-                                data.splice(data.indexOf(oldData), 1);
-                                return { ...prevState, data };
-                            });
-                        }, 600);
-                    }),
-            }}
-        />
-        </div>
-    );
 }

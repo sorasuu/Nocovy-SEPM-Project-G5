@@ -7,13 +7,16 @@ import { fade, withStyles } from '@material-ui/core/styles'
 import {
   Grid, InputBase,
   Tabs, Tab, CardContent, Typography,
-  CardMedia, Card, Switch
+  CardMedia, Card, Chip
 } from '@material-ui/core'
 // import StyledButton from '../../layout/StyledButton'
 import ProductCard from '../products/ProductCard'
+import SupplierCard from '../supplier/SupplierCard'
+import RetailerCard from '../retailer/RetailerCard'
 import SearchIcon from '@material-ui/icons/Search';
 import { TabPanel, a11yProps } from './AdminDashboard'
 import FilterForm from './FilterForm'
+import {deliverProductToCart}from '../../store/actions/productAction'
 const useStyles = theme => ({
 
   search: {
@@ -144,34 +147,7 @@ class Dashboard extends Component {
   handleSortKind(params){
     this.setState({sortName: !this.state.sortName})
   }
-  handleCart=(e, productinfo, num)=>{
-    console.log('assa',productinfo)
-    const{cart } = this.state
-    var newcart =cart ;
 
-    var productitem ={...productinfo,num}
-      if (cart===[]){
-        newcart=[cart,productitem]
-            this.setState({cart:newcart})
-            localStorage.setItem('cart', JSON.stringify(newcart));
-      }else{
-      let i=0
-      for(i<cart.length;i++;){
-        console.log('the fuck',cart[i].id,productitem.id)
-          if (cart[i].id===productitem.id){
-            newcart[i]=productitem
-            this.setState({cart:newcart})
-            localStorage.setItem('cart', JSON.stringify(newcart));
-          }else{
-            newcart=[cart,productitem]
-            this.setState({cart:newcart})
-            localStorage.setItem('cart', JSON.stringify(newcart));
-          }
-        }
-    }
-    var cartfromlocal = JSON.parse(localStorage.getItem('cart'));
-    console.log('cart',cartfromlocal)
-  }
   handleChange(e, newValue) {
     this.setState({ value: newValue });
 
@@ -186,10 +162,11 @@ class Dashboard extends Component {
     this.setState({ isFiltered: false})
   }
   render() {
-  
+    
     const { auth, classes, products, suppliers, retailers } = this.props;
-    console.log('dashboard product', products)
-    const { search, value, filter, sortAsc, isFiltered, sortName } = this.state;
+    // console.log('dashboard product', products)
+    const { search, value, filter, sortAsc, isFiltered, sortName, cart } = this.state;
+    
     const afterSearchSupplier = checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchProduct = checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchRetailer = checkArray(retailers).filter(retailer => retailer.displayName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
@@ -211,7 +188,7 @@ class Dashboard extends Component {
     )
 
     if (!auth.uid) return <Redirect to='/signin' />
-    console.log('asdasd',this.state)
+    // console.log('asdasd',this.state)
     return (
 
       <div className="container" style={{ textAlign: 'center' }}>
@@ -245,10 +222,11 @@ class Dashboard extends Component {
           />
         </div>
 
-        <div style={{ marginTop: '10%' }}>
+        <div style={{ marginTop: '2%' }}>
           <TabPanel value={value} index={0}>
 
-            <FilterForm products={products}
+            <FilterForm 
+              products={products}
               allCategories={allCategories}
               handleFilter={item => this.handleSelectFilter(item)}
               handleFilterForm={this.handleFilterForm}
@@ -263,7 +241,7 @@ class Dashboard extends Component {
               spacing={2}
               direction="row"
               justify="center"
-              alignItems="center"
+              alignItems="flex-start"
               style={{ marginTop: '30px' }}
             >
 
@@ -273,15 +251,15 @@ class Dashboard extends Component {
                 sortName ?
                 sortFoundName.map((product, index) => {
                 return (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
-                     <ProductCard product={product} uid ={this.props.auth.uid} handleCart={this.handleCart}/>
+                  <Grid item xs={12} sm={6} md={6} lg={6} xl={4}key={index}>
+                     <ProductCard key={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart} handelRegister={this.props.handelRegister} currentUser ={ this.props.currentUser}/>
                   </Grid>
                 )
                 })
               : sortFoundPrice.map((product, index) => {
                 return (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
-                    <ProductCard product={product} uid ={this.props.auth.uid} handleCart={this.handleCart}/>
+                  <Grid item xs={12} sm={6} md={6} lg={6} xl={4} key={index}>
+                    <ProductCard key={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart} handelRegister={this.props.handelRegister} currentUser ={ this.props.currentUser}/>
                
                   </Grid>
                 )
@@ -291,7 +269,7 @@ class Dashboard extends Component {
               : afterSearchProduct.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                     <ProductCard product={product} uid ={this.props.auth.uid} handleCart={this.handleCart}/>
+                     <ProductCard key ={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart} currentUser ={ this.props.currentUser} handelRegister={this.props.handelRegister}/>
                   </Grid>
                 )
               })}
@@ -304,39 +282,14 @@ class Dashboard extends Component {
               spacing={2}
               direction="row"
               justify="center"
-              alignItems="center"
+              alignItems="flex-start"
             >
               {afterSearchSupplier.map((supplier, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-
-                    <Card className={classes.root}>
-                      <CardMedia
-                        className={classes.cover}
-                        image={supplier.logo}
-                        title="Live from space album cover"
-                      />
-                      <div className={classes.details}>
-                        <CardContent className={classes.content}>
-                          <Typography component="h5" variant="h5">
-                            {supplier.businessName}
-                          </Typography>
-                          <Typography variant="subtitle1" color="textSecondary">
-                            {supplier.email}
-                          </Typography>
-                          <Typography variant="subtitle1" color="textSecondary">
-                            {supplier.address}
-                          </Typography>
-                        </CardContent>
-
-                      </div>
-                      <div>
-                        <NavLink to={'/supplier/' + supplier.id}>
-                          <button>Detail</button>
-                        </NavLink>
-                      </div>
-                    </Card>
+                     <SupplierCard supplier={supplier}/>
                   </Grid>
+                  
                 )
 
               })}
@@ -348,38 +301,12 @@ class Dashboard extends Component {
               spacing={2}
               direction="row"
               justify="center"
-              alignItems="center"
+              alignItems="flex-start"
             >
               {afterSearchRetailer.map((retailer, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-
-                    <Card className={classes.root}>
-                      <CardMedia
-                        className={classes.cover}
-                        image={retailer.logo}
-                        title="Live from space album cover"
-                      />
-                      <div className={classes.details}>
-                        <CardContent className={classes.content}>
-                          <Typography component="h5" variant="h5">
-                            {retailer.displayName}
-                          </Typography>
-                          <Typography variant="subtitle1" color="textSecondary">
-                            {retailer.email}
-                          </Typography>
-                          <Typography variant="subtitle1" color="textSecondary">
-                            {retailer.address}
-                          </Typography>
-                        </CardContent>
-
-                      </div>
-                      <div>
-                        <NavLink to={'/retailer/' + retailer.id}>
-                          <button>Detail</button>
-                        </NavLink>
-                      </div>
-                    </Card>
+                      <RetailerCard retailer={retailer}/>
                   </Grid>
                 )
 
@@ -392,10 +319,17 @@ class Dashboard extends Component {
     )
   }
 }
+const mapDispatchToProps = dispatch => {
+  return {
+    deliverProductToCart: cart => dispatch(deliverProductToCart(cart)),
+  };
+};
 
 const mapStateToProps = (state) => {
- 
+  const users = state.firestore.ordered.currentUser
+  const currentUser = users ? users[0] : null
   return {
+    currentUser: currentUser,
     auth: state.firebase.auth,
     products: state.firestore.ordered.products,
     suppliers: state.firestore.ordered.suppliers,
@@ -405,7 +339,7 @@ const mapStateToProps = (state) => {
 };
 
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps,mapDispatchToProps),
   firestoreConnect([
     { collection: 'products'},
     { collection: 'users', where: [["type", "==", "supplier"]], storeAs: 'suppliers' },

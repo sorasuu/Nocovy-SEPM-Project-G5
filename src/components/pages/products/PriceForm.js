@@ -1,39 +1,30 @@
 import React, { Fragment } from 'react';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import { connect } from 'react-redux'
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {Typography} from '@material-ui/core';
-import {deleteProduct} from '../../store/actions/productAction';
-import { firestoreConnect } from 'react-redux-firebase'
-import {withRouter} from 'react-router-dom';
-import { connect } from 'react-redux'
-import { compose } from 'redux'
-
-
-
-export default class PriceForm extends React.Component{
+import {Typography, Modal} from '@material-ui/core';
+import Grid from '@material-ui/core/Grid'
+import {deleteProduct, editProduct} from '../../store/actions/productAction'
+import history from '../../utils/history'
+import EditProductCard from './EditProductCard'
+import { TableRow, TableCell } from '@material-ui/core'
+export class PriceForm extends React.Component{
   constructor(props){
     super(props);
     this.state ={
       openDelete:false,
       open: false,
-      price:{
-        fobPoint:'',
-        freightRate:'',
-        freightDescription:'',
-        dutyRate:'',
-        unitCost:'',
-        freightCost:'',
-        dutyCost:'',
-        miscCost:'',
-        landedCost:'',
-        margin:'',
-        unitPrice:'',
-      }
+      newProductName: this.props.product.name,
+      newProductDesc: this.props.product.description,
+      newDutyRate: this.props.product.price.dutyRate,
+      newMargin: this.props.product.price.margin,
+      newUnitCost: this.props.product.price.unitCost,
+      newImages: this.props.product.images,
+      newCategory: this.props.product.category,
     }
   }
 
@@ -43,54 +34,57 @@ export default class PriceForm extends React.Component{
 
   handleDelete =() => {
     // console.log(this.props.product)
-    this.props.deleteProduct(this.props.product)
+    this.props.deleteProduct(this.props.id)
+    history.push('/')
+    window.location.reload()
   }
 
   handleClickForm =() => {
     this.setState({open: !this.state.open})
   }
-  handleChange = name => ({ target: { value } }) => {
-    this.setState({
-      price: {
-        ...this.state.price,
-        [name]: value
-      }
-    })
 
+  handleChange = input => e => {
+    this.setState({ [input]: e.target.value })
   }
-  // handleSubmit =() => {
-  //   const {price} = this.state
 
-  //   this.props.onCreate(price)  
-  // }
+  handleCatChange = (chips) => {
+    this.setState({ newCategory: chips })
+  }
+
+  handleSubmit =() => {
+    var newUnitPrice = Number(this.state.newUnitCost) * ((100 + Number(this.state.newMargin) + Number(this.state.newDutyRate))/100)
+    var product = {
+      id: this.props.id,
+      category: this.state.newCategory, 
+      // cover: this.props.newImages[0],
+      // productImg: this.props.newImages,
+      name: this.state.newProductName, 
+      description: this.state.newProductDesc,
+      price: {
+        dutyRate: this.state.newDutyRate,
+        margin: this.state.newMargin,
+        unitCost: this.state.newUnitCost,
+        unitPrice: newUnitPrice
+      }
+    }
+    // console.log(product)
+    this.props.editProduct(product)
+    this.handleClickForm()
+  }
 
   render(){
-    
-    const { open, openDelete,
-    price:{
-      fob,
-      frate,
-      fdescription,
-      dutyrate,
-      unitcost,
-      fcost,
-      dutycost,
-      misc,
-      land,
-      margin,
-      unitprice} 
-    } = this.state
     return <Fragment>
-   
-        <Button variant="outlined" color="primary" onClick={this.handleClickForm}>
-          Edit
-        </Button>
-        <br/>
-        <Button variant="outlined" color="secondary" onClick={this.handleDeleteDialog}>
-          Delete
-        </Button>
+      
+        
+          <TableCell> <Button size="small" variant="outlined" color="primary" onClick={this.handleClickForm}>
+            Edit
+          </Button></TableCell>
+          <TableCell size="small"><Button size="small" variant="outlined" color="secondary" onClick={this.handleDeleteDialog}>
+            Delete
+          </Button></TableCell>
 
-        <Dialog open={openDelete} onClose={this.handleDeleteDialog} aria-labelledby="del-dialog-title">
+
+        <Dialog open={this.state.openDelete} onClose={this.handleDeleteDialog} aria-labelledby="del-dialog-title">
           <DialogTitle id="del-dialog-title">Confirm deletion</DialogTitle>
           <DialogContent>
             <Typography>Are you sure you wish to delete this product?</Typography>
@@ -104,119 +98,20 @@ export default class PriceForm extends React.Component{
             </Button>
           </DialogActions>
         </Dialog>
-       
-        <Dialog open={open} onClose={this.handleClickForm} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Price Form</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Edit your price information 
-            </DialogContentText>
-            
-            <TextField
-              autoFocus
-              margin="dense"
-              label="FOB Point"
-              value={fob}
-              type='string'          
-            />
-            <br/>
-            <TextField
-              autoFocus
-              margin="dense"
-              value={frate}
-              label="Freight Rate ($/ft3)"
-              type='number'
-              
-            />
-            <br/>
-            <TextField
-              autoFocus
-              multiline
-              rows="3"
-              margin="dense"
-              value={fdescription}
-              label="Freight Description"
-              type='string'
-              fullWidth
-            />
-            <br/>
-            <TextField
-              autoFocus
-              margin="dense"
-              value={fcost}
-              label="Freight Cost ($)"
-              type='number'
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              value={unitcost}
-              label="Unit Cost ($)"
-              type='number'
-              style={{marginLeft:10}}
-            />
-            <br/>
-            <TextField
-              autoFocus
-              margin="dense"
-              value={dutyrate}
-              label="Duty Rate (%)"
-              type='number'
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              value={dutycost}
-              label="Duty Cost ($)"
-              type='number'
-              style={{marginLeft:10}}
-            />
-            <br/>
-            <TextField
-              autoFocus
-              margin="dense"
-              value={misc}
-              label="Misc Cost ($)"
-              type='number'
 
-            />
-      
-            <TextField
-              autoFocus
-              margin="dense"
-              value={land}
-              label="Landed Cost ($)"
-              type='number'
-              style={{marginLeft:10}}
-            />
-            <br/>
-             <TextField
-              autoFocus
-              value={margin}
-              label="Margin (%)"
-              type='number'
-              
-            />
-            <br/>
-            <TextField
-              autoFocus
-              margin="dense"
-              value={unitprice}
-              label="Unit Price ($)"
-              type='number'
-            />
-            
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClickForm} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.handleSubmit} color="primary">
-              Done
-            </Button>
-          </DialogActions>
-        </Dialog> 
-        
+          <Modal open={this.state.open} onClose={this.handleClickForm}>
+            <div style={{maxWidth:'50%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%',}}>
+              <EditProductCard props={this.props} values={this.state} saveEdit={this.handleSubmit} closeModal={this.handleClickForm} handleChange={this.handleChange} handleCatChange={this.handleCatChange}/>
+            </div>
+          </Modal>
       </Fragment>
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteProduct: cart => dispatch(deleteProduct(cart)),
+    editProduct: (newProductInfo) => dispatch(editProduct(newProductInfo)),
+  };
+};
+export default connect(null,mapDispatchToProps) (PriceForm)

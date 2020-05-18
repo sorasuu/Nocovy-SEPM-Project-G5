@@ -37,7 +37,9 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     zIndex: 10,
     width: '100%',
-    height: "500px",
+    height: "fit-content",
+    maxHeight:'600px',
+    minHeight:'400px',
     objectFit: 'cover',  
     
   },
@@ -84,7 +86,7 @@ const ProductImageDetail = (props) => {
       <div className={classes.indicatorContainer}>
         {checkArray(props.image.productImg).map((image, i) => (
           <DotIndicator
-            key={image.productImg}
+            key={i}
             active={i === index}
             onClick={() => onChangeIndex(i)}
           />

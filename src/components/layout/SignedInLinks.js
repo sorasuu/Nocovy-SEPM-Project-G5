@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signOut } from '../store/actions/authActions'
 import { firestoreConnect } from 'react-redux-firebase'
@@ -22,11 +22,11 @@ import Button from "@material-ui/core/Button";
 import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
 const useStyles = makeStyles(styles);
-export  function LongMenu(props) {
+export function LongMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [auth, setAuth] = React.useState(null);
   const open = Boolean(anchorEl);
-  
+
   const handleClick = event => {
     console.log(props)
     setAuth(props);
@@ -36,11 +36,11 @@ export  function LongMenu(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-//  console.log(props)
+  //  console.log(props)
 
   return (
     <div>
-      
+
       <IconButton
         aria-label="more"
         aria-controls="long-menu"
@@ -56,18 +56,28 @@ export  function LongMenu(props) {
         open={open}
         onClose={handleClose}
       >
-      <NavLink to={`/profile/${props.props.uid}`} style={{color:"black"}} >
-      <MenuItem onClick={handleClose}>My Profile</MenuItem></NavLink>
-      {props.lastContact?
-      <NavLink to={'/chat/'+props.lastContact.id }style={{color:"black"}}>
-      <MenuItem onClick={handleClose}>Chat</MenuItem></NavLink>:null}
+        <NavLink to={`/profile/${props.props.uid}`} style={{ color: "black" }} >
+          <MenuItem onClick={handleClose}>My Profile</MenuItem>
+          </NavLink>
+        {props.lastContact ?
+          <NavLink to={'/chat/' + props.lastContact.id} style={{ color: "black" }}>
+            <MenuItem onClick={handleClose}>Chat</MenuItem></NavLink> : null
+            }
+          <NavLink to ='/faq' style={{ color: "black" }}> <MenuItem onClick={handleClose}>FAQ</MenuItem> </NavLink>
+          <NavLink to ='/privacypolicy' style={{ color: "black" }}> <MenuItem onClick={handleClose}>Privacy Policy</MenuItem> </NavLink>
+          <NavLink to ='/rules' style={{ color: "black" }}> <MenuItem onClick={handleClose}>Transaction Rules</MenuItem> </NavLink>
+          <NavLink to ='/tos' style={{ color: "black" }}> <MenuItem onClick={handleClose}>Term of Service</MenuItem> </NavLink>
+
+
+            
       </Menu>
-      
+
     </div>
   );
 }
 
 const SignedInLinks = (props) => {
+  console.log(props)
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
   const handleClickNotification = event => {
@@ -80,103 +90,107 @@ const SignedInLinks = (props) => {
   const handleCloseNotification = () => {
     setOpenNotification(null);
   };
-  const {auth} = props 
+  const { auth, cart } = props
+
+  var cartnav
+  if (cart === undefined) {
+    cartnav = JSON.parse(window.localStorage.getItem('cart'))
+  } else {
+    if (cart.length === 0) {
+      cartnav = JSON.parse(window.localStorage.getItem('cart'))
+    }
+    else {
+      cartnav = cart
+    }
+  }
+  const handelSignOut = (e) => {
+    props.signOut()
+    localStorage.removeItem('cart');
+    window.location.reload()
+
+  }
+
   return (
     <div>
       <Grid container spacing={3}>
-        <Grid item xs={3} style={{marginTop:"4%", marginRight:'-1%'}}>
-        <NavLink to={'/cart'}  >
-          <ShoppingCartIcon style={{color:'black'}} />
+        <Grid item xs={3} style={{ marginTop: "1%", marginRight: '-1%' }}>
+          <NavLink to={'/cart'}  >
+            <IconButton>
+              <ShoppingCartIcon  className={classes.icons} />
+              {cartnav ?
+                <span className={classes.notifications}>{cartnav.length}</span> : null}
+            </IconButton>
           </NavLink>
         </Grid>
-      <Grid item xs={3} style={{marginTop:"2%"}}>
-        <div className={classes.manager}>
-        <Button
-          color={window.innerWidth > 959 ? "transparent" : "secondary"}
-          // justIcon={window.innerWidth > 959}
-          // simple={!(window.innerWidth > 959)}
-          aria-owns={openNotification ? "notification-menu-list-grow" : null}
-          aria-haspopup="true"
-          onClick={handleClickNotification}
-          className={classes.buttonLink}
-        >
-          <Notifications className={classes.icons} />
-          <span className={classes.notifications}>5</span>
-          <Hidden mdUp implementation="css">
-            <p onClick={handleCloseNotification} className={classes.linkText}>
-              Notification
-            </p>
-          </Hidden>
-        </Button>
-        <Poppers
-          open={Boolean(openNotification)}
-          anchorEl={openNotification}
-          transition
-          disablePortal
-         
-        >
-          {({ TransitionProps, placement }) => (
-            <Grow
-              {...TransitionProps}
-              id="notification-menu-list-grow"
-              style={{
-                transformOrigin:
-                  placement === "bottom" ? "center top" : "center bottom"
-              }}
+        <Grid item xs={3} style={{ marginTop: "1%" }}>
+          <div className={classes.manager}>
+            <IconButton
+              color={window.innerWidth > 959 ? "transparent" : "secondary"}
+              aria-owns={openNotification ? "notification-menu-list-grow" : null}
+              aria-haspopup="true"
+              onClick={handleClickNotification}
+              className={classes.buttonLink}
             >
-              <Paper>
-                <ClickAwayListener onClickAway={handleCloseNotification}>
-                  <MenuList role="menu">
-                    <NavLink to='/chat'>
-                      <MenuItem
+              <Notifications className={classes.icons} />
+              {props.props.notifications?<span className={classes.notifications}>{props.props.notifications.length}</span>:null}
+              <Hidden mdUp implementation="css">
+                <p onClick={handleCloseNotification} className={classes.linkText}>
+                  Notification
+            </p>
+              </Hidden>
+            </IconButton>
+            <Poppers
+              open={Boolean(openNotification)}
+              anchorEl={openNotification}
+              transition
+              disablePortal
+
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  id="notification-menu-list-grow"
+                  style={{
+                    transformOrigin:
+                      placement === "bottom" ? "center top" : "center bottom"
+                  }}
+                >
+                  <Paper>
+                    <ClickAwayListener onClickAway={handleCloseNotification}>
+
+                      <MenuList role="menu">
+                      {props.props.notifications?props.props.notifications.map(noti=> {return(
+                        <MenuItem
                         onClick={handleCloseNotification}
                         className={classes.dropdownItem}
                       >
-                        Mike John responded to your message
-                      </MenuItem>
-                    </NavLink>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}
-                    >
-                      You have 5 new transaction
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}
-                    >
-                      You are now able to trade with Andrew
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}
-                    >
-                      Another Notification
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}
-                    >
-                      Another One
-                    </MenuItem>
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
-        </Poppers>
-      </div>
-          </Grid>
-      <Grid item xs={4}>
-            <LongMenu props={auth} lastContact={props.props.lastContact}/>
+                        {noti.content}
+                  </MenuItem>
+                        )})
+                        :<MenuItem
+                          onClick={handleCloseNotification}
+                          className={classes.dropdownItem}
+                        >
+                          You have no notification
+                    </MenuItem>}
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Poppers>
+          </div>
         </Grid>
         <Grid item xs={3}>
-      <IconButton onClick={props.signOut} >
-            <InputIcon  />
+          <LongMenu props={auth} lastContact={props.props.lastContact} />
+        </Grid>
+        <Grid item xs={3}>
+          <IconButton onClick={(e) => handelSignOut(e)} >
+            <InputIcon />
           </IconButton>
         </Grid>
-        
-        </Grid>
+
+      </Grid>
     </div>
   )
 }
