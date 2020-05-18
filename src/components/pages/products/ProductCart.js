@@ -9,7 +9,6 @@ import {
 } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { firestoreConnect } from 'react-redux-firebase'
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';

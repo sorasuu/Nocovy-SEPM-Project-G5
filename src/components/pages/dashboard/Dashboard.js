@@ -224,7 +224,8 @@ class Dashboard extends Component {
         <div style={{ marginTop: '2%' }}>
           <TabPanel value={value} index={0}>
 
-            <FilterForm products={products}
+            <FilterForm 
+              products={products}
               allCategories={allCategories}
               handleFilter={item => this.handleSelectFilter(item)}
               handleFilterForm={this.handleFilterForm}
@@ -250,14 +251,14 @@ class Dashboard extends Component {
                 sortFoundName.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={6} lg={6} xl={4}key={index}>
-                     <ProductCard product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart}/>
+                     <ProductCard key={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart} handelRegister={this.props.handelRegister} currentUser ={ this.props.currentUser}/>
                   </Grid>
                 )
                 })
               : sortFoundPrice.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={6} lg={6} xl={4} key={index}>
-                    <ProductCard key={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart}/>
+                    <ProductCard key={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart} handelRegister={this.props.handelRegister} currentUser ={ this.props.currentUser}/>
                
                   </Grid>
                 )
@@ -267,7 +268,7 @@ class Dashboard extends Component {
               : afterSearchProduct.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                     <ProductCard key ={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart} currentUser ={ this.props.currentUser}/>
+                     <ProductCard key ={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart} currentUser ={ this.props.currentUser} handelRegister={this.props.handelRegister}/>
                   </Grid>
                 )
               })}

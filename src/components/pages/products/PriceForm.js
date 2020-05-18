@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid'
 import {deleteProduct, editProduct} from '../../store/actions/productAction'
 import history from '../../utils/history'
 import EditProductCard from './EditProductCard'
-
+import { TableRow, TableCell } from '@material-ui/core'
 export class PriceForm extends React.Component{
   constructor(props){
     super(props);
@@ -75,19 +75,14 @@ export class PriceForm extends React.Component{
   render(){
     return <Fragment>
       
-      <Grid container direction='row' justify='flex-end' alignItems="center">
         
-        <Grid item> 
-          <Button variant="outlined" color="primary" onClick={this.handleClickForm}>
+          <TableCell> <Button size="small" variant="outlined" color="primary" onClick={this.handleClickForm}>
             Edit
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button variant="outlined" color="secondary" onClick={this.handleDeleteDialog}>
+          </Button></TableCell>
+          <TableCell size="small"><Button size="small" variant="outlined" color="secondary" onClick={this.handleDeleteDialog}>
             Delete
-          </Button>
-        </Grid>
-      </Grid>
+          </Button></TableCell>
+
 
         <Dialog open={this.state.openDelete} onClose={this.handleDeleteDialog} aria-labelledby="del-dialog-title">
           <DialogTitle id="del-dialog-title">Confirm deletion</DialogTitle>
@@ -103,23 +98,6 @@ export class PriceForm extends React.Component{
             </Button>
           </DialogActions>
         </Dialog>
-       
-        {/* <Dialog open={open} onClose={this.handleClickForm} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Price Form</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Edit your price information 
-            </DialogContentText>      
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClickForm} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.handleSubmit} color="primary">
-              Done
-            </Button>
-          </DialogActions>
-        </Dialog>  */}
 
           <Modal open={this.state.open} onClose={this.handleClickForm}>
             <div style={{maxWidth:'50%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%',}}>

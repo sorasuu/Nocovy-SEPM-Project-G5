@@ -59,7 +59,7 @@ const ProductCard = (props) => {
 
                         <div className="overlay" style={{ borderRadius: 16 }}>
 
-                            <BuyDialog product={product} currentUser={props.currentUser}/>
+                            <BuyDialog product={product} currentUser={props.currentUser} handleCart={props.handleCart} handelRegister={props.handelRegister} />
                             <NavLink to={'/product/' + product.id}>
                                 <ColorButton
                                     variant="contained"
@@ -100,7 +100,7 @@ export const BuyDialog = (props) => {
     const handleClickDialog = () => {
         setDialog(true);
     };
-
+    
     const handleCloseDialog = () => {
         setDialog(false);
         setRegister(false);
@@ -109,6 +109,9 @@ export const BuyDialog = (props) => {
         console.log("handle Buy Product:", product)
         props.handleCart(e, product, number)
         setDialog(false);
+        if (register===true){
+            props.handelRegister(e, product.id)
+        }
     };
     const buyLess = () => {
         if (number > 0) {
@@ -126,16 +129,15 @@ export const BuyDialog = (props) => {
 
     }
     var owner
-    if (props.uid === props.product.supplierId) {
+    if(currentUser!== undefined&& currentUser!==null){
+    if (currentUser.uid === props.product.supplierId) {
         owner = true
     } else {
         owner = false
-    }
+    }}
     return (
         <div>
-
-            {
-                owner ? null :
+            {owner ? null :
                     <Button
                         variant="contained"
                         color="secondary"
@@ -164,9 +166,12 @@ export const BuyDialog = (props) => {
                     </DialogTitle>
                     <DialogContent>
                         <Grid container justify="flex-start" style={{ width: 'fit-content' }}>
+                            <Grid item><h5>Description:</h5></Grid>
+                            <Grid item>{props.product.description}</Grid>
                             <Grid item xs={6}><h5>Categories:</h5></Grid>
                             <Grid item xs={6}>{product.category.map((item, key) => <Chip key={key} label={item} variant="outlined" />)}</Grid>
                             <br />
+                            
                             <Grid item xs={6}> <h5>Unit Price:</h5></Grid>
                             <Grid item xs={6}> <div style={{ textAlign: 'right', fontSize: '30px', fontFamily: 'bold' }}> ${product.price.unitPrice} </div></Grid>
                             <Grid item xs={12}>
@@ -194,7 +199,7 @@ export const BuyDialog = (props) => {
                                     <Grid item xs={4}><Button onClick={buyMore}><AddRoundedIcon /></Button></Grid>
                                 </Grid>
                             </Grid>
-                            <Grid item xs={6}><div style={{ textAlign: 'right', fontSize: '30px', fontFamily: 'bold' }}> = {product.price.unitPrice * number}</div></Grid>
+                            <Grid item xs={6}><div style={{ textAlign: 'right', fontSize: '30px', fontFamily: 'bold' }}> {product.price.unitPrice * number}</div></Grid>
                                 
 
                         </Grid>
@@ -210,7 +215,7 @@ export const BuyDialog = (props) => {
                     justify="flex-end">
                     <DialogActions>
                         {currentUser  ? currentUser.type === 'retailer'&& register == false ? 
-                            <Button onClick={handleRegister}>Register</Button>
+                            <Button variant='outlined' color='secondary' onClick={handleRegister}>Register</Button>
                              : null :null}
                         <Button autoFocus onClick={handleCloseDialog} color="primary">
                             Cancel

@@ -4,7 +4,7 @@ import {
     Paper, Button, DialogTitle,
     Dialog, Input, FormControl,
     InputLabel, Select, Chip,
-    MenuItem, Switch, Grid
+    MenuItem, Switch, Grid, Typography
 } from '@material-ui/core';
 import SortByAlphaOutlinedIcon from '@material-ui/icons/SortByAlphaOutlined';
 import TrendingDownOutlinedIcon from '@material-ui/icons/TrendingDownOutlined';
@@ -36,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
     },
     display: {
         margin: theme.spacing(0.5)
-    }
+    },
+    
 }));
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -66,8 +67,8 @@ function Form(props) {
         props.setCategory(event.target.value);
     };
     return (
-        <Dialog aria-labelledby="simple-dialog-title"  open={open}>
-            <DialogTitle id="simple-dialog-title">Filter Products</DialogTitle>
+        <Dialog aria-labelledby="simple-dialog-title" open={open}>
+            <DialogTitle id="simple-dialog-title"><h6>Filter Products</h6></DialogTitle>
             <FormControl className={classes.formControl}>
                 <InputLabel id="demo-mutiple-chip-label">Categories</InputLabel>
                 <Select
@@ -102,11 +103,11 @@ function Form(props) {
                     <Grid item xs={6} >
                         {props.sortName ?
                             <Button onClick={props.handleSort}>{props.sortAsc ? <>A to Z</> : <>Z to A</>}</Button>
-                            : <Button onClick={props.handleSort}>{props.sortAsc ? <><TrendingUpOutlinedIcon /></> : <><TrendingDownOutlinedIcon /></>}</Button>}
+                            : <Button onClick={props.handleSort}>{props.sortAsc ? <p><TrendingUpOutlinedIcon />Low to High</p> : <p><TrendingDownOutlinedIcon />High to Low</p>}</Button>}
                     </Grid>
                 </Grid>
-                <Button onClick={props.onCancel}>Cancel</Button>
-                <Button onClick={props.onSubmit}>Submit</Button>
+                <Button onClick={props.onCancel}><Typography>Cancel</Typography></Button>
+                <Button onClick={props.onSubmit} style={{backgroundColor:"#008CBA"}}><Typography style={{color:"white"}}>Submit</Typography></Button>
             </FormControl>
 
         </Dialog>
