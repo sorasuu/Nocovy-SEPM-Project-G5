@@ -4,11 +4,6 @@ import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Paper, Grid } from '@material-ui/core'
-// import AddIcon from '@material-ui/icons/Add';
-// import StyledButton from '../layout/StyledButton'
-// import ProductDetailCard from '../layout/ProductDetailCard'
-// import ColorLinearProgress from '../layout/ColorLinearProgress'
-// import { makeStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';

@@ -6,8 +6,6 @@ import {
     Button, Dialog, DialogContent, DialogActions,
     Chip, DialogTitle, Grid, Input, Collapse
 } from '@material-ui/core';
-// import useMediaQuery from '@material-ui/core/useMediaQuery';
-
 import TextInfoContent from '@mui-treasury/components/content/textInfo';
 import { useFourThreeCardMediaStyles } from '@mui-treasury/styles/cardMedia/fourThree';
 import { useN04TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n04';
@@ -60,11 +58,16 @@ const ProductCard = (props) => {
                         />
 
                         <div className="overlay" style={{ borderRadius: 16 }}>
+<<<<<<< HEAD
                             {props.profile == 'supplier' ? <RetailerDialog allRetailers={props.allRetailers} registered={props.product.retailerId}/>
                                : <>{props.profile == 'retailer'? null
                                : <BuyDialog uid={props.uid} product={product} currentUser={props.currentUser}/>}
                                 </>
                             }
+=======
+
+                            <BuyDialog product={product} currentUser={props.currentUser} handleCart={props.handleCart} handelRegister={props.handelRegister} />
+>>>>>>> b55464db6b1c87e8338666645ee171c5de8caa42
                             <NavLink to={'/product/' + product.id}>
                                 <ColorButton
                                     variant="contained"
@@ -105,7 +108,7 @@ export const BuyDialog = (props) => {
     const handleClickDialog = () => {
         setDialog(true);
     };
-
+    
     const handleCloseDialog = () => {
         setDialog(false);
         setRegister(false);
@@ -114,6 +117,9 @@ export const BuyDialog = (props) => {
         console.log("handle Buy Product:", product)
         props.handleCart(e, product, number)
         setDialog(false);
+        if (register===true){
+            props.handelRegister(e, product.id)
+        }
     };
     const buyLess = () => {
         if (number > 0) {
@@ -131,11 +137,12 @@ export const BuyDialog = (props) => {
 
     }
     var owner
-    if (props.uid === props.product.supplierId) {
+    if(currentUser!== undefined&& currentUser!==null){
+    if (currentUser.uid === props.product.supplierId) {
         owner = true
     } else {
         owner = false
-    }
+    }}
     return (
         <div>
             {owner ? null :
@@ -200,7 +207,7 @@ export const BuyDialog = (props) => {
                                     <Grid item xs={4}><Button onClick={buyMore}><AddRoundedIcon /></Button></Grid>
                                 </Grid>
                             </Grid>
-                            <Grid item xs={6}><div style={{ textAlign: 'right', fontSize: '30px', fontFamily: 'bold' }}> = {product.price.unitPrice * number}</div></Grid>
+                            <Grid item xs={6}><div style={{ textAlign: 'right', fontSize: '30px', fontFamily: 'bold' }}> {product.price.unitPrice * number}</div></Grid>
                                 
 
                         </Grid>

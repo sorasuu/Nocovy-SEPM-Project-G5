@@ -9,7 +9,6 @@ import {
   Tabs, Tab, CardContent, Typography,
   CardMedia, Card, Chip
 } from '@material-ui/core'
-// import StyledButton from '../../layout/StyledButton'
 import ProductCard from '../products/ProductCard'
 import SupplierCard from '../supplier/SupplierCard'
 import RetailerCard from '../retailer/RetailerCard'
@@ -252,14 +251,14 @@ class Dashboard extends Component {
                 sortFoundName.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={6} lg={6} xl={4}key={index}>
-                     <ProductCard product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart}/>
+                     <ProductCard key={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart} handelRegister={this.props.handelRegister} currentUser ={ this.props.currentUser}/>
                   </Grid>
                 )
                 })
               : sortFoundPrice.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={6} lg={6} xl={4} key={index}>
-                    <ProductCard key={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart}/>
+                    <ProductCard key={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart} handelRegister={this.props.handelRegister} currentUser ={ this.props.currentUser}/>
                
                   </Grid>
                 )
@@ -269,6 +268,7 @@ class Dashboard extends Component {
               : afterSearchProduct.map((product, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
+<<<<<<< HEAD
                      <ProductCard 
                         key ={index} 
                         product={product} 
@@ -276,6 +276,9 @@ class Dashboard extends Component {
                         handleCart={this.props.handleCart} 
                         currentUser ={ this.props.currentUser}
                         />
+=======
+                     <ProductCard key ={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart} currentUser ={ this.props.currentUser} handelRegister={this.props.handelRegister}/>
+>>>>>>> b55464db6b1c87e8338666645ee171c5de8caa42
                   </Grid>
                 )
               })}

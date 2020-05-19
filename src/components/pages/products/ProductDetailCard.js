@@ -205,7 +205,11 @@ export const ProductInfoCard = props => {
             </Grid>
 
             <Grid item>
+<<<<<<< HEAD
                 <BuyDialog product={props.product} uid={props.uid} />
+=======
+            {props.owner ?null: <BuyDialog product={props.product} />}
+>>>>>>> b55464db6b1c87e8338666645ee171c5de8caa42
             </Grid>
         </Grid>
 

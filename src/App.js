@@ -25,7 +25,7 @@ import TransactionRules from './components/pages/TransactionRules'
 import PrivacyPolicy from './components/pages/PrivacyPolicy'
 import NotFound from './components/pages/NotFound'
 import CancelIcon from '@material-ui/icons/Cancel';
-
+import {registerRetailers} from './components/store/actions/productAction'
 
 class App extends Component {
   state = {
@@ -73,6 +73,9 @@ class App extends Component {
     var cartfromlocal = JSON.parse(localStorage.getItem('cart'));
     console.log('cart',cartfromlocal)
   }
+  handelRegister=(e,productId)=>{
+    this.props.registerRetailers(productId)
+  }
   render() {
     const {  productlist, supplierlist, retailerlist, currentUser, chatsession, notifications,lastContact}= this.props
    
@@ -81,7 +84,7 @@ class App extends Component {
         <div className="App">
           <Navbar notifications={notifications} lastContact ={lastContact} cart={this.state.cart} />
           <Switch>
-            <Route exact path='/' component={(props)=><Dashboard {...props} handleCart={this.handleCart} />} />
+            <Route exact path='/' component={(props)=><Dashboard {...props} handleCart={this.handleCart} handelRegister={this.handelRegister} />} />
             {/* <Route path='/'component={ProductDetail} /> */}
             <Route path='/supplier/:id' component={(props)=> <SupplierDetail {...props} classes={supplierlist}/>}/>
             <Route path ='/admin' component={AdminDashboard}/>
@@ -90,7 +93,7 @@ class App extends Component {
             <Route path='/signin'component={SignIn}/>
             <Route path='/signup' component={SignUp} />
             <Route path='/cart' component={ProductCart} />
-            <Route path='/profile/:id' component={(props) => <Profile {...props} currentUser={currentUser} chatsesion={chatsession} />} />
+            <Route path='/profile/:id' component={(props) => <Profile {...props} currentUser={currentUser} chatsesion={chatsession} handleCart={this.handleCart} handelRegister={this.handelRegister}/>} />
             <Route path='/chat/:id' component={(props) => <Chat {...props} currentUser={currentUser} chatsession={chatsession}  />} />
             <Route path='/faq' component={FAQ} />
             <Route path='/privacypolicy' component={PrivacyPolicy} />
@@ -133,9 +136,14 @@ const mapStateToProps = (state,ownProps) => {
     lastContact: lastContact
   }
 };
-
+const mapDispatchToProps = dispatch => {
+  return {
+    registerRetailers: (productId) => dispatch(registerRetailers(productId)),
+  
+  }
+}
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps,mapDispatchToProps),
   firestoreConnect((props) => {
     // console.log("fetch data" ,props)
     if (!props.auth.uid) {
@@ -144,7 +152,7 @@ export default compose(
     else {
       return [{ collection: 'users', doc: props.auth.uid, storeAs: 'currentUser' },
       {
-        collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]],queryParams:['orderByChild=lastMod'] ,storeAs:'allchatsesion',
+        collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]],queryParams:['orderByChild=lastMod'] ,storeAs:'allchatsesion'
       },
       { collection: 'notifications', where: [['uid', '==', props.auth.uid]] }]
     }

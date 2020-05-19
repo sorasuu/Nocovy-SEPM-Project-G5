@@ -4,8 +4,6 @@ import orderBy from "lodash/orderBy";
 import TableInlineForm from "../../layout/TableInlineForm";
 import { supplier } from '../data';
 
-
-
 class SupplierInfo extends Component {
   state = {
     data: supplier,

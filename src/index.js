@@ -6,11 +6,11 @@ import * as serviceWorker from './serviceWorker';
 import { Provider,useSelector} from 'react-redux'
 import firebase from 'firebase/app'
 import 'firebase/auth'
-import 'firebase/firestore' // <- needed if using firestore
+import 'firebase/firestore'
 import 'firebase/storage';
 import { createStore, compose ,applyMiddleware} from 'redux'
 import { ReactReduxFirebaseProvider,getFirebase,isLoaded  } from 'react-redux-firebase'
-import { createFirestoreInstance,getFirestore } from 'redux-firestore' // <- needed if using firestore
+import { createFirestoreInstance,getFirestore } from 'redux-firestore' 
 
 import ColorLinearProgress from './components/layout/ColorLinearProgress'
 import thunk from 'redux-thunk';
@@ -25,15 +25,14 @@ const fbConfig = {
   appId: "1:110375007293:web:128c32d83c23de38b0e654",
   measurementId: "G-WQY5VFTZVL"
   };
-// react-redux-firebase config
 const rrfConfig = {
   userProfile: 'users',
-  useFirestoreForProfile: true // Firestore for Profile instead of Realtime DB
+  useFirestoreForProfile: true 
 }
 const middlewares = [
     thunk.withExtraArgument(getFirebase,getFirestore)
   ]
-// Initialize firebase instance
+
 firebase.initializeApp(fbConfig)
 firebase.firestore()
 
@@ -49,8 +48,8 @@ function AuthIsLoaded({ children }) {
   }
 
 
-// Create store with reducers and initial state
-const initialState = window && window.__INITIAL_STATE__ // set initial state here
+
+const initialState = window && window.__INITIAL_STATE__ 
 const store = createStore(
     rootReducer, initialState,
     compose(
@@ -61,7 +60,7 @@ const rrfProps = {
   firebase,
   config: rrfConfig,
   dispatch: store.dispatch,
-  createFirestoreInstance // <- needed if using firestore
+  createFirestoreInstance 
 }
 
 ReactDOM.render(<Provider store={store}>
