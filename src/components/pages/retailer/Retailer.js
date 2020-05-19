@@ -130,30 +130,6 @@ function RetailerDetail(props) {
     }
     console.log(data)
     return (
-<<<<<<< HEAD
-      <Container style={{ marginTop: '2%' }}>
-        {retailer?
-          <Grid
-            container
-            spacing={2}
-            direction="row"
-            justify="flex-start"
-            alignItems="flex-start"
-          >
-            <Grid item xs={3} md={3} lg={3}>
-              <RetailerDetailCard info={retailer} viewer={auth}/>
-            </Grid>
-            <Grid className={classes.root} item xs={9} md={9} lg={9}>
-                <RetailerDetail 
-                  retailer={retailer}
-                  sellProduct={sellProduct}
-                  data={sellProductData}
-                />
-            </Grid>
-          </Grid>
-          :null}
-      </Container>
-=======
         
         <Card className={cx(classes.card, cardShadowStyles.root)} style={{ position: "relative", marginBottom: '2%' }}>
             <CardContent className={classes.content}>
@@ -197,7 +173,6 @@ function RetailerDetail(props) {
                                         <TableCell align="left">{data[item.id].category.map((item, key) => <li key={key}><Chip label={item}/></li>)}</TableCell>
                                         
                                         <TableCell align="left">{'$ '+ data[item.id].price.unitPrice}</TableCell>
->>>>>>> b55464db6b1c87e8338666645ee171c5de8caa42
 
                                         
 

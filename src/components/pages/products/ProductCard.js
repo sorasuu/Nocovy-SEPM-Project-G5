@@ -58,16 +58,11 @@ const ProductCard = (props) => {
                         />
 
                         <div className="overlay" style={{ borderRadius: 16 }}>
-<<<<<<< HEAD
                             {props.profile == 'supplier' ? <RetailerDialog allRetailers={props.allRetailers} registered={props.product.retailerId}/>
                                : <>{props.profile == 'retailer'? null
                                : <BuyDialog uid={props.uid} product={product} currentUser={props.currentUser}/>}
                                 </>
                             }
-=======
-
-                            <BuyDialog product={product} currentUser={props.currentUser} handleCart={props.handleCart} handelRegister={props.handelRegister} />
->>>>>>> b55464db6b1c87e8338666645ee171c5de8caa42
                             <NavLink to={'/product/' + product.id}>
                                 <ColorButton
                                     variant="contained"

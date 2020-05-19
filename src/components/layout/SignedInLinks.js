@@ -123,13 +123,9 @@ const SignedInLinks = (props) => {
         <Grid item xs={3} style={{ marginTop: "1%" }}>
           <div className={classes.manager}>
             <IconButton
-<<<<<<< HEAD
+
               color={window.innerWidth > 959 ? "secondary" : "secondary"}
-              // justIcon={window.innerWidth > 959}
-              // simple={!(window.innerWidth > 959)}
-=======
-              color={window.innerWidth > 959 ? "transparent" : "secondary"}
->>>>>>> b55464db6b1c87e8338666645ee171c5de8caa42
+              
               aria-owns={openNotification ? "notification-menu-list-grow" : null}
               aria-haspopup="true"
               onClick={handleClickNotification}
