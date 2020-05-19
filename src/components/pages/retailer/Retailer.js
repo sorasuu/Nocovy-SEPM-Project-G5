@@ -61,7 +61,7 @@ class Retailer extends Component {
             alignItems="flex-start"
           >
             <Grid item xs={3} md={3} lg={3}>
-              <RetailerDetailCard info={retailer}/>
+              <RetailerDetailCard info={retailer} viewer={auth}/>
             </Grid>
             <Grid className={classes.root} item xs={9} md={9} lg={9}>
                 <RetailerDetail 

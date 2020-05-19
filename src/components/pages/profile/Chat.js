@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import cx from 'clsx';
-import { createChatSession, sendMessage } from '../store/actions/chatActions'
+import { createChatSession, sendMessage } from '../../store/actions/chatActions'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
@@ -32,7 +32,7 @@ import {
     ListItem,
     withStyles
 } from '@material-ui/core'
-import StyledButton from '../layout/StyledButton'
+import StyledButton from '../../layout/StyledButton'
 
 const useStyles = makeStyles((theme) => ({
     contactsCard: {

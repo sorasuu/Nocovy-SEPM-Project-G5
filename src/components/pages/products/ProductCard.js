@@ -20,6 +20,7 @@ import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import RemoveRoundedIcon from '@material-ui/icons/RemoveRounded';
 import ProductImageDetail from './ProductImageDetail'
 import { ColorButton } from '../retailer/RetailerCard'
+import RetailerDialog from '../profile/RetailerDialog';
 
 const useStyles = makeStyles(() => ({
     card: {
@@ -39,8 +40,7 @@ const ProductCard = (props) => {
     const textCardContentStyles = useN04TextInfoContentStyles();
     const shadowStyles = useOverShadowStyles({ inactive: false });
     const product = props.product
-    // console.log('product', product)
-
+    
     return (
         // <NavLink to = {'/product/'+ props.product.id}>
 
@@ -60,8 +60,11 @@ const ProductCard = (props) => {
                         />
 
                         <div className="overlay" style={{ borderRadius: 16 }}>
-
-                            <BuyDialog uid={props.uid} product={product} currentUser={props.currentUser}/>
+                            {props.profile == 'supplier' ? <RetailerDialog allRetailers={props.allRetailers} registered={props.product.retailerId}/>
+                               : <>{props.profile == 'retailer'? null
+                               : <BuyDialog uid={props.uid} product={product} currentUser={props.currentUser}/>}
+                                </>
+                            }
                             <NavLink to={'/product/' + product.id}>
                                 <ColorButton
                                     variant="contained"
@@ -164,8 +167,8 @@ export const BuyDialog = (props) => {
                     </DialogTitle>
                     <DialogContent>
                         <Grid container justify="flex-start" style={{ width: 'fit-content' }}>
-                            <Grid item><h5>Description:</h5></Grid>
-                            <Grid item>{props.product.description}</Grid>
+                            <Grid item xs={12}><h5>Description:</h5></Grid>
+                            <Grid item xs={12}>{props.product.description}</Grid>
                             <Grid item xs={6}><h5>Categories:</h5></Grid>
                             <Grid item xs={6}>{product.category.map((item, key) => <Chip key={key} label={item} variant="outlined" />)}</Grid>
                             <br />

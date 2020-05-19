@@ -42,7 +42,8 @@ const useStyles = makeStyles(() => ({
 }));
 
 const RetailerDetailCard = (props) => {
-    console.log('foobar' + props.info.businessName)
+    
+    console.log('foobar', props)
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles =  useOverShadowStyles({ inactive: true });
