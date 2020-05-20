@@ -22,8 +22,9 @@ const useStyles = makeStyles((theme) => ({
     },
     formControl: {
         margin: theme.spacing(1),
-        minWidth: 120,
-        maxWidth: 300,
+        minWidth: 400,
+        maxWidth: 800,
+        fixed: true,
     },
     chips: {
         display: 'flex',
@@ -45,8 +46,8 @@ const ITEM_PADDING_TOP = 8;
 const MenuProps = {
     PaperProps: {
         style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 300,
+            maxHeight: ITEM_HEIGHT * 5.5 + ITEM_PADDING_TOP,
+            width: 400,
         },
     },
 };
@@ -100,26 +101,27 @@ function Form(props) {
                 <br />
                 <h6>Sort by</h6>
 
-                <Grid container justify='center' alignItems="center" display="flex" spacing={2}>
-                    <Grid item xs={6} ><Button onClick={props.handleSortKind}>{props.sortName ?
-                        <p><SortByAlphaOutlinedIcon />Sort by Alphabet</p>
-                        : <p><AttachMoneyOutlinedIcon />Sort by Price</p>}</Button></Grid>
+                <Grid container justify='space-evenly' alignItems="center" spacing={2}>
+                    <Grid item xs={6} ><Button style={{width:"100%"}} variant="outlined" onClick={props.handleSortKind}>
+                        {props.sortName ? <p><SortByAlphaOutlinedIcon />Sort by Alphabet</p>
+                            : <p><AttachMoneyOutlinedIcon />Sort by Price</p>} </Button></Grid>
                     <Grid item xs={6} >
                         {props.sortName ?
-                            <Button onClick={props.handleSort}>{props.sortAsc ? <>A <ArrowForwardIcon /> Z</> : <>Z <ArrowForwardIcon /> A</>}</Button>
-                            : <Button onClick={props.handleSort}>{props.sortAsc ? <p><TrendingUpOutlinedIcon />Low to High</p> : <p><TrendingDownOutlinedIcon />High to Low</p>}</Button>}
+                            <Button style={{width:"100%"}} variant="outlined" onClick={props.handleSort}>{props.sortAsc ? <p> A to Z</p> : <p> Z to A </p>}</Button>
+                            : <Button style={{width:"100%"}} variant="outlined" onClick={props.handleSort}>{props.sortAsc ? <p><TrendingUpOutlinedIcon />Low to High</p> : <p><TrendingDownOutlinedIcon />High to Low</p>}</Button>}
                     </Grid>
                 </Grid>
                 <br />
-                <Grid container direction='row-reverse' justify='flex-start' alignItems="center" spacing={1}>
+                <Grid container direction='row' justify='flex-end' alignItems="center" spacing={1}>
                     <Grid item>
-                        <Button onClick={props.onSubmit} color="primary" autofocus 
+                        <Button onClick={props.onCancel} color="primary" >Cancel</Button>
+                    </Grid>
+                    <Grid item>
+                        <Button onClick={props.onSubmit} color="primary" autofocus
                         // style={{ backgroundColor: "#008CBA", color: "white" }}
                         >Save Changes</Button>
                     </Grid>
-                    <Grid item>
-                        <Button onClick={props.onCancel}  color="primary" >Cancel</Button>
-                    </Grid>
+
 
                 </Grid>
             </FormControl>
