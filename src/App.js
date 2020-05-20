@@ -4,10 +4,10 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect, populate } from 'react-redux-firebase'
 import Navbar from './components/layout/Navbar'
-import Profile from './components/pages/profile/Profile'
+import Profile from './components/pages/Profile'
 import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
-import Chat from './components/pages/profile/Chat'
+import Chat from './components/pages/Chat'
 import { Fab} from '@material-ui/core';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import "./App.css"
@@ -127,7 +127,6 @@ const mapStateToProps = (state,ownProps) => {
   const currentUser = users ? users[0] : null
   const chatsession = state.firestore.ordered.allchatsesion
   const lastContact = chatsession? chatsession[0]:null
- 
   return {
     auth: state.firebase.auth,
     currentUser: currentUser,

@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         padding: '3% 10px 10px 10px',
+        // border: `1px solid ${theme.palette.divider}`,
         borderRadius: theme.shape.borderRadius,
         backgroundColor: theme.palette.background.paper,
         color: theme.palette.text.secondary,
@@ -42,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'left',
         overflowX: 'auto',
         marginLeft: "5%",
+        // marginTop: "5%",
         display: 'center',
         alignItems: 'center',
         justifyContent: 'center',
@@ -95,7 +97,7 @@ export default function ProductDetailCard(props) {
                     >
                         <Grid item xs={12} sm={8} md={8} lg={8}>
                             <Grid container>
-                                
+                                {/* <ProductImageCard image={ props.product.productImg } /> */}
                                 <ProductImageDetail image={props.product} />
 
                             </Grid>
@@ -188,7 +190,10 @@ export const ProductInfoCard = props => {
                                     </TableRow>
                                 )
                             }) : null}
+
                         </TableBody>
+
+
                     </TableContainer>
                 </Grid>
             </Grid>

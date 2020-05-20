@@ -133,9 +133,6 @@ const useStyles = makeStyles((theme) => ({
         display:'flex',
 
     },
-    tabs:{
-        maxWidth:'200px'
-    }
 
 }));
  export function TabPanel(props) {
@@ -275,7 +272,7 @@ export default function SupplierDetailCard(props) {
                 <Table>
                     <TableHead className={classes.header}>
                         <TableRow>
-                            <TableCell className={classes.tabs}>Products </TableCell>
+                            <TableCell size="small">Products </TableCell>
                             <TableCell>Retailers </TableCell>
                         </TableRow>   
                     </TableHead>
@@ -283,14 +280,13 @@ export default function SupplierDetailCard(props) {
 
                     {/* Can't we just map into 2 TableCells instead of mapping twice? */}
                     <TableRow>
-                        <TableCell>
+                        <TableCell size="small">
                             <Tabs
                                 orientation="vertical"
                                 variant="scrollable"
                                 value={value}
                                 onChange={handleChange}
                                 className={classes.tabs}
-                                
                             >
                                 {filterProducts.map((product, key) =>
                                     <Tab label={product.name} {...a11yProps(key)} />
@@ -300,11 +296,10 @@ export default function SupplierDetailCard(props) {
                         <TableCell>
                             {filterProducts.map((product,productkey)=>
 
-                                <RetailerList   
-                                    product={product}
-                                    data = {props.data}
-                                    productkey ={productkey}
-                                    value={value}
+                                <RetailerList   product={product}
+                                                data = {props.data}
+                                                productkey ={productkey}
+                                                value={value}
                                 />
                             )}
                         </TableCell>

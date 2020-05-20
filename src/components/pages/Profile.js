@@ -2,21 +2,21 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import {InputBase, Container, Typography, Grid, withStyles, Modal} from '@material-ui/core'
-import ProfileInfoCard from './ProfileInfoCard'
+import ProfileInfoCard from './supplier/ProfileInfoCard'
 import { firestoreConnect } from 'react-redux-firebase'
-import { storeProducts } from "../data"
-import AddProductCard from '../products/AddProductCard'
-import EditProfileCard from '../supplier/EditProfileCard'
-import ProductCard from '../products/ProductCard'
+import { storeProducts } from "./data"
+import AddProductCard from './products/AddProductCard'
+import EditProfileCard from './supplier/EditProfileCard'
+import ProductCard from './products/ProductCard'
 import { Redirect } from 'react-router-dom'
-import {createProduct } from '../../store/actions/productAction'
-import {editUser } from '../../store/actions/userActions'
+import {createProduct } from '../store/actions/productAction'
+import {editUser } from '../store/actions/userActions'
 import SearchIcon from '@material-ui/icons/Search'
 import { fade } from '@material-ui/core/styles'
-import {uploadToStorage} from '../../store/actions/uploadAction'
+import {uploadToStorage} from '../store/actions/uploadAction'
 import {withRouter} from 'react-router-dom';
-import {createChatSession} from '../../store/actions/chatActions'
-import { checkArray } from '../dashboard/Dashboard'
+import {createChatSession} from '../store/actions/chatActions'
+import { checkArray } from './dashboard/Dashboard'
 const useStyles = theme => ({
   search: {
     position: 'relative',
@@ -292,8 +292,7 @@ static getDerivedStateFromProps(nextProps, prevState) {
   
   render() {
     const { auth, classes, products } = this.props;
-    
-    const allRetailers = this.props.allRetailers ? this.props.allRetailers : []
+    console.log(this.props)
     const { search } = this.state;
     const filteredProducts = checkArray(products).filter(product =>{
         return product.name.toLowerCase().indexOf(search.toLowerCase())!== -1
@@ -330,7 +329,7 @@ static getDerivedStateFromProps(nextProps, prevState) {
             {products ? filteredProducts.map(product => {
               return (
                 <Grid item xs={12} sm={6} md={4} key={product.id}>
-                  <ProductCard product={product} profile={this.props.thisUser ? this.props.thisUser.type : false} allRetailers={allRetailers} />
+                  <ProductCard product={product} />
                 </Grid>
               )
             }) : <h5>Loading...</h5>}</Grid>
@@ -356,7 +355,6 @@ static getDerivedStateFromProps(nextProps, prevState) {
   }
 }
 var prourls = new Set()
-
 const mapStateToProps = (state,ownProps) => {
   // eslint-disable-next-line no-unused-vars
   const id = ownProps.match.params.id;
@@ -367,13 +365,13 @@ const mapStateToProps = (state,ownProps) => {
   const thisUsers = state.firestore.data.thisUser
   const thisUser = thisUsers?thisUsers:null
   const user = users ? users[0] : null;
-  // console.log(ownProps)
+  console.log(ownProps)
   const url = state.uploadReducer.url ? state.uploadReducer.url:null
   if(url!==undefined&& url!==null){
     if (url.path==='/images/productImg/'){
       prourls=prourls.add(url.url)
       }}
-  // console.log(prourls)
+  console.log(prourls)
   var chatexist=null
   var chatId =null
   var i;
@@ -402,17 +400,15 @@ const mapStateToProps = (state,ownProps) => {
     thisUser: thisUser,
     chatexist: chatexist,
     chat: state.firestore.data.chatsesion,
-    chatId: chatId,
-    allRetailers: state.firestore.ordered.allRetailers,
+    chatId: chatId
+    
 }};
 const mapDispatchToProps = dispatch => {
-  
   return {
     createProduct: (product) => dispatch(createProduct(product)),
     editUser: (newProfileInfo) => dispatch(editUser(newProfileInfo)),
     uploadToStorage:(file)=>dispatch(uploadToStorage(file)),
-    createChatSession:(chat)=> dispatch(createChatSession(chat)),
-    
+    createChatSession:(chat)=> dispatch(createChatSession(chat))
   }
 }
 
@@ -420,12 +416,7 @@ export default withRouter(compose(
   connect(mapStateToProps,mapDispatchToProps),
   firestoreConnect((props) => {
     
-      return [
-        { collection: 'products', where:[["supplierId","==", props.match.params.id]]},
-        { collection: 'users', doc: props.match.params.id, storeAs: 'thisUser' },
-        { collection: 'users', where: [["type", "==", "retailer"]], storeAs: 'allRetailers' }
-         
-      ]
-        
+      return [{ collection: 'products', where:[["supplierId","==", props.match.params.id]]},{ collection: 'users', doc: props.match.params.id, storeAs: 'thisUser' } ]
+      
   })
 )(withStyles(useStyles)(Profile)) )

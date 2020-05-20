@@ -14,7 +14,7 @@ function RetailerList(props){
             {retailerList ? retailerList.map((item, key)=>
         
                 <TabPanel value={value} index={productkey} key={key}>
-                        <Table style={{ display: 'block', overflowX: 'auto' }}>
+                        <Table>
                             <TableHead>
                                 <TableCell>Avatar</TableCell>
                                 <TableCell>BusinessName</TableCell>
@@ -38,7 +38,7 @@ function RetailerList(props){
                     </TabPanel>
             )
                     
-               : null}
+                :null}
         </div>
     )
 }
