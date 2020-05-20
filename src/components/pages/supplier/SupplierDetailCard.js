@@ -131,8 +131,10 @@ const useStyles = makeStyles((theme) => ({
     buttons:{
         marginTop:'5%',
         display:'flex',
-
     },
+    tabs:{
+        maxWidth:'200px'
+    }
 
 }));
  export function TabPanel(props) {
@@ -272,7 +274,7 @@ export default function SupplierDetailCard(props) {
                 <Table>
                     <TableHead className={classes.header}>
                         <TableRow>
-                            <TableCell size="small">Products </TableCell>
+                            <TableCell className={classes.tabs}>Products </TableCell>
                             <TableCell>Retailers </TableCell>
                         </TableRow>   
                     </TableHead>
@@ -296,10 +298,11 @@ export default function SupplierDetailCard(props) {
                         <TableCell>
                             {filterProducts.map((product,productkey)=>
 
-                                <RetailerList   product={product}
-                                                data = {props.data}
-                                                productkey ={productkey}
-                                                value={value}
+                                <RetailerList   
+                                    product={product}
+                                    data = {props.data}
+                                    productkey ={productkey}
+                                    value={value}
                                 />
                             )}
                         </TableCell>
