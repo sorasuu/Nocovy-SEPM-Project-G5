@@ -64,11 +64,11 @@ const useStyles1 = theme => ({
     chatMenu: {
         // marginTop: "10%",
         // display: 'flex',
-        // position: "relative"
+        position: "relative",
         overflow: 'initial',
         background: '#ffffff',
         borderRadius: 16,
-        // height: '100%',
+        height: '100%',
         paddingTop: "5px",
         paddingLeft: "5%",
         paddingRight: "5%",
@@ -85,8 +85,9 @@ function ListItemLink(props) {
 
 //CONTACTS COMPONENT
 export const ChatContact = (props) => {
-    console.log('CHAT contact', props)
+    // console.log('CHAT contact', props)
     const classes = useStyles();
+    const styles = useFadedShadowStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles({ inactive: true });
     const cardHeaderShadowStyles = useFadedShadowStyles();
@@ -146,7 +147,8 @@ export const ChatContact = (props) => {
 };
 
 export const MessageList = (props) => {
-    console.log(props)
+    // console.log(props)
+    const styles = useFadedShadowStyles();
     var receiver;
 
    
