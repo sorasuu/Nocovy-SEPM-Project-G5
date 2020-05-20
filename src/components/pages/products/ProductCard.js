@@ -60,7 +60,7 @@ const ProductCard = (props) => {
 
                         <div className="overlay" style={{ borderRadius: 16 }}>
 
-                            {props.profile == 'supplier' ? <RetailerDialog allRetailers={props.allRetailers} registered={props.product.retailerId}/>
+                            {props.profile == 'supplier' ? <RetailerDialog allRetailers={props.allRetailers} registered={props.product.retailerId} product={product}/>
                                : <>{props.profile == 'retailer'? null
                                : <BuyDialog uid={props.uid} product={product} currentUser={props.currentUser} handleCart={props.handleCart} handelRegister={props.handelRegister}/>}
                                 </>

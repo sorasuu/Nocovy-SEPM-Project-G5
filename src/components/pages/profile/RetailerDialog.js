@@ -16,6 +16,7 @@ export default function RetailerDialog(props) {
     const handleClose = () => {
         setOpen(false)
     }
+    console.log("nhanh",props.product)
     const registered = props.registered ? props.registered : ['No Register Retailer']
     const all = props.allRetailers ? props.allRetailers.map(retailer => retailer.id) : []
 
@@ -60,7 +61,7 @@ export default function RetailerDialog(props) {
                                     </TableRow>
                                 </TableHead>
 
-                                {registered.map((retailer,key) => <RetailerDialogDetail key={key} id={retailer} registered={true}/>)}
+                                {registered.map((retailer,key) => <RetailerDialogDetail key={key} id={retailer} registered={true} product={props.product}/>)}
 
                             </Table>
 
@@ -81,7 +82,7 @@ export default function RetailerDialog(props) {
                                         <TableCell>Address</TableCell>
                                     </TableRow>
                                 </TableHead>
-                                {available.map((retailer,key) => <RetailerDialogDetail key={key} id={retailer} />)}
+                                {available.map((retailer,key) => <RetailerDialogDetail key={key} id={retailer} product={props.product}/>)}
                             </Table>
                         </DialogContent>
                     </Grid>

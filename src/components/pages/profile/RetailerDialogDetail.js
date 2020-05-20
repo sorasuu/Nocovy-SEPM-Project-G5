@@ -8,12 +8,19 @@ import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
 import { TableBody, TableRow, TableCell, Button, Grid } from '@material-ui/core'
 import firebase from 'firebase/app'
+import {createSingleRequest} from '../../store/actions/transactionAction'
 class RetailerDialogDetail extends React.Component {
     state={
         retailer: null,
         pending: true,
     }
     handlePending=(e)=>{
+        const request={
+         retailerId:   this.state.retailer.uid,
+         product: this.props.product
+        }
+        console.log(request)
+        this.props.createSingleRequest(request)
         this.setState({pending: false})
     }
     
@@ -84,16 +91,21 @@ class RetailerDialogDetail extends React.Component {
     }
 
 }
+const mapDispatchToProps = dispatch => {
+    return {
+        createSingleRequest: (request) => dispatch(createSingleRequest(request)),
+    }
+  }
 
-// const mapStateToProps = (state, ownProps) => {
-//     console.log('state', state, 'ownProps', ownProps)
 
-//     return {
-//         selectedRetailer: state.firestore.data.selectedRetailer
-//     }
-// }
-// export default compose(
-//     connect(mapStateToProps),
+
+const mapStateToProps = (state, ownProps) => {
+
+    return {
+        
+    }
+}
+export default compose(
+    connect(mapStateToProps,mapDispatchToProps),
     
-// )(RetailerDetail)
-export default RetailerDialogDetail;
+)(RetailerDialogDetail)
