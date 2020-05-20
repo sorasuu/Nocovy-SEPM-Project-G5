@@ -4,13 +4,18 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import InfoRoundedIcon from '@material-ui/icons/InfoRounded';
-import { TableBody, TableRow, TableCell, Button } from '@material-ui/core'
+import AddRoundedIcon from '@material-ui/icons/AddRounded';
+import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
+import { TableBody, TableRow, TableCell, Button, Grid } from '@material-ui/core'
 import firebase from 'firebase/app'
 class RetailerDialogDetail extends React.Component {
     state={
-        retailer: null
+        retailer: null,
+        pending: true,
     }
-    
+    handlePending=(e)=>{
+        this.setState({pending: false})
+    }
     
     componentDidMount() {
         
@@ -46,7 +51,26 @@ class RetailerDialogDetail extends React.Component {
             <TableBody>
                 {retailer !== undefined && retailer !== null ?
                 <TableRow>
-                    <TableCell><NavLink to={`/retailer/${retailer.uid}`}><Button size="small"><InfoRoundedIcon/></Button></NavLink></TableCell>
+                    <TableCell style={{textAlign:'left'}}>
+                        <Grid container direction="row">
+                            {this.props.registered ? null:
+                                <>{this.state.pending ?
+                                    <Grid item xs={6}>
+                                        <Button onClick={this.handlePending}><AddRoundedIcon/></Button>
+                                    </Grid>
+                                    : <Grid item xs={6}>
+                                        <Button><CheckRoundedIcon/></Button>
+                                    </Grid>
+                                    }
+                                </>
+                                
+                            }
+                            <Grid item xs={6}>
+                                <NavLink to={`/retailer/${retailer.uid}`}><Button><InfoRoundedIcon/></Button></NavLink>
+                            </Grid>
+                            
+                        </Grid>
+                    </TableCell>
                     <TableCell><img alt='' style={{maxWidth:'50px', height:'75px'}} src={retailer.logo}/></TableCell>
                     <TableCell>{retailer.businessName}</TableCell>
                     <TableCell>{retailer.email}</TableCell>

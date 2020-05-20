@@ -9,7 +9,7 @@ import RetailerDialogDetail from './RetailerDialogDetail';
 
 export default function RetailerDialog(props) {
     const [open, setOpen] = useState(false)
-
+    
     const handleOpen = () => {
         setOpen(true)
     }
@@ -37,7 +37,7 @@ export default function RetailerDialog(props) {
             </Button>
             <Dialog
                 fullWidth={true}
-                maxWidth={'md'}
+                maxWidth={'lg'}
                 open={open}
                 onClose={handleClose}
 
@@ -52,6 +52,7 @@ export default function RetailerDialog(props) {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>Detail</TableCell>
+                                       
                                         <TableCell>Logo</TableCell>
                                         <TableCell>Name</TableCell>
                                         <TableCell>Email</TableCell>
@@ -59,7 +60,7 @@ export default function RetailerDialog(props) {
                                     </TableRow>
                                 </TableHead>
 
-                                {registered.map((retailer,key) => <RetailerDialogDetail key={key} id={retailer}/>)}
+                                {registered.map((retailer,key) => <RetailerDialogDetail key={key} id={retailer} registered={true}/>)}
 
                             </Table>
 
@@ -73,7 +74,7 @@ export default function RetailerDialog(props) {
                             <Table>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Detail</TableCell>
+                                        <TableCell>Action</TableCell>
                                         <TableCell>Logo</TableCell>
                                         <TableCell>Name</TableCell>
                                         <TableCell>Email</TableCell>
