@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 
+
 export const createCheckout = (orders) => {
     return (dispatch, getState ) => {
       
@@ -15,20 +16,20 @@ export const createCheckout = (orders) => {
     }
   };
   
-export const editTransaction = (transaction) => {
-    return (dispatch, getState) => {
-      firebase.firestore().collection('transactions').doc(transaction.id).set({
-        ...transaction,
-      }).then(() => {
-        dispatch({ type: 'EDIT_TRANSACTION_SUCCESS' });
-      }).catch(err => {
-        dispatch({ type: 'EDIT_TRANSACTION_ERROR' }, err);
-      });
-    }
-  };
-export const deleteTransaction = (transaction) => {
+
+export const createRequest = (requests) => {
 return (dispatch, getState) => {
-  firebase.firestore().collection('transactions').doc(transaction.id).delete()
+  const supplier = getState().firebase.auth;
+  firebase.firestore().collection('requests').add(
+{
+  pending:true,
+  confirmed : false,
+  products:requests.orders,
+  retailerId: requests.retailerId,
+  supplierId: supplier.uid,
+  
+}
+  )
     .then(() => {
     dispatch({ type: 'DELETE_TRANSACTION_SUCCESS' });
     }).catch(err => {

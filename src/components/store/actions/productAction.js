@@ -12,9 +12,7 @@ export const createProduct = (product) => {
         cover:product.productImg[0],
         createdAt: new Date()
       }).then(() => {
-        firebase.firestore().collection('categories').doc('productcategories').set({
-          categories: firebase.firestore.FieldValue.arrayUnion(product.category)
-        })
+       
         dispatch({ type: 'CREATE_PRODUCT_SUCCESS' });
       }).catch(err => {
         dispatch({ type: 'CREATE_PRODUCT_ERROR' }, err);
