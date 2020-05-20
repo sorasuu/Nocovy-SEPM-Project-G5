@@ -8,12 +8,19 @@ import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
 import { TableBody, TableRow, TableCell, Button, Grid } from '@material-ui/core'
 import firebase from 'firebase/app'
+import {createSingleRequest} from '../../store/actions/transactionAction'
 class RetailerDialogDetail extends React.Component {
     state={
         retailer: null,
         pending: true,
     }
     handlePending=(e)=>{
+        const request={
+         retailerId:   this.state.retailer.uid,
+         product: this.props.product
+        }
+        console.log(request)
+        this.props.createSingleRequest(request)
         this.setState({pending: false})
     }
     
@@ -47,6 +54,21 @@ class RetailerDialogDetail extends React.Component {
 
         const retailer = this.state.retailer
         console.log('something', this.props)
+        var requestuser=null
+        if(this.props.requested!== undefined&& this.props.requested!==null){
+            if(this.props.requested.pending===true){
+                requestuser= <Grid item xs={6}> <Button><CheckRoundedIcon/></Button></Grid>
+            }
+            if(this.props.requested.pending===false&&this.props.requested.confirmed===true){
+                //accepted
+                // requestuser= <Grid item xs={6}> <Button><CheckRoundedIcon/></Button></Grid>
+            }else if(this.props.requested.pending===false&&this.props.requested.confirmed===true){
+                //declined
+                // requestuser= <Grid item xs={6}> <Button><CheckRoundedIcon/></Button></Grid>
+            }
+        }else{
+            requestuser =<Grid item xs={6}><Button onClick={this.handlePending}><AddRoundedIcon/></Button></Grid>
+        }
         return (
             <TableBody>
                 {retailer !== undefined && retailer !== null ?
@@ -54,16 +76,7 @@ class RetailerDialogDetail extends React.Component {
                     <TableCell style={{textAlign:'left'}}>
                         <Grid container direction="row">
                             {this.props.registered ? null:
-                                <>{this.state.pending ?
-                                    <Grid item xs={6}>
-                                        <Button onClick={this.handlePending}><AddRoundedIcon/></Button>
-                                    </Grid>
-                                    : <Grid item xs={6}>
-                                        <Button><CheckRoundedIcon/></Button>
-                                    </Grid>
-                                    }
-                                </>
-                                
+                                <>{requestuser}</> 
                             }
                             <Grid item xs={6}>
                                 <NavLink to={`/retailer/${retailer.uid}`}><Button><InfoRoundedIcon/></Button></NavLink>
@@ -84,16 +97,32 @@ class RetailerDialogDetail extends React.Component {
     }
 
 }
+const mapDispatchToProps = dispatch => {
+    return {
+        createSingleRequest: (request) => dispatch(createSingleRequest(request)),
+    }
+  }
 
-// const mapStateToProps = (state, ownProps) => {
-//     console.log('state', state, 'ownProps', ownProps)
 
-//     return {
-//         selectedRetailer: state.firestore.data.selectedRetailer
-//     }
-// }
-// export default compose(
-//     connect(mapStateToProps),
-    
-// )(RetailerDetail)
-export default RetailerDialogDetail;
+
+const mapStateToProps = (state, ownProps) => {
+    console.log(ownProps)
+    const id = ownProps.id&&ownProps.product?ownProps.product.id+ ownProps.id:null
+    const requesteds =state.firestore.data.requested
+    const requested = requesteds? requesteds[id]: null
+    return {
+        requested: requested
+        
+    }
+}
+export default compose(
+    connect(mapStateToProps,mapDispatchToProps),
+    firestoreConnect((props)=>{
+        console.log(props)
+    return[
+        { collection: 'requests', where:[["retailerId","==",props.id]], where:[["productId","==",props.product.id]],storeAs:'requested'},
+      ]
+      
+     } )
+    )
+(RetailerDialogDetail)

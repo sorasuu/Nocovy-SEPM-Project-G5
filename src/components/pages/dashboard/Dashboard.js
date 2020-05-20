@@ -11,14 +11,12 @@ import {
 import SortByAlphaOutlinedIcon from '@material-ui/icons/SortByAlphaOutlined';
 import TrendingDownOutlinedIcon from '@material-ui/icons/TrendingDownOutlined';
 import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
-import AttachMoneyOutlinedIcon from '@material-ui/icons/AttachMoneyOutlined';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+
 import ProductCard from '../products/ProductCard'
 import SupplierCard from '../supplier/SupplierCard'
 import RetailerCard from '../retailer/RetailerCard'
 import SearchIcon from '@material-ui/icons/Search';
 import { TabPanel, a11yProps } from './AdminDashboard'
-import FilterForm from './FilterForm'
 import { deliverProductToCart } from '../../store/actions/productAction'
 const useStyles = theme => ({
 
@@ -293,7 +291,7 @@ class Dashboard extends Component {
                   </Select>
                 </Grid>
                 <Grid item xs={12}>
-                  {filter.map((option, key) => <Button onClick={this.handleSelectFilter(key, option.name, true)}>{option.icon}{option.detail}</Button>)}
+                  {filter.map((option, key) => <Button onClick={this.handleSelectFilter(key, option.name, !option.value)}>{option.icon}{option.detail}</Button>)}
                 </Grid>
               </Grid>
             </Collapse>

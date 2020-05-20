@@ -78,7 +78,6 @@ const useStyles1 = theme => ({
 
 })
 
-
 function ListItemLink(props) {
     return <ListItem button component="a" {...props} />;
   }
@@ -124,8 +123,8 @@ export const ChatContact = (props) => {
                         }
 
                         return (
-                            <NavLink to={'/chat/'+contact.id}>
-                            <ListItemLink  divider dense button alignItems="flex-start" selected={contact.id === props.currentchatsession.id}>
+                            // <NavLink to={'/chat/'+contact.id}>
+                            <ListItemLink href={'/chat/'+contact.id} divider dense button alignItems="flex-start" selected={contact.id === props.currentchatsession.id}>
                                 <ListItemAvatar>
                                     <Avatar src={receiver?receiver.logo:null} />
                                 </ListItemAvatar>
@@ -136,7 +135,7 @@ export const ChatContact = (props) => {
                                         <Typography variant='subtitle'> {receiver?contact.lastchat:null}</Typography>}
                                 />
                             </ListItemLink>
-                            </NavLink>
+                            // </NavLink>
                         )
                     }) : null}
                 </List>
@@ -151,7 +150,7 @@ export const MessageList = (props) => {
 
    
     return (
-        <div style={{maxHeight:'400px', height:'400px',overflow: 'auto', width:'90%', }}>
+        <div style={{maxHeight:'400px', height:'400px'}}>
             {props.messages && props.chatuser ? props.messages.map(message => {
                 console.log(message)
 
@@ -195,7 +194,7 @@ export const SendMessageForm = (props) => {
     return (
         <form
             className='message-form'
-        onSubmit={(e) => props.handleSendMessage(e)}
+            onSubmit={(e) => props.handleSendMessage(e)}
         >
             <div className='input-group'>
                 <Grid container spacing={3}>
@@ -277,7 +276,7 @@ class Chat extends Component {
                 <Container>
                     <h3>Chat menu</h3>
                     <Grid container spacing={3}>
-                        <Grid item xs={4}><ChatContact  props={this.props} handleChange={this.handleChange} currentchatsession={this.props.currentchatsession} chatsesion={this.props.chatsessionorder} search={search} chatuser={this.props.chatuser} uid={this.props.auth.uid} /></Grid>
+                        <Grid item xs={4}><ChatContact style={{maxHeight:'400px', height:'400px'}} props={this.props} handleChange={this.handleChange} currentchatsession={this.props.currentchatsession} chatsesion={this.props.chatsessionorder} search={search} chatuser={this.props.chatuser} uid={this.props.auth.uid} /></Grid>
                         <Grid item xs={8} style={{marginTop:"3%"}}><Paper className={classes.chatMenu}>
                             <div className='chat-box'>
                                 <div className='msg-page'>

@@ -11,6 +11,20 @@ const createNotification = ((notification) => {
 
 const MY_SENDGRID_API_KEY = "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"
 sendgridemail.setApiKey(MY_SENDGRID_API_KEY);
+exports.requestCreated = functions.firestore
+  .document('requests/{requestId}')
+  .onCreate((snap, context) => {
+    const request = snap.data();
+    const notification = {
+      content: `You receive a request for selling  ${request.name}`,
+      uid: `${request.retailer}`,
+      time: admin.firestore.FieldValue.serverTimestamp(),
+      link: '/requests'
+    }
+
+    return createNotification(notification);
+
+  });
 
 exports.productCreated = functions.firestore
   .document('products/{productId}')
@@ -22,6 +36,7 @@ exports.productCreated = functions.firestore
       uid: `${product.supplierId}`,
       time: admin.firestore.FieldValue.serverTimestamp(),
       tag:'admin',
+      link:`/product/${context.params.productId}`
     }
 
     return createNotification(notification);
