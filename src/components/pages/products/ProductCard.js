@@ -62,7 +62,7 @@ const ProductCard = (props) => {
 
                             {props.profile == 'supplier' ? <RetailerDialog allRetailers={props.allRetailers} registered={props.product.retailerId}/>
                                : <>{props.profile == 'retailer'? null
-                               : <BuyDialog uid={props.uid} product={product} currentUser={props.currentUser}/>}
+                               : <BuyDialog uid={props.uid} product={product} currentUser={props.currentUser} handleCart={props.handleCart} handelRegister={props.handelRegister}/>}
                                 </>
                             }
                             <NavLink to={'/product/' + product.id}>

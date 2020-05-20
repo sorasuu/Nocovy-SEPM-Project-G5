@@ -64,6 +64,7 @@ class ProductCart extends Component {
   handleOrder(e) {
     this.props.createCheckout(this.state.cart)
     localStorage.removeItem('cart');
+    this.props.handleEmptyCart(e)
     this.setState({ cart: [] })
   }
   handleChange(e, index) {
