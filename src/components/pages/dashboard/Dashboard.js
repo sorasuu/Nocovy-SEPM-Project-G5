@@ -118,16 +118,12 @@ const allCategories = [
 ];
 
 
-
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       search: '',
       value: 0,
-      filter: [],
-      sortName: true,
-      sortAsc: true,
       isFiltered: false,
       cart:[]
     };
@@ -136,9 +132,6 @@ class Dashboard extends Component {
 
   onChange = e => {
     this.setState({ search: e.target.value })
-  }
-  handleSort = e => {
-    this.setState({ sortAsc: !this.state.sortAsc })
   }
 
   handleSortKind = () =>{
