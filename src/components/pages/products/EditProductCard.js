@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/styles'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
+import Chip from '@material-ui/core/Chip'
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained'
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over'
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded'
@@ -11,7 +12,7 @@ import StyledButton from '../../layout/StyledButton'
 import {DropzoneArea} from 'material-ui-dropzone'
 import ChipInput from 'material-ui-chip-input'
 import {TextField, InputAdornment} from '@material-ui/core'
-
+import { allCategories } from '../dashboard/Dashboard'
 //SET DEFAULT VALUES FOR DROPZONE AND NEW INFO. SHIT DON'T GET RESET WHEN YOU CLICK OFF THE PAGE AND CLICK ON AGAIN
 
 const useStyles = makeStyles(() => ({

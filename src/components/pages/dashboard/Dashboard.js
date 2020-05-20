@@ -5,17 +5,21 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { fade, withStyles } from '@material-ui/core/styles'
 import {
-  Grid, InputBase,
-  Tabs, Tab, CardContent, Typography,
-  CardMedia, Card, Chip
+  Grid, InputBase, Button, Select, MenuItem, InputLabel,
+  Tabs, Tab, Collapse, Chip, Input, FormControl,
 } from '@material-ui/core'
+import SortByAlphaOutlinedIcon from '@material-ui/icons/SortByAlphaOutlined';
+import TrendingDownOutlinedIcon from '@material-ui/icons/TrendingDownOutlined';
+import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
+import AttachMoneyOutlinedIcon from '@material-ui/icons/AttachMoneyOutlined';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ProductCard from '../products/ProductCard'
 import SupplierCard from '../supplier/SupplierCard'
 import RetailerCard from '../retailer/RetailerCard'
 import SearchIcon from '@material-ui/icons/Search';
 import { TabPanel, a11yProps } from './AdminDashboard'
 import FilterForm from './FilterForm'
-import {deliverProductToCart}from '../../store/actions/productAction'
+import { deliverProductToCart } from '../../store/actions/productAction'
 const useStyles = theme => ({
 
   search: {
@@ -100,23 +104,39 @@ function checkFilter(arr, arrCheck) {
 
 
 export function checkArray(array) {
-  var data = [{ id: 'Loading...', category: ['a', 'b'], pending: true, name: "Loading", displayName: "Loading", businessName: 'Loading', price: 'Loading'}];
+  var data = [{ id: 'Loading...', category: ['a', 'b'], pending: true, name: "Loading", displayName: "Loading", businessName: 'Loading', price: 'Loading' }];
   if (array !== undefined) {
     data = array
   }
   return data
 }
 
-const allCategories = [
-  'fashion',
-  'vehicle',
-  'luxury',
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 300,
+    },
+  },
+};
+export const allCategories = [
+  'beauty',
   'convenience',
-  'something',
   'electronic',
-  'beauty'
+  'fashion',
+  'food',
+  'vehicle',
+  'other',
 ];
 
+const defaultFilter = [
+  { name: 'sortNameAsc', value: false, icon: <SortByAlphaOutlinedIcon />, detail: '(A->z)' },
+  { name: 'sortNameDesc', value: false, icon: <SortByAlphaOutlinedIcon />, detail: '(Z->a)' },
+  { name: 'sortPriceAsc', value: false, icon: <TrendingUpOutlinedIcon />, detail: '$' },
+  { name: 'sortPriceDesc', value: false, icon: <TrendingDownOutlinedIcon />, detail: '$' },
+]
 
 class Dashboard extends Component {
   constructor(props) {
@@ -125,60 +145,87 @@ class Dashboard extends Component {
       search: '',
       value: 0,
       isFiltered: false,
-      cart:[]
+      filter: [
+        { name: 'sortNameAsc', value: false, icon: <SortByAlphaOutlinedIcon />, detail: '(A->z)' },
+        { name: 'sortNameDesc', value: false, icon: <SortByAlphaOutlinedIcon />, detail: '(Z->a)' },
+        { name: 'sortPriceAsc', value: false, icon: <TrendingUpOutlinedIcon />, detail: '$' },
+        { name: 'sortPriceDesc', value: false, icon: <TrendingDownOutlinedIcon />, detail: '$' },
+      ],
+      selectedCategories: [],
+      cart: [],
+      allCategories: allCategories
     };
-   
+
   }
 
   onChange = e => {
     this.setState({ search: e.target.value })
   }
 
-  handleSortKind = () =>{
-    this.setState({sortName: !this.state.sortName})
-  }
-
-  handleChange =(e, newValue)=> {
+  handleChange = (e, newValue) => {
     this.setState({ value: newValue });
 
   }
-  handleSelectFilter = (item) => {
-    this.setState({ filter: item })
+
+  handleFilter = () => {
+    this.setState({ isFiltered: !this.state.isFiltered })
   }
-  handleFilterForm = () => {
-    this.setState({ isFiltered: true })
+  handleSelectFilter = (id, item, open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    this.setState({ filter: defaultFilter })
+    this.setState((prevState) => {
+      const data = [...prevState.filter];
+      data[id] = { name: item, value: open, icon: data[id].icon, detail: data[id].detail }
+      return { filter: data }
+    }
+    )
+
   }
-  handleCancelFilter =()=>{
-    this.setState({ isFiltered: false})
+  handleDelete = (chipToDelete) => () => {
+    this.setState((chips) => chips.filter((chip) => chip !== chipToDelete));
+  };
+  handleChangeCategory = (e) => {
+    this.setState({ selectedCategories: e.target.value })
   }
+
   render() {
-    
+
     const { auth, classes, products, suppliers, retailers } = this.props;
     // console.log('dashboard product', products)
-    const { search, value, filter, sortAsc, isFiltered, sortName, cart } = this.state;
-    
+    const { search, value, filter, isFiltered, selectedCategories } = this.state;
+
     const afterSearchSupplier = checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchProduct = checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchRetailer = checkArray(retailers).filter(retailer => retailer.displayName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const found = checkArray(afterSearchProduct).filter((product) => {
-      if (product.category === checkFilter(filter, product.category)) {
+      if (product.category === checkFilter(selectedCategories, product.category)) {
         return true
       } else { return false }
 
     })
-    const sortFoundName = found.sort((a, b) => {
-      const isReverse = (sortAsc === true) ? 1 : -1;
-      return isReverse * a.name.localeCompare(b.name)
+    const sortedFound = found.sort((a, b) => {
+      if (filter[0].value === true) {
+        console.log('vaooooo 0')
+        return a.name.localeCompare(b.name)
+      }
+      if (filter[1].value === true) {
+        console.log('vao so 1')
+        return -1 * a.name.localeCompare(b.name)
+      }
+      if (filter[2].value === true) {
+        return a.price.unitPrice - b.price.unitPrice
+      }
+      if (filter[3].value === true) {
+        return -1 * (a.price.unitPrice - b.price.unitPrice)
+      }
     })
 
-    const sortFoundPrice = found.sort((a,b) => {
-      const isReverse = (sortAsc === true) ? 1: -1;
-      return isReverse * ( a.price.unitPrice - b.price.unitPrice)
-    }
-    )
 
     if (!auth.uid) return <Redirect to='/signin' />
-    // console.log('asdasd',this.state)
+
+
     return (
 
       <div className="container" style={{ textAlign: 'center' }}>
@@ -215,17 +262,41 @@ class Dashboard extends Component {
         <div style={{ marginTop: '2%' }}>
           <TabPanel value={value} index={0}>
 
-            <FilterForm 
-              products={products}
-              allCategories={allCategories}
-              handleFilter={item => this.handleSelectFilter(item)}
-              handleFilterForm={this.handleFilterForm}
-              handleCancelFilter={this.handleCancelFilter}
-              handleSort={this.handleSort}
-              handleSortKind={this.handleSortKind}
-              sortName={sortName}
-              sortAsc={sortAsc}
-            />
+            <Button onClick={this.handleFilter}>Filter</Button>
+            <Collapse in={this.state.isFiltered} timeout="auto" unmountOnExit >
+              <Grid container>
+                <Grid item xs={12}>
+                  <InputLabel id="demo-mutiple-chip-label">Select Filter Category</InputLabel>
+                  <Select
+                    labelId="demo-mutiple-name-label"
+                    id="demo-mutiple-name"
+                    multiple
+
+                    value={this.state.selectedCategories}
+                    onChange={this.handleChangeCategory}
+                    input={<Input id="select-multiple-chip" />}
+                    renderValue={(selected) => (
+                      <div className={classes.chips}>
+                        {selected.map((value) => (
+                          <Chip key={value} label={value} className={classes.chip} />
+                        ))}
+                      </div>
+                    )}
+                    MenuProps={MenuProps}
+                  >
+
+                    {allCategories.map((name, key) => (
+                      <MenuItem key={key} value={name}>
+                        {name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+                <Grid item xs={12}>
+                  {filter.map((option, key) => <Button onClick={this.handleSelectFilter(key, option.name, true)}>{option.icon}{option.detail}</Button>)}
+                </Grid>
+              </Grid>
+            </Collapse>
             <Grid
               container
               spacing={2}
@@ -235,41 +306,29 @@ class Dashboard extends Component {
               style={{ marginTop: '30px' }}
             >
 
-              {isFiltered ? 
-              <>  
-              {
-                sortName ?
-                sortFoundName.map((product, index) => {
-                return (
-                  <Grid item xs={12} sm={6} md={6} lg={6} xl={4}key={index}>
-                     <ProductCard
-                        key={index} 
-                        product={product} 
-                        uid ={this.props.auth.uid} 
-                        handleCart={this.props.handleCart} 
-                        handelRegister={this.props.handelRegister} 
-                        currentUser ={ this.props.currentUser}
+              {isFiltered ?
+                sortedFound.map((product, index) => {
+                  return (
+                    <Grid item xs={12} sm={6} md={6} lg={4} xl={4} key={index}>
+                      <ProductCard
+                        key={index}
+                        product={product}
+                        uid={this.props.auth.uid}
+                        handleCart={this.props.handleCart}
+                        handelRegister={this.props.handelRegister}
+                        currentUser={this.props.currentUser}
                       />
-                  </Grid>
-                )
+                    </Grid>
+                  )
                 })
-              : sortFoundPrice.map((product, index) => {
-                return (
-                  <Grid item xs={12} sm={6} md={6} lg={6} xl={4} key={index}>
-                    <ProductCard key={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart} handelRegister={this.props.handelRegister} currentUser ={ this.props.currentUser}/>
-               
-                  </Grid>
-                )
-              })
-              }
-              </>
-              : afterSearchProduct.map((product, index) => {
-                return (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
-                     <ProductCard key ={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart} currentUser ={ this.props.currentUser} handelRegister={this.props.handelRegister}/>
-                  </Grid>
-                )
-              })}
+
+                : afterSearchProduct.map((product, index) => {
+                  return (
+                    <Grid item xs={12} sm={6} md={4} key={index}>
+                      <ProductCard key={index} product={product} uid={this.props.auth.uid} handleCart={this.props.handleCart} currentUser={this.props.currentUser} handelRegister={this.props.handelRegister} />
+                    </Grid>
+                  )
+                })}
 
             </Grid>
           </TabPanel>
@@ -284,9 +343,9 @@ class Dashboard extends Component {
               {afterSearchSupplier.map((supplier, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                     <SupplierCard supplier={supplier}/>
+                    <SupplierCard supplier={supplier} />
                   </Grid>
-                  
+
                 )
 
               })}
@@ -303,7 +362,7 @@ class Dashboard extends Component {
               {afterSearchRetailer.map((retailer, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                      <RetailerCard retailer={retailer}/>
+                    <RetailerCard retailer={retailer} />
                   </Grid>
                 )
 
@@ -331,14 +390,14 @@ const mapStateToProps = (state) => {
     products: state.firestore.ordered.products,
     suppliers: state.firestore.ordered.suppliers,
     retailers: state.firestore.ordered.retailers
-  
+
   }
 };
 
 export default compose(
-  connect(mapStateToProps,mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect([
-    { collection: 'products'},
+    { collection: 'products' },
     { collection: 'users', where: [["type", "==", "supplier"]], storeAs: 'suppliers' },
     { collection: 'users', where: [["type", "==", "retailer"]], storeAs: 'retailers' },
 

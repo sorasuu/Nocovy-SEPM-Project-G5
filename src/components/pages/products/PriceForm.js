@@ -56,8 +56,7 @@ export class PriceForm extends React.Component{
     var product = {
       id: this.props.id,
       category: this.state.newCategory, 
-      // cover: this.props.newImages[0],
-      // productImg: this.props.newImages,
+      
       name: this.state.newProductName, 
       description: this.state.newProductDesc,
       price: {
@@ -73,6 +72,7 @@ export class PriceForm extends React.Component{
   }
 
   render(){
+    console.log("price form", this.state.newCategory)
     return <Fragment>
       
         
