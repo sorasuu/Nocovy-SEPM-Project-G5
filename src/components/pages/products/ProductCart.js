@@ -159,7 +159,7 @@ class ProductCart extends Component {
 
           : <p>cart empty</p>
         }
-{cart ?<StyledButton onClick={(e) => this.handleOrder(e)} >Place Order</StyledButton>:null}
+      {cart ?<StyledButton onClick={(e) => this.handleOrder(e)} >Place Order</StyledButton>:null}
        
       </>
     )

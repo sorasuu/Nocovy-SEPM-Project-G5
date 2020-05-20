@@ -18,10 +18,10 @@ export const createCheckout = (orders) => {
 export const createSingleRequest = (requests) => {
   return (dispatch, getState) => {
     const supplier = getState().firebase.auth;
-    firebase.firestore().collection('requests').add(
+    firebase.firestore().collection('requests').doc(requests.product.id+requests.retailerId).set(
       {pending:true,
         confirmed: false,
-        products: requests.product,
+        productId: requests.product.id,
         retailerId: requests.retailerId,
         supplierId: supplier.uid,
 
