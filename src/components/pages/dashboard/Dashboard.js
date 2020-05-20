@@ -131,9 +131,7 @@ class Dashboard extends Component {
       isFiltered: false,
       cart:[]
     };
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSortKind = this.handleSortKind.bind(this)
-    // this.handleCart= this.handleCart(this)
+   
   }
 
   onChange = e => {
@@ -143,11 +141,11 @@ class Dashboard extends Component {
     this.setState({ sortAsc: !this.state.sortAsc })
   }
 
-  handleSortKind(params){
+  handleSortKind = () =>{
     this.setState({sortName: !this.state.sortName})
   }
 
-  handleChange(e, newValue) {
+  handleChange =(e, newValue)=> {
     this.setState({ value: newValue });
 
   }
