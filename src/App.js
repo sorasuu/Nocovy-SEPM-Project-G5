@@ -35,6 +35,9 @@ class App extends Component {
   handleClicked = e => {
     this.setState({ chatwindow: !this.state.chatwindow })
   }
+  handleEmptyCart = (e) =>{
+    this.setState({cart:[]})
+  }
   handleCart=(e, productinfo, num)=>{
     
     const { cart } = this.state
@@ -92,7 +95,7 @@ class App extends Component {
             <Route path='/retailer/:id' component={(props) =><Retailer {...props} class={retailerlist}/>}/>
             <Route path='/signin'component={SignIn}/>
             <Route path='/signup' component={SignUp} />
-            <Route path='/cart' component={ProductCart} />
+            <Route path='/cart' component={(props)=><ProductCart {...props} handleEmptyCart={this.handleEmptyCart}/>} />
             <Route path='/profile/:id' component={(props) => <Profile {...props} currentUser={currentUser} chatsesion={chatsession} handleCart={this.handleCart} handelRegister={this.handelRegister}/>} />
             <Route path='/chat/:id' component={(props) => <Chat {...props} currentUser={currentUser} chatsession={chatsession}  />} />
             <Route path='/faq' component={FAQ} />
