@@ -65,6 +65,7 @@ class ProductCart extends Component {
     this.setState({ cart: cart })
     this.props.handleNewCart(e,cart)
     localStorage.setItem('cart', JSON.stringify(cart));
+    
   }
 
   handleOrder(e) {
@@ -90,7 +91,7 @@ class ProductCart extends Component {
     return (
       <>
         <h1 style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Cart</h1>
-        {cart ?
+        {cart&&cart.length!==0 ?
           cart.map((item, key) =>
 
             <Card
@@ -167,7 +168,7 @@ class ProductCart extends Component {
 
           : <p>cart empty</p>
         }
-      {cart ?<StyledButton onClick={(e) => this.handleOrder(e)} >Place Order</StyledButton>:null}
+      {cart&&cart.length!==0  ?<StyledButton onClick={(e) => this.handleOrder(e)} >Place Order</StyledButton>:null}
        
       </>
     )
