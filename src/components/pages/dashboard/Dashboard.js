@@ -188,7 +188,7 @@ class Dashboard extends Component {
 
   render() {
 
-    const { auth, classes, products, suppliers, retailers } = this.props;
+    const { auth, classes, products, suppliers, retailers, currentUser } = this.props;
     // console.log('dashboard product', products)
     const { search, value, filter, isFiltered, selectedCategories } = this.state;
 
@@ -363,7 +363,7 @@ class Dashboard extends Component {
               {afterSearchRetailer.map((retailer, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
-                    <RetailerCard retailer={retailer} />
+                    <RetailerCard retailer={retailer} currentUser={currentUser} />
                   </Grid>
                 )
 
@@ -383,8 +383,10 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = (state) => {
+  
   const users = state.firestore.ordered.currentUser
   const currentUser = users ? users[0] : null
+  
   return {
     currentUser: currentUser,
     auth: state.firebase.auth,
@@ -399,6 +401,7 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect([
     { collection: 'products' },
+    
     { collection: 'users', where: [["type", "==", "supplier"]], storeAs: 'suppliers' },
     { collection: 'users', where: [["type", "==", "retailer"]], storeAs: 'retailers' },
 

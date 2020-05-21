@@ -290,7 +290,7 @@ static getDerivedStateFromProps(nextProps, prevState) {
   
   render() {
     const { auth, classes, products } = this.props;
-    console.log(this.props)
+    console.log('this is work', products)
     const allRetailers = this.props.allRetailers ? this.props.allRetailers : []
     const { search } = this.state;
     const filteredProducts = checkArray(products).filter(product =>{

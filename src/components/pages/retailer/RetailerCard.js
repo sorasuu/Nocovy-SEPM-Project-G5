@@ -15,7 +15,7 @@ import { NavLink } from 'react-router-dom';
 import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
 import "../page.css"
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
-
+import ProductDialog from './ProductDialog'
 
 
 const useStyles = makeStyles(() => ({
@@ -47,7 +47,7 @@ const RetailerCard = (props) => {
     const shadowStyles = useOverShadowStyles({ inactive: false });
  
     const retailer = props.retailer
-    console.log('retailer', retailer)
+    console.log('this is retailer', retailer)
     
     
     return (
@@ -67,7 +67,10 @@ const RetailerCard = (props) => {
                         image={retailer.logo}
                     />
 
-                        <div className="overlay" style={{borderRadius: 16}}>   
+                        <div className="overlay" style={{borderRadius: 16}}>  
+                            {props.currentUser.type === 'supplier'?
+                                <ProductDialog currentRetailer={retailer} currentUser = {props.currentUser }/>
+                            : null} 
                             <NavLink to={'/retailer/' + retailer.id}>
                                 <ColorButton
                                     variant="contained"
