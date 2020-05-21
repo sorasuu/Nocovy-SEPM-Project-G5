@@ -51,6 +51,10 @@ export class PriceForm extends React.Component{
     this.setState({ newCategory: chips })
   }
 
+  handleChangeCategory = (e) => {
+    this.setState({ selectedCategories: e.target.value })
+  }
+
   handleSubmit =() => {
     var newUnitPrice = Number(this.state.newUnitCost) * ((100 + Number(this.state.newMargin) + Number(this.state.newDutyRate))/100)
     var product = {
@@ -101,7 +105,7 @@ export class PriceForm extends React.Component{
 
           <Modal open={this.state.open} onClose={this.handleClickForm}>
             <div style={{maxWidth:'50%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%',}}>
-              <EditProductCard props={this.props} values={this.state} saveEdit={this.handleSubmit} closeModal={this.handleClickForm} handleChange={this.handleChange} handleCatChange={this.handleCatChange}/>
+              <EditProductCard props={this.props} values={this.state} saveEdit={this.handleSubmit} closeModal={this.handleClickForm} handleChange={this.handleChange} handleCatChange={this.handleCatChange} handleChangeCategory={this.handleChangeCategory}/>
             </div>
           </Modal>
       </Fragment>

@@ -11,7 +11,7 @@ import {
 import SortByAlphaOutlinedIcon from '@material-ui/icons/SortByAlphaOutlined';
 import TrendingDownOutlinedIcon from '@material-ui/icons/TrendingDownOutlined';
 import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
-
+import FilterListRoundedIcon from '@material-ui/icons/FilterListRounded';
 import ProductCard from '../products/ProductCard'
 import SupplierCard from '../supplier/SupplierCard'
 import RetailerCard from '../retailer/RetailerCard'
@@ -111,7 +111,7 @@ export function checkArray(array) {
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
-const MenuProps = {
+export const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
@@ -181,9 +181,7 @@ class Dashboard extends Component {
     )
 
   }
-  handleDelete = (chipToDelete) => () => {
-    this.setState((chips) => chips.filter((chip) => chip !== chipToDelete));
-  };
+  
   handleChangeCategory = (e) => {
     this.setState({ selectedCategories: e.target.value })
   }
@@ -209,7 +207,7 @@ class Dashboard extends Component {
         return a.name.localeCompare(b.name)
       }
       if (filter[1].value === true) {
-        console.log('vao so 1')
+        console.log('vao 1')
         return -1 * a.name.localeCompare(b.name)
       }
       if (filter[2].value === true) {
@@ -260,35 +258,40 @@ class Dashboard extends Component {
         <div style={{ marginTop: '2%' }}>
           <TabPanel value={value} index={0}>
 
-            <Button onClick={this.handleFilter}>Filter</Button>
-            <Collapse in={this.state.isFiltered} timeout="auto" unmountOnExit >
+            <Button onClick={this.handleFilter}>Filter <FilterListRoundedIcon/></Button>
+            <Collapse className={classes.search} in={this.state.isFiltered} timeout="auto" unmountOnExit >
               <Grid container>
                 <Grid item xs={12}>
-                  <InputLabel id="demo-mutiple-chip-label">Select Filter Category</InputLabel>
-                  <Select
-                    labelId="demo-mutiple-name-label"
-                    id="demo-mutiple-name"
-                    multiple
-
-                    value={this.state.selectedCategories}
-                    onChange={this.handleChangeCategory}
-                    input={<Input id="select-multiple-chip" />}
-                    renderValue={(selected) => (
-                      <div className={classes.chips}>
-                        {selected.map((value) => (
-                          <Chip key={value} label={value} className={classes.chip} />
+                  <Grid container justify="center" alignItems='center'>
+                    <Grid item><InputLabel id="demo-mutiple-chip-label"><em>Select Filter Categories</em></InputLabel></Grid>
+                    <Grid item>
+                      <Select
+                
+                        multiple
+                        displayEmpty
+                        value={this.state.selectedCategories}
+                        onChange={this.handleChangeCategory}
+                        input={<Input name="category" id='category-chip' />}
+                        renderValue={(selected) => (
+                          <div className={classes.chips}>
+                            {selected.map((value) => (
+                              <Chip key={value} label={value} className={classes.chip} />
+                            ))}
+                          </div>
+                        )}
+                        MenuProps={MenuProps}
+                      >
+                        {allCategories.map((name, key) => (
+                          <MenuItem key={key} value={name}>
+                            {name}
+                          </MenuItem>
                         ))}
-                      </div>
-                    )}
-                    MenuProps={MenuProps}
-                  >
+                      </Select>
+                    </Grid>
 
-                    {allCategories.map((name, key) => (
-                      <MenuItem key={key} value={name}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  </Grid>
+
+
                 </Grid>
                 <Grid item xs={12}>
                   {filter.map((option, key) => <Button onClick={this.handleSelectFilter(key, option.name, !option.value)}>{option.icon}{option.detail}</Button>)}

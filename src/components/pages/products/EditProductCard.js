@@ -11,10 +11,10 @@ import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded'
 import StyledButton from '../../layout/StyledButton'
 import {DropzoneArea} from 'material-ui-dropzone'
 import ChipInput from 'material-ui-chip-input'
-import {TextField, InputAdornment} from '@material-ui/core'
+import {TextField, InputAdornment, Select, Input, MenuItem , InputLabel} from '@material-ui/core'
 import { allCategories } from '../dashboard/Dashboard'
 //SET DEFAULT VALUES FOR DROPZONE AND NEW INFO. SHIT DON'T GET RESET WHEN YOU CLICK OFF THE PAGE AND CLICK ON AGAIN
-
+import { MenuProps } from '../dashboard/Dashboard'
 const useStyles = makeStyles(() => ({
     card: {
         display: 'flex',
@@ -67,7 +67,7 @@ const EditProductCard = (props) => {
                 <div className={classes.form}>
                     <form style={{margin:'2%', textAlign:'left'}}>
                         <TextField required multiline style={{marginBottom:'2%'}} label='Product Name' defaultValue={props.values.newProductName} onChange={props.handleChange('newProductName')}></TextField>
-                        <ChipInput
+                        {/* <ChipInput
                             required
                             disableUnderline
                             style={{marginBottom:'2%'}}
@@ -75,7 +75,31 @@ const EditProductCard = (props) => {
                             fullWidth
                             defaultValue={props.values.newCategory}
                             onChange={(chips) => props.handleCatChange(chips)}
-                        />
+                        /> */}
+                            <InputLabel shrink htmlFor="circle">
+                                Category Selection
+                            </InputLabel>
+                            <Select
+                                multiple
+                                displayEmpty
+                                defaultValue={props.values.newCategory}
+                                onChange={props.handleChangeCategory}
+                                input={<Input name="category" id='category-chip' />}
+                                renderValue={(selected) => (
+                                    <div className={classes.chips}>
+                                        {selected.map((value) => (
+                                            <Chip key={value} label={value} className={classes.chip} />
+                                        ))}
+                                    </div>
+                                )}
+                            MenuProps={MenuProps}
+                            >
+                                {allCategories.map((name, key) => (
+                                    <MenuItem key={key} value={name}>
+                                        {name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
                         <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Product Description' defaultValue={props.values.newProductDesc} onChange={props.handleChange('newProductDesc')}></TextField>
                         <TextField required multiline type='number' style={{marginBottom:'2%'}} label='Unit Cost' defaultValue={props.values.newUnitCost} onChange={props.handleChange('newUnitCost')}
                             InputProps={{
@@ -104,7 +128,7 @@ const EditProductCard = (props) => {
                                 ),
                             }}
                         ></TextField><br/>
-                        <TextField multiline type='number' style={{marginBottom:'2%'}} label='Unit Price' disabled value={Number(props.values.newUnitCost) * ((100 + Number(props.values.newMargin) + Number(props.values.newDutyRate))/100)}
+                        <TextField multiline type='number' style={{marginBottom:'2%'}} label='Unit Price' disabled value={(Number(props.values.newUnitCost) * ((100 + Number(props.values.newMargin) + Number(props.values.newDutyRate))/100)).toFixed(2)}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
