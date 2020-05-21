@@ -38,6 +38,9 @@ class App extends Component {
   handleEmptyCart = (e) =>{
     this.setState({cart:[]})
   }
+  handleNewCart = (e,cart) =>{
+    this.setState({cart:cart})
+  }
   handleCart=(e, productinfo, num)=>{
     
     const { cart } = this.state
@@ -95,7 +98,7 @@ class App extends Component {
             <Route path='/retailer/:id' component={(props) =><Retailer {...props} class={retailerlist}/>}/>
             <Route path='/signin'component={SignIn}/>
             <Route path='/signup' component={SignUp} />
-            <Route path='/cart' component={(props)=><ProductCart {...props} handleEmptyCart={this.handleEmptyCart}/>} />
+            <Route path='/cart' component={(props)=><ProductCart {...props} handleEmptyCart={this.handleEmptyCart} handleNewCart={this.handleNewCart}/>} />
             <Route path='/profile/:id' component={(props) => <Profile {...props} currentUser={currentUser} chatsesion={chatsession} handleCart={this.handleCart} handelRegister={this.handelRegister}/>} />
             <Route path='/chat/:id' component={(props) => <Chat {...props} currentUser={currentUser} chatsession={chatsession}  />} />
             <Route path='/faq' component={FAQ} />

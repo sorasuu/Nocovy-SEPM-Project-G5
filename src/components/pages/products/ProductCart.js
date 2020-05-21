@@ -49,7 +49,6 @@ class ProductCart extends Component {
     if( JSON.parse(window.localStorage.getItem('cart'))!== undefined&&JSON.parse(window.localStorage.getItem('cart'))!== null){
     this.setState({ cart: JSON.parse(window.localStorage.getItem('cart')) });
    
-     JSON.parse(window.localStorage.getItem('cart')).map(item => this.state.number.push(item.num))
   }else{
     this.setState({cart:null})
   }
@@ -60,6 +59,13 @@ class ProductCart extends Component {
   handleClose() {
     this.setState({ open: false })
   }
+  handleRemove=(e,index)=>{
+    let cart = [...this.state.cart];
+    cart.splice(index, 1);
+    this.setState({ cart: cart })
+    this.props.handleNewCart(e,cart)
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
 
   handleOrder(e) {
     this.props.createCheckout(this.state.cart)
@@ -68,16 +74,18 @@ class ProductCart extends Component {
     this.setState({ cart: [] })
   }
   handleChange(e, index) {
-    let numbers = [...this.state.number];
-    numbers[index] =  e.target.value;
-    this.setState({ number: numbers })
+    let cart = [...this.state.cart];
+    cart[index].num =  e.target.value;
+    this.setState({ cart: cart })
+    this.props.handleNewCart(e,cart)
+    localStorage.setItem('cart', JSON.stringify(cart));
   }
 
   render() {
 
     const classes = useStyles();
 
-    const { cart, number } = this.state
+    const { cart } = this.state
     console.log("cartt", cart)
     return (
       <>
@@ -142,8 +150,8 @@ class ProductCart extends Component {
 
                             </Grid>
                           </TableCell>
-                          <TableCell> $ {(item.price.unitPrice * number[key]).toLocaleString()}</TableCell>
-                          <TableCell><Button variant="outlined" color="secondary" >Remove</Button></TableCell>
+                          <TableCell> $ {(item.price.unitPrice * cart[key].num).toLocaleString()}</TableCell>
+                          <TableCell><Button variant="outlined" color="secondary"  onClick={e=>this.handleRemove(e,key)} >Remove</Button></TableCell>
                         </TableBody>
                       </Table>
                     
