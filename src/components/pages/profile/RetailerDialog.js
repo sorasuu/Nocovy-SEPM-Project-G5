@@ -17,8 +17,10 @@ export default function RetailerDialog(props) {
         setOpen(false)
     }
     console.log("nhanh",props.product)
-    const registered = props.registered ? props.registered : ['No Register Retailer']
-    const all = props.allRetailers ? props.allRetailers.map(retailer => retailer.id) : []
+    const registered = props.registered ? 
+        props.registered : ['No Register Retailer']
+    const all = props.allRetailers ? 
+        props.allRetailers.map(retailer => retailer.id) : []
 
     const available = all.filter(function (item) {
         return !registered.includes(item);
