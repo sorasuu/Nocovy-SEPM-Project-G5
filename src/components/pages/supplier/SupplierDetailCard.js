@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
         transition: '0.3s',
         textAlign: 'left',
         overflowX: 'auto',
-        margin:'3%',
+        margin: '3%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -128,16 +128,16 @@ const useStyles = makeStyles((theme) => ({
             duration: theme.transitions.duration.shortest,
         }),
     },
-    buttons:{
-        marginTop:'5%',
-        display:'flex',
+    buttons: {
+        marginTop: '5%',
+        display: 'flex',
     },
-    tabs:{
-        maxWidth:'200px'
+    tabs: {
+        maxWidth: '200px'
     }
 
 }));
- export function TabPanel(props) {
+export function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
     return (
@@ -174,12 +174,12 @@ export default function SupplierDetailCard(props) {
     const [expanded, setExpanded] = React.useState(false);
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
-    const cardShadowStyles = useOverShadowStyles({inactive: true});
+    const cardShadowStyles = useOverShadowStyles({ inactive: true });
     const cardHeaderShadowStyles = useFadedShadowStyles();
     // const allProducts = [{name:'a',value:'b'}, {name:'b',value:'c'}]
     const allProducts = checkArray(props.products)
-    
-    
+
+
     const onChange = (event, newValue) => {
         console.log(newValue)
         // setSearch((newValue).toString);
@@ -197,14 +197,14 @@ export default function SupplierDetailCard(props) {
 
     return (
         <Card className={cx(classes.card, cardShadowStyles.root)}
-            style={{ position: "relative", marginBottom: '5px', borderRadius:16 }}>
+            style={{ position: "relative", marginBottom: '5px', borderRadius: 16 }}>
             <CardHeader
                 className={cardHeaderShadowStyles.root}
                 classes={cardHeaderStyles}
-                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", width: 'auto', minWidth: '200px', left: "5%", transform: 'translate(0, -30%)'}}
+                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", width: 'auto', minWidth: '200px', left: "5%", transform: 'translate(0, -30%)' }}
                 title={<h4>{props.supplier.businessName}</h4>}
                 avatar={
-                    <Avatar aria-label="logo" className={classes.avatar} src={props.supplier.logo}/>
+                    <Avatar aria-label="logo" className={classes.avatar} src={props.supplier.logo} />
                 }
             />
             <CardContent className={classes.content} >
@@ -217,13 +217,13 @@ export default function SupplierDetailCard(props) {
                     <StyledButton>
                         Partner
                     </StyledButton> */}
-                    <NavLink to={'/profile/'+props.supplier.id} style={{marginRight:75}}>
+                    <NavLink to={'/profile/' + props.supplier.id} style={{ marginRight: 75 }}>
                         <Typography variant='h5'>Profile</Typography>
                     </NavLink>
                     <NavLink to='/'>
                         <Typography variant='h5'>Partner</Typography>
                     </NavLink>
-                    
+
                 </div>
                 <Grid container
                     direction="row"
@@ -262,12 +262,12 @@ export default function SupplierDetailCard(props) {
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                     <div className={classes.description}>
-                        <Divider style={{margin:10}} light />
-                        <Typography variant='h6'>Business Genre:</Typography> 
+                        <Divider style={{ margin: 10 }} light />
+                        <Typography variant='h6'>Business Genre:</Typography>
                         <Typography paragraph>{props.supplier.businessGenre ? props.supplier.businessGenre : 'Business genre not available'}</Typography>
-                        <Typography variant='h6'>Business Description:</Typography> 
-                        <Typography>{props.supplier.businessDesc? props.supplier.businessDesc  : 'Description not available'}</Typography>
-                </div>
+                        <Typography variant='h6'>Business Description:</Typography>
+                        <Typography>{props.supplier.businessDesc ? props.supplier.businessDesc : 'Description not available'}</Typography>
+                    </div>
                 </CardContent>
             </Collapse>
             <CardContent>
@@ -276,38 +276,38 @@ export default function SupplierDetailCard(props) {
                         <TableRow>
                             <TableCell className={classes.tabs}>Products </TableCell>
                             <TableCell>Retailers </TableCell>
-                        </TableRow>   
+                        </TableRow>
                     </TableHead>
-                <TableBody>
+                    <TableBody>
 
-                    {/* Can't we just map into 2 TableCells instead of mapping twice? */}
-                    <TableRow>
-                        <TableCell size="small">
-                            <Tabs
-                                orientation="vertical"
-                                variant="scrollable"
-                                value={value}
-                                onChange={handleChange}
-                                className={classes.tabs}
-                            >
-                                {filterProducts.map((product, key) =>
-                                    <Tab label={product.name} {...a11yProps(key)} />
-                                )}
-                            </Tabs>
-                        </TableCell>
-                        <TableCell>
-                            {filterProducts.map((product,productkey)=>
-
-                                <RetailerList   
-                                    product={product}
-                                    data = {props.data}
-                                    productkey ={productkey}
+                        {/* Can't we just map into 2 TableCells instead of mapping twice? */}
+                        <TableRow>
+                            <TableCell size="small">
+                                <Tabs
+                                    orientation="vertical"
+                                    variant="scrollable"
                                     value={value}
-                                />
-                            )}
-                        </TableCell>
-                    </TableRow>
-                </TableBody>
+                                    onChange={handleChange}
+                                    className={classes.tabs}
+                                >
+                                    {filterProducts.map((product, key) =>
+                                        <Tab label={product.name} {...a11yProps(key)} />
+                                    )}
+                                </Tabs>
+                            </TableCell>
+                            <TableCell>
+                                {filterProducts.map((product, productkey) =>
+
+                                    <RetailerList
+                                        product={product}
+                                        data={props.data}
+                                        productkey={productkey}
+                                        value={value}
+                                    />
+                                )}
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
                 </Table>
             </CardContent>
         </Card>

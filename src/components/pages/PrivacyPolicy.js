@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 export class TermOfService extends Component {
     render() {
         return (
-            <div className="container" style={{ textAlign: 'center' }}>
-                <h3>Nocovy Privacy Policy</h3>
+            <div className="container" style={{ textAlign: 'left' }}>
+                <h3 style={{textAlign: 'center'}}>Nocovy Privacy Policy</h3>
                 <p>This Privacy Policy describes how your personal information is collected, used, and shared when you visit or make a purchase from Nocovy (the “Site”).</p>
                 <br />
                 <b>Personal information we collect</b>
