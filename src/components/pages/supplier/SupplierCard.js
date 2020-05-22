@@ -25,6 +25,7 @@ const useStyles = makeStyles(() => ({
         overflow: 'initial',
         background: '#ffffff',
         borderRadius: 16,
+        height:'450px',
     },
 }));
 
@@ -42,7 +43,7 @@ const SupplierCard = (props) => {
     return (
         // <NavLink to = {'/product/'+ props.product.id}>
 
-        <Card className={cx(classes.root, shadowStyles.root)} style={{ position: "relative", marginBottom: '10px' }}>
+        <Card className={cx(classes.root, shadowStyles.root)} class={classes.card} style={{ position: "relative", marginBottom: '10px' }}>
             
             <CardContent className={classes.content}
             // ref={hoverRef}
@@ -75,7 +76,7 @@ const SupplierCard = (props) => {
                     classes={textCardContentStyles}
                     overline={`${supplier.email}: \ ${supplier.phoneNumber? supplier.phoneNumber : 'No PhoneNumber'}`}
                     heading={supplier.businessName}
-                    body={supplier.address}
+                    body={supplier.address ? supplier.address.slice(0,65):null}
        
                 />
             </CardContent>

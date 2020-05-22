@@ -129,4 +129,4 @@ const mapDispatchToProps = dispatch => {
     }
   }
   
-export default connect(null,mapDispatchToProps)( DetailTable)
+export default connect(null,mapDispatchToProps)(DetailTable)

@@ -310,7 +310,7 @@ class Dashboard extends Component {
               {isFiltered ?
                 sortedFound.map((product, index) => {
                   return (
-                    <Grid item xs={12} sm={6} md={6} lg={4} xl={4} key={index}>
+                    <Grid item xs={12} sm={6} md={4} key={index}>
                       <ProductCard
                         key={index}
                         product={product}
@@ -343,7 +343,7 @@ class Dashboard extends Component {
             >
               {afterSearchSupplier.map((supplier, index) => {
                 return (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
+                  <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
                     <SupplierCard supplier={supplier} />
                   </Grid>
 
@@ -362,7 +362,7 @@ class Dashboard extends Component {
             >
               {afterSearchRetailer.map((retailer, index) => {
                 return (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
+                  <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
                     <RetailerCard retailer={retailer} currentUser={currentUser} />
                   </Grid>
                 )

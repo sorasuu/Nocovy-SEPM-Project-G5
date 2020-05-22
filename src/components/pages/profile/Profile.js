@@ -122,9 +122,9 @@ class Profile extends Component {
     this.setState({ [input]: e.target.value })
   }
 
-  handleCatChange = (chips) => {
-    var listCategory = chips
-    this.setState({ productCategories: listCategory })
+  handleCatChange = (e) => {
+    
+    this.setState({ productCategories: e.target.value })
   }
 
   handleChangeImg(files){

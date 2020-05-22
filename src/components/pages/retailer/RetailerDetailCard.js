@@ -73,7 +73,7 @@ const RetailerDetailCard = (props) => {
                     justify='space-between'
                   >
                       <Button size="large" color="primary" href={"/profile/"+props.info.id}>Profile</Button>
-                      {/* <Button size="large" color="primary" href={"/"}>Partner</Button> */}
+                      
                       <ProductDialog currentRetailer={props.info} currentUser = {props.currentUser }/>
                   </Grid>
                 </CardActions>
