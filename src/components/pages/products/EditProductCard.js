@@ -83,7 +83,7 @@ const EditProductCard = (props) => {
                                 multiple
                                 displayEmpty
                                 defaultValue={props.values.newCategory}
-                                onChange={props.handleChangeCategory}
+                                onChange={props.handleCatChange}
                                 input={<Input name="category" id='category-chip' />}
                                 renderValue={(selected) => (
                                     <div className={classes.chips}>
@@ -92,7 +92,7 @@ const EditProductCard = (props) => {
                                         ))}
                                     </div>
                                 )}
-                            MenuProps={MenuProps}
+                                MenuProps={MenuProps}
                             >
                                 {allCategories.map((name, key) => (
                                     <MenuItem key={key} value={name}>

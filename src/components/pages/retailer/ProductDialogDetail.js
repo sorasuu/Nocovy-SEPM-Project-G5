@@ -20,7 +20,6 @@ class ProductDialogDetail extends React.Component {
     
    
     render() {
-        console.log('current Retailer', this.props.currentRetailer)
 
         const listProduct = this.props.listProduct? this.props.listProduct : {name:'No Product'}
 
@@ -46,13 +45,18 @@ class ProductDialogDetail extends React.Component {
                                 <TableCell>{product.price.unitPrice}</TableCell>
                             </TableRow>
                             : <TableRow>
-                                <TableCell>Invite</TableCell>
-                                <TableCell>{product.name}</TableCell>
-                                <TableCell><img style={{width:'50px', height:'75px'}} src={product.cover}/></TableCell>
-                                <TableCell>{product.price.unitPrice}</TableCell>
-                            </TableRow>
+                            <TableCell>Invite</TableCell>
+                            <TableCell>{product.name}</TableCell>
+                            <TableCell><img style={{width:'50px', height:'75px'}} src={product.cover}/></TableCell>
+                            <TableCell>{product.price.unitPrice}</TableCell>
+                        </TableRow>
                             
-                    :null
+                    :<TableRow>
+                    <TableCell>Invite</TableCell>
+                    <TableCell>{product.name}</TableCell>
+                    <TableCell><img style={{width:'50px', height:'75px'}} src={product.cover}/></TableCell>
+                    <TableCell>{product.price.unitPrice}</TableCell>
+                </TableRow>
                     
                     )
                 } 

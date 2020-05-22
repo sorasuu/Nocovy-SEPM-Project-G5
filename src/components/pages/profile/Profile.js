@@ -123,7 +123,8 @@ class Profile extends Component {
   }
 
   handleCatChange = (chips) => {
-    this.setState({ productCategories: chips })
+    var listCategory = chips
+    this.setState({ productCategories: listCategory })
   }
 
   handleChangeImg(files){
@@ -228,6 +229,7 @@ class Profile extends Component {
           unitPrice: unitPrice
         }
       }
+      console.log('hahaha', product)
       //Form submit functions go here
       this.props.createProduct(product)
       this.handleProductClose()
