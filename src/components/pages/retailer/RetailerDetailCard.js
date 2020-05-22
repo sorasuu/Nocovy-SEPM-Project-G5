@@ -7,7 +7,7 @@ import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import StyledButton from '../../layout/StyledButton'
 import { Redirect, NavLink } from 'react-router-dom';
-
+import ProductDialog from './ProductDialog'
 const useStyles = makeStyles(() => ({
     card: {
         display: 'flex',
@@ -42,7 +42,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const RetailerDetailCard = (props) => {
-    console.log('foobar' + props.info.businessName)
+    console.log('retailer detail card', props)
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles =  useOverShadowStyles({ inactive: true });
@@ -73,7 +73,8 @@ const RetailerDetailCard = (props) => {
                     justify='space-between'
                   >
                       <Button size="large" color="primary" href={"/profile/"+props.info.id}>Profile</Button>
-                      <Button size="large" color="primary" href={"/"}>Partner</Button>
+                      {/* <Button size="large" color="primary" href={"/"}>Partner</Button> */}
+                      <ProductDialog currentRetailer={props.info} currentUser = {props.currentUser }/>
                   </Grid>
                 </CardActions>
             </CardContent>

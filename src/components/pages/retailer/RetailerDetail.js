@@ -126,7 +126,7 @@ function RetailerDetail(props) {
     const onChange = e => {
         // this.setState({ search: e.target.value })
     }
-    console.log(data)
+    // console.log(data)
     return (
         
         <Card className={cx(classes.card, cardShadowStyles.root)} style={{ position: "relative", marginBottom: '2%' }}>

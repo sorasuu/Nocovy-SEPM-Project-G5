@@ -61,7 +61,7 @@ class Retailer extends Component {
             alignItems="flex-start"
           >
             <Grid item xs={3} md={3} lg={3}>
-              <RetailerDetailCard info={retailer} viewer={auth}/>
+              <RetailerDetailCard info={retailer} viewer={auth} currentUser={this.props.currentUser}/>
             </Grid>
             <Grid className={classes.root} item xs={9} md={9} lg={9}>
                 <RetailerDetail 
@@ -83,16 +83,20 @@ const collection= 'products'
 // const collection = 'users'
 
 const mapStateToProps = (state, ownProps) => {
+  // console.log('state trong retailer', state)
   const retailers = state.firestore.ordered.retailer
   const retailer = retailers? retailers[0]:null;
   const sellProductData = populate(state.firestore,'sellList',populates)
   const sellProduct = state.firestore.ordered.sellList
+  const users = state.firestore.ordered.currentUser
+  const currentUser = users ? users[0] : null
   // console.log('hahha', sellProduct)
   return {
     auth: state.firebase.auth,
     retailer: retailer,
     sellProduct: sellProduct,
-    sellProductData: sellProductData
+    sellProductData: sellProductData,
+    currentUser: currentUser
   }
 };
 
