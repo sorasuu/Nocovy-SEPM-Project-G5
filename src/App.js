@@ -26,6 +26,7 @@ import PrivacyPolicy from './components/pages/PrivacyPolicy'
 import NotFound from './components/pages/NotFound'
 import CancelIcon from '@material-ui/icons/Cancel';
 import {registerRetailers} from './components/store/actions/productAction'
+import MyOrders from './components/pages/products/MyOrders';
 
 class App extends Component {
   state = {
@@ -105,6 +106,7 @@ class App extends Component {
             <Route path='/privacypolicy' component={PrivacyPolicy} />
             <Route path='/rules' component={TransactionRules}/>
             <Route path='/tos' component={TermOfService} />
+            <Route path='/myorders' component={MyOrders} />
             <Route component={NotFound} />
 
           </Switch>
