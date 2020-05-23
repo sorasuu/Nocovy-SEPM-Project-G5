@@ -7,17 +7,29 @@ import InfoRoundedIcon from '@material-ui/icons/InfoRounded';
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
 import { withStyles } from '@material-ui/core/styles';
-import { Table, TableHead , TableBody, TableRow, TableCell, Button, Grid } from '@material-ui/core'
+import { Table, TableHead , TableBody, TableRow, TableCell, Button, Checkbox  } from '@material-ui/core'
 import firebase from 'firebase/app'
-import {createSingleRequest} from '../../store/actions/transactionAction'
+import {createListRequest} from '../../store/actions/transactionAction'
 const useStyles = theme => ({
 })
 
 class ProductDialogDetail extends React.Component {
     state={
-        pending: true,
+        productlist:[]
     }
-    
+
+    handleCheckBox=(e,id,checked)=>{
+        console.log("anh Tung cuu",e.target.value,id,checked)
+        
+    }
+    handleSubmitRequest=(e)=>{
+        const request={
+            retailerId:   this.props.currentRetailer.uid,
+            products: this.state.productlist
+           }
+           console.log(request)
+           this.props.createListRequest(request)
+    }
    
     render() {
 
@@ -35,7 +47,7 @@ class ProductDialogDetail extends React.Component {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                { listProduct.map(product => 
+                { listProduct.map((product,checked=true) => 
                     product.retailerId ? 
                         product.retailerId.includes(this.props.currentRetailer.id) ?
                             <TableRow>
@@ -44,15 +56,18 @@ class ProductDialogDetail extends React.Component {
                                 <TableCell><img style={{width:'50px', height:'75px'}} src={product.cover}/></TableCell>
                                 <TableCell>{product.price.unitPrice}</TableCell>
                             </TableRow>
-                            : <TableRow>
-                            <TableCell>Invite</TableCell>
+                            :
+                            <TableRow>
+                            <TableCell>
+                                <Checkbox color={'primary'} onClick={e=>this.handleCheckBox(e,product.id,checked)} checked={checked}/>
+                                </TableCell>
                             <TableCell>{product.name}</TableCell>
                             <TableCell><img style={{width:'50px', height:'75px'}} src={product.cover}/></TableCell>
                             <TableCell>{product.price.unitPrice}</TableCell>
                         </TableRow>
                             
                     :<TableRow>
-                    <TableCell>Invite</TableCell>
+                    <TableCell><Checkbox color={'primary'} onClick={e=>this.handleCheckBox(e,product.id,checked) } checked={checked} /></TableCell>
                     <TableCell>{product.name}</TableCell>
                     <TableCell><img style={{width:'50px', height:'75px'}} src={product.cover}/></TableCell>
                     <TableCell>{product.price.unitPrice}</TableCell>
@@ -92,9 +107,6 @@ const mapStateToProps = (state) => {
        console.log('props need check...', props)
           return [
               {collection: 'products', where:[["supplierId", '==', props.currentUser.id]]}
-            // { collection:'users', doc: props.match.params.id, storeAs:'retailer' },
-            // { collection, where:[['retailerId','array-contains',props.match.params.id]],populates,storeAs:'sellList'}
-            
           ];
       })
   

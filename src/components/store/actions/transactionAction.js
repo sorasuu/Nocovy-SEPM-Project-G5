@@ -41,7 +41,7 @@ export const createListRequest = (requests) => {
       {
         pending: true,
         confirmed: false,
-        products: requests.products,
+        productId: requests.products,
         retailerId: requests.retailerId,
         supplierId: supplier.uid,
         createdAt: new Date()
