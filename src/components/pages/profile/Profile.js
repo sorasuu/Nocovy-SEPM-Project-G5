@@ -210,7 +210,7 @@ class Profile extends Component {
     if (this.validateForm()){
 
       //FIX THIS TO FIT WITH NEW DATA
-      var unitPrice = Number(this.state.unitCost) * ((100 + Number(this.state.margin) + Number(this.state.dutyRate))/100)
+      var unitPrice = (Number(this.state.unitCost) * ((100 + Number(this.state.margin) + Number(this.state.dutyRate))/100)).toFixed(2)
       var timeStamp = Math.floor(Date.now() / 1000);
       var product = {
         authorEmail: this.props.thisUser.email,

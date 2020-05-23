@@ -48,7 +48,7 @@ const RetailerCard = (props) => {
     const shadowStyles = useOverShadowStyles({ inactive: false });
  
     const retailer = props.retailer
-    console.log('this is retailer', retailer)
+    // console.log('this is retailer', retailer)
     
     
     return (

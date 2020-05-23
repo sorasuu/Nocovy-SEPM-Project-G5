@@ -16,7 +16,7 @@ export default function ProductDialog(props) {
     const handleClose = () => {
         setOpen(false)
     }
-    console.log('dialog open props', props)
+    // console.log('dialog open props', props)
     return (
         <div>
             <Button

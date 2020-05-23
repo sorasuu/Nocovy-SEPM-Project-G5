@@ -56,7 +56,7 @@ export class PriceForm extends React.Component{
   }
 
   handleSubmit =() => {
-    var newUnitPrice = Number(this.state.newUnitCost) * ((100 + Number(this.state.newMargin) + Number(this.state.newDutyRate))/100)
+    var newUnitPrice = (Number(this.state.newUnitCost) * ((100 + Number(this.state.newMargin) + Number(this.state.newDutyRate))/100)).toFixed(2)
     var product = {
       id: this.props.id,
       category: this.state.newCategory, 

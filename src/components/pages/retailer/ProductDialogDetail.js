@@ -29,7 +29,10 @@ const useStyles = makeStyles(() => ({
 }));
 
 const DialogPanel = (props) => {
-    console.log(props)
+    // console.log('dialog panel', props)
+    
+    
+    // console.log('list retailers', listRetailers)
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles =  useOverShadowStyles({ inactive: true });
@@ -42,9 +45,12 @@ const DialogPanel = (props) => {
                 title={"Request"}
                 style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", top: "-1%", left: "5%", width: '200px', }}
             />
-            <CardContent className={classes.content}  >
-            <ProductDialogTable products={props.products} handleChangeSelected={props.handleChangeSelected}/>
-            </CardContent>
+            <CardContent className={classes.content}>
+                <ProductDialogTable products={props.listProducts} currentRetailer={props.currentRetailer} handleChangeSelected={props.handleChangeSelected}/>
+            </CardContent>) ?
+           
+            
+            
             <StyledButton onClick={(e)=>props.handleSubmitRequest(e)}>Request</StyledButton>
         
             <StyledButton onClick={props.handleClose} >Cancel</StyledButton>
@@ -54,7 +60,8 @@ const DialogPanel = (props) => {
 
 class ProductDialogDetail extends React.Component {
     state={
-        productSelected:[]
+        productSelected:[],
+        
     }
 
     handleChangeSelected=(e,productSelected)=>{
@@ -75,59 +82,14 @@ class ProductDialogDetail extends React.Component {
     }
    
     render() {
+        console.log('product dialog detail', this.props)
+        const listProducts = this.props.listProducts ? this.props.listProducts : {name:'No Product'}
 
-        const listProduct = this.props.listProduct? this.props.listProduct : {name:'No Product'}
-
-        console.log('list Product', this.state.productSelected)
         return (
-
-            <DialogPanel products={listProduct} handleChangeSelected={this.handleChangeSelected} handleSubmitRequest={this.handleSubmitRequest} handleClose={this.props.handleClose}/>
-
-            // <Table>
-            //     <TableHead>
-            //         <TableRow>
-            //             <TableCell>Actions</TableCell>
-            //             <TableCell>Name</TableCell>
-            //             <TableCell>Image</TableCell>
-            //             <TableCell>Price</TableCell>
-            //         </TableRow>
-            //     </TableHead>
-            //     <TableBody>
-            //     { listProduct.map((product,key, isCheck=true) => 
-            //         product.retailerId ? 
-            //             product.retailerId.includes(this.props.currentRetailer.id) ?
-            //                 <TableRow key={key}>
-            //                     <TableCell>Detail</TableCell>
-            //                     <TableCell>{product.name}</TableCell>
-            //                     <TableCell><img style={{width:'50px', height:'75px'}} src={product.cover}/></TableCell>
-            //                     <TableCell>{product.price.unitPrice}</TableCell>
-            //                 </TableRow>
-            //                 :
-            //                 <TableRow>
-            //                 <TableCell>
-            //                     <Checkbox color={'primary'} onClick={e=>this.handleCheckBox(e,product.id,isCheck)} checked={isCheck}/>
-            //                     </TableCell>
-            //                 <TableCell>{product.name}</TableCell>
-            //                 <TableCell><img style={{width:'50px', height:'75px'}} src={product.cover}/></TableCell>
-            //                 <TableCell>{product.price.unitPrice}</TableCell>
-            //             </TableRow>
-                            
-            //         :<TableRow>
-            //         <TableCell><Checkbox color={'primary'} onClick={e=>this.handleCheckBox(e,product.id,isCheck) } checked={isCheck} /></TableCell>
-            //         <TableCell>{product.name}</TableCell>
-            //         <TableCell><img style={{width:'50px', height:'75px'}} src={product.cover}/></TableCell>
-            //         <TableCell>{product.price.unitPrice}</TableCell>
-            //     </TableRow>
-                    
-            //         )
-            //     } 
-                    
-                
-           
         
-            // </TableBody>
-            // </Table>
-            
+            <DialogPanel listProducts={listProducts}  currentRetailer={this.props.currentRetailer} handleChangeSelected={this.handleChangeSelected} handleSubmitRequest={this.handleSubmitRequest} handleClose={this.props.handleClose}/>
+      
+           
         )
     }
 
@@ -142,7 +104,7 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = (state) => {
     
     return {
-        listProduct : state.firestore.ordered.products
+        listProducts : state.firestore.ordered.products
   
     }
   };

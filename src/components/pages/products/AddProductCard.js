@@ -138,7 +138,7 @@ const AddProductCard = (props) => {
                                 ),
                             }}
                         ></TextField><br/>
-                        <TextField multiline type='number' style={{marginBottom:'2%'}} label='Unit Price' disabled value={Number(props.values.unitCost) * ((100 + Number(props.values.margin) + Number(props.values.dutyRate))/100)}
+                        <TextField multiline type='number' style={{marginBottom:'2%'}} label='Unit Price' disabled value={(Number(props.values.unitCost) * ((100 + Number(props.values.margin) + Number(props.values.dutyRate))/100)).toFixed(2)}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
