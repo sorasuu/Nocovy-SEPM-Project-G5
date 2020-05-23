@@ -16,7 +16,7 @@ import TextInfoContent from '@mui-treasury/components/content/textInfo';
 import { useFourThreeCardMediaStyles } from '@mui-treasury/styles/cardMedia/fourThree';
 import { useN04TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n04';
 import CardMedia from '@material-ui/core/CardMedia';
-
+import moment from 'moment'
 const useStyles = makeStyles(() => ({
     card: {
         marginTop: "10%",
@@ -111,7 +111,8 @@ const YourOrdrerCard =(props)=>{
                 className={cardHeaderShadowStyles.root}
                 classes={cardHeaderStyles}
                 title={"Order: "+props.order.id}
-                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", top: "-2%", left: "3%", width: '400px', }}
+                subheader={ moment(props.order.createdAt.toDate()).fromNow()}
+                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", top: "-3%", left: "3%", width: '400px', }}
             />
             <CardContent className={classes.content} >
                 <div style={{marginBottom: "2%",marginTop:"20px"}}>

@@ -9,6 +9,7 @@ export const createProduct = (product) => {
       firebase.firestore().collection('products').add({
         ...product,
         authorEmail: author.email,
+        retailerId:[],
         cover:product.productImg[0],
         createdAt: new Date()
       }).then(() => {

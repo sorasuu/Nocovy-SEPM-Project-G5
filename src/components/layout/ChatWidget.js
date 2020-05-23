@@ -18,6 +18,7 @@ export const DefaultChatMsg = (props) => (
     <div>
         {props.messages ? props.messages.map(message => {
             if (message.sender === props.uid) {
+                console.log(props)
                 return (
                     <ChatMsg
                         key={message.id}
@@ -28,6 +29,7 @@ export const DefaultChatMsg = (props) => (
                     />
                 )
             } else {
+                console.log(props)
                 return (
                     <ChatMsg
                         key={message.id}
@@ -165,7 +167,7 @@ const ChatPanel = (props) => {
         }
     ])
     let message = useSelector(({ firestore: { ordered } }) => ordered.thischatsesion)
-    console.log(message)
+    var messages = currentchatsession? currentchatsession.lastchat?message:null:null
     const classes = useStylesCard();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles({ inactive: true });
@@ -182,7 +184,7 @@ const ChatPanel = (props) => {
             <CardContent className={classes.content} style={{ maxHeight: 300, height: 300, overflow: 'auto', marginTop: '5%' }} >
 
                 <div >
-                    <DefaultChatMsg messages={message} uid={props.uid} receiver={receiver} />
+                    <DefaultChatMsg messages={messages} uid={props.uid} receiver={receiver} />
 
                 </div>
 

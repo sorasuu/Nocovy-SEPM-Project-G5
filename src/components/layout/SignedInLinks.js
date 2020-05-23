@@ -21,12 +21,15 @@ import MenuList from "@material-ui/core/MenuList";
 import Button from "@material-ui/core/Button";
 import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
+import { useSizedIconButtonStyles } from '@mui-treasury/styles/iconButton/sized';
+import { Avatar } from 'material-ui'
 const useStyles = makeStyles(styles);
-export function LongMenu(props) {
+export function UserMenu(props) {
+  
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [auth, setAuth] = React.useState(null);
   const open = Boolean(anchorEl);
-
+  const large = useSizedIconButtonStyles({ padding: 4, childSize: 28 });
   const handleClick = event => {
     console.log(props)
     setAuth(props);
@@ -37,6 +40,54 @@ export function LongMenu(props) {
     setAnchorEl(null);
   };
   //  console.log(props)
+
+  return (
+    <div>
+
+      <IconButton classes={large} onClick={(e)=>handleClick(e)}>
+          
+          <Avatar src={props.currentUser?props.currentUser.logo:null} />
+        </IconButton>
+      <Menu
+        id="long-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={open}
+        onClose={handleClose}
+      >
+        <NavLink to={`/profile/${props.props.uid}`} style={{ color: "black" }} >
+          <MenuItem onClick={handleClose}>My Profile</MenuItem>
+          </NavLink>
+        {props.lastContact ?
+          <NavLink to={'/chat/' + props.lastContact.id} style={{ color: "black" }}>
+            <MenuItem onClick={handleClose}>Chat</MenuItem></NavLink> : null
+            }
+        <NavLink to ='/myorders' style={{ color: "black" }}> <MenuItem onClick={handleClose}>My Orders</MenuItem> </NavLink>
+        <NavLink to ='/myrequests' style={{ color: "black" }}> <MenuItem onClick={handleClose}>Requests</MenuItem> </NavLink>
+        <MenuItem style={{ color: "black" }} onClick={(e)=>props.handelSignOut(e)}><Button variant='outlined'>Sign Out</Button></MenuItem> 
+  
+
+      </Menu>
+
+    </div>
+  );
+}
+
+export function MoreMenu(props) {
+  
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [auth, setAuth] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const large = useSizedIconButtonStyles({ padding: 4, childSize: 28 });
+  const handleClick = event => {
+    console.log(props)
+    setAuth(props);
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <div>
@@ -56,28 +107,19 @@ export function LongMenu(props) {
         open={open}
         onClose={handleClose}
       >
-        <NavLink to={`/profile/${props.props.uid}`} style={{ color: "black" }} >
-          <MenuItem onClick={handleClose}>My Profile</MenuItem>
-          </NavLink>
-        {props.lastContact ?
-          <NavLink to={'/chat/' + props.lastContact.id} style={{ color: "black" }}>
-            <MenuItem onClick={handleClose}>Chat</MenuItem></NavLink> : null
-            }
           <NavLink to ='/faq' style={{ color: "black" }}> <MenuItem onClick={handleClose}>FAQ</MenuItem> </NavLink>
           <NavLink to ='/rules' style={{ color: "black" }}> <MenuItem onClick={handleClose}>Transaction Rules</MenuItem> </NavLink>
           <NavLink to ='/privacypolicy' style={{ color: "black" }}> <MenuItem onClick={handleClose}>Privacy Policy</MenuItem> </NavLink>
           <NavLink to ='/tos' style={{ color: "black" }}> <MenuItem onClick={handleClose}>Term of Service</MenuItem> </NavLink>
-
       </Menu>
-
     </div>
   );
 }
-
 const SignedInLinks = (props) => {
   console.log(props)
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
+
   const handleClickNotification = event => {
     if (openNotification && openNotification.contains(event.target)) {
       setOpenNotification(null);
@@ -124,10 +166,6 @@ const SignedInLinks = (props) => {
           <div className={classes.manager}>
             <IconButton
 
-              color={window.innerWidth > 959 ? "secondary" : "secondary"}
-              
-              aria-owns={openNotification ? "notification-menu-list-grow" : null}
-              aria-haspopup="true"
               onClick={handleClickNotification}
               className={classes.buttonLink}
             >
@@ -182,14 +220,11 @@ const SignedInLinks = (props) => {
           </div>
         </Grid>
         <Grid item xs={3}>
-          <LongMenu props={auth} lastContact={props.props.lastContact} />
+          <UserMenu props={auth} lastContact={props.props.lastContact} currentUser={props.props.currentUser} handelSignOut={handelSignOut}/>
         </Grid>
         <Grid item xs={3}>
-          <IconButton onClick={(e) => handelSignOut(e)} >
-            <InputIcon />
-          </IconButton>
+        <MoreMenu/>
         </Grid>
-
       </Grid>
     </div>
   )

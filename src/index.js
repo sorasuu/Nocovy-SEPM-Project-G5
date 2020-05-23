@@ -11,7 +11,7 @@ import 'firebase/storage';
 import { createStore, compose ,applyMiddleware} from 'redux'
 import { ReactReduxFirebaseProvider,getFirebase,isLoaded  } from 'react-redux-firebase'
 import { createFirestoreInstance,getFirestore } from 'redux-firestore' 
-
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import ColorLinearProgress from './components/layout/ColorLinearProgress'
 import thunk from 'redux-thunk';
 import rootReducer from './components/store/reducers/rootReducer'
@@ -64,7 +64,7 @@ const rrfProps = {
 }
 
 ReactDOM.render(<Provider store={store}>
-    <ReactReduxFirebaseProvider {...rrfProps}><div id='bckgrd' className = 'bckgrd'><AuthIsLoaded><App /></AuthIsLoaded></div>  </ReactReduxFirebaseProvider>
+    <ReactReduxFirebaseProvider {...rrfProps}><div id='bckgrd' className = 'bckgrd'><AuthIsLoaded> <MuiThemeProvider><App /></MuiThemeProvider></AuthIsLoaded></div>  </ReactReduxFirebaseProvider>
     </Provider>, document.getElementById('root'));
 
 serviceWorker.register();

@@ -27,6 +27,7 @@ import NotFound from './components/pages/NotFound'
 import CancelIcon from '@material-ui/icons/Cancel';
 import {registerRetailers} from './components/store/actions/productAction'
 import MyOrders from './components/pages/products/MyOrders';
+import MyRequest from './components/pages/profile/MyRequest';
 
 class App extends Component {
   state = {
@@ -89,7 +90,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <Navbar notifications={notifications} lastContact ={lastContact} cart={this.state.cart} />
+          <Navbar notifications={notifications} lastContact ={lastContact} cart={this.state.cart} currentUser={currentUser} />
           <Switch>
             <Route exact path='/' component={(props)=><Dashboard {...props} handleCart={this.handleCart} handelRegister={this.handelRegister} />} />
             {/* <Route path='/'component={ProductDetail} /> */}
@@ -107,6 +108,8 @@ class App extends Component {
             <Route path='/rules' component={TransactionRules}/>
             <Route path='/tos' component={TermOfService} />
             <Route path='/myorders' component={MyOrders} />
+            <Route path='/myrequests' component={(props) => <MyRequest {...props} currentUser={currentUser}/>} />
+            
             <Route component={NotFound} />
 
           </Switch>

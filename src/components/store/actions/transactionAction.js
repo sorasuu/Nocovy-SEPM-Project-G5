@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-
+import {registerRetailers} from './productAction'
 
 export const createCheckout = (orders) => {
   return (dispatch, getState) => {
@@ -21,10 +21,10 @@ export const createSingleRequest = (requests) => {
     firebase.firestore().collection('requests').doc(requests.product.id+requests.retailerId).set(
       {pending:true,
         confirmed: false,
-        productId: requests.product.id,
+        productId: [requests.product.id],
         retailerId: requests.retailerId,
         supplierId: supplier.uid,
-
+        createdAt: new Date()
       }
     )
       .then(() => {
@@ -44,7 +44,7 @@ export const createListRequest = (requests) => {
         products: requests.products,
         retailerId: requests.retailerId,
         supplierId: supplier.uid,
-
+        createdAt: new Date()
       }
     )
       .then(() => {
@@ -70,8 +70,10 @@ export const declineRequest = (requests) => {
   }
 };
 
-export const accpeptRequest = (requests) => {
+export const acceptRequest = (requests) => {
   return (dispatch, getState) => {
+    const author = getState().firebase.auth;
+    console.log(requests)
     firebase.firestore().collection('requests').doc(requests.id).update(
       {
         confirmed: true,
@@ -79,11 +81,9 @@ export const accpeptRequest = (requests) => {
       }
     )
       .then(() => {
-        firebase.firestore().collection('products').doc(requests.product.id).update(
-          {
-            retailerId: firebase.firestore.FieldPath.arrayUnion(requests.retailerId)
-          })
+       
         dispatch({ type: 'ACCPEPT_REQUEST' });
+        
       }).catch(err => {
         dispatch({ type: 'ACCPEPT_REQUEST_ERROR' }, err);
       });

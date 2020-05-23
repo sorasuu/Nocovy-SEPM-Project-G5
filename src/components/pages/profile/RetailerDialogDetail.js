@@ -62,7 +62,7 @@ class RetailerDialogDetail extends React.Component {
             if(this.props.requested.pending===false&&this.props.requested.confirmed===true){
                 //accepted
                 // requestuser= <Grid item xs={6}> <Button><CheckRoundedIcon/></Button></Grid>
-            }else if(this.props.requested.pending===false&&this.props.requested.confirmed===true){
+            }else if(this.props.requested.pending===false&&this.props.requested.confirmed===false){
                 //declined
                 // requestuser= <Grid item xs={6}> <Button><CheckRoundedIcon/></Button></Grid>
             }
@@ -120,7 +120,7 @@ export default compose(
     firestoreConnect((props)=>{
         console.log(props)
     return[
-        { collection: 'requests', where:[["retailerId","==",props.id]], where:[["productId","==",props.product.id]],storeAs:'requested'},
+        { collection: 'requests', where:[["retailerId","==",props.id]], where:[["productId","array-contains",props.product.id]],storeAs:'requested'},
       ]
       
      } )
