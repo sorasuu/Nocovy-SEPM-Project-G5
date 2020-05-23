@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
         overflow: 'initial',
         background: '#ffffff',
         borderRadius: 16,
-        height:'450px',
+        height:'500px',
     },
 }));
 

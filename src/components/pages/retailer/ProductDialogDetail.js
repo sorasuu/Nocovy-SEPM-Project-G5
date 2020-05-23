@@ -10,6 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Table, TableHead , TableBody, TableRow, TableCell, Button, Checkbox  } from '@material-ui/core'
 import firebase from 'firebase/app'
 import {createListRequest} from '../../store/actions/transactionAction'
+import ProductDialogTable from './ProductDialogTable';
 const useStyles = theme => ({
 })
 
@@ -18,10 +19,12 @@ class ProductDialogDetail extends React.Component {
         productlist:[]
     }
 
-    handleCheckBox=(e,id,checked)=>{
-        console.log("anh Tung cuu",e.target.value,id,checked)
+    handleCheckBox=(e,id,isCheck)=>{
+        console.log("anh Tung cuu",e , 'id', id,'isCheck',isCheck)
         
     }
+
+
     handleSubmitRequest=(e)=>{
         const request={
             retailerId:   this.props.currentRetailer.uid,
@@ -37,50 +40,54 @@ class ProductDialogDetail extends React.Component {
 
         console.log('list Product', listProduct)
         return (
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Actions</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Image</TableCell>
-                        <TableCell>Price</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                { listProduct.map((product,checked=true) => 
-                    product.retailerId ? 
-                        product.retailerId.includes(this.props.currentRetailer.id) ?
-                            <TableRow>
-                                <TableCell>Detail</TableCell>
-                                <TableCell>{product.name}</TableCell>
-                                <TableCell><img style={{width:'50px', height:'75px'}} src={product.cover}/></TableCell>
-                                <TableCell>{product.price.unitPrice}</TableCell>
-                            </TableRow>
-                            :
-                            <TableRow>
-                            <TableCell>
-                                <Checkbox color={'primary'} onClick={e=>this.handleCheckBox(e,product.id,checked)} checked={checked}/>
-                                </TableCell>
-                            <TableCell>{product.name}</TableCell>
-                            <TableCell><img style={{width:'50px', height:'75px'}} src={product.cover}/></TableCell>
-                            <TableCell>{product.price.unitPrice}</TableCell>
-                        </TableRow>
+
+
+            <ProductDialogTable products={listProduct}/>
+
+            // <Table>
+            //     <TableHead>
+            //         <TableRow>
+            //             <TableCell>Actions</TableCell>
+            //             <TableCell>Name</TableCell>
+            //             <TableCell>Image</TableCell>
+            //             <TableCell>Price</TableCell>
+            //         </TableRow>
+            //     </TableHead>
+            //     <TableBody>
+            //     { listProduct.map((product,key, isCheck=true) => 
+            //         product.retailerId ? 
+            //             product.retailerId.includes(this.props.currentRetailer.id) ?
+            //                 <TableRow key={key}>
+            //                     <TableCell>Detail</TableCell>
+            //                     <TableCell>{product.name}</TableCell>
+            //                     <TableCell><img style={{width:'50px', height:'75px'}} src={product.cover}/></TableCell>
+            //                     <TableCell>{product.price.unitPrice}</TableCell>
+            //                 </TableRow>
+            //                 :
+            //                 <TableRow>
+            //                 <TableCell>
+            //                     <Checkbox color={'primary'} onClick={e=>this.handleCheckBox(e,product.id,isCheck)} checked={isCheck}/>
+            //                     </TableCell>
+            //                 <TableCell>{product.name}</TableCell>
+            //                 <TableCell><img style={{width:'50px', height:'75px'}} src={product.cover}/></TableCell>
+            //                 <TableCell>{product.price.unitPrice}</TableCell>
+            //             </TableRow>
                             
-                    :<TableRow>
-                    <TableCell><Checkbox color={'primary'} onClick={e=>this.handleCheckBox(e,product.id,checked) } checked={checked} /></TableCell>
-                    <TableCell>{product.name}</TableCell>
-                    <TableCell><img style={{width:'50px', height:'75px'}} src={product.cover}/></TableCell>
-                    <TableCell>{product.price.unitPrice}</TableCell>
-                </TableRow>
+            //         :<TableRow>
+            //         <TableCell><Checkbox color={'primary'} onClick={e=>this.handleCheckBox(e,product.id,isCheck) } checked={isCheck} /></TableCell>
+            //         <TableCell>{product.name}</TableCell>
+            //         <TableCell><img style={{width:'50px', height:'75px'}} src={product.cover}/></TableCell>
+            //         <TableCell>{product.price.unitPrice}</TableCell>
+            //     </TableRow>
                     
-                    )
-                } 
+            //         )
+            //     } 
                     
                 
            
         
-            </TableBody>
-            </Table>
+            // </TableBody>
+            // </Table>
             
         )
     }
