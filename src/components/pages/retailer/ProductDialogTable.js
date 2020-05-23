@@ -195,7 +195,7 @@ export default function ProductDialogTable(props) {
     const classes = useStyles();
     console.log('product list', props.products)
 
-    const productsPreCheck = props.products.filter(product => product.retailerId !== undefined)
+    const productsPreCheck = props.products.filter(product => product.retailerId !== undefined) 
     const products = productsPreCheck.filter(product => !product.retailerId.includes(props.currentRetailer.id))
     
     // const products = productAfterCheck.concat(productsPreCheck)

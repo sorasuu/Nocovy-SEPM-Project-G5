@@ -157,6 +157,7 @@ class Dashboard extends Component {
   }
 
   onChange = e => {
+ 
     this.setState({ search: e.target.value })
   }
 

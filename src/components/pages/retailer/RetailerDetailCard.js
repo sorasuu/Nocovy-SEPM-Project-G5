@@ -42,7 +42,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const RetailerDetailCard = (props) => {
-    console.log('retailer detail card', props)
+    // console.log('retailer detail card', props)
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles =  useOverShadowStyles({ inactive: true });
