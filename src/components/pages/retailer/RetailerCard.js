@@ -26,6 +26,7 @@ const useStyles = makeStyles(() => ({
         overflow: 'initial',
         background: '#ffffff',
         borderRadius: 16,
+        height:'450px'
     },
    
 }));
@@ -52,7 +53,7 @@ const RetailerCard = (props) => {
     
     return (
 
-        <Card className={cx(classes.root, shadowStyles.root)} style={{ position: "relative", marginBottom: '10px' }}>
+        <Card className={cx(classes.root, shadowStyles.root)}  class={classes.card} style={{ position: "relative", marginBottom: '10px' }}>
             
             <CardContent className={classes.content}
 
@@ -88,7 +89,7 @@ const RetailerCard = (props) => {
                     classes={textCardContentStyles}
                     overline={`${retailer.displayName}: \ ${retailer.email} `}
                     heading={retailer.businessName}
-                    body={ retailer.address}
+                    body={ retailer.address?  retailer.address.slice(0, 65) : null}
                     
                 />
             </CardContent>

@@ -6,22 +6,31 @@ import { NavLink } from 'react-router-dom'
 import InfoRoundedIcon from '@material-ui/icons/InfoRounded';
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
-import { TableBody, TableRow, TableCell, Button, Grid } from '@material-ui/core'
+import { TableBody, TableRow, TableCell, Button, Grid, Dialog, DialogTitle, DialogContent, Typography, DialogActions } from '@material-ui/core'
 import firebase from 'firebase/app'
 import {createSingleRequest} from '../../store/actions/transactionAction'
 class RetailerDialogDetail extends React.Component {
     state={
         retailer: null,
         pending: true,
+        open: false,
     }
+    handleOpen=()=>{
+        this.setState({open: true})
+    }
+    handleClose=()=>{
+        this.setState({open: false})
+    }
+    
     handlePending=(e)=>{
+        
         const request={
          retailerId:   this.state.retailer.uid,
          product: this.props.product
         }
         console.log(request)
         this.props.createSingleRequest(request)
-        this.setState({pending: false})
+        this.setState({pending: false}, {open: false})
     }
     
     componentDidMount() {
@@ -67,9 +76,26 @@ class RetailerDialogDetail extends React.Component {
                 // requestuser= <Grid item xs={6}> <Button><CheckRoundedIcon/></Button></Grid>
             }
         }else{
-            requestuser =<Grid item xs={6}><Button onClick={this.handlePending}><AddRoundedIcon/></Button></Grid>
+            requestuser =<Grid item xs={6}><Button onClick={this.handleOpen}><AddRoundedIcon/></Button></Grid>
         }
         return (
+            <>
+            <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="del-dialog-title">
+                <DialogTitle id="del-dialog-title">Confirm deletion</DialogTitle>
+                <DialogContent>
+                    <Typography>Are you sure wanna invite this retailer?</Typography>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={this.handleClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={this.handlePending} color="primary">
+                        Confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+
             <TableBody>
                 {retailer !== undefined && retailer !== null ?
                 <TableRow>
@@ -93,6 +119,7 @@ class RetailerDialogDetail extends React.Component {
             :null
         }
             </TableBody>
+            </> 
         )
     }
 

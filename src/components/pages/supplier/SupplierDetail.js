@@ -15,8 +15,7 @@ class SupplierDetail extends Component {
     render() {
       const { auth, user, productList , productListdata} = this.props;
       if (!auth.uid) return <Redirect to='/signin' />
-      
-      console.log('productList', productList)
+    
       return (
         <div className="container">
           {user ?

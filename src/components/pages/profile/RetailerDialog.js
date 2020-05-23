@@ -16,7 +16,7 @@ export default function RetailerDialog(props) {
     const handleClose = () => {
         setOpen(false)
     }
-    console.log("nhanh",props.product)
+    
     const registered = props.registered ? 
         props.registered : ['No Register Retailer']
     const all = props.allRetailers ? 

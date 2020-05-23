@@ -7,6 +7,7 @@ import {
   TableRow, TableCell, Input, Dialog,
   DialogTitle, DialogContent, DialogActions, CardHeader
 } from '@material-ui/core'
+import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
@@ -166,7 +167,8 @@ class ProductCart extends Component {
 
           )
 
-          : <p>cart empty</p>
+          : <div><h4>Your Cart Empty</h4>
+          <h2><NavLink to='/'><Button>Make Purchase Now ^^!</Button></NavLink></h2></div>
         }
       {cart&&cart.length!==0  ?<StyledButton onClick={(e) => this.handleOrder(e)} >Place Order</StyledButton>:null}
        

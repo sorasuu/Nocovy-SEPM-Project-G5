@@ -224,6 +224,7 @@ export default function SupplierDetailCard(props) {
                         <Typography variant='h5'>Partner</Typography>
                     </NavLink>
 
+
                 </div>
                 <Grid container
                     direction="row"
@@ -263,10 +264,34 @@ export default function SupplierDetailCard(props) {
                 <CardContent>
                     <div className={classes.description}>
                         <Divider style={{ margin: 10 }} light />
-                        <Typography variant='h6'>Business Genre:</Typography>
-                        <Typography paragraph>{props.supplier.businessGenre ? props.supplier.businessGenre : 'Business genre not available'}</Typography>
-                        <Typography variant='h6'>Business Description:</Typography>
-                        <Typography>{props.supplier.businessDesc ? props.supplier.businessDesc : 'Description not available'}</Typography>
+                        <Grid container direction="row">
+                            <Grid item xs={4}>
+                                <Grid container>
+                                    <Grid item xs={12}> 
+                                        <Typography variant='h6'>Business Genre:</Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography paragraph>{props.supplier.businessGenre ? props.supplier.businessGenre : 'Business genre not available'}</Typography>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={8}>
+                                <Grid container>
+                                    <Grid item xs={12}>
+                                        <Typography variant='h6'>Business Description:</Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography>{props.supplier.businessDesc ? props.supplier.businessDesc : 'Description not available'}</Typography>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            
+                            
+                           
+                        </Grid>
+                       
+                       
+                        
                     </div>
                 </CardContent>
             </Collapse>

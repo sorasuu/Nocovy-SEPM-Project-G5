@@ -1,7 +1,11 @@
 import React from 'react';
 import { TabPanel } from './SupplierDetailCard'
-import { Table, TableHead, TableCell, TableBody, TableRow } from '@material-ui/core'
+import { NavLink } from 'react-router-dom'
+import { Table, TableHead, TableCell, TableBody, 
+        TableRow, Button
+} from '@material-ui/core'
 
+import InfoRoundedIcon from '@material-ui/icons/InfoRounded';
 
 function RetailerList(props){
     const { product, productkey, value } = props
@@ -13,10 +17,11 @@ function RetailerList(props){
         <div key={productkey}>
             {retailerList ? retailerList.map((item, key)=>
         
-                <TabPanel value={value} index={productkey} key={key}>
+                <TabPanel value={value} index={productkey} key={key} style={{width:'fit-content'}}>
                         <Table>
                             <TableHead>
-                                <TableCell>Avatar</TableCell>
+                                <TableCell>Detail</TableCell>
+                                <TableCell>Cover</TableCell>
                                 <TableCell>BusinessName</TableCell>
                                 <TableCell>DisplayName</TableCell>
                                 <TableCell>Email</TableCell>
@@ -26,7 +31,8 @@ function RetailerList(props){
                         <TableBody>
                         
                             <TableRow>
-                                <TableCell><img style={{width:"100px", height:'100px'}}src={item.logo}/></TableCell>
+                                <TableCell><NavLink to={`/retailer/${item.id}`}><Button><InfoRoundedIcon/></Button></NavLink></TableCell>
+                                <TableCell><img style={{width:"100px", height:'150px'}}src={item.logo}/></TableCell>
                                 <TableCell>{item.businessName}</TableCell>
                                 <TableCell>{item.displayName}</TableCell>
                                 <TableCell>{item.email}</TableCell>
