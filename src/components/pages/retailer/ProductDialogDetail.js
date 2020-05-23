@@ -2,47 +2,86 @@ import React from 'react';
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { NavLink } from 'react-router-dom'
-import InfoRoundedIcon from '@material-ui/icons/InfoRounded';
-import AddRoundedIcon from '@material-ui/icons/AddRounded';
-import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
-import { withStyles } from '@material-ui/core/styles';
-import { Table, TableHead , TableBody, TableRow, TableCell, Button, Checkbox  } from '@material-ui/core'
-import firebase from 'firebase/app'
+import cx from 'clsx';
+import { makeStyles } from '@material-ui/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
+import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
+import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import {createListRequest} from '../../store/actions/transactionAction'
 import ProductDialogTable from './ProductDialogTable';
-const useStyles = theme => ({
-})
+import StyledButton from '../../layout/StyledButton';
+const useStyles = makeStyles(() => ({
+    card: {
+        marginTop: "10%",
+        transition: '0.3s',
+        width: '100%',
+        overflow: 'initial',
+        background: '#ffffff',
+    },
+    content: {
+        textAlign: 'left',
+        overflowX: 'auto',
+        marginLeft: "5%",
+    },
+}));
+
+const DialogPanel = (props) => {
+    console.log(props)
+    const classes = useStyles();
+    const cardHeaderStyles = useContainedCardHeaderStyles();
+    const cardShadowStyles =  useOverShadowStyles({ inactive: true });
+    const cardHeaderShadowStyles = useFadedShadowStyles();
+    return (
+        <Card className={cx(classes.card, cardShadowStyles.root)} style={{ position: "relative", marginBottom: '2%' }}>
+            <CardHeader
+                className={cardHeaderShadowStyles.root}
+                classes={cardHeaderStyles}
+                title={"Request"}
+                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", top: "-1%", left: "5%", width: '200px', }}
+            />
+            <CardContent className={classes.content}  >
+            <ProductDialogTable products={props.products} handleChangeSelected={props.handleChangeSelected}/>
+            </CardContent>
+            <StyledButton onClick={(e)=>props.handleSubmitRequest(e)}>Request</StyledButton>
+        
+            <StyledButton onClick={props.handleClose} >Cancel</StyledButton>
+        </Card>
+    );
+};
 
 class ProductDialogDetail extends React.Component {
     state={
-        productlist:[]
+        productSelected:[]
     }
 
-    handleCheckBox=(e,id,isCheck)=>{
-        console.log("anh Tung cuu",e , 'id', id,'isCheck',isCheck)
+    handleChangeSelected=(e,productSelected)=>{
+        // console.log(productSelected)
+        this.setState({productSelected:productSelected})
         
     }
 
 
     handleSubmitRequest=(e)=>{
         const request={
-            retailerId:   this.props.currentRetailer.uid,
-            products: this.state.productlist
+            retailerId:  this.props.currentRetailer.uid,
+            products: this.state.productSelected
            }
            console.log(request)
            this.props.createListRequest(request)
+           this.props.handleClose()
     }
    
     render() {
 
         const listProduct = this.props.listProduct? this.props.listProduct : {name:'No Product'}
 
-        console.log('list Product', listProduct)
+        console.log('list Product', this.state.productSelected)
         return (
 
-
-            <ProductDialogTable products={listProduct}/>
+            <DialogPanel products={listProduct} handleChangeSelected={this.handleChangeSelected} handleSubmitRequest={this.handleSubmitRequest} handleClose={this.props.handleClose}/>
 
             // <Table>
             //     <TableHead>
@@ -96,7 +135,7 @@ class ProductDialogDetail extends React.Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-      
+        createListRequest:(requests)=>dispatch (createListRequest(requests)),
     };
   };
   
@@ -118,5 +157,5 @@ const mapStateToProps = (state) => {
       })
   
   
-  )(withStyles(useStyles)(ProductDialogDetail))
+  )(ProductDialogDetail)
 

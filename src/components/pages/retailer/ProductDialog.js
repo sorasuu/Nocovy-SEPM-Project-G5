@@ -34,7 +34,7 @@ export default function ProductDialog(props) {
                 open={open}
                 onClose={handleClose}
             >
-                <ProductDialogDetail currentRetailer ={props.currentRetailer} currentUser={props.currentUser}/>
+                <ProductDialogDetail currentRetailer ={props.currentRetailer} currentUser={props.currentUser} handleClose={handleClose}/>
             
 
             </Dialog>
