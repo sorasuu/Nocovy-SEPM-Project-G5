@@ -294,7 +294,7 @@ class Dashboard extends Component {
 
                 </Grid>
                 <Grid item xs={12}>
-                  {filter.map((option, key) => <Button onClick={this.handleSelectFilter(key, option.name, !option.value)}>{option.icon}{option.detail}</Button>)}
+                  {filter.map((option, key) => <Button key={key} onClick={this.handleSelectFilter(key, option.name, !option.value)}>{option.icon}{option.detail}</Button>)}
                 </Grid>
               </Grid>
             </Collapse>

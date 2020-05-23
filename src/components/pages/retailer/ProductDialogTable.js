@@ -237,6 +237,8 @@ export default function ProductDialogTable(props) {
     }
 
     setSelected(newSelected);
+    // console.log(newSelected)
+    props.handleChangeSelected(event,newSelected)
   };
 
   const handleChangePage = (event, newPage) => {
