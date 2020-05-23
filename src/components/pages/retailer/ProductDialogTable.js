@@ -270,7 +270,7 @@ export default function ProductDialogTable(props) {
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick(rows)}
+              onSelectAllClick={e => handleSelectAllClick(e, rows)}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             
