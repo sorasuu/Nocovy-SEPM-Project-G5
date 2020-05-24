@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, NoSsr, LinearProgress, withStyles } from '@material-ui/core'
+import { Container, NoSsr, LinearProgress, withStyles, InputBase } from '@material-ui/core'
 import StyledButton from '../layout/StyledButton'
 import "./style.css"
 import { DropzoneArea } from 'material-ui-dropzone'
@@ -50,7 +50,8 @@ class FormCertificate extends Component {
 
         return true;
     }
-    
+
+
     continue = e => {
         const isValid = this.validate()
         console.log('asdsad')
@@ -73,7 +74,7 @@ class FormCertificate extends Component {
 
     render() {
         const { auth, authError, values, handleChange, handleChangeImg } = this.props;
-
+    
         return (
             <div className="base-container">
                 <Container style={{ marginTop: "2%", width: "550px" }}>
@@ -99,15 +100,15 @@ class FormCertificate extends Component {
                             </div>
 
                             <div className="form-group">
+                            <label htmlFor="businessName">Business Name</label>
                                 <div className="input-field">
-                                    <label htmlFor="businessName">Business Name</label>
-                                    <input type="text" id='businessName' onChange={handleChange('businessName')} defaultValue={values.businessName} />
+                                    <input type="text" id='businessName' placeholder="Enter business name" onChange={handleChange('businessName')} defaultValue={values.businessName} />
                                 </div>
                                 <div style={{ fontSize: 11, color: "red" }}> {this.state.businessNameError} </div>
                             </div>
-                            <div className="form-group" style={{textAlign: 'left', alignSelf: 'stretch'}}>
-                                <label htmlFor="businessName" style={{ fontSize:"16px"}}>Business Type</label>
-                                {" "}{" "}{" "}{" "}{" "}{" "}
+                            <div className="form-group" style={{textAlign: 'center', alignSelf: 'stretch'}}>
+                            <label htmlFor="businessName">Business Type</label>
+                            <br/>
                                 <FormControl variant="outlined" className="form-group">
                                 <InputLabel id="businessType"></InputLabel>
                                     <Select
@@ -115,7 +116,7 @@ class FormCertificate extends Component {
                                         id="type"
                                         defaultValue={" "}
                                         value={values.type}
-                                        style={{minWidth:"150px"}}
+                                        style={{minWidth:"200px"}}
                                         onChange={handleChange('type')}
                                     >
 
@@ -128,24 +129,24 @@ class FormCertificate extends Component {
                                 <div style={{ fontSize: 11, color: "red" }}> {this.state.typeError} </div>
                             </div>
                             <div className="form-group">
+                            <label htmlFor="businessAddress">Business Address</label>
                                 <div className="input-field">
-                                    <label htmlFor="businessAddress">Business Address</label>
-                                    <input type="text" id='businessAddress' onChange={handleChange('businessAddress')} defaultValue={values.businessDesc} />
+                                    <input type="text" id='businessAddress' placeholder="Enter business address" onChange={handleChange('businessAddress')} defaultValue={values.businessDesc} />
                                     <div style={{ fontSize: 11, color: "red" }}> {this.state.businessAddressError} </div>
                                 </div>
                             </div>
 
                             <div className="form-group">
-                                <div className="input-field">
-                                    <label htmlFor="businessWebsite">Business Website (optional)</label>
-                                    <input type="text" id='businessWebsite' onChange={handleChange('businessWebsite')} defaultValue={values.businessWebsite} />
+                            <label htmlFor="businessWebsite">Business Website (optional)</label>
+                                <div className="input-field">                                    
+                                    <input type="text" id='businessWebsite' placeholder="Enter business website (optional)" onChange={handleChange('businessWebsite')} defaultValue={values.businessWebsite} />
                                 </div>
                             </div>
 
                             <div className="form-group">
+                            <label htmlFor="businessDesc">Business Description</label>
                                 <div className="input-field">
-                                    <label htmlFor="businessDesc">Business Description</label>
-                                    <input type="text" id='businessDesc' onChange={handleChange('businessDesc')} defaultValue={values.businessDesc} />
+                                    <input type="text" id='businessDesc' placeholder="Enter business description" onChange={handleChange('businessDesc')} defaultValue={values.businessDesc} />
                                     <div style={{ fontSize: 11, color: "red" }}> {this.state.businessDescError} </div>
                                 </div>
                             </div>
