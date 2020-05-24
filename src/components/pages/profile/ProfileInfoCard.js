@@ -101,11 +101,11 @@ const ProfileInfoCard = (props) => {
                     <Typography paragraph>{props.info.businessGenre ? props.info.businessGenre : 'Business genre not available'}</Typography>
                     <Typography variant='h6'>Business Description:</Typography> 
                     <Typography paragraph>{props.info.businessDesc? props.info.businessDesc : 'Description not available'}</Typography>
-                    <Typography paragraph variant='h6'>Business Certificate(s):</Typography>
+                    <Typography paragraph variant='h6'>Business Certificates:</Typography>
                     <div style={{display:'flex', flexWrap:'wrap', justifyContent:'space-evenly', flexDirection:'row'}}>
                         {props.info.certificates? props.info.certificates.map((value, key) => (
                             <div key={key}>
-                                <img src={value} alt="certificate" height='300' />
+                                <img src={value} alt="certificates" height='300' />
                             </div>
                         )) : 'No certificates available'}
                     </div>

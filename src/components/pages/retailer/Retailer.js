@@ -78,7 +78,7 @@ class Retailer extends Component {
   }
 }
 
-const populates=[{child:'supplierId',root:'users'}]
+const populates =[{child:'supplierId',root:'users'}]
 const collection= 'products'
 // const collection = 'users'
 
@@ -90,7 +90,7 @@ const mapStateToProps = (state, ownProps) => {
   const sellProduct = state.firestore.ordered.sellList
   const users = state.firestore.ordered.currentUser
   const currentUser = users ? users[0] : null
-  // console.log('hahha', sellProduct)
+ 
   return {
     auth: state.firebase.auth,
     retailer: retailer,

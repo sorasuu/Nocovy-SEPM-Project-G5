@@ -26,7 +26,7 @@ export default function ProductDialog(props) {
                 onClick={handleOpen}
 
             >
-                Invite
+                Request
             </Button>
             <Dialog
                 fullWidth={true}

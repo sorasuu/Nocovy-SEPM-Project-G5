@@ -18,37 +18,36 @@ import RetailerCard from '../retailer/RetailerCard'
 import SearchIcon from '@material-ui/icons/Search';
 import { TabPanel, a11yProps } from './AdminDashboard'
 import { deliverProductToCart } from '../../store/actions/productAction'
-const useStyles = theme => ({
 
+const useStyles = theme => ({
   search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
+    marginTop:'3%',
     backgroundColor: fade(theme.palette.common.white, 0.15),
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+      backgroundColor: fade(theme.palette.common.white, 0.35),
     },
-    marginTop: "2%",
-    // marginRight: theme.spacing(2),
-    justify: 'center',
-    alignItems: 'center',
-    direction: 'flex',
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
+    display: 'flex',
+    border: `1px solid ${'#dfe1e5'}`,
+    boxShadow: '0 16px 40px -12.125px rgba(0,0,0,0.3)',
+    borderRadius: 100,
+    padding:`${theme.spacing(1)/4}`,
+    height: '50px',
+    margin:'auto',
+    width:'482px'
+
   },
   searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
+    marginTop:'-5px',
+    padding:`${theme.spacing(1) /2}px ${theme.spacing(1)}px`,
     pointerEvents: 'none',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    borderRadius:100,
+    
   },
   inputRoot: {
     color: 'inherit',
+    width:'85%',
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`
@@ -135,6 +134,7 @@ const defaultFilter = [
   { name: 'sortPriceAsc', value: false, icon: <TrendingUpOutlinedIcon />, detail: '$' },
   { name: 'sortPriceDesc', value: false, icon: <TrendingDownOutlinedIcon />, detail: '$' },
 ]
+
 
 class Dashboard extends Component {
   constructor(props) {
@@ -246,11 +246,13 @@ class Dashboard extends Component {
             <SearchIcon />
           </div>
           <InputBase
+            
             placeholder="Search…"
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,
             }}
+            
             inputProps={{ 'aria-label': 'search' }}
             onChange={this.onChange}
           />
@@ -261,7 +263,7 @@ class Dashboard extends Component {
 
             <Button onClick={this.handleFilter}>Filter <FilterListRoundedIcon/></Button>
             <Collapse className={classes.search} in={this.state.isFiltered} timeout="auto" unmountOnExit >
-              <Grid container>
+              <Grid container style={{marginTop:'5%', marginBottom:'5%'}}>
                 <Grid item xs={12}>
                   <Grid container justify="center" alignItems='center'>
                     <Grid item><InputLabel id="demo-mutiple-chip-label"><em>Select Filter Categories</em></InputLabel></Grid>
@@ -326,7 +328,7 @@ class Dashboard extends Component {
 
                 : afterSearchProduct.map((product, index) => {
                   return (
-                    <Grid item xs={12} sm={6} md={4} key={index}>
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                       <ProductCard key={index} product={product} uid={this.props.auth.uid} handleCart={this.props.handleCart} currentUser={this.props.currentUser} handelRegister={this.props.handelRegister} />
                     </Grid>
                   )
@@ -339,8 +341,8 @@ class Dashboard extends Component {
               container
               spacing={2}
               direction="row"
-              justify="center"
-              alignItems="flex-start"
+              justify="flex-start"
+              alignItems="center"
             >
               {afterSearchSupplier.map((supplier, index) => {
                 return (
@@ -358,8 +360,8 @@ class Dashboard extends Component {
               container
               spacing={2}
               direction="row"
-              justify="center"
-              alignItems="flex-start"
+              justify="flex-start"
+              alignItems="center"
             >
               {afterSearchRetailer.map((retailer, index) => {
                 return (

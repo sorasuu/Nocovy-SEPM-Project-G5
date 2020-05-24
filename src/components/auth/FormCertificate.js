@@ -68,7 +68,7 @@ export class FormCertificate extends Component {
                         </div>
                         <div className="form">
                             <div className="form-group">
-                                <label htmlFor="image" >Certificate(s)</label>
+                                <label htmlFor="image" >Certificates</label>
                                 <br />
                                 <DropzoneArea
                                     defaultValue={values.images}

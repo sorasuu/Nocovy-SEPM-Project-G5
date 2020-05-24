@@ -76,7 +76,7 @@ export class FormCertificate extends Component {
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="bio" >Certificate</label>
+                                <label htmlFor="bio" >Certificates</label>
                                 {/* Certificate display goes here */}
                             </div>
 

@@ -40,7 +40,7 @@ export const signUp = (newUser) => {
         logo: newUser.logo,
         businessGenre: newUser.businessGenre,
         businessDesc:newUser.businessDesc,
-        certificate: newUser.certificate,
+        certificates: newUser.certificates,
         pending:true,
         verify:false,
       });
