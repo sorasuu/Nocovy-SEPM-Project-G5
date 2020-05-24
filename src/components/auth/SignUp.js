@@ -18,10 +18,10 @@ const initialState = {
     phoneNumber: '',
     logoImg: null,
     images: [],
-    cetificate: [],
+    certificates: [],
     progress: 0,
     businessName: '',
-    businessType: '',
+    type: '',
     businessAddress: '',
     businessWebsite: '',
     businessDesc: '',
@@ -30,7 +30,7 @@ const initialState = {
     passwordError: '',
     phonenumberError: '',
     businessNameError: '',
-    businessTypeError: '',
+    typeError: '',
     businessAddressError: '',
     businessDescError: '',
     logging: false, authError: '',
@@ -120,16 +120,16 @@ class SignUp extends Component {
     // update state
     componentDidUpdate(prevProps, prevState) {
         // console.log(this.props)
-        if (prevProps.certificate !== this.props.certificate) {
-            console.log('cetificate')
-            this.setState({ certificate: this.props.certificate })
+        if (prevProps.certificates !== this.props.certificates) {
+            console.log('certificates')
+            this.setState({ certificates: this.props.certificates })
         }
 
         if (prevProps.progress !== this.props.progress) {
             console.log('loading work')
             this.setState({ progress: this.props.progress })
         }
-        if (this.props.certificate.length === this.state.images.length && this.props.certificate.length > 0 && this.state.step === 2) {
+        if (this.props.certificates.length === this.state.images.length && this.props.certificates.length > 0 && this.state.step === 2) {
             this.nextStep();
         }
         // console.log('??',this.props.certificate)
@@ -140,8 +140,8 @@ class SignUp extends Component {
         }
     }
     static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.cetificate !== prevState.cetificate) {
-            return { cetificate: nextProps.cetificate };
+        if (nextProps.certificates !== prevState.certificates) {
+            return { certificates: nextProps.certificates };
         }
         else if (nextProps.progress !== prevState.progress) {
             return { progress: nextProps.progress };
@@ -151,11 +151,11 @@ class SignUp extends Component {
 
     render() {
         console.log(this.state)
-        const { step, firstName, lastName, email, password, phoneNumber, image, url, progress, businessName, businessType, businessDesc, businessAddress, businessWebsite } = this.state;
+        const { step, firstName, lastName, email, password, phoneNumber, image, url, progress, businessName, type, businessDesc, businessAddress, businessWebsite,images } = this.state;
         const { auth, authError } = this.props;
-        const values = { firstName, lastName, email, password, phoneNumber, image, url, progress, businessName, businessType, businessDesc, businessAddress, businessWebsite }
-        const { emailError, passwordError, phonenumberError, businessNameError, businessTypeError, businessDescError, businessAddressError } = this.state
-        const error = { emailError, passwordError, phonenumberError, businessNameError, businessTypeError, businessDescError, businessAddressError }
+        const values = { firstName, lastName, email, password, phoneNumber, image, url, progress, businessName, type, businessDesc, businessAddress, businessWebsite,images }
+        const { emailError, passwordError, phonenumberError, businessNameError, typeError, businessDescError, businessAddressError } = this.state
+        const error = { emailError, passwordError, phonenumberError, businessNameError, typeError, businessDescError, businessAddressError }
         if (auth.uid) return <Redirect to='/' />
         switch (step) {
             case 1:
@@ -225,7 +225,7 @@ const mapStateToProps = (state, ownProps) => {
         auth: state.firebase.auth,
         authError: state.auth.authError,
         //get payload
-        certificate: Array.from(cerurls),
+        certificates: Array.from(cerurls),
         progress: state.uploadReducer.progress,
         logo: sessionStorage.getItem("logo")
     }

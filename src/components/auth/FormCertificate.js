@@ -23,7 +23,7 @@ class FormCertificate extends Component {
 
     validate = () => {
         let businessNameError = '';
-        let businessTypeError = '';
+        let typeError = '';
         let businessAddressError = '';
         let businessDescError = '';
 
@@ -31,8 +31,8 @@ class FormCertificate extends Component {
             businessNameError = "Business name cannot be blank"
         }
 
-        if (!this.props.values.businessType) {
-            businessTypeError = "Business type cannot be blank"
+        if (!this.props.values.type) {
+            typeError = "Business type cannot be blank"
         }
 
         if (!this.props.values.businessAddress) {
@@ -43,8 +43,8 @@ class FormCertificate extends Component {
             businessDescError = "Business description cannot be blank"
         }
 
-        if (businessNameError || businessTypeError || businessAddressError || businessDescError) {
-            this.setState({ businessNameError, businessTypeError, businessAddressError, businessDescError })
+        if (businessNameError || typeError || businessAddressError || businessDescError) {
+            this.setState({ businessNameError, typeError, businessAddressError, businessDescError })
             return false;
         }
 
@@ -53,9 +53,10 @@ class FormCertificate extends Component {
     
     continue = e => {
         const isValid = this.validate()
+        console.log('asdsad')
         if (isValid) {
             this.setState(initialState)
-
+            console.log('asdsad')
             e.preventDefault();
             this.setState({ uploading: true })
             this.props.handleUpload(e)
@@ -111,11 +112,11 @@ class FormCertificate extends Component {
                                 <InputLabel id="businessType"></InputLabel>
                                     <Select
                                         labelId="businessType"
-                                        id="businessType"
+                                        id="type"
                                         defaultValue={" "}
-                                        value={values.businessType}
+                                        value={values.type}
                                         style={{minWidth:"150px"}}
-                                        onChange={handleChange('businessType')}
+                                        onChange={handleChange('type')}
                                     >
 
                                         <MenuItem value={"supplier"}>Supplier</MenuItem>
@@ -124,7 +125,7 @@ class FormCertificate extends Component {
 
                                     </Select>
                                 </FormControl>
-                                <div style={{ fontSize: 11, color: "red" }}> {this.state.businessTypeError} </div>
+                                <div style={{ fontSize: 11, color: "red" }}> {this.state.typeError} </div>
                             </div>
                             <div className="form-group">
                                 <div className="input-field">
