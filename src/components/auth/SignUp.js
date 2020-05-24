@@ -9,28 +9,44 @@ import Confirm from './Confirm'
 import Success from './Success'
 import { uploadToStorage } from '../store/actions/uploadAction'
 
-class SignUp extends Component {
-    state = {
-        step: 1,
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        phoneNumber: '',
-        logoImg:null,
-        images: [],
-        cetificate: [],
-        progress: 0,
-        businessName: '',
-        businessGenre: '',
-        businessDesc: ''
+const initialState = {
+    step: 1,
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    phoneNumber: '',
+    logoImg: null,
+    images: [],
+    cetificate: [],
+    progress: 0,
+    businessName: '',
+    businessType: '',
+    businessAddress: '',
+    businessWebsite: '',
+    businessDesc: '',
 
-    }
+    emailError: '',
+    passwordError: '',
+    phonenumberError: '',
+    businessNameError: '',
+    businessTypeError: '',
+    businessAddressError: '',
+    businessDescError: '',
+    logging: false, authError: '',
+}
+
+class SignUp extends Component {
+    state = initialState;
+
     nextStep = () => {
+        
+
         const { step } = this.state;
         this.setState({
             step: step + 1
         });
+
     }
     prevStep = () => {
         const { step } = this.state;
@@ -50,7 +66,8 @@ class SignUp extends Component {
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        const userInfo={
+
+        const userInfo = {
             ...this.state,
             logo: this.props.logo
         }
@@ -78,11 +95,11 @@ class SignUp extends Component {
         }
     }
 
-    handleChangeAvatar=(e)=> {
+    handleChangeAvatar = (e) => {
         if (e.target.files[0]) {
             const image = e.target.files[0];
-            this.setState({logoImg:image});
-          }
+            this.setState({ logoImg: image });
+        }
     }
 
     handleUploadAvatar = (e) => {
@@ -90,13 +107,13 @@ class SignUp extends Component {
         const { logoImg } = this.state;
         if (logoImg !== undefined && logoImg !== null) {
             // need a image and a path
-                const file = {
-                    image: logoImg,
-                    path: '/images/logo/'
-                }
-                // new upload
-                this.props.uploadToStorage(file)
-            
+            const file = {
+                image: logoImg,
+                path: '/images/logo/'
+            }
+            // new upload
+            this.props.uploadToStorage(file)
+
 
         }
     }
@@ -112,10 +129,15 @@ class SignUp extends Component {
             console.log('loading work')
             this.setState({ progress: this.props.progress })
         }
-        if (this.props.certificate.length === this.state.images.length && this.props.certificate.length >= 1 && this.state.step === 2) {
+        if (this.props.certificate.length === this.state.images.length && this.props.certificate.length > 0 && this.state.step === 2) {
             this.nextStep();
         }
         // console.log('??',this.props.certificate)
+        if (prevProps.authError !== this.props.authError) {
+            if (this.props.authError !== undefined || this.props.authError !== null) {
+                this.setState({ logging: false })
+            }
+        }
     }
     static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.cetificate !== prevState.cetificate) {
@@ -128,9 +150,12 @@ class SignUp extends Component {
     }
 
     render() {
-        const { step, firstName, lastName, email, password, phoneNumber, images, url, progress } = this.state;
+        console.log(this.state)
+        const { step, firstName, lastName, email, password, phoneNumber, image, url, progress, businessName, businessType, businessDesc, businessAddress, businessWebsite } = this.state;
         const { auth, authError } = this.props;
-        const values = { firstName, lastName, email, password, phoneNumber, images, url, progress }
+        const values = { firstName, lastName, email, password, phoneNumber, image, url, progress, businessName, businessType, businessDesc, businessAddress, businessWebsite }
+        const { emailError, passwordError, phonenumberError, businessNameError, businessTypeError, businessDescError, businessAddressError } = this.state
+        const error = { emailError, passwordError, phonenumberError, businessNameError, businessTypeError, businessDescError, businessAddressError }
         if (auth.uid) return <Redirect to='/' />
         switch (step) {
             case 1:
@@ -140,7 +165,10 @@ class SignUp extends Component {
                         handleChange={this.handleChange}
                         handleChangeAvatar={this.handleChangeAvatar}
                         handleUploadAvatar={this.handleUploadAvatar}
+                        // handleValidate={this.handleValidate}
                         values={values}
+                        error={error}
+
                     />
                 )
             case 2:
@@ -151,7 +179,10 @@ class SignUp extends Component {
                         handleChange={this.handleChange}
                         handleChangeImg={this.handleChangeImg.bind(this)}
                         handleUpload={this.handleUpload}
+                        // handleValidate={this.handleValidate}
                         values={values}
+                        error={error}
+
 
                     />
                 )
@@ -174,7 +205,7 @@ class SignUp extends Component {
     }
 }
 var cerurls = new Set()
-const mapStateToProps = (state,ownProps) => {
+const mapStateToProps = (state, ownProps) => {
     // console.log(state)
     // console.log(ownProps)
     const url = state.uploadReducer.url ? state.uploadReducer.url : null
@@ -183,7 +214,7 @@ const mapStateToProps = (state,ownProps) => {
     if (url !== undefined && url !== null) {
         if (url.path === '/images/certificates/') {
             cerurls = cerurls.add(url.url)
-        } 
+        }
         if (url.path === '/images/logo/') {
 
             logo = url.url

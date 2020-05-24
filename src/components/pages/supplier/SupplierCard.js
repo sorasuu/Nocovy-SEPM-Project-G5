@@ -18,10 +18,15 @@ import AddRoundedIcon from '@material-ui/icons/AddRounded';
 
 
 const useStyles = makeStyles(() => ({
+    root:{
+        paddingBottom:'65%',
+        
+    },
     card: {
         marginTop: "10%",
         transition: '0.3s',
         width: '100%',
+        minWidth:'280px',
         overflow: 'initial',
         background: '#ffffff',
         borderRadius: 16,
@@ -53,8 +58,9 @@ const SupplierCard = (props) => {
                     <div className='image'>
                     <CardMedia
                     // component="img"
-                    alt="product"
-                        className={cx(classes.media, mediaStyles.root)}
+                        alt="product"
+                        className={cx(classes.media, mediaStyles.root, classes.root)}
+                        style={{maxHeight:'315px'}}
                         image={supplier.logo}
                     />
 
@@ -74,7 +80,7 @@ const SupplierCard = (props) => {
                 </div>
                 <TextInfoContent
                     classes={textCardContentStyles}
-                    overline={`${supplier.email}: \ ${supplier.phoneNumber? supplier.phoneNumber : 'No PhoneNumber'}`}
+                    overline={`${supplier.email}: \ ${supplier.phoneNumber? supplier.phoneNumber : 'PhoneNumber not Available'}`}
                     heading={supplier.businessName}
                     body={supplier.address ? supplier.address.slice(0,65):null}
        

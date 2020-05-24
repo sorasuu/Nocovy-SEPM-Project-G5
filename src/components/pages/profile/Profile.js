@@ -71,7 +71,7 @@ class Profile extends Component {
     newDescription: '',
 
     //Figure out editing logo and cert later
-    newCertificate: '', 
+    newCertificates: '', 
     newLogo: '',
 
     search:'',

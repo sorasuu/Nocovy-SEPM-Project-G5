@@ -19,10 +19,15 @@ import ProductDialog from './ProductDialog'
 
 
 const useStyles = makeStyles(() => ({
+    root:{
+        paddingBottom:'65%',
+       
+    },
     card: {
         marginTop: "10%",
         transition: '0.3s',
         width: '100%',
+        minWidth:'280px',
         overflow: 'initial',
         background: '#ffffff',
         borderRadius: 16,
@@ -63,9 +68,10 @@ const RetailerCard = (props) => {
                     <div className='image'>
                     <CardMedia
                     
-                    alt="product"
-                        className={cx(classes.media, mediaStyles.root)}
+                        alt="product"
+                        className={cx(classes.media, mediaStyles.root, classes.root)}
                         image={retailer.logo}
+                        
                     />
 
                         <div className="overlay" style={{borderRadius: 16}}>  
@@ -87,10 +93,10 @@ const RetailerCard = (props) => {
                 </div>
                 <TextInfoContent
                     classes={textCardContentStyles}
-                    overline={`${retailer.displayName}: \ ${retailer.email} `}
+                    overline={`${retailer.email}: \ ${retailer.phoneNumber? retailer.phoneNumber : 'PhoneNumber not Available'}`}
                     heading={retailer.businessName}
-                    body={ retailer.address?  retailer.address.slice(0, 65) : null}
-                    
+                    body={retailer.address ? retailer.address.slice(0,65):null}
+       
                 />
             </CardContent>
         </Card>

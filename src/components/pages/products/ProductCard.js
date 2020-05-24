@@ -99,7 +99,7 @@ export default ProductCard
 export const BuyDialog = (props) => {
     const [dialog, setDialog] = React.useState(false);
     const [register, setRegister]= useState(false); 
-    const [number, setNumber] = useState(0);
+    const [number, setNumber] = useState(1);
     const  product  = props.product
     const currentUser = props.currentUser
     const handleClickDialog = () => {
@@ -112,26 +112,23 @@ export const BuyDialog = (props) => {
     };
     const handleBuyProduct = (e, product, number) => {  
         console.log("handle Buy Product:", product)
-        props.handleCart(e, product, number)
-        setDialog(false);
-        if (register===true){
-            props.handelRegister(e, product.id)
-        }
+     
+        if ( number <= 1){
+            setNumber(1)
+        }else{
+            props.handleCart(e, product, number)
+            setDialog(false);
+            if (register===true){
+                props.handelRegister(e, product.id)
+            }
+    }
     };
-    const buyLess = () => {
-        if (number > 0) {
-            setNumber(number - 1)
-        }
-    }
-    const buyMore = () => {
-        setNumber(number + 1)
-    }
+   
     const handleRegister =()=>{
         setRegister(true)
     }
     const handleChange = (e) => {
-        setNumber(e.target.value)
-
+        setNumber(e.target.value)    
     }
     var owner
     if(currentUser!== undefined&& currentUser!==null){
@@ -192,16 +189,18 @@ export const BuyDialog = (props) => {
                             <Grid item xs={6}><h5 style={{ textAlign: 'right' }}>Cost</h5></Grid>
                             <Grid item xs={6}>
                                 <Grid container direction="row" justify="center" alignItems="center">
-                                    <Grid item xs={4}><Button onClick={buyLess}><RemoveRoundedIcon /></Button></Grid>
-                                    <Grid item xs={4}>
+                                    {/* <Grid item xs={4}><Button onClick={buyLess}><RemoveRoundedIcon /></Button></Grid> */}
+                                    <Grid item xs={12}>
                                         <Input
-                                            style={{ width: '20px' }}
+                                            required='true'
                                             disableUnderline="true"
+                                            type='number'
                                             value={number}
                                             onChange={e => handleChange(e)}
+                                            inputProps={{min: 1}}
                                         />
                                     </Grid>
-                                    <Grid item xs={4}><Button onClick={buyMore}><AddRoundedIcon /></Button></Grid>
+                                    {/* <Grid item xs={4}><Button onClick={buyMore}><AddRoundedIcon /></Button></Grid> */}
                                 </Grid>
                             </Grid>
                             <Grid item xs={6}><div style={{ textAlign: 'right', fontSize: '30px', fontFamily: 'bold' }}> {product.price.unitPrice * number}</div></Grid>

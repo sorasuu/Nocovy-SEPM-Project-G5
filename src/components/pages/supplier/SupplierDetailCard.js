@@ -270,7 +270,7 @@ export default function SupplierDetailCard(props) {
                                     <Grid item xs={12}> 
                                         <Typography variant='h6'>Business Genre:</Typography>
                                     </Grid>
-                                    <Grid item>
+                                    <Grid item xs={12}>
                                         <Typography paragraph>{props.supplier.businessGenre ? props.supplier.businessGenre : 'Business genre not available'}</Typography>
                                     </Grid>
                                 </Grid>
@@ -280,7 +280,7 @@ export default function SupplierDetailCard(props) {
                                     <Grid item xs={12}>
                                         <Typography variant='h6'>Business Description:</Typography>
                                     </Grid>
-                                    <Grid item>
+                                    <Grid item xs={12}>
                                         <Typography>{props.supplier.businessDesc ? props.supplier.businessDesc : 'Description not available'}</Typography>
                                     </Grid>
                                 </Grid>

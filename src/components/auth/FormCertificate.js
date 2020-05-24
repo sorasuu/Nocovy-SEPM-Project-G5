@@ -2,60 +2,77 @@ import React, { Component } from 'react'
 import { Container, NoSsr, LinearProgress, withStyles } from '@material-ui/core'
 import StyledButton from '../layout/StyledButton'
 import "./style.css"
-import {DropzoneArea} from 'material-ui-dropzone'
-const ColorLinearProgress = withStyles({
-    colorPrimary: {
-        background: '#ffff'
-    },
-    barColorPrimary: {
-        background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)"
-    }
-})(LinearProgress);
+import { DropzoneArea } from 'material-ui-dropzone'
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
-export class FormCertificate extends Component {
-    state = {
-        uploading: false,
-        disable:false
-    }
-    continue = e => {
-        e.preventDefault();
-        
-        if(this.props.values.images.length>0){
-            this.setState({disable:true})
+const initialState = {
+    businessNameError: '',
+    businessTypeError: '',
+    businessAddressError: '',
+    businessDescError: '',
+    uploading: false
+}
+
+
+class FormCertificate extends Component {
+    state = initialState;
+
+    validate = () => {
+        let businessNameError = '';
+        let businessTypeError = '';
+        let businessAddressError = '';
+        let businessDescError = '';
+
+        if (!this.props.values.businessName) {
+            businessNameError = "Business name cannot be blank"
         }
-        this.setState({ uploading: true });
-        this.props.handleUpload(e);
-        // this.props.nextstep();}
+
+        if (!this.props.values.businessType) {
+            businessTypeError = "Business type cannot be blank"
+        }
+
+        if (!this.props.values.businessAddress) {
+            businessAddressError = "Business address cannot be blank"
+        }
+
+        if (!this.props.values.businessDesc) {
+            businessDescError = "Business description cannot be blank"
+        }
+
+        if (businessNameError || businessTypeError || businessAddressError || businessDescError) {
+            this.setState({ businessNameError, businessTypeError, businessAddressError, businessDescError })
+            return false;
+        }
+
+        return true;
+    }
+    
+    continue = e => {
+        const isValid = this.validate()
+        if (isValid) {
+            this.setState(initialState)
+
+            e.preventDefault();
+            this.setState({ uploading: true })
+            this.props.handleUpload(e)
+            this.props.nextStep();
+
+        }
     }
 
     back = e => {
-        
         e.preventDefault();
         this.props.prevStep();
     }
 
 
     render() {
-        const { auth, authError, values,handleChange, handleChangeImg } = this.props;
-        // const file ={
-        //     image: images[i],
-        //     path: '/images/cerificates'
-        // }
+        const { auth, authError, values, handleChange, handleChangeImg } = this.props;
 
-        // this.props.uploadToStorage(file)
-
-        // if (auth.uid) return <Redirect to='/' />
-        // console.log(this.state.uid)
-
-        // if(url!==undefined&& url!==null){
-        //     if (url.path==='/images/cerificates/'){
-        //         cerurls=cerurls.add(url.url)
-
-        //     }
-        //     else if(url.path==='/images/certificates/'){
-        //         logo=url.url
-        //     }
-        // }
         return (
             <div className="base-container">
                 <Container style={{ marginTop: "2%", width: "550px" }}>
@@ -85,12 +102,42 @@ export class FormCertificate extends Component {
                                     <label htmlFor="businessName">Business Name</label>
                                     <input type="text" id='businessName' onChange={handleChange('businessName')} defaultValue={values.businessName} />
                                 </div>
+                                <div style={{ fontSize: 11, color: "red" }}> {this.state.businessNameError} </div>
+                            </div>
+                            <div className="form-group" style={{textAlign: 'left', alignSelf: 'stretch'}}>
+                                <label htmlFor="businessName" style={{ fontSize:"16px"}}>Business Type</label>
+                                {" "}{" "}{" "}{" "}{" "}{" "}
+                                <FormControl variant="outlined" className="form-group">
+                                <InputLabel id="businessType"></InputLabel>
+                                    <Select
+                                        labelId="businessType"
+                                        id="businessType"
+                                        defaultValue={" "}
+                                        value={values.businessType}
+                                        style={{minWidth:"150px"}}
+                                        onChange={handleChange('businessType')}
+                                    >
+
+                                        <MenuItem value={"supplier"}>Supplier</MenuItem>
+                                        <MenuItem value={"retailer"}>Retailer</MenuItem>
+                                        <MenuItem value={"customer"}>Customer</MenuItem>
+
+                                    </Select>
+                                </FormControl>
+                                <div style={{ fontSize: 11, color: "red" }}> {this.state.businessTypeError} </div>
+                            </div>
+                            <div className="form-group">
+                                <div className="input-field">
+                                    <label htmlFor="businessAddress">Business Address</label>
+                                    <input type="text" id='businessAddress' onChange={handleChange('businessAddress')} defaultValue={values.businessDesc} />
+                                    <div style={{ fontSize: 11, color: "red" }}> {this.state.businessAddressError} </div>
+                                </div>
                             </div>
 
                             <div className="form-group">
                                 <div className="input-field">
-                                    <label htmlFor="businessGenre">Business Genre</label>
-                                    <input type="text" id='businessGenre' onChange={handleChange('businessGenre')} defaultValue={values.businessGenre} />
+                                    <label htmlFor="businessWebsite">Business Website (optional)</label>
+                                    <input type="text" id='businessWebsite' onChange={handleChange('businessWebsite')} defaultValue={values.businessWebsite} />
                                 </div>
                             </div>
 
@@ -98,6 +145,7 @@ export class FormCertificate extends Component {
                                 <div className="input-field">
                                     <label htmlFor="businessDesc">Business Description</label>
                                     <input type="text" id='businessDesc' onChange={handleChange('businessDesc')} defaultValue={values.businessDesc} />
+                                    <div style={{ fontSize: 11, color: "red" }}> {this.state.businessDescError} </div>
                                 </div>
                             </div>
                         </div>
@@ -105,10 +153,10 @@ export class FormCertificate extends Component {
 
                         <div className="input-field">
                             <NoSsr>
-                                <StyledButton onClick={this.continue} disabled={this.state.disable}>Continue</StyledButton>
+                                <StyledButton onClick={this.continue}>Continue</StyledButton>
                             </NoSsr>
 
-                            {this.state.uploading ? <ColorLinearProgress style={{ marginBottom: "2%", marginTop: "2%", padding: "5px" }} /> : null}
+                            {/* {this.state.uploading ? <ColorLinearProgress style={{ marginBottom: "2%", marginTop: "2%", padding: "5px" }} /> : null} */}
                             <div className="center red-text">
                                 {authError ? <p>{authError}</p> : null}
                             </div>
@@ -116,7 +164,7 @@ export class FormCertificate extends Component {
 
                         <div className="input-field">
                             <NoSsr>
-                                <StyledButton onClick={this.back}  disabled={this.state.disable}>Back</StyledButton>
+                                <StyledButton onClick={this.back}>Back</StyledButton>
                             </NoSsr>
 
                         </div>

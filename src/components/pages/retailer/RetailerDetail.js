@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 function RetailerDetail(props) {
     const classes = useStyles();
-    console.log('retailer detail', props)
+    // console.log('retailer detail', props)
     const cardShadowStyles = useOverShadowStyles({ inactive: true });
     const data = props.data ? props.data : null
     const sellList = props.sellProduct
@@ -83,13 +83,13 @@ function RetailerDetail(props) {
                         </TableRow>
                     </TableHead>
                 </Table>
-                <div style={{ overflow: 'auto', height: 'auto' }}>
+                <div style={{ overflow: 'auto', height: '600px' }}>
                     <Table style={{ tableLayout: 'fixed' }}>
                         {sellList ? sellList.map((item, key) =>
                             <TableBody overflow="auto">
                                 {data ?
                                     <TableRow
-                                        // aria-owns={openBuyer ? 'mouse-over-popover' : undefined}
+                                        // aria-owns={open  Buyer ? 'mouse-over-popover' : undefined}
                                         hover
                                         aria-haspopup="true"
                                         onMouseEnter={e => handlePopoverOpen(e, key)}

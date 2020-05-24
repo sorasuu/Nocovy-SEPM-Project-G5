@@ -360,7 +360,7 @@ class AdminDashboard extends Component {
                                 <div style={{ display: 'flex', alignItems: 'center', textAlign: 'left', fontSize: '20px', fontFamily: 'bold' }}>Name:</div>
                             </Grid>
                             <Grid item xs={7} md={7} lg={7}>
-                                <div style={{ display: 'flex', alignItems: 'center', textAlign: 'right', fontSize: '30px' }}>{usersApprove[index].businessName}</div>
+                                <div style={{ display: 'flex', alignItems: 'center', textAlign: 'right', fontSize: '30px' }}>{usersPending[index].businessName}</div>
 
                             </Grid>
                             <Grid item xs={3} md={3} lg={3}>
