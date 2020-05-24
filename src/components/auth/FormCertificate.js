@@ -94,7 +94,7 @@ class FormCertificate extends Component {
                                     onChange={handleChangeImg}
                                     acceptedFiles={['image/*']}
                                     maxFileSize={500000}
-                                    filesLimit={4}
+                                    filesLimit={6}
                                     dropzoneText={'Upload your certificates here'}
                                 />
                             </div>
