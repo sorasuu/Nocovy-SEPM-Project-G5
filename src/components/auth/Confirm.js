@@ -34,7 +34,7 @@ export class FormCertificate extends Component {
     }
 
     render() {
-        const { values: { firstName, lastName, email, password, phoneNumber, bio,img,url, businessName, businessType, businessDesc, businessAddress, businessWebsite } ,authError,auth} = this.props;
+        const { values: { firstName, lastName, email, password, phoneNumber, bio,img,url, businessName, type, businessDesc, businessAddress, businessWebsite } ,authError,auth} = this.props;
         // if (auth.uid) return <Redirect to='/' />
         return (
             <div className="base-container">
@@ -82,7 +82,7 @@ export class FormCertificate extends Component {
 
                             <div className="form-group">
                                 <label htmlFor="businessType" >Business Type</label>
-                                <p>{businessType}</p>
+                                <p>{type}</p>
                             </div>
 
                             <div className="form-group">
