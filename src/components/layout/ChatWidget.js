@@ -99,7 +99,7 @@ const ContactPanel = (props) => {
                     {props.chatsession&&props.chatsesiondata?props.chatsession.map(chatse=>{
                         const chatses = props.chatsesiondata[chatse.id]
                         var receiver;
-                        console.log(chatses)
+                        console.log("chatsesion",chatses)
                         if(chatses.user1.id==props.uid){
                             receiver = chatses.user2
                         }else{
@@ -277,7 +277,7 @@ class ChatWidget extends Component {
     render() {
         const { auth, classes } = this.props;
         const { search, users } = this.state;
-        console.log(this.props)
+        console.log("jjj",this.props)
         if (!auth.uid) return <Redirect to='/signin' />
         return (
             <div>
@@ -315,8 +315,9 @@ const mapDispatchToProps = dispatch => {
     }
 }
 var loaded;
+var userIdlist = new Set()
 const mapStateToProps = (state, ownProps) => {
-    console.log('helo anh Tung',ownProps)
+
     const chatsession = state.firestore.ordered.chatsesion ? state.firestore.ordered.chatsesion : null
     var id = sessionStorage.getItem('chatId')?sessionStorage.getItem('chatId'): ownProps.chatId ? ownProps.chatId : chatsession ? chatsession[0].id : null
     const status = state.firestore.status
@@ -326,12 +327,27 @@ const mapStateToProps = (state, ownProps) => {
             loaded = true
         }
     }
+    
+
+    if (chatsession !== undefined && chatsession !== null) {
+        var u;
+        for (u in chatsession) {
+            if (chatsession[u].user1 === state.firebase.auth.uid) {
+                userIdlist.add(chatsession[u].user2)
+            } else {
+                userIdlist.add(chatsession[u].user1)
+            }
+        }
+    }
+    console.log("asd",Array.from(userIdlist))
     return {
         auth: state.firebase.auth,
         chatuser: state.firestore.data.chatuser,
         chatId: id,
         chatsession: chatsession,
         loaded: loaded,
+        userIdlist:Array.from(userIdlist),
+        chatusers: state.firestore.ordered.chatuser,
         chatsesiondata: populate(state.firestore, 'chatsesion', populates),
     }
 
@@ -341,8 +357,12 @@ const mapStateToProps = (state, ownProps) => {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect((props) => {
-        // console.log("fetch data" ,props)
-
+        console.log("fetch data" ,props)
+        if (props.userIdlist !==undefined && props.chatuser === undefined&&props.userIdlist !==null) {
+            if(props.userIdlist.length>0){
+            return [
+                { collection: 'users', where: ['uid', 'in', props.userIdlist], storeAs: 'chatuser' }]
+        }}
         return [
             {
                 collection, where: [['chatsesion', 'array-contains', props.auth.uid]], queryParams: ['orderByChild=lastMod'], storeAs: 'chatsesion',

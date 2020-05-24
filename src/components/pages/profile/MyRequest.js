@@ -264,11 +264,16 @@ const mapDispatchToProps = dispatch => {
 }
 const mapStateToProps = (state,ownProps) => {
     console.log(state);
+    console.log(ownProps);
+    
     const requestsdata = populate(state.firestore, collection, populates)
+    const requests=state.firestore.ordered.requests
+
+    
     return {
         auth: state.firebase.auth,
         requestsdata:requestsdata,
-        requests: state.firestore.ordered.requests
+        requests: requests
     }
   };
 export default compose(

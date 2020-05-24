@@ -380,7 +380,7 @@ const mapStateToProps = (state,ownProps) => {
     if(state.firestore.ordered.chatsesion.length===0){
       chatexist= false
     }
-    for (i in state.firestore.ordered.chatsesion){
+    for (var i=0; i< state.firestore.ordered.chatsesion.length;i++){
 
       if (state.firestore.ordered.chatsesion[i].id===chatId1){
         chatexist = true 

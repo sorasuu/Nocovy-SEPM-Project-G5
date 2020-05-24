@@ -47,7 +47,7 @@ const DialogPanel = (props) => {
             />
             <CardContent className={classes.content}>
                 <ProductDialogTable products={props.listProducts} currentRetailer={props.currentRetailer} handleChangeSelected={props.handleChangeSelected}/>
-            </CardContent>) ?
+            </CardContent>
            
             
             
