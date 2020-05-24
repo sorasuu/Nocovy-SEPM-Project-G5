@@ -9,14 +9,6 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-// const ColorLinearProgress = withStyles({
-//     colorPrimary: {
-//         background: '#ffff'
-//     },
-//     barColorPrimary: {
-//         background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)"
-//     }
-// })(LinearProgress);
 const initialState = {
     businessNameError: '',
     businessTypeError: '',
@@ -58,14 +50,7 @@ class FormCertificate extends Component {
 
         return true;
     }
-
-    // continue = e => {
-    //     e.preventDefault();
-    //     this.setState({ uploading: true });
-    //     this.props.handleUpload(e);
-    //     this.props.nextStep();
-    // }
-
+    
     continue = e => {
         const isValid = this.validate()
         if (isValid) {
@@ -87,25 +72,7 @@ class FormCertificate extends Component {
 
     render() {
         const { auth, authError, values, handleChange, handleChangeImg } = this.props;
-        // const file ={
-        //     image: images[i],
-        //     path: '/images/cerificates'
-        // }
 
-        // this.props.uploadToStorage(file)
-
-        // if (auth.uid) return <Redirect to='/' />
-        // console.log(this.state.uid)
-
-        // if(url!==undefined&& url!==null){
-        //     if (url.path==='/images/cerificates/'){
-        //         cerurls=cerurls.add(url.url)
-
-        //     }
-        //     else if(url.path==='/images/certificates/'){
-        //         logo=url.url
-        //     }
-        // }
         return (
             <div className="base-container">
                 <Container style={{ marginTop: "2%", width: "550px" }}>
@@ -147,7 +114,7 @@ class FormCertificate extends Component {
                                         id="businessType"
                                         defaultValue={" "}
                                         value={values.businessType}
-                                        style={{minWidth:"100px"}}
+                                        style={{minWidth:"150px"}}
                                         onChange={handleChange('businessType')}
                                     >
 
