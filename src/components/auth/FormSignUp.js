@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signUp } from '../store/actions/authActions'
-import { Container, NoSsr, LinearProgress, withStyles } from '@material-ui/core'
+import { Container, NoSsr, LinearProgress, withStyles, InputBase } from '@material-ui/core'
 import StyledButton from '../layout/StyledButton'
 import "./style.css"
 
@@ -88,38 +88,38 @@ class FormSignUp extends Component {
 
                         <div className="form">
                             <div className="form-group">
-                                <div className="input-field">
-                                    <label htmlFor="firstName">First name</label>
-                                    <input type="text" id='firstName' onChange={handleChange('firstName')} defaultValue={values.firstName} />
+                            <label htmlFor="firstName">First name</label>
+                                <div className="input-field">                                   
+                                    <input type="text" id='firstName' placeholder="Enter your first name" onChange={handleChange('firstName')} defaultValue={values.firstName} />
                                 </div>
                             </div>
 
                             <div className="form-group">
+                            <label htmlFor="lastName">Last Name</label>
                                 <div className="input-field">
-                                    <label htmlFor="lastName">Last Name</label>
-                                    <input type="text" id='lastName' onChange={handleChange('lastName')} defaultValue={values.lastName} />
+                                    <input type="text" id='lastName' placeholder="Enter your last name" onChange={handleChange('lastName')} defaultValue={values.lastName} />
                                 </div>
                             </div>
                             <div className="form-group">
+                            <label htmlFor="email">Email</label>
                                 <div className="input-field">
-                                    <label htmlFor="email">Email</label>
-                                    <input type="email" id='email' onChange={handleChange('email')} defaultValue={values.email} />
+                                    <input type="email" id='email' placeholder="Enter your email" onChange={handleChange('email')} defaultValue={values.email} />
                                     <div style={{ fontSize: 11, color: "red" }}> {this.state.emailError} </div>
                                 </div>
                                 
                             </div>
                             <div className="form-group">
+                            <label htmlFor="password">Password</label>
                                 <div className="input-field">
-                                    <label htmlFor="password">Password</label>
-                                    <input type="password" id='password' onChange={handleChange('password')} defaultValue={values.password} />
+                                    <input type="password" id='password' placeholder="Enter your password" onChange={handleChange('password')} defaultValue={values.password} />
                                     <div style={{ fontSize: 11, color: "red" }}> {this.state.passwordError} </div>
                                 </div>
                                 
                             </div>
                             <div className="form-group">
+                            <label htmlFor="phoneNumber">Phone Number</label>
                                 <div className="input-field">
-                                    <label htmlFor="phoneNumber">Phone Number</label>
-                                    <input type="text" pattern="[0-9]*" y id='phoneNumber' onChange={handleChange('phoneNumber')} defaultValue={values.phoneNumber} />
+                                    <input type="text" pattern="[0-9]*" y id='phoneNumber' placeholder="Enter your phone number" onChange={handleChange('phoneNumber')} defaultValue={values.phoneNumber} />
                                     <div style={{ fontSize: 11, color: "red" }}> {this.state.phonenumberError} </div>
                                 </div>
                                
