@@ -23,14 +23,14 @@ class RetailerDialogDetail extends React.Component {
     }
     
     handlePending=(e)=>{
-        
+        this.setState({open: false})
         const request={
          retailerId:   this.state.retailer.uid,
          product: this.props.product
         }
-        console.log(request)
+        console.log('request confirmation',request)
         this.props.createSingleRequest(request)
-        this.setState({pending: false}, {open: false})
+        
     }
     
     componentDidMount() {
@@ -81,7 +81,7 @@ class RetailerDialogDetail extends React.Component {
         return (
             <>
             <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="del-dialog-title">
-                <DialogTitle id="del-dialog-title">Confirm deletion</DialogTitle>
+                <DialogTitle id="del-dialog-title">Confirm Send Request</DialogTitle>
                 <DialogContent>
                     <Typography>Are you sure wanna invite this retailer?</Typography>
                 </DialogContent>
@@ -89,9 +89,9 @@ class RetailerDialogDetail extends React.Component {
                 <Button onClick={this.handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={this.handlePending} color="primary">
-                        Confirm
-                    </Button>
+                <Button onClick={this.handlePending} color="primary">
+                    Confirm
+                </Button>
                 </DialogActions>
             </Dialog>
 

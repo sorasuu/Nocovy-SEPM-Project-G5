@@ -347,6 +347,7 @@ static getDerivedStateFromProps(nextProps, prevState) {
     const { auth, classes, products } = this.props;
     const allRetailers = this.props.allRetailers ? this.props.allRetailers : []
     const { search } = this.state;
+    const currentUser = this.props.currentUser ? this.props.currentUser : [{pending: true, verify:false}]
     const filteredProducts = checkArray(products).filter(product =>{
         return product.name.toLowerCase().indexOf(search.toLowerCase())!== -1
     })
@@ -388,7 +389,7 @@ static getDerivedStateFromProps(nextProps, prevState) {
             }) : <h5>Loading...</h5>}</Grid>
         
         </div>
-        {this.state.owner?
+        {this.state.owner && currentUser.pending === false && currentUser.verify === true ?
           <Modal open={this.state.productOpen} onClose={this.handleProductClose}>
             <div style={{maxWidth:'50%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%',}}>
               <AddProductCard props={this.props} values={this.state} prevStep={this.prevStep} step={this.state.step} closeModal={this.handleProductClose} formSubmit={this.formSubmit} handleChange={this.handleChange} handleCatChange={this.handleCatChange} handleUpload={this.handleUpload} handleChangeImg={this.handleChangeImg.bind(this)}/>

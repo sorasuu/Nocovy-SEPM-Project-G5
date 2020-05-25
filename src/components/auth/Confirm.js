@@ -15,16 +15,39 @@ const ColorLinearProgress = withStyles({
     }
 })(LinearProgress);
 
+const initialState = {
+    passwordError: '',
+    // uploading: false
+}
+
 export class FormCertificate extends Component {
 
-    continue = e => {
-        e.preventDefault();
-        //process the form
-        //send the data to backend
-        //email and phone validation here
+    state = initialState;
 
-        this.props.handleSubmit(e);
-        this.props.nextStep();
+    validate = () => {
+        let passwordError = '';
+
+        if (!this.props.values.password
+            // == { password }
+        ) {
+            passwordError = "Password does not match";
+        }
+
+        if (passwordError) {
+            this.setState({ passwordError })
+            return false;
+        }
+        return true;
+    }
+
+    continue = e => {
+        const isValid = this.validate();
+        if (isValid) {
+            this.setState(initialState);
+            e.preventDefault();
+            this.props.handleSubmit(e);
+            this.props.nextStep();
+        }
 
     }
 
@@ -34,24 +57,24 @@ export class FormCertificate extends Component {
     }
 
     render() {
-        const { values: { firstName, lastName, email, password, phoneNumber, bio,img,url, businessName, type, businessDesc, businessAddress, businessWebsite } ,authError,auth} = this.props;
+        const { values: { firstName, lastName, email, password, phoneNumber, bio, img, url, businessName, type, businessDesc, businessAddress, businessWebsite }, authError, auth } = this.props;
+        const { values, handleChange } = this.props;
         // if (auth.uid) return <Redirect to='/' />
         return (
             <div className="base-container">
                 <Container style={{ marginTop: "2%", width: "500px" }}>
-                    <form className="white auth" 
-                    // onSubmit={this.handleSubmit} 
-                    style={{ padding: "2%" }}>
+                    <form className="white auth"
+                        // onSubmit={this.handleSubmit} 
+                        style={{ padding: "2%" }}>
                         <div className="header">Confirm sign up</div>
                         <div className="image">
                             <img src="handshake.png"></img>
                         </div>
-                        <div className="form">
+                        <div className="form" style={{ textAlign: 'left', alignSelf: 'stretch' }}>
 
 
                             <div className="form-group">
                                 <label htmlFor="firstName" >First Name</label>
-                                {/* {console.log(firstName)} */}
                                 <p>{firstName}</p>
                             </div>
 
@@ -67,7 +90,12 @@ export class FormCertificate extends Component {
 
                             <div className="form-group">
                                 <label htmlFor="password" >Password</label>
-                                <p>{password}</p>
+                                {/* <p>{password}</p> */}
+                                <div className="input-field">
+                                    <input type="password" id='password' placeholder="Re-Enter your password" onChange={handleChange('password')} defaultValue={values.password} />
+
+                                    <div style={{ fontSize: 11, color: "red" }}> {this.state.passwordError} </div>
+                                </div>
                             </div>
 
                             <div className="form-group">
@@ -106,12 +134,12 @@ export class FormCertificate extends Component {
                             <NoSsr>
                                 <StyledButton onClick={this.continue}>Confirm and Continue</StyledButton>
                             </NoSsr>
-                            
+
 
                             {/* {this.state.logging ? <ColorLinearProgress style={{ marginBottom: "2%", marginTop: "2%", padding: "5px" }} /> : null} */}
                             <div className="center red-text">
-                                {authError ? <p>{authError}</p> : null}
-                            </div>
+                                    {this.state.authError ? <p>{this.state.authError}</p> : null}
+                                </div>
                         </div>
 
                         <div className="input-field">

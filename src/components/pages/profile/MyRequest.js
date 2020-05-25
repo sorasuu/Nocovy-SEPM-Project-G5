@@ -143,7 +143,7 @@ const UserCard = (props) => {
 
 const ProductCard = (props) => {
     const styles = useStyles();
-    console.log(props)
+    // console.log('my request product card',props)
     const mediaStyles = useFourThreeCardMediaStyles();
     const textCardContentStyles = useN04TextInfoContentStyles();
     const shadowStyles = useSoftRiseShadowStyles({ inactive: false });
