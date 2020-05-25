@@ -49,6 +49,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const AddProductCard = (props) => {
+    console.log('add product card', props)
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles =  useOverShadowStyles({ inactive: true });

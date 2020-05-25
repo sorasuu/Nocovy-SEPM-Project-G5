@@ -134,7 +134,7 @@ const UserCard = (props) => {
 
 const ProductCard = (props) => {
     const styles = useStyles();
-    console.log(props)
+    // console.log('my request product card',props)
     const mediaStyles = useFourThreeCardMediaStyles();
     const textCardContentStyles = useN04TextInfoContentStyles();
     const shadowStyles = useSoftRiseShadowStyles({ inactive: false });
@@ -263,8 +263,8 @@ const mapDispatchToProps = dispatch => {
     }
 }
 const mapStateToProps = (state,ownProps) => {
-    console.log(state);
-    console.log(ownProps);
+    console.log('request',  state);
+    // console.log(ownProps);
     
     const requestsdata = populate(state.firestore, collection, populates)
     const requests=state.firestore.ordered.requests
