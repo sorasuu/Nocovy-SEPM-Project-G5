@@ -195,7 +195,7 @@ class Dashboard extends Component {
 
     const afterSearchSupplier = checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchProduct = checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
-    const afterSearchRetailer = checkArray(retailers).filter(retailer => retailer.displayName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+    const afterSearchRetailer = checkArray(retailers).filter(retailer => retailer.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const found = checkArray(afterSearchProduct).filter((product) => {
       if (product.category === checkFilter(selectedCategories, product.category)) {
         return true

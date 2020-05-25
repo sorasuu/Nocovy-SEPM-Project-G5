@@ -22,7 +22,7 @@ import  RetailerDialog  from '../profile/RetailerDialog'
 
 const useStyles = makeStyles(() => ({
     card: {
-        marginTop: "10%",
+        // marginTop: "10%",
         transition: '0.3s',
         width: '100%',
         overflow: 'initial',
@@ -43,7 +43,7 @@ const ProductCard = (props) => {
     return (
         // <NavLink to = {'/product/'+ props.product.id}>
 
-        <Card className={cx(classes.root, shadowStyles.root)} style={{ position: "relative", marginBottom: '10px' }}>
+        <Card className={cx(classes.root, shadowStyles.root)} style={{ position: "relative", marginBottom: '10px', borderRadius: 16}}>
 
             <CardContent className={classes.content}
             // ref={hoverRef}
@@ -58,7 +58,7 @@ const ProductCard = (props) => {
                             image={product.cover}
                         />
 
-                        <div className="overlay" style={{ borderRadius: 16 }}>
+                        <div className="overlay" style={{ borderRadius: 16}}>
 
                             {props.profile == 'supplier' ? <RetailerDialog allRetailers={props.allRetailers} registered={props.product.retailerId} product={product}/>
                                : <>{props.profile == 'retailer'? null
@@ -70,6 +70,7 @@ const ProductCard = (props) => {
                                     variant="contained"
                                     color="primary"
                                     startIcon={<SendOutlinedIcon />}
+                                    style={{marginLeft:5}}
                                 >
                                     Detail
                                 </ColorButton>

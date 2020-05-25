@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
        
     },
     card: {
-        marginTop: "10%",
+        // marginTop: "10%",
         transition: '0.3s',
         width: '100%',
         minWidth:'280px',
@@ -37,10 +37,10 @@ const useStyles = makeStyles(() => ({
 }));
 export const ColorButton = withStyles((theme) => ({
     root: {
-      color: theme.palette.getContrastText(`hsla(14, 100%, 53%, 0.6)`),
-      backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
+      color: theme.palette.getContrastText(`hsla(14, 100%, 53%)`),
+      backgroundColor: `hsla(14, 100%, 53%)`,
       '&:hover': {
-        backgroundColor: `hsla(14, 100%, 53%, 0.8)`,
+        backgroundColor: `hsla(14, 100%, 53%)`,
       },
     },
   }))(Button);
@@ -78,16 +78,15 @@ const RetailerCard = (props) => {
                             {props.currentUser.type === 'supplier'?
                                 <ProductDialog currentRetailer={retailer} currentUser = {props.currentUser }/>
                             : null} 
-                            <NavLink to={'/retailer/' + retailer.id}>
                                 <ColorButton
+                                    style={{marginLeft:5}}
                                     variant="contained"
                                     color="primary"
                                     startIcon={<SendOutlinedIcon />}
+                                    href= {'/retailer/' + retailer.id}
                                 >
                                     Detail
                                 </ColorButton>
-                            </NavLink>
-
                         </div>
                     </div>
                 </div>

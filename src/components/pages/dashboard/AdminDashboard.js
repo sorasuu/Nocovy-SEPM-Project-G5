@@ -22,6 +22,7 @@ import {
 } from "@material-ui/core";
 import { checkArray } from './Dashboard';
 import moment from 'moment'
+import history from '../../utils/history'
 
 
 export function TabPanel(props) {
@@ -498,7 +499,8 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect((props) => {
         if (!props.auth.uid) {
-            props.history.push("/")
+            history.push("/")
+            window.location.reload()
         }
         else {
             return [

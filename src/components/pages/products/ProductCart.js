@@ -7,7 +7,7 @@ import {
   TableRow, TableCell, Input, Dialog,
   DialogTitle, DialogContent, DialogActions, CardHeader
 } from '@material-ui/core'
-import { NavLink } from 'react-router-dom'
+import { NavLink,Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
@@ -86,7 +86,7 @@ class ProductCart extends Component {
   render() {
 
     const classes = useStyles();
-
+    if (!this.props.auth.uid) return <Redirect to='/signin' />
     const { cart } = this.state
     console.log("cartt", cart)
     return (

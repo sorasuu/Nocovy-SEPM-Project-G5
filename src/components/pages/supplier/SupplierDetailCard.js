@@ -63,7 +63,8 @@ const useStyles = makeStyles((theme) => ({
         transition: '0.3s',
         textAlign: 'left',
         overflowX: 'auto',
-        margin: '3%',
+        marginLeft: '3%',
+        marginRight: '3%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -263,7 +264,7 @@ export default function SupplierDetailCard(props) {
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                     <div className={classes.description}>
-                        <Divider style={{ margin: 10 }} light />
+                        <Divider style={{ marginBottom: 10 }} light />
                         <Grid container direction="row">
                             <Grid item xs={4}>
                                 <Grid container>
