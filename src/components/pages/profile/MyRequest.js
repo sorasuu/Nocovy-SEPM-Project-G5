@@ -295,7 +295,7 @@ const mapStateToProps = (state,ownProps) => {
 export default compose(
     connect(mapStateToProps,mapDispatchToProps),
     firestoreConnect((props)=>{
-        if(props.auth!==undefined){
+        if(props.auth.uid!==undefined){
         return([{
         collection,where:[['retailerId','==',props.auth.uid]],orderBy:[['createdAt','desc']] ,populates  
     },{
