@@ -75,7 +75,7 @@ const AddProductCard = (props) => {
                     />
                 </div>
                 <div className={classes.buttonGroup}>
-                    <StyledButton onClick={(e) =>{props.closeModal()}} style={{marginRight:10}}>Cancel</StyledButton>
+                    <StyledButton style={{marginRight:10, background: "linear-gradient(45deg, #019179 30%, #0074A7 90%)", boxShadow: '0 3px 5px 2px rgba(105, 135, 255, 0.3'}} onClick={(e) =>{props.closeModal()}}>Cancel</StyledButton>
                     <StyledButton onClick={(e) =>{props.handleUpload(e)}}>Next</StyledButton>
                 </div>
             </div>,
@@ -152,7 +152,7 @@ const AddProductCard = (props) => {
                     </form>    
                 </div>
                 <div className={classes.buttonGroup}>
-                        <StyledButton onClick={(e) =>{props.prevStep()}} style={{marginRight:10}}>Back</StyledButton>
+                        <StyledButton style={{marginRight:10, background: "linear-gradient(45deg, #019179 30%, #0074A7 90%)", boxShadow: '0 3px 5px 2px rgba(105, 135, 255, 0.3'}} onClick={(e) =>{props.prevStep()}}>Back</StyledButton>
                         <StyledButton onClick={(e) =>{props.formSubmit(e)}}>Create</StyledButton>
                 </div>
             </div>

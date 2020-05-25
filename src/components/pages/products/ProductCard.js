@@ -58,7 +58,7 @@ const ProductCard = (props) => {
                             image={product.cover}
                         />
 
-                        <div className="overlay" style={{ borderRadius: 16 }}>
+                        <div className="overlay" style={{ borderRadius: 16}}>
 
                             {props.profile == 'supplier' ? <RetailerDialog allRetailers={props.allRetailers} registered={props.product.retailerId} product={product}/>
                                : <>{props.profile == 'retailer'? null
@@ -70,6 +70,7 @@ const ProductCard = (props) => {
                                     variant="contained"
                                     color="primary"
                                     startIcon={<SendOutlinedIcon />}
+                                    style={{marginLeft:5}}
                                 >
                                     Detail
                                 </ColorButton>

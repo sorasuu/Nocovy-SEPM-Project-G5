@@ -78,16 +78,14 @@ const RetailerCard = (props) => {
                             {props.currentUser.type === 'supplier'?
                                 <ProductDialog currentRetailer={retailer} currentUser = {props.currentUser }/>
                             : null} 
-                            <NavLink to={'/retailer/' + retailer.id}>
                                 <ColorButton
                                     variant="contained"
                                     color="primary"
                                     startIcon={<SendOutlinedIcon />}
+                                    href= {'/retailer/' + retailer.id}
                                 >
                                     Detail
                                 </ColorButton>
-                            </NavLink>
-
                         </div>
                     </div>
                 </div>

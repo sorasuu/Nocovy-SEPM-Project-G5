@@ -71,7 +71,7 @@ const EditProfileCard = (props) => {
                     </form>    
                 </div>
                 <div className={classes.buttonGroup}>
-                        <StyledButton onClick={(e) =>{props.closeModal()}} style={{marginRight:10}}>Cancel</StyledButton>
+                        <StyledButton onClick={(e) =>{props.closeModal()}} style={{marginRight:10, background: "linear-gradient(45deg, #019179 30%, #0074A7 90%)", boxShadow: '0 3px 5px 2px rgba(105, 135, 255, 0.3'}}>Cancel</StyledButton>
                         <StyledButton onClick={(e) =>{props.formSubmit()}}>Save</StyledButton>
                 </div>
             </div>

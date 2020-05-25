@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from 'react';
 import {
-    Dialog, DialogContent, DialogTitle,
+    Dialog, Modal, DialogContent, DialogTitle,
     Button, Grid, Table, TableHead, TableBody, TableRow, TableCell
 } from '@material-ui/core'
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
@@ -28,16 +28,14 @@ export default function ProductDialog(props) {
             >
                 Request
             </Button>
-            <Dialog
-                fullWidth={true}
-                maxWidth={'lg'}
+            <Modal
                 open={open}
                 onClose={handleClose}
             >
-                <ProductDialogDetail currentRetailer ={props.currentRetailer} currentUser={props.currentUser} handleClose={handleClose}/>
-            
-
-            </Dialog>
+                <div style={{maxWidth:'70%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%',}}>
+                    <ProductDialogDetail currentRetailer ={props.currentRetailer} currentUser={props.currentUser} handleClose={handleClose}/>   
+                </div>
+            </Modal>
         </div>
     )
 }

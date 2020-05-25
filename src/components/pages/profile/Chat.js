@@ -84,7 +84,7 @@ function ListItemLink(props) {
 
 //CONTACTS COMPONENT
 export const ChatContact = (props) => {
-    console.log('CHAT contact', props)
+    console.log('CHAT CONTACT', props)
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles({ inactive: true });
@@ -103,6 +103,7 @@ export const ChatContact = (props) => {
                     fullWidth
                     id="search"
                     label="Search contacts"
+                    value={props.search}
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
@@ -121,10 +122,10 @@ export const ChatContact = (props) => {
                         } else {
                             receiver = props.chatuser[contact.user1]
                         }
-
+                        if (receiver.displayName.toLowerCase().includes(props.search.toLowerCase())){
                         return (
                             // <NavLink to={'/chat/'+contact.id}>
-                            <ListItemLink href={'/chat/'+contact.id} divider dense button alignItems="flex-start" selected={contact.id === props.currentchatsession.id}>
+                            <ListItemLink key={contact.id} href={'/chat/'+contact.id} divider dense button alignItems="flex-start" selected={contact.id === props.currentchatsession.id}>
                                 <ListItemAvatar>
                                     <Avatar src={receiver?receiver.logo:null} />
                                 </ListItemAvatar>
@@ -132,11 +133,11 @@ export const ChatContact = (props) => {
                                     primary={
                                         <Typography variant='h6'>{receiver?receiver.displayName:null}</Typography>}
                                     secondary={
-                                        <Typography variant='subtitle'> {receiver?contact.lastchat:null}</Typography>}
+                                        <Typography variant='subtitle1'> {receiver?contact.lastchat:null}</Typography>}
                                 />
                             </ListItemLink>
                             // </NavLink>
-                        )
+                        )}
                     }) : null}
                 </List>
             </CardContent>
