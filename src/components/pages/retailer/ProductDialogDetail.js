@@ -102,7 +102,6 @@ class ProductDialogDetail extends React.Component {
         
             <DialogPanel listProducts={listProducts}  currentRetailer={this.props.currentRetailer} handleChangeSelected={this.handleChangeSelected} handleSubmitRequest={this.handleSubmitRequest} handleClose={this.props.handleClose}/>
       
-           
         )
     }
 
