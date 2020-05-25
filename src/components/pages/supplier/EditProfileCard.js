@@ -62,16 +62,16 @@ const EditProfileCard = (props) => {
             <div>
                 <div className={classes.form}>
                     <form style={{margin:'2%', textAlign:'left'}}>
-                        <TextField multiline style={{marginBottom:'2%'}} label='Business Name' defaultValue={props.values.businessName} onChange={props.handleChange('newBusinessName')}></TextField><br/>
-                        <TextField multiline style={{marginBottom:'2%'}} label='Phone Number' defaultValue={props.values.phoneNumber} onChange={props.handleChange('newPhoneNumber')}></TextField><br/>
-                        <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Address' defaultValue={props.values.address} onChange={props.handleChange('newAddress')}></TextField><br/>
-                        <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Website' defaultValue={props.values.website} onChange={props.handleChange('newWebsite')}></TextField><br/>
-                        <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Business Genre' defaultValue={props.values.businessGenre} onChange={props.handleChange('newBusinessGenre')}></TextField><br/>
+                        <TextField multiline style={{marginBottom:'2%'}} label='Business Name' defaultValue={props.values.businessName} onChange={props.handleChange('newBusinessName')}></TextField><br/><br/>
+                        <TextField multiline style={{marginBottom:'2%'}} label='Phone Number' defaultValue={props.values.phoneNumber} onChange={props.handleChange('newPhoneNumber')}></TextField><br/><br/>
+                        <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Address' defaultValue={props.values.address} onChange={props.handleChange('newAddress')}></TextField><br/><br/>
+                        <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Website' defaultValue={props.values.website} onChange={props.handleChange('newWebsite')}></TextField><br/><br/>
+                        <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Business Genre' defaultValue={props.values.businessGenre} onChange={props.handleChange('newBusinessGenre')}></TextField><br/><br/>
                         <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Description' defaultValue={props.values.businessDesc} onChange={props.handleChange('newDescription')}></TextField>
                     </form>    
                 </div>
                 <div className={classes.buttonGroup}>
-                        <StyledButton onClick={(e) =>{props.closeModal()}} style={{marginRight:10}}>Cancel</StyledButton>
+                        <StyledButton onClick={(e) =>{props.closeModal()}} style={{marginRight:10, background: "linear-gradient(45deg, #019179 30%, #0074A7 90%)", boxShadow: '0 3px 5px 2px rgba(105, 135, 255, 0.3'}}>Cancel</StyledButton>
                         <StyledButton onClick={(e) =>{props.formSubmit()}}>Save</StyledButton>
                 </div>
             </div>

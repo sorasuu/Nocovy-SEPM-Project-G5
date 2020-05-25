@@ -8,6 +8,9 @@ import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import StyledButton from '../../layout/StyledButton'
 import { Redirect, NavLink } from 'react-router-dom';
 import ProductDialog from './ProductDialog'
+import { ColorButton } from '../retailer/RetailerCard'
+
+
 const useStyles = makeStyles(() => ({
     card: {
         display: 'flex',
@@ -72,8 +75,7 @@ const RetailerDetailCard = (props) => {
                     container
                     justify='space-between'
                   >
-                      <Button size="large" color="primary" href={"/profile/"+props.info.id}>Profile</Button>
-                      
+                      <ColorButton variant='contained' color="primary" href={"/profile/"+props.info.id}>Profile</ColorButton>
                       <ProductDialog currentRetailer={props.info} currentUser = {props.currentUser }/>
                   </Grid>
                 </CardActions>

@@ -20,12 +20,25 @@ const useStyles = makeStyles(() => ({
         width: '100%',
         overflow: 'initial',
         background: '#ffffff',
+        borderRadius:16
     },
     content: {
         textAlign: 'left',
         overflowX: 'auto',
-        marginLeft: "5%",
     },
+    header:{
+        background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)",
+        position: "absolute",
+        left: "5%",
+        width: 'auto',
+        minWidth:'250px',
+        transform: 'translate(0%, 10%)'
+    },
+    buttonGroup: {
+        display:'flex',
+        justifyContent:'flex-end',
+        marginTop: '1%',
+    }
 }));
 
 const DialogPanel = (props) => {
@@ -40,20 +53,17 @@ const DialogPanel = (props) => {
     return (
         <Card className={cx(classes.card, cardShadowStyles.root)} style={{ position: "relative", marginBottom: '2%' }}>
             <CardHeader
-                className={cardHeaderShadowStyles.root}
+                className={cx(classes.header, cardHeaderShadowStyles.root)}
                 classes={cardHeaderStyles}
                 title={"Request"}
-                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", top: "-1%", left: "5%", width: '200px', }}
             />
             <CardContent className={classes.content}>
                 <ProductDialogTable products={props.listProducts} currentRetailer={props.currentRetailer} handleChangeSelected={props.handleChangeSelected}/>
+                <div className={classes.buttonGroup}>
+                <StyledButton style={{ marginRight:10, background: "linear-gradient(45deg, #019179 30%, #0074A7 90%)", boxShadow: '0 3px 5px 2px rgba(105, 135, 255, 0.3'}} onClick={props.handleClose} >Cancel</StyledButton>
+                    <StyledButton onClick={(e)=>props.handleSubmitRequest(e)}>Request</StyledButton>  
+                </div>
             </CardContent>
-           
-            
-            
-            <StyledButton onClick={(e)=>props.handleSubmitRequest(e)}>Request</StyledButton>
-        
-            <StyledButton onClick={props.handleClose} >Cancel</StyledButton>
         </Card>
     );
 };

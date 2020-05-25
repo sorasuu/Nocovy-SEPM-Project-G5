@@ -25,6 +25,12 @@ export class PriceForm extends React.Component{
       newUnitCost: this.props.product.price.unitCost,
       newImages: this.props.product.images,
       newCategory: this.props.product.category,
+
+      nameError: false,
+      categoriesError: false, 
+      unitCostError:'',
+      dutyRateError:'',
+      marginError:''
     }
   }
 
@@ -55,24 +61,81 @@ export class PriceForm extends React.Component{
     this.setState({ selectedCategories: e.target.value })
   }
 
-  handleSubmit =() => {
-    var newUnitPrice = (Number(this.state.newUnitCost) * ((100 + Number(this.state.newMargin) + Number(this.state.newDutyRate))/100)).toFixed(2)
-    var product = {
-      id: this.props.id,
-      category: this.state.newCategory, 
-      
-      name: this.state.newProductName, 
-      description: this.state.newProductDesc,
-      price: {
-        dutyRate: this.state.newDutyRate,
-        margin: this.state.newMargin,
-        unitCost: this.state.newUnitCost,
-        unitPrice: newUnitPrice
-      }
+  validateForm = () => {
+    var valid = true
+    if(this.state.newProductName === ''){
+      this.setState({nameError: true})
+      valid = false
     }
-    // console.log(product)
-    this.props.editProduct(product)
-    this.handleClickForm()
+    else if(this.state.newProductName.length > 256){
+      this.setState({nameError: true})
+      valid = false
+    }
+    else{
+      this.setState({nameError: false})
+    }
+    if(this.state.newCategory.length <= 0){
+      this.setState({categoriesError: true})
+      valid = false
+    }
+    else{
+      this.setState({categoriesError: false})
+    }
+    if(this.state.newUnitCost === ''){
+      this.setState({unitCostError: 'The product unit cost cannot be empty'})
+      valid = false
+    }
+    else if(this.state.newUnitCost <= 0){
+      this.setState({unitCostError: 'The product unit cost cannot be negative or zero'})
+      valid = false
+    }
+    else{
+      this.setState({unitCostError: ''})
+    }
+    if(this.state.newDutyRate === ''){
+      this.setState({dutyRateError: 'The product duty rate cannot be empty'})
+      valid = false
+    }
+    else if(this.state.newDutyRate < 0){
+      this.setState({dutyRateError: 'The product duty rate cannot be negative'})
+      valid = false
+    }
+    else{
+      this.setState({dutyRateError: ''})
+    }
+    if(this.state.newMargin === ''){
+      this.setState({marginError: 'The product margin cannot be empty'})
+      valid = false
+    }
+    else if(this.state.newMargin < 0){
+      this.setState({marginError: 'The product margin cannot be negative'})
+      valid = false
+    }
+    else{
+      this.setState({marginError: ''})
+    }
+    return valid
+  }
+
+  handleSubmit =() => {
+    if (this.validateForm()){
+      var newUnitPrice = (Number(this.state.newUnitCost) * ((100 + Number(this.state.newMargin) + Number(this.state.newDutyRate))/100)).toFixed(2)
+      var product = {
+        id: this.props.id,
+        category: this.state.newCategory, 
+        name: this.state.newProductName, 
+        description: this.state.newProductDesc,
+        price: {
+          dutyRate: this.state.newDutyRate,
+          margin: this.state.newMargin,
+          unitCost: this.state.newUnitCost,
+          unitPrice: newUnitPrice
+        }
+      }
+      // console.log(product)
+      this.props.editProduct(product)
+      this.handleClickForm()
+    }
   }
 
   render(){

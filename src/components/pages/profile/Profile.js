@@ -76,15 +76,21 @@ class Profile extends Component {
 
     search:'',
     step:1,
-    owner:false,
+    owner: false,
     productName:'',
     productDesc:'',
     productCategories: [],
-    dutyRate:0,
-    margin:0,
-    unitCost:0,
+    dutyRate:'',
+    margin:'',
+    unitCost:'',
     images: [],
     progress: '',
+
+    nameError: false,
+    categoriesError: false, 
+    unitCostError:'',
+    dutyRateError:'',
+    marginError:''
   }
 
   handleProductOpen = () => {
@@ -175,50 +181,73 @@ class Profile extends Component {
   }
 
   validateForm = () => {
+    console.log(this.state)
+    var valid = true
     if(this.state.productName === ''){
-      alert('The product name cannot be empty')
-      return false
+      this.setState({nameError: true})
+      valid = false
     }
-    if(this.state.productName.length > 256){
-      alert('The product name must not exceed 256 characters')
-      return false
-    }
-    if(this.state.productDesc === ''){
-      alert('The product description cannot be empty')
-      return false
-    }
-    if(this.state.productCategories === ''){
-      alert('The product category cannot be empty')
-      return false
-    }
-    if(this.state.dutyRate <= 0){
-      alert('The product duty rate cannot be negative or zero')
-      return false
-    }
-    if(this.state.margin <= 0){
-      alert('The product margin cannot be negative or zero')
-    }
-    if(this.state.unitCost <= 0){
-      alert('The product unit cost cannot be negative or zero')
+    else if(this.state.productName.length > 256){
+      this.setState({nameError: true})
+      valid = false
     }
     else{
-      return true
+      this.setState({nameError: false})
     }
+    if(this.state.productCategories.length <= 0){
+      this.setState({categoriesError: true})
+      valid = false
+    }
+    else{
+      this.setState({categoriesError: false})
+    }
+    if(this.state.unitCost === ''){
+      this.setState({unitCostError: 'The product unit cost cannot be empty'})
+      valid = false
+    }
+    else if(this.state.unitCost <= 0){
+      this.setState({unitCostError: 'The product unit cost cannot be negative or zero'})
+      valid = false
+    }
+    else{
+      this.setState({unitCostError: ''})
+    }
+    if(this.state.dutyRate === ''){
+      this.setState({dutyRateError: 'The product duty rate cannot be empty'})
+      valid = false
+    }
+    else if(this.state.dutyRate < 0){
+      this.setState({dutyRateError: 'The product duty rate cannot be negative'})
+      valid = false
+    }
+    else{
+      this.setState({dutyRateError: ''})
+    }
+    if(this.state.margin === ''){
+      this.setState({marginError: 'The product margin cannot be empty'})
+      valid = false
+    }
+    else if(this.state.margin < 0){
+      this.setState({marginError: 'The product margin cannot be negative'})
+      valid = false
+    }
+    else{
+      this.setState({marginError: ''})
+    }
+    return valid
   }
 
   formSubmit = () => {
     if (this.validateForm()){
-
-      //FIX THIS TO FIT WITH NEW DATA
       var unitPrice = (Number(this.state.unitCost) * ((100 + Number(this.state.margin) + Number(this.state.dutyRate))/100)).toFixed(2)
       var timeStamp = Math.floor(Date.now() / 1000);
       var product = {
         authorEmail: this.props.thisUser.email,
         authorName: this.props.thisUser.displayName,
         category: this.state.productCategories, 
-        cover: this.props.productImg[0],
+        cover: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png',
         supplierId: this.props.auth.uid,
-        productImg: this.props.productImg,
+        productImg: ['https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png'],
         name: this.state.productName, 
         createdAt: timeStamp,
         description: this.state.productDesc, 
@@ -229,7 +258,12 @@ class Profile extends Component {
           unitPrice: unitPrice
         }
       }
-      console.log('hahaha', product)
+      if (this.props.productImg.length > 0) {
+        product.cover = this.props.productImg[0]
+        product.productImg = this.props.productImg
+      }
+      // console.log('hahaha', product)
+      // console.log(this.props.productImg)
       //Form submit functions go here
       this.props.createProduct(product)
       this.handleProductClose()
@@ -292,7 +326,6 @@ static getDerivedStateFromProps(nextProps, prevState) {
   
   render() {
     const { auth, classes, products } = this.props;
-    console.log('this is work', products)
     const allRetailers = this.props.allRetailers ? this.props.allRetailers : []
     const { search } = this.state;
     const filteredProducts = checkArray(products).filter(product =>{

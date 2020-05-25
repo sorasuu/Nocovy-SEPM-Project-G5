@@ -33,10 +33,12 @@ const useStyles = makeStyles(() => ({
         transform: 'translate(0%, -3%)'
     },
     divider:{
-        margin:10,
+        marginTop:20,
+        marginBottom:15
     },
     description:{
-        clear:'both'
+        clear:'both',
+        textAlign:'justify'
     },
     image:{
         float: 'left'
@@ -87,7 +89,7 @@ const ProfileInfoCard = (props) => {
                    
                         <StyledButton onClick={props.handleProductOpen} startIcon={<AddIcon />} style={{marginBottom:10}}> Create New Product </StyledButton>
                         <Divider light/>
-                        <StyledButton onClick={props.handleEditOpen} startIcon={<EditIcon />}>Edit Profile</StyledButton>
+                        <StyledButton onClick={props.handleEditOpen} startIcon={<EditIcon />} style={{background: "linear-gradient(45deg, #019179 30%, #0074A7 90%)", boxShadow: '0 3px 5px 2px rgba(105, 135, 255, 0.3'}}>Edit Profile</StyledButton>
                       
                     </div>
                     :<div className={classes.buttons}>
