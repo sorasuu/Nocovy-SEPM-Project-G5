@@ -283,6 +283,25 @@ class Profile extends Component {
         address: this.state.newAddress,
         website: this.state.newWebsite
       }
+      if (!this.state.newBusinessGenre) {
+        newProfileData.businessGenre = ''
+      }
+      if (!this.state.newBusinessName) {
+        newProfileData.businessGenre = ''
+      }
+      if (!this.state.newDescription) {
+        newProfileData.businessDesc = ''
+      }
+      if (!this.state.newPhoneNumber) {
+        newProfileData.phoneNumber = ''
+      }
+      if (!this.state.newAddress) {
+        newProfileData.address = ''
+      }
+      if (!this.state.newWebsite) {
+        newProfileData.website = ''
+      }
+      
       //Form submit functions go here
       this.props.editUser(newProfileData)
       this.handleEditClose()
