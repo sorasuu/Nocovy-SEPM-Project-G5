@@ -22,6 +22,7 @@ import StyledButton from '../../layout/StyledButton';
 import {acceptRequest,declineRequest} from '../../store/actions/transactionAction'
 import {registerRetailers} from '../../store/actions/productAction'
 import history from '../../utils/history'
+import {createChatSession} from '../../store/actions/chatActions'
 const useStyles = makeStyles(() => ({
     card: {
         marginTop: "10%",
@@ -99,6 +100,13 @@ const UserCard = (props) => {
     }else{
         link='/profile/'+props.user.uid
     }
+    var chat;
+    if(props.chatId==='N/A'){
+      chat= <Button color="primary" onClick={e=>props.handleChat(e)}>Chat</Button>
+    }else{
+     chat= <NavLink to={'/chat/'+props.chatId}>
+    <Button color="primary">Chat</Button></NavLink>
+    }
     return (
         // <NavLink to={link} >
       <Card className={cx(styles.card, shadowStyles.root)} style={{maxWidth:'500px',marginTop:'-1%'}}>
@@ -112,7 +120,7 @@ const UserCard = (props) => {
           <Grid item xs={6} style={{textAlign:'right'}}>
               <NavLink to={link}>
           <Button color="primary">Details</Button></NavLink>
-          <Button color="primary">Chat</Button>
+          {chat}
           </Grid>
           </Grid>
         </CardContent>
@@ -158,7 +166,7 @@ const ProductCard = (props) => {
     );
   };
 const YourRequestsCard =(props)=>{
-    console.log(props)
+    console.log("sadasd",props)
     var supplier=false
     if (props.request.supplierId===props.currentUser.uid){
         supplier=true
@@ -177,6 +185,17 @@ const YourRequestsCard =(props)=>{
     const handleDecline=(e)=>{
         props.declineRequest(props.request)
 
+    }
+    const  handleChat=(e)=>{
+    
+        const chat={
+          id:props.request.supplierId+props.request.retailerId,
+          chatsesion:[props.request.supplierId,props.request.retailerId],
+          user1: props.request.supplierId,
+          user2: props.request.retailerId
+        }
+        props.createChatSession(chat)
+      
     }
     var display
     if(props.request!== undefined&& props.request!==null){
@@ -210,7 +229,7 @@ const YourRequestsCard =(props)=>{
                 <h5 style={{ fontFamily: 'Muli', marginBottom: "2%" }}>{supplier?"Retailer  Details:":"Supplier Details"}</h5>
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
-                    {supplier?<UserCard user={props.requestsdata[props.request.id].retailerId}/>:<UserCard user={props.requestsdata[props.request.id].supplierId}/>}
+                    {supplier?<UserCard user={props.requestsdata[props.request.id].retailerId} chatId={props.chatId} handleChat={handleChat}/>:<UserCard user={props.requestsdata[props.request.id].supplierId} chatId={props.chatId} handleChat={handleChat}/>}
                     </Grid>
                     <Grid item xs={6}>
                         {display}
@@ -232,13 +251,13 @@ const YourRequestsCard =(props)=>{
 }
 class MyRequests extends Component{
 
-    
+   
     render(){
       if (!this.props.auth.uid) return <Redirect to='/signin' />
         return(
         <div style={{paddingBottom:'200px'}}>
             <Container maxWidth="lg" >
-            {this.props.requests?this.props.requests.map((request)=><YourRequestsCard 
+            {this.props.requests?this.props.requests.map((request,key)=><YourRequestsCard 
             key={request.id} 
             request={request} 
             requestsdata={this.props.requestsdata} 
@@ -246,6 +265,8 @@ class MyRequests extends Component{
             acceptRequest={this.props.acceptRequest}
             declineRequest={this.props.declineRequest}
             registerRetailers={this.props.registerRetailers}
+            chatId={this.props.chatId[key]}
+            createChatSession={this.props.createChatSession}
             />):null}
             </Container>
 
@@ -260,7 +281,8 @@ const mapDispatchToProps = dispatch => {
     return {
         acceptRequest: (requests)=>dispatch(acceptRequest(requests)),
         registerRetailers: (productId) => dispatch(registerRetailers(productId)),
-        declineRequest: (requests)=>dispatch(declineRequest(requests))
+        declineRequest: (requests)=>dispatch(declineRequest(requests)),
+        createChatSession:(chat)=> dispatch(createChatSession(chat))
     }
 }
 const mapStateToProps = (state,ownProps) => {
@@ -270,26 +292,33 @@ const mapStateToProps = (state,ownProps) => {
     const requestsdata = populate(state.firestore, collection, populates)
     const requests=state.firestore.ordered.requests
     var chatId=[]
-    // if(requests!==undefined&& requests!==null){
-    //   for(var j =0; j<requests.length;i++){
-    //     if(ownProps.chatsesion===undefined&&ownProps.chatsesion===null){
-    //       chatId=[]
-    //       break;
-    //     }else {
-    //       var chatId1=requests[i].retailerId+requests[i].supplierId
-    //       var chatId2=requests[i].supplierId+requests[i].retailerId
-    //       if(chatsession)
+    if(requests!==undefined&& requests!==null){
+      for(var i =0; i<requests.length;i++){
+        if(ownProps.chatsesion===undefined&&ownProps.chatsesion===null){
+          chatId=[]
+          break;
+        }else {
+          var chatId1=requests[i].retailerId+requests[i].supplierId
+          var chatId2=requests[i].supplierId+requests[i].retailerId
+          if(chatsession[chatId1]!==undefined&&chatsession[chatId1]!==null){
+            chatId.push(chatId1)
+          }else if (chatsession[chatId2]!==undefined&&chatsession[chatId2]!==null){
+            chatId.push(chatId2)
+          }else{
+            chatId.push('N/A')
+          }
 
-    //     }
+        }
         
 
-    //   }
-    // }
+      }
+    }
 
     return {
         auth: state.firebase.auth,
         requestsdata:requestsdata,
-        requests: requests
+        requests: requests,
+        chatId:chatId
     }
   };
 export default compose(

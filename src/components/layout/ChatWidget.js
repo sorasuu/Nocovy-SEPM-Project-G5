@@ -101,7 +101,7 @@ const ContactPanel = (props) => {
                         const chatses = props.chatsesiondata[chatse.id]
                         var receiver;
                         console.log("chatsesion",chatses)
-                        if(chatses.user1.id==props.uid){
+                        if(chatses.user1===props.uid){
                             receiver = props.chatusers[chatses.user2]
                         }else{
                             receiver = props.chatusers[chatses.user1]
