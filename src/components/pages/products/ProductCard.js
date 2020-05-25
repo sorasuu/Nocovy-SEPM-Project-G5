@@ -22,7 +22,7 @@ import  RetailerDialog  from '../profile/RetailerDialog'
 
 const useStyles = makeStyles(() => ({
     card: {
-        marginTop: "10%",
+        // marginTop: "10%",
         transition: '0.3s',
         width: '100%',
         overflow: 'initial',
