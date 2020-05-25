@@ -7,7 +7,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
 import { useSoftRiseShadowStyles } from '@mui-treasury/styles/shadow/softRise';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
-import { NavLink } from 'react-router-dom';
+import { NavLink ,Redirect} from 'react-router-dom';
 import { connect } from 'react-redux'
 import { firestoreConnect, populate } from 'react-redux-firebase'
 import { compose } from 'redux'
@@ -21,6 +21,7 @@ import { useGutterBorderedGridStyles } from '@mui-treasury/styles/grid/gutterBor
 import StyledButton from '../../layout/StyledButton';
 import {acceptRequest,declineRequest} from '../../store/actions/transactionAction'
 import {registerRetailers} from '../../store/actions/productAction'
+import history from '../../utils/history'
 const useStyles = makeStyles(() => ({
     card: {
         marginTop: "10%",
@@ -233,7 +234,7 @@ class MyRequests extends Component{
 
     
     render(){
-        
+      if (!this.props.auth.uid) return <Redirect to='/signin' />
         return(
         <div style={{paddingBottom:'200px'}}>
             <Container maxWidth="lg" >
@@ -265,11 +266,26 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = (state,ownProps) => {
     console.log(state);
     console.log(ownProps);
-    
+    const chatsession = state.firestore.data.allchatsesion
     const requestsdata = populate(state.firestore, collection, populates)
     const requests=state.firestore.ordered.requests
+    var chatId=[]
+    // if(requests!==undefined&& requests!==null){
+    //   for(var j =0; j<requests.length;i++){
+    //     if(ownProps.chatsesion===undefined&&ownProps.chatsesion===null){
+    //       chatId=[]
+    //       break;
+    //     }else {
+    //       var chatId1=requests[i].retailerId+requests[i].supplierId
+    //       var chatId2=requests[i].supplierId+requests[i].retailerId
+    //       if(chatsession)
 
-    
+    //     }
+        
+
+    //   }
+    // }
+
     return {
         auth: state.firebase.auth,
         requestsdata:requestsdata,
@@ -288,7 +304,8 @@ export default compose(
 
 ])}
     else{
-        return[]
+        history.push("/")
+        window.location.reload()
     }
 })
   )(MyRequests)

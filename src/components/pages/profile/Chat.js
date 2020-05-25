@@ -309,7 +309,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    // console.log(ownProps)
     const id = ownProps.match.params.id
     const messages = state.firestore.ordered.thischatsesion
     const chatsession = state.firestore.data.allchatsesion
@@ -328,8 +327,7 @@ const mapStateToProps = (state, ownProps) => {
             }
         }
     }
-    // console.log(userIdlist)
-    // console.log(state.firestore.ordered.chatuser)
+
     return {
         auth: state.firebase.auth,
         messages: messages,
