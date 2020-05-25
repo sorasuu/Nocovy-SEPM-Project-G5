@@ -70,7 +70,7 @@ export class FormCertificate extends Component {
                         <div className="image">
                             <img src="handshake.png"></img>
                         </div>
-                        <div className="form">
+                        <div className="form" style={{ textAlign: 'left', alignSelf: 'stretch' }}>
 
 
                             <div className="form-group">
