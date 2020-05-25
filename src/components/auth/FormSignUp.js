@@ -45,12 +45,11 @@ class FormSignUp extends Component {
             rePasswordError = "Re-enter your password"
         }
 
+        // This right here is not done yet
         if (this.props.values.rePassword != this.props.values.password){
             rePasswordError = "Password does not match"
-        }
-
-        if (this.props.value.rePassword == this.props.values.password) {
-            rePasswordError = " "
+        } else {
+            return true;
         }
 
         if (!this.props.values.phoneNumber) {

@@ -104,7 +104,7 @@ class FormCertificate extends Component {
                                 </div>
                                 <div style={{ fontSize: 11, color: "red" }}> {this.state.businessNameError} </div>
                             </div>
-                            <div className="form-group" style={{textAlign: 'center', alignSelf: 'stretch'}}>
+                            <div className="form-group" >
                             <label htmlFor="businessName">Business Type</label>
                             <br/>
                                 <FormControl variant="outlined" className="form-group">
