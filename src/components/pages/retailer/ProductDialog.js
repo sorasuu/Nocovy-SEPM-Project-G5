@@ -32,7 +32,7 @@ export default function ProductDialog(props) {
                 open={open}
                 onClose={handleClose}
             >
-                <div style={{maxWidth:'70%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%',}}>
+                <div style={{maxWidth:'70%', position: 'absolute', top: '45%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%',}}>
                     <ProductDialogDetail currentRetailer ={props.currentRetailer} currentUser={props.currentUser} handleClose={handleClose}/>   
                 </div>
             </Modal>
