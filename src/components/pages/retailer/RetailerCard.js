@@ -37,10 +37,10 @@ const useStyles = makeStyles(() => ({
 }));
 export const ColorButton = withStyles((theme) => ({
     root: {
-      color: theme.palette.getContrastText(`hsla(14, 100%, 53%, 0.6)`),
-      backgroundColor: `hsla(14, 100%, 53%, 0.6)`,
+      color: theme.palette.getContrastText(`hsla(14, 100%, 53%)`),
+      backgroundColor: `hsla(14, 100%, 53%)`,
       '&:hover': {
-        backgroundColor: `hsla(14, 100%, 53%, 0.8)`,
+        backgroundColor: `hsla(14, 100%, 53%)`,
       },
     },
   }))(Button);
@@ -79,6 +79,7 @@ const RetailerCard = (props) => {
                                 <ProductDialog currentRetailer={retailer} currentUser = {props.currentUser }/>
                             : null} 
                                 <ColorButton
+                                    style={{marginLeft:5}}
                                     variant="contained"
                                     color="primary"
                                     startIcon={<SendOutlinedIcon />}

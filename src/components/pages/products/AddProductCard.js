@@ -111,8 +111,8 @@ const AddProductCard = (props) => {
                                 ))}
                             </Select>
                             <FormHelperText>Product must belong to at least one or multiple categories chosen from the list</FormHelperText>
-                        </FormControl>
-                        <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Product Description' onChange={props.handleChange('productDesc')}></TextField>
+                        </FormControl><br/><br/>
+                        <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Product Description' onChange={props.handleChange('productDesc')}></TextField><br/><br/>
                         <TextField error={(props.values.unitCostError !== '')} helperText={props.values.unitCostError} required type='number' style={{marginBottom:'2%'}} label='Unit Cost' value={props.values.unitCost} onChange={props.handleChange('unitCost')}
                             InputProps={{
                                 startAdornment: (

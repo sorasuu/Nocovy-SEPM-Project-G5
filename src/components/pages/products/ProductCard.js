@@ -43,7 +43,7 @@ const ProductCard = (props) => {
     return (
         // <NavLink to = {'/product/'+ props.product.id}>
 
-        <Card className={cx(classes.root, shadowStyles.root)} style={{ position: "relative", marginBottom: '10px' }}>
+        <Card className={cx(classes.root, shadowStyles.root)} style={{ position: "relative", marginBottom: '10px', borderRadius: 16}}>
 
             <CardContent className={classes.content}
             // ref={hoverRef}
