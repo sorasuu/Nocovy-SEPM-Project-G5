@@ -10,7 +10,6 @@ export const createProduct = (product) => {
         ...product,
         authorEmail: author.email,
         retailerId:[],
-        cover:product.productImg[0],
         createdAt: new Date()
       }).then(() => {
        

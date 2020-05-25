@@ -110,7 +110,7 @@ const EditProductCard = (props) => {
                                 ),
                             }}
                         ></TextField><br/>
-                        <TextField multiline type='number' style={{marginBottom:'2%'}} label='Duty Rate (%)' defaultValue={props.values.newDutyRate} onChange={props.handleChange('newDutyRate')}
+                        <TextField type='number' style={{marginBottom:'2%'}} label='Duty Rate (%)' defaultValue={props.values.newDutyRate} onChange={props.handleChange('newDutyRate')}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -119,7 +119,7 @@ const EditProductCard = (props) => {
                                 ),
                             }}
                         ></TextField><br/>
-                        <TextField multiline type='number' style={{marginBottom:'2%'}} label='Margin (%)' defaultValue={props.values.newMargin} onChange={props.handleChange('newMargin')}
+                        <TextField type='number' style={{marginBottom:'2%'}} label='Margin (%)' defaultValue={props.values.newMargin} onChange={props.handleChange('newMargin')}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -128,7 +128,7 @@ const EditProductCard = (props) => {
                                 ),
                             }}
                         ></TextField><br/>
-                        <TextField multiline type='number' style={{marginBottom:'2%'}} label='Unit Price' disabled value={(Number(props.values.newUnitCost) * ((100 + Number(props.values.newMargin) + Number(props.values.newDutyRate))/100)).toFixed(2)}
+                        <TextField type='number' style={{marginBottom:'2%'}} label='Unit Price' disabled value={(Number(props.values.newUnitCost) * ((100 + Number(props.values.newMargin) + Number(props.values.newDutyRate))/100)).toFixed(2)}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">

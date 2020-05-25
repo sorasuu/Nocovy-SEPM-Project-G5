@@ -10,7 +10,7 @@ import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded'
 import StyledButton from '../../layout/StyledButton'
 import {DropzoneArea} from 'material-ui-dropzone'
 import ChipInput from 'material-ui-chip-input'
-import {TextField, InputAdornment, InputLabel, Select, Input, Chip, MenuItem} from '@material-ui/core'
+import {TextField, InputAdornment, InputLabel, Select, Input, Chip, MenuItem, FormControl, FormHelperText} from '@material-ui/core'
 import { MenuProps } from '../dashboard/Dashboard'
 //SET DEFAULT VALUES FOR DROPZONE AND NEW INFO. SHIT DON'T GET RESET WHEN YOU CLICK OFF THE PAGE AND CLICK ON AGAIN
 import { allCategories } from '../dashboard/Dashboard'
@@ -83,16 +83,16 @@ const AddProductCard = (props) => {
             2: <div>
                 <div className={classes.form}>
                     <form style={{margin:'2%', textAlign:'left'}}>
-                        <TextField required multiline style={{marginBottom:'2%'}} label='Product Name' onChange={props.handleChange('productName')}></TextField>
-                       
-                        <InputLabel shrink htmlFor="circle">
+                        <TextField error={props.values.nameError} helperText='Product name must be between 0 and 256 characters' required multiline style={{marginBottom:'2%'}} label='Product Name' onChange={props.handleChange('productName')}></TextField><br/>
+                        <FormControl error={props.values.categoriesError}>
+                            <InputLabel htmlFor="circle">
                                 Category Selection
                             </InputLabel>
                             <Select
                                 multiple
                                 displayEmpty
-                                defaultValue={allCategories}
-                                value={props.values.newCategory}
+                                defaultValue={props.values.productCategories}
+                                value={props.values.productCategories}
                                 onChange={props.handleCatChange}
                                 input={<Input name="category" id='category-chip' />}
                                 renderValue={(selected) => (
@@ -110,8 +110,10 @@ const AddProductCard = (props) => {
                                     </MenuItem>
                                 ))}
                             </Select>
+                            <FormHelperText>Product must belong to at least one or multiple categories chosen from the list</FormHelperText>
+                        </FormControl>
                         <TextField multiline style={{marginBottom:'2%'}} fullWidth label='Product Description' onChange={props.handleChange('productDesc')}></TextField>
-                        <TextField required multiline type='number' style={{marginBottom:'2%'}} label='Unit Cost' value={props.values.unitCost} onChange={props.handleChange('unitCost')}
+                        <TextField error={(props.values.unitCostError !== '')} helperText={props.values.unitCostError} required type='number' style={{marginBottom:'2%'}} label='Unit Cost' value={props.values.unitCost} onChange={props.handleChange('unitCost')}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
@@ -120,7 +122,7 @@ const AddProductCard = (props) => {
                                 ),
                             }}
                         ></TextField><br/>
-                        <TextField multiline type='number' style={{marginBottom:'2%'}} label='Duty Rate (%)' value={props.values.dutyRate} onChange={props.handleChange('dutyRate')}
+                        <TextField error={(props.values.dutyRateError !== '')} helperText={props.values.dutyRateError} type='number' style={{marginBottom:'2%'}} label='Duty Rate (%)' value={props.values.dutyRate} onChange={props.handleChange('dutyRate')}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -129,7 +131,7 @@ const AddProductCard = (props) => {
                                 ),
                             }}
                         ></TextField><br/>
-                        <TextField multiline type='number' style={{marginBottom:'2%'}} label='Margin (%)' value={props.values.margin} onChange={props.handleChange('margin')}
+                        <TextField error={(props.values.marginError !== '')} helperText={props.values.marginError} type='number' style={{marginBottom:'2%'}} label='Margin (%)' value={props.values.margin} onChange={props.handleChange('margin')}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -138,7 +140,7 @@ const AddProductCard = (props) => {
                                 ),
                             }}
                         ></TextField><br/>
-                        <TextField multiline type='number' style={{marginBottom:'2%'}} label='Unit Price' disabled value={(Number(props.values.unitCost) * ((100 + Number(props.values.margin) + Number(props.values.dutyRate))/100)).toFixed(2)}
+                        <TextField type='number' style={{marginBottom:'2%'}} label='Unit Price' disabled value={(Number(props.values.unitCost) * ((100 + Number(props.values.margin) + Number(props.values.dutyRate))/100)).toFixed(2)}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
