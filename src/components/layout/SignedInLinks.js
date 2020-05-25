@@ -1,12 +1,9 @@
 import React from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signOut } from '../store/actions/authActions'
-import { firestoreConnect } from 'react-redux-firebase'
-import { compose } from 'redux'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Grid from '@material-ui/core/Grid';
-import InputIcon from '@material-ui/icons/Input';
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -14,13 +11,9 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Notifications from "@material-ui/icons/Notifications";
 import styles from './headerLinksStyle'
 import { makeStyles } from "@material-ui/core/styles";
-import Hidden from "@material-ui/core/Hidden";
-import Poppers from "@material-ui/core/Popper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import MenuList from "@material-ui/core/MenuList";
 import Button from "@material-ui/core/Button";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
+import Fade from '@material-ui/core/Fade';
+import Badge from '@material-ui/core/Badge';
 import { useSizedIconButtonStyles } from '@mui-treasury/styles/iconButton/sized';
 import { Avatar } from 'material-ui'
 const useStyles = makeStyles(styles);
@@ -106,6 +99,7 @@ export function MoreMenu(props) {
         keepMounted
         open={open}
         onClose={handleClose}
+        TransitionComponent={Fade}
       >
           <NavLink to ='/faq' style={{ color: "black" }}> <MenuItem onClick={handleClose}>FAQ</MenuItem> </NavLink>
           <NavLink to ='/rules' style={{ color: "black" }}> <MenuItem onClick={handleClose}>Transaction Rules</MenuItem> </NavLink>
@@ -118,20 +112,20 @@ export function MoreMenu(props) {
 const SignedInLinks = (props) => {
   console.log(props)
   const classes = useStyles();
-  const [openNotification, setOpenNotification] = React.useState(null);
 
-  const handleClickNotification = event => {
-    if (openNotification && openNotification.contains(event.target)) {
-      setOpenNotification(null);
-    } else {
-      setOpenNotification(event.currentTarget);
-    }
-  };
-  const handleCloseNotification = () => {
-    setOpenNotification(null);
-  };
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  
+  const open = Boolean(anchorEl);
+
   const { auth, cart } = props
+  const handleClick = event => {
 
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   var cartnav
   if (cart === undefined) {
     cartnav = JSON.parse(window.localStorage.getItem('cart'))
@@ -157,68 +151,40 @@ const SignedInLinks = (props) => {
         <Grid item xs={3} style={{ marginTop: "1%", marginRight: '-1%' }}>
           <NavLink to={'/cart'}  >
             <IconButton>
+            <Badge badgeContent={props.props.cart?props.props.cart.length:0} color="primary">
               <ShoppingCartIcon  className={classes.icons} />
-              {cartnav ?
-                <span className={classes.notifications}>{cartnav.length}</span> : null}
+             </Badge>
             </IconButton>
           </NavLink>
         </Grid>
         <Grid item xs={3} style={{ marginTop: "1%" }}>
-          <div className={classes.manager}>
             <IconButton
-
-              onClick={handleClickNotification}
+              onClick={handleClick}
               className={classes.buttonLink}
             >
+              <Badge badgeContent={props.props.notifications?props.props.notifications.length:0} color="primary">
               <Notifications className={classes.icons} />
-              {props.props.notifications?<span className={classes.notifications}>{props.props.notifications.length}</span>:null}
-              <Hidden mdUp implementation="css">
-                <p onClick={handleCloseNotification} className={classes.linkText}>
-                  Notification
-            </p>
-              </Hidden>
-            </IconButton>
-            <Poppers
-              open={Boolean(openNotification)}
-              anchorEl={openNotification}
-              transition
-              disablePortal
-
-            >
-              {({ TransitionProps, placement }) => (
-                <Grow
-                  {...TransitionProps}
-                  id="notification-menu-list-grow"
-                  style={{
-                    transformOrigin:
-                      placement === "bottom" ? "center top" : "center bottom"
-                  }}
-                >
-                  <Paper>
-                    <ClickAwayListener onClickAway={handleCloseNotification}>
-
-                      <MenuList role="menu">
-                      {props.props.notifications?props.props.notifications.map(noti=> {return(
-                        <MenuItem
-                        onClick={handleCloseNotification}
-                        className={classes.dropdownItem}
-                      >
+              </Badge>
+            </IconButton>          
+                  <Menu
+                     id="long-menu"
+                     anchorEl={anchorEl}
+                     keepMounted
+                     open={open}
+                     onClose={handleClose}>
+                  {props.props.notifications?props.props.notifications.map(noti=>
+                    <MenuItem onClick={handleClose}>
+                    
                         {noti.content}
                   </MenuItem>
-                        )})
+                        )
                         :<MenuItem
-                          onClick={handleCloseNotification}
-                          className={classes.dropdownItem}
+                          onClick={handleClose}
+                      
                         >
                           You have no notification
                     </MenuItem>}
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Grow>
-              )}
-            </Poppers>
-          </div>
+                    </Menu>
         </Grid>
         <Grid item xs={3}>
           <UserMenu props={auth} lastContact={props.props.lastContact} currentUser={props.props.currentUser} handelSignOut={handelSignOut}/>

@@ -222,7 +222,7 @@ const YourRequestsCard =(props)=>{
                 classes={cardHeaderStyles}
                 title={supplier?( "To Retailer: "+ props.requestsdata[props.request.id].retailerId.businessName):("Requested by: "+ props.requestsdata[props.request.id].supplierId.businessName)}
                 subheader={ moment(props.request.createdAt.toDate()).fromNow()}
-                style={{ background: "linear-gradient(45deg, #019474 30%, #0071AC 90%)", position: "absolute", top: "-3%", left: "3%", width: '400px', }}
+                style={{ background: "linear-gradient(45deg, #019474 30%, #0071AC 90%)", position: "absolute", top: "-4%", left: "3%", width: '400px', }}
             />
             <CardContent className={classes.content} >
                 <div style={{marginBottom: "2%",marginTop:"20px"}}>

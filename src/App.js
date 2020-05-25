@@ -43,6 +43,13 @@ class App extends Component {
   handleNewCart = (e,cart) =>{
     this.setState({cart:cart})
   }
+  componentDidMount(){
+    if( JSON.parse(window.localStorage.getItem('cart'))!== undefined&&JSON.parse(window.localStorage.getItem('cart'))!== null){
+      this.setState({ cart: JSON.parse(window.localStorage.getItem('cart')) });
+    }else{
+      this.setState({cart:null})
+    }
+  }
   handleCart=(e, productinfo, num)=>{
     
     const { cart } = this.state
@@ -164,7 +171,7 @@ export default compose(
       {
         collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]],queryParams:['orderByChild=lastMod'] ,storeAs:'allchatsesion'
       },
-      { collection: 'notifications', where: [['uid', '==', props.auth.uid]] }]
+      { collection: 'notifications', where: [['uid', '==', props.auth.uid]] ,orderBy:['time','desc'] }]
     }
   })
 )

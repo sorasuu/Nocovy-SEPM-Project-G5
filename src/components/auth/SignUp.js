@@ -25,7 +25,6 @@ const initialState = {
     businessAddress: '',
     businessWebsite: '',
     businessDesc: '',
-
     emailError: '',
     passwordError: '',
     phonenumberError: '',

@@ -39,9 +39,8 @@ export const signUp = (newUser) => {
         businessName: newUser.businessName,
         logo: newUser.logo,
         type: newUser.type,
-        businessAddress:newUser.businessAddress?newUser.businessAddress:null,
-        businessWebsite:newUser.businessWebsite?newUser.businessWebsite:null,
-        
+        address:newUser.businessAddress?newUser.businessAddress:null,
+        website:newUser.businessWebsite?newUser.businessWebsite:null,
         businessDesc:newUser.businessDesc,
         certificates: newUser.certificates,
         pending:true,

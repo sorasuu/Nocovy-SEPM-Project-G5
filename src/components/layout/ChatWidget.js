@@ -109,12 +109,13 @@ const ContactPanel = (props) => {
                         console.log(receiver)
                         return(
                         <div>
+                           { receiver?
                         <ListItem 
                         button 
                         onClick={()=>props.handleChangeChatSession(chatse.id)}
                         alignItems="flex-start">
                             <ListItemAvatar>
-                                <Avatar alt="avatar" src={receiver.logo} />
+                                <Avatar alt="avatar" src={receiver.logo?receiver.logo:null} />
                             </ListItemAvatar>
                             <ListItemText
                                 primary={receiver.displayName}
@@ -132,7 +133,7 @@ const ContactPanel = (props) => {
                                     </React.Fragment>
                                 }
                             />
-                        </ListItem>
+                        </ListItem>:null}
                         <Divider variant="inset" component="li" />
                         </div>)
                     }):null}
