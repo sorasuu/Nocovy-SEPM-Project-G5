@@ -91,11 +91,12 @@ export class FormCertificate extends Component {
                             <div className="form-group">
                                 <label htmlFor="password" >Password</label>
                                 {/* <p>{password}</p> */}
-                                <div className="input-field">
+                                {/* <div className="input-field">
                                     <input type="password" id='password' placeholder="Re-Enter your password" onChange={handleChange('password')} defaultValue={values.password} />
 
                                     <div style={{ fontSize: 11, color: "red" }}> {this.state.passwordError} </div>
-                                </div>
+                                </div> */}
+                                <p>********</p>
                             </div>
 
                             <div className="form-group">

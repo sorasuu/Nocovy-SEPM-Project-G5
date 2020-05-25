@@ -15,6 +15,7 @@ const initialState = {
     lastName: '',
     email: '',
     password: '',
+    rePassword:'',
     phoneNumber: '',
     logoImg: null,
     images: [],
@@ -27,6 +28,7 @@ const initialState = {
     businessDesc: '',
     emailError: '',
     passwordError: '',
+    rePasswordError: '',
     phonenumberError: '',
     businessNameError: '',
     typeError: '',
@@ -150,11 +152,11 @@ class SignUp extends Component {
 
     render() {
         console.log(this.state)
-        const { step, firstName, lastName, email, password, phoneNumber, image, url, progress, businessName, type, businessDesc, businessAddress, businessWebsite,images } = this.state;
+        const { step, firstName, lastName, email, password, rePassword, phoneNumber, image, url, progress, businessName, type, businessDesc, businessAddress, businessWebsite,images } = this.state;
         const { auth, authError } = this.props;
-        const values = { firstName, lastName, email, password, phoneNumber, image, url, progress, businessName, type, businessDesc, businessAddress, businessWebsite,images }
-        const { emailError, passwordError, phonenumberError, businessNameError, typeError, businessDescError, businessAddressError } = this.state
-        const error = { emailError, passwordError, phonenumberError, businessNameError, typeError, businessDescError, businessAddressError }
+        const values = { firstName, lastName, email, password, rePassword, phoneNumber, image, url, progress, businessName, type, businessDesc, businessAddress, businessWebsite,images }
+        const { emailError, passwordError, rePasswordError, phonenumberError, businessNameError, typeError, businessDescError, businessAddressError } = this.state
+        const error = { emailError, passwordError, rePasswordError, phonenumberError, businessNameError, typeError, businessDescError, businessAddressError }
         if (auth.uid) return <Redirect to='/' />
         switch (step) {
             case 1:
