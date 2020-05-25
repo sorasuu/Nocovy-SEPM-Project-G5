@@ -177,17 +177,5 @@ class FormCertificate extends Component {
         )
     }
 }
-// const mapStateToProps = (state) => {
-//     return {
-//         auth: state.firebase.auth,
-//         authError: state.auth.authError
-//     }
-// }
-
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         signUp: (creds) => dispatch(signUp(creds))
-//     }
-// }
 
 export default FormCertificate

@@ -191,8 +191,10 @@ class SignUp extends Component {
                     <Confirm
                         nextStep={this.nextStep}
                         prevStep={this.prevStep}
+                        handleChange={this.handleChange}
                         handleSubmit={this.handleSubmit}
                         values={values}
+                        error={error}
                     />
                 )
             case 4:
