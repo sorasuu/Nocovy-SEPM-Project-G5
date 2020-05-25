@@ -15,7 +15,7 @@ import ProductDialogTable from './ProductDialogTable';
 import StyledButton from '../../layout/StyledButton';
 const useStyles = makeStyles(() => ({
     card: {
-        marginTop: "10%",
+        marginTop: "3%",
         transition: '0.3s',
         width: '100%',
         overflow: 'initial',
@@ -58,9 +58,12 @@ const DialogPanel = (props) => {
                 title={"Request"}
             />
             <CardContent className={classes.content}>
-                <ProductDialogTable products={props.listProducts} currentRetailer={props.currentRetailer} handleChangeSelected={props.handleChangeSelected}/>
+                <div style={{overflowY: 'auto', maxHeight: '78vh',}}>
+                    {/* Should probably just get rid of the rows per page option */}
+                    <ProductDialogTable products={props.listProducts} currentRetailer={props.currentRetailer} handleChangeSelected={props.handleChangeSelected}/>
+                </div>
                 <div className={classes.buttonGroup}>
-                <StyledButton style={{ marginRight:10, background: "linear-gradient(45deg, #019179 30%, #0074A7 90%)", boxShadow: '0 3px 5px 2px rgba(105, 135, 255, 0.3'}} onClick={props.handleClose} >Cancel</StyledButton>
+                    <StyledButton style={{ marginRight:10, background: "linear-gradient(45deg, #019179 30%, #0074A7 90%)", boxShadow: '0 3px 5px 2px rgba(105, 135, 255, 0.3'}} onClick={props.handleClose} >Cancel</StyledButton>
                     <StyledButton onClick={(e)=>props.handleSubmitRequest(e)}>Request</StyledButton>  
                 </div>
             </CardContent>
