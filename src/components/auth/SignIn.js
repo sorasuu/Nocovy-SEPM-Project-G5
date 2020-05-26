@@ -39,8 +39,8 @@ class SignIn extends Component {
     if (!this.state.email.includes("@")) {
       emailError = "invalid email";
     }
-    
-    if (!this.state.password){
+
+    if (!this.state.password) {
       passwordError = "Password cannot be blank"
     }
     if (emailError || passwordError) {
@@ -51,9 +51,9 @@ class SignIn extends Component {
     return true;
   }
 
-  handleForget = () =>{
-    this.setState({isForget: !this.state.isForget})
-    
+  handleForget = () => {
+    this.setState({ isForget: !this.state.isForget })
+
   }
   handleSubmit = (e) => {
     e.preventDefault();
@@ -85,12 +85,12 @@ class SignIn extends Component {
     }
   }
   render() {
-    
+
     const { authError, auth } = this.props;
     console.log(this.props.auth)
     if (auth.uid) return <Redirect to='/' />
     return (
-      
+
       <div className="base-container">
         <Container style={{ marginTop: "2%", width: "500px" }}>
           <form className="white auth" onSubmit={this.handleSubmit} style={{ padding: "2%" }}>
@@ -98,7 +98,7 @@ class SignIn extends Component {
             <div className="image">
               <img src="handshake.png"></img>
             </div>
-            <div className="form">
+            <div className="form" style={{ textAlign: 'left'}}>
               <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <input
@@ -112,38 +112,38 @@ class SignIn extends Component {
                   {this.state.emailError}
                 </div>
               </div>
-              {this.state.isForget === false ? 
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  id='password'
-                  placeholder='Enter your password'
-                  value={this.state.password}
-                  onChange={this.handleChange}
-                />
-                <div style={{ fontSize: 11, color: "red" }}>
-                  {this.state.passwordError}
-                </div>
-                <a onClick={this.handleForget}>Forget Password?</a>
-              </div>: <button onClick={this.handleForget}>Back</button>}
+              {this.state.isForget === false ?
+                <div className="form-group">
+                  <label htmlFor="password">Password</label>
+                  <input
+                    type="password"
+                    id='password'
+                    placeholder='Enter your password'
+                    value={this.state.password}
+                    onChange={this.handleChange}
+                  />
+                  <div style={{ fontSize: 11, color: "red" }}>
+                    {this.state.passwordError}
+                  </div>
+                  <a onClick={this.handleForget}>Forget Password?</a>
+                </div> : <button onClick={this.handleForget}>Back</button>}
             </div>
-            
-            {this.state.isForget === false ? 
-            <div className="input-field">
-              <NoSsr>
-                <StyledButton onClick={this.handleSubmit}>Login</StyledButton>
-              </NoSsr>
-              {this.state.logging ? <ColorLinearProgress style={{ marginBottom: "2%", marginTop: "2%", padding: "5px" }} /> : null}
-              <div className="center red-text">
-                {authError ? <p>{authError}</p> : null}
-              </div>
-            </div>: 
-            <div className="input-field">
-              <NoSsr>
-                <StyledButton onClick={this.handleResetPassword}>Confirm</StyledButton>
-              </NoSsr>
-              </div> }
+
+            {this.state.isForget === false ?
+              <div className="input-field">
+                <NoSsr>
+                  <StyledButton onClick={this.handleSubmit}>Login</StyledButton>
+                </NoSsr>
+                {this.state.logging ? <ColorLinearProgress style={{ marginBottom: "2%", marginTop: "2%", padding: "5px" }} /> : null}
+                <div className="center red-text">
+                  {authError ? <p>{authError}</p> : null}
+                </div>
+              </div> :
+              <div className="input-field">
+                <NoSsr>
+                  <StyledButton onClick={this.handleResetPassword}>Confirm</StyledButton>
+                </NoSsr>
+              </div>}
           </form>
         </Container>
       </div>

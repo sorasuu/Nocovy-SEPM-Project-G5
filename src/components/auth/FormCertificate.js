@@ -78,14 +78,12 @@ class FormCertificate extends Component {
         return (
             <div className="base-container">
                 <Container style={{ marginTop: "2%", width: "550px" }}>
-                    <form className="white auth"
-                        //  onSubmit={this.handleSubmit} 
-                        style={{ padding: "2%" }}>
+                    <form className="white auth" style={{ padding: "2%" }}>
                         <div className="header">Sign up</div>
                         <div className="image">
                             <img src="handshake.png"></img>
                         </div>
-                        <div className="form">
+                        <div className="form" style={{ textAlign: 'left', alignSelf: 'stretch' }}>
                             <div className="form-group">
                                 <label htmlFor="image" >Certificate(s)</label>
                                 <br />
@@ -106,7 +104,7 @@ class FormCertificate extends Component {
                                 </div>
                                 <div style={{ fontSize: 11, color: "red" }}> {this.state.businessNameError} </div>
                             </div>
-                            <div className="form-group" style={{textAlign: 'center', alignSelf: 'stretch'}}>
+                            <div className="form-group" >
                             <label htmlFor="businessName">Business Type</label>
                             <br/>
                                 <FormControl variant="outlined" className="form-group">

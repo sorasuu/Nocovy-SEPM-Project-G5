@@ -17,6 +17,7 @@ import "./style.css"
 const initialState = {
     emailError: '',
     passwordError: '',
+    rePasswordError: '',
     phonenumberError: '',
     uploading: false
 }
@@ -28,6 +29,7 @@ class FormSignUp extends Component {
     validate = () => {
         let emailError = '';
         let passwordError = '';
+        let rePasswordError = '';
         let phonenumberError = '';
 
 
@@ -39,12 +41,23 @@ class FormSignUp extends Component {
             passwordError = "Password cannot be blank"
         }
 
+        if (!this.props.values.rePassword){
+            rePasswordError = "Re-enter your password"
+        }
+
+        // This right here is not done yet
+        if (this.props.values.rePassword != this.props.values.password){
+            rePasswordError = "Password does not match"
+        } else {
+            return true;
+        }
+
         if (!this.props.values.phoneNumber) {
             phonenumberError = "Phone number cannot be blank"
         }
 
-        if (emailError || passwordError || phonenumberError) {
-            this.setState({ emailError, passwordError, phonenumberError });
+        if (emailError || passwordError || rePasswordError || phonenumberError) {
+            this.setState({ emailError, passwordError, rePasswordError, phonenumberError });
             return false;
         }
         return true;
@@ -86,7 +99,7 @@ class FormSignUp extends Component {
                             <img src="handshake.png"></img>
                         </div>
 
-                        <div className="form">
+                        <div className="form" style={{ textAlign: 'left', alignSelf: 'stretch' }}>
                             <div className="form-group">
                             <label htmlFor="firstName">First name</label>
                                 <div className="input-field">                                   
@@ -117,6 +130,14 @@ class FormSignUp extends Component {
                                 
                             </div>
                             <div className="form-group">
+                            <label htmlFor="repassword">Re-enter Password</label>
+                                <div className="input-field">
+                                    <input type="password" id='repassword' placeholder="Re-enter your password" onChange={handleChange('repassword')} defaultValue={values.repassword} />
+                                    <div style={{ fontSize: 11, color: "red" }}> {this.state.rePasswordError} </div>
+                                </div>
+                                
+                            </div>
+                            <div className="form-group">
                             <label htmlFor="phoneNumber">Phone Number</label>
                                 <div className="input-field">
                                     <input type="text" pattern="[0-9]*" y id='phoneNumber' placeholder="Enter your phone number" onChange={handleChange('phoneNumber')} defaultValue={values.phoneNumber} />
@@ -138,7 +159,7 @@ class FormSignUp extends Component {
 
                             </div>
 
-                            <div className="input-field">
+                            <div className="input-field" style={{ textAlign: 'center'}}>
                                 <NoSsr>
                                     <StyledButton onClick={this.continue}>Continue</StyledButton>
                                 </NoSsr>
