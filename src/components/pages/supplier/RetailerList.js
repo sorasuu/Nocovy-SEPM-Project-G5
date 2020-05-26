@@ -85,24 +85,25 @@ const ProfileCard = (props) => {
   );
 };
 function RetailerList(props){
-    const { product, productkey, value } = props
+    const { product, productKey, value } = props
     
     const data = props.data?  props.data[product.id]: null;
     const retailerList = data?data.retailerId:null 
     console.log("retailer list", retailerList)
     return(
-        <div key={productkey}>
-            <Grid container spacing={3}>
+        <div key={productKey}>
+            <Grid container spacing={2}>
             {retailerList ? retailerList.map((item, key)=>
-            
-            <Grid item xs={6}>
-                <NavLink to ={'/profile/'+item.uid}>
-                <ProfileCard key={key} user ={item}/></NavLink>
+            <TabPanel value={value} index={productKey} key={key}>
+                <Grid item>
+                  <NavLink to ={'/profile/'+item.uid}>
+                    <ProfileCard key={key} user ={item}/>
+                  </NavLink>
                 </Grid>
-            )
-                    
-                :null}
-                </Grid>
+            </TabPanel>)      
+            :null}    
+            </Grid>
+                
         </div>
     )
 }

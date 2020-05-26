@@ -196,6 +196,7 @@ export const BuyDialog = (props) => {
                                             required='true'
                                             disableUnderline="true"
                                             type='number'
+                                            defaultValue={1}
                                             value={number}
                                             onChange={e => handleChange(e)}
                                             inputProps={{min: 1}}
@@ -204,7 +205,7 @@ export const BuyDialog = (props) => {
                                     {/* <Grid item xs={4}><Button onClick={buyMore}><AddRoundedIcon /></Button></Grid> */}
                                 </Grid>
                             </Grid>
-                            <Grid item xs={6}><div style={{ textAlign: 'right', fontSize: '30px', fontFamily: 'bold' }}> {product.price.unitPrice * number}</div></Grid>
+                            <Grid item xs={6}><div style={{ textAlign: 'right', fontSize: '30px', fontFamily: 'bold' }}> {(product.price.unitPrice * number).toFixed(2)}</div></Grid>
                                 
 
                         </Grid>

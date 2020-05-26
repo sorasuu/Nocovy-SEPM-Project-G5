@@ -145,7 +145,7 @@ function RetailerDetail(props) {
                                     : <div>Loading...</div>
                                 }
                             </TableBody>
-                        ) : <div>No Selling Product</div>
+                        ) : null
 
                         }
 
@@ -174,7 +174,7 @@ export default compose(
         if (!props.users)
             return [
                 { collection: "products" },
-                { collection: "users", where: [["type", "==", "supplier"]], storeAs: 'suppliers' },
+                { collection: "users", where: [["type", "==", "supplier"], ['verify', '==', true]], storeAs: 'suppliers' },
             ];
     })
 

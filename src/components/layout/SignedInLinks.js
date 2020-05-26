@@ -54,6 +54,7 @@ export function UserMenu(props) {
           <NavLink to={'/chat/' + props.lastContact.id} style={{ color: "black" }}>
             <MenuItem onClick={handleClose}>Chat</MenuItem></NavLink> : null
             }
+        
         <NavLink to ='/myorders' style={{ color: "black" }}> <MenuItem onClick={handleClose}>My Orders</MenuItem> </NavLink>
         <NavLink to ='/myrequests' style={{ color: "black" }}> <MenuItem onClick={handleClose}>Requests</MenuItem> </NavLink>
         <MenuItem style={{ color: "black" }} onClick={(e)=>props.handelSignOut(e)}><Button variant='outlined'>Sign Out</Button></MenuItem> 
@@ -66,7 +67,7 @@ export function UserMenu(props) {
 }
 
 export function MoreMenu(props) {
-  
+  console.log('navbar profile menu', props)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [auth, setAuth] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -171,8 +172,8 @@ const SignedInLinks = (props) => {
                      keepMounted
                      open={open}
                      onClose={handleClose}>
-                  {props.props.notifications?props.props.notifications.map(noti=>
-                    <MenuItem onClick={handleClose} style={{maxWidth:'300px',whiteSpace: 'normal'}}>
+                  {props.props.notifications?props.props.notifications.map((noti, key)=>
+                    <MenuItem onClick={handleClose} key={key} style={{maxWidth:'300px',whiteSpace: 'normal'}}>
                    <p> {noti.content}</p>
                   <p style={{fontSize:'10px',marginTop:'40px', textAlign:'right',marginRight:'5px'}}>from {moment(noti.time.toDate()).fromNow()}</p>
                   </MenuItem>

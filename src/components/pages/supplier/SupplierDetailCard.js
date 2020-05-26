@@ -134,7 +134,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
     },
     tabs: {
-        maxWidth: '200px'
+        maxWidth: '150px'
     }
 
 }));
@@ -180,11 +180,6 @@ export default function SupplierDetailCard(props) {
     // const allProducts = [{name:'a',value:'b'}, {name:'b',value:'c'}]
     const allProducts = checkArray(props.products)
 
-
-    const onChange = (event, newValue) => {
-        console.log(newValue)
-        // setSearch((newValue).toString);
-    }
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -240,21 +235,7 @@ export default function SupplierDetailCard(props) {
                             <ExpandMoreIcon />
                         </IconButton>
                     </CardActions>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-
-                        <InputBase
-                            placeholder="Searching your Product"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                            onChange={onChange}
-                        />
-                    </div>
+                   
                 </Grid>
             </CardContent>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -296,7 +277,7 @@ export default function SupplierDetailCard(props) {
                 <Table>
                     <TableHead className={classes.header}>
                         <TableRow>
-                            <TableCell className={classes.tabs} size="small" style={{maxWidth:'300px'}}>Products </TableCell>
+                            <TableCell className={classes.tabs} style={{maxWidth:'150px'}}>Products </TableCell>
                             <TableCell>Retailers </TableCell>
                         </TableRow>
                     </TableHead>
@@ -304,14 +285,14 @@ export default function SupplierDetailCard(props) {
 
                         {/* Can't we just map into 2 TableCells instead of mapping twice? */}
                         <TableRow>
-                            <TableCell size="small" style={{maxWidth:'220px'}}>
+                            <TableCell size="small" style={{maxWidth:'120px'}}>
                                 <Tabs
                                     orientation="vertical"
                                     variant="scrollable"
                                     value={value}
                                     onChange={handleChange}
                                     className={classes.tabs}
-                                    style={{maxWidth:'220px'}}
+                                    style={{maxWidth:'120px'}}
                                 >
                                     {filterProducts.map((product, key) =>
                                         <Tab label={product.name}  style={{maxWidth:'200px'}} {...a11yProps(key)} />
@@ -319,12 +300,11 @@ export default function SupplierDetailCard(props) {
                                 </Tabs>
                             </TableCell>
                             <TableCell>
-                                {filterProducts.map((product, productkey) =>
-
+                                {filterProducts.map((product, productKey) =>
                                     <RetailerList
                                         product={product}
                                         data={props.data}
-                                        productkey={productkey}
+                                        productKey={productKey}
                                         value={value}
                                     />
                                 )}

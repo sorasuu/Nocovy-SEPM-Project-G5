@@ -474,7 +474,7 @@ export default withRouter(compose(
       return [
         { collection: 'products', where:[["supplierId","==", props.match.params.id]]},
         { collection: 'users', doc: props.match.params.id, storeAs: 'thisUser' },
-        { collection: 'users', where: [["type", "==", "retailer"]], storeAs: 'allRetailers' }      ]
+        { collection: 'users', where: [["type", "==", "retailer"], ['verify','==',true]], storeAs: 'allRetailers' }      ]
       
   })
 )(withStyles(useStyles)(Profile)) )
