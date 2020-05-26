@@ -277,7 +277,7 @@ export default function SupplierDetailCard(props) {
                 <Table>
                     <TableHead className={classes.header}>
                         <TableRow>
-                            <TableCell className={classes.tabs} style={{maxWidth:'150px'}}>Products </TableCell>
+                            <TableCell className={classes.tabs} style={{maxWidth:'200px'}}>Products </TableCell>
                             <TableCell>Retailers </TableCell>
                         </TableRow>
                     </TableHead>
@@ -285,14 +285,14 @@ export default function SupplierDetailCard(props) {
 
                         {/* Can't we just map into 2 TableCells instead of mapping twice? */}
                         <TableRow>
-                            <TableCell size="small" style={{maxWidth:'120px'}}>
+                            <TableCell size="small" style={{maxWidth:'200px'}}>
                                 <Tabs
                                     orientation="vertical"
                                     variant="scrollable"
                                     value={value}
                                     onChange={handleChange}
                                     className={classes.tabs}
-                                    style={{maxWidth:'120px'}}
+                                    style={{maxWidth:'200px'}}
                                 >
                                     {filterProducts.map((product, key) =>
                                         <Tab label={product.name}  style={{maxWidth:'200px'}} {...a11yProps(key)} />

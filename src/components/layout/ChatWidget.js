@@ -316,9 +316,9 @@ const mapDispatchToProps = dispatch => {
 var loaded;
 var userIdlist = new Set()
 const mapStateToProps = (state, ownProps) => {
-
+    console.log('chat widget', state)
     const chatsession = state.firestore.ordered.chatsesion ? state.firestore.ordered.chatsesion : null
-    var id = sessionStorage.getItem('chatId')?sessionStorage.getItem('chatId'): ownProps.chatId ? ownProps.chatId : chatsession ? chatsession[0].id : null
+    var id = sessionStorage.getItem('chatId')?sessionStorage.getItem('chatId'): ownProps.chatId ? ownProps.chatId : chatsession ? chatsession[0]?chatsession[0].id : null:null
     const status = state.firestore.status
     console.log(status.requesting.chatsesion)
     if (status.requested.chatsesion !== undefined && status.requesting.chatsesion !== undefined) {
