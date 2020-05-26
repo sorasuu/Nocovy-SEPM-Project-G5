@@ -22,9 +22,9 @@ import { deliverProductToCart } from '../../store/actions/productAction'
 const useStyles = theme => ({
   search: {
     marginTop:'3%',
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    backgroundColor: fade(theme.palette.common.white, 0.75),
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.35),
+      backgroundColor: fade(theme.palette.common.white, 0.95),
     },
     display: 'flex',
     border: `1px solid ${'#dfe1e5'}`,
@@ -243,10 +243,10 @@ class Dashboard extends Component {
         </Tabs>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
-            <SearchIcon />
+            <SearchIcon style={{marginTop:'5px',padding:'2px'}}/>
           </div>
           <InputBase
-            
+            style={{marginTop:'5px'}}
             placeholder="Search…"
             classes={{
               root: classes.inputRoot,
@@ -269,7 +269,7 @@ class Dashboard extends Component {
                     <Grid item><InputLabel id="demo-mutiple-chip-label"><em>Select Filter Categories</em></InputLabel></Grid>
                     <Grid item>
                       <Select
-                
+                        style={{width:'300px'}}
                         multiple
                         displayEmpty
                         value={this.state.selectedCategories}
@@ -285,7 +285,7 @@ class Dashboard extends Component {
                         MenuProps={MenuProps}
                       >
                         {allCategories.map((name, key) => (
-                          <MenuItem key={key} value={name}>
+                          <MenuItem key={key} value={name} style={{whiteSpace: 'normal'}}>
                             {name}
                           </MenuItem>
                         ))}

@@ -115,7 +115,7 @@ class App extends Component {
             <Route path='/rules' component={TransactionRules}/>
             <Route path='/tos' component={TermOfService} />
             <Route path='/myorders' component={MyOrders} />
-            <Route path='/myrequests' component={(props) => <MyRequest {...props} currentUser={currentUser}/>} />
+            <Route path='/myrequests' component={(props) => <MyRequest {...props} currentUser={currentUser}/>}  chatsesion={chatsession}/>
             
             <Route component={NotFound} />
 
