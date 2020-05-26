@@ -295,7 +295,7 @@ const mapStateToProps = (state,ownProps) => {
     if(requests!==undefined&& requests!==null){
       for(var i =0; i<requests.length;i++){
         if(ownProps.chatsesion===undefined&&ownProps.chatsesion===null){
-          chatId=[]
+          chatId.push('N/A')
           break;
         }else {
           var chatId1=requests[i].retailerId+requests[i].supplierId
