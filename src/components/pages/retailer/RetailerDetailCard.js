@@ -45,7 +45,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const RetailerDetailCard = (props) => {
-    // console.log('retailer detail card', props)
+    console.log('retailer detail card', props.currentUser)                                                                                                                                
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles =  useOverShadowStyles({ inactive: true });
@@ -73,10 +73,12 @@ const RetailerDetailCard = (props) => {
                 <CardActions>
                   <Grid
                     container
-                    justify='space-between'
+                    justify='space-evenly'
                   >
                       <ColorButton variant='contained' color="primary" href={"/profile/"+props.info.id}>Profile</ColorButton>
-                      <ProductDialog currentRetailer={props.info} currentUser = {props.currentUser }/>
+                      {props.currentUser.type === 'supplier'? 
+                        <ProductDialog currentRetailer={props.info} currentUser = {props.currentUser }/>
+                      :null}
                   </Grid>
                 </CardActions>
             </CardContent>

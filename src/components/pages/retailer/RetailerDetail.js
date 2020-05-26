@@ -71,7 +71,7 @@ function RetailerDetail(props) {
 
                 <Divider />
 
-                <Table stickyHeader="true" style={{ width: '100%' }} >
+                <Table stickyHeader={true} style={{ width: '100%' }} >
                     <TableHead style={{ fontStyle: 'bold' }}>
                         <TableRow hover>
                             <TableCell align="left">ID</TableCell>
@@ -86,7 +86,7 @@ function RetailerDetail(props) {
                 <div style={{ overflow: 'auto', height: '600px' }}>
                     <Table style={{ tableLayout: 'fixed' }}>
                         {sellList ? sellList.map((item, key) =>
-                            <TableBody overflow="auto">
+                            <TableBody overflow="auto" key={key}>
                                 {data ?
                                     <TableRow
                                         // aria-owns={open  Buyer ? 'mouse-over-popover' : undefined}
@@ -131,7 +131,7 @@ function RetailerDetail(props) {
                                             <Paper className={classes.paper}>
                                                 <Grid container justify="flex-start">
                                                     {data[item.id].productImg.map((image, key) =>
-                                                        <Grid item>
+                                                        <Grid item key={key}>
                                                             <img style={{ width: '100px', height: '150px' }}
                                                                 key={key} src={image}
                                                             />

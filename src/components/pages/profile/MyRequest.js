@@ -287,7 +287,7 @@ const mapDispatchToProps = dispatch => {
 }
 const mapStateToProps = (state,ownProps) => {
     console.log(state);
-    console.log(ownProps);
+    console.log('why?.....', ownProps);
     const chatsession = state.firestore.data.allchatsesion
     const requestsdata = populate(state.firestore, collection, populates)
     const requests=state.firestore.ordered.requests

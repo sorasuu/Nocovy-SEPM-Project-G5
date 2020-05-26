@@ -419,7 +419,7 @@ const mapStateToProps = (state,ownProps) => {
   const thisUsers = state.firestore.data.thisUser
   const thisUser = thisUsers?thisUsers:null
   const user = users ? users[0] : null;
-  console.log(ownProps)
+  // console.log(ownProps)
   const url = state.uploadReducer.url ? state.uploadReducer.url:null
   if(url!==undefined&& url!==null){
     if (url.path==='/images/productImg/'){
