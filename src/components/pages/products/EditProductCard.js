@@ -88,9 +88,9 @@ const EditProductCard = (props) => {
                                 input={<Input name="category" id='category-chip' />}
                                 renderValue={(selected) => (
                                     <div className={classes.chips}>
-                                        {selected.map((value) => (
+                                        {selected?selected.map((value) => (
                                             <Chip key={value} label={value} helperText={props.values.unitCostError} className={classes.chip} />
-                                        ))}
+                                        )):null}
                                     </div>
                                 )}
                                 MenuProps={MenuProps}

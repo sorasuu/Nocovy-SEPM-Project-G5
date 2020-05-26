@@ -6,47 +6,77 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {Typography, Modal} from '@material-ui/core';
+import { Typography, Modal } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid'
-import {deleteProduct, editProduct} from '../../store/actions/productAction'
+import { deleteProduct, editProduct } from '../../store/actions/productAction'
 import history from '../../utils/history'
 import EditProductCard from './EditProductCard'
 import { TableRow, TableCell } from '@material-ui/core'
-export class PriceForm extends React.Component{
-  constructor(props){
+export class PriceForm extends React.Component {
+  constructor(props) {
     super(props);
-    this.state ={
-      openDelete:false,
+    this.state = {
+      openDelete: false,
       open: false,
-      newProductName: this.props.product.name,
-      newProductDesc: this.props.product.description,
-      newDutyRate: this.props.product.price.dutyRate,
-      newMargin: this.props.product.price.margin,
-      newUnitCost: this.props.product.price.unitCost,
-      newImages: this.props.product.images,
-      newCategory: this.props.product.category,
+      product: null,
+      newProductName: null,
+      newProductDesc: null,
+      newDutyRate: null,
+      newMargin: null,
+      newUnitCost: null,
+      newImages: null,
+      newCategory: null,
 
       nameError: false,
-      categoriesError: false, 
-      unitCostError:'',
-      dutyRateError:'',
-      marginError:''
+      categoriesError: false,
+      unitCostError: '',
+      dutyRateError: '',
+      marginError: ''
     }
   }
-
-  handleDeleteDialog =() => {
-    this.setState({openDelete: !this.state.openDelete})
+  componentDidUpdate(prevProps, prevState) {
+    console.log(this.props.product)
+      console.log(this.props.product.name)
+    if (prevProps.product !==  this.props.product) {
+      
+      this.setState({
+        product: this.props.product,
+        newProductName: this.props.product.name,
+        newProductDesc: this.props.product.description,
+        newDutyRate: this.props.product.price.dutyRate,
+        newMargin: this.props.product.price.margin,
+        newUnitCost: this.props.product.price.unitCost,
+        newImages: this.props.product.images,
+        newCategory: this.props.product.category,
+      })
+    }
+    // this.scrollToBottom();
+  }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.product !== prevState.product) {
+        return { product: nextProps.product ,newProductName: nextProps.product.name,
+          newProductDesc: nextProps.product.description,
+          newDutyRate: nextProps.product.price.dutyRate,
+          newMargin:nextProps.product.price.margin,
+          newUnitCost: nextProps.product.price.unitCost,
+          newImages: nextProps.product.images,
+          newCategory: nextProps.product.category,};
+    }
+    else return null;
+}
+  handleDeleteDialog = () => {
+    this.setState({ openDelete: !this.state.openDelete })
   }
 
-  handleDelete =() => {
+  handleDelete = () => {
     // console.log(this.props.product)
     this.props.deleteProduct(this.props.id)
     history.push('/')
     window.location.reload()
   }
 
-  handleClickForm =() => {
-    this.setState({open: !this.state.open})
+  handleClickForm = () => {
+    this.setState({ open: !this.state.open })
   }
 
   handleChange = input => e => {
@@ -63,67 +93,67 @@ export class PriceForm extends React.Component{
 
   validateForm = () => {
     var valid = true
-    if(this.state.newProductName === ''){
-      this.setState({nameError: true})
+    if (this.state.newProductName === '') {
+      this.setState({ nameError: true })
       valid = false
     }
-    else if(this.state.newProductName.length > 256){
-      this.setState({nameError: true})
+    else if (this.state.newProductName.length > 256) {
+      this.setState({ nameError: true })
       valid = false
     }
-    else{
-      this.setState({nameError: false})
+    else {
+      this.setState({ nameError: false })
     }
-    if(this.state.newCategory.length <= 0){
-      this.setState({categoriesError: true})
+    if (this.state.newCategory.length <= 0) {
+      this.setState({ categoriesError: true })
       valid = false
     }
-    else{
-      this.setState({categoriesError: false})
+    else {
+      this.setState({ categoriesError: false })
     }
-    if(this.state.newUnitCost === ''){
-      this.setState({unitCostError: 'The product unit cost cannot be empty'})
+    if (this.state.newUnitCost === '') {
+      this.setState({ unitCostError: 'The product unit cost cannot be empty' })
       valid = false
     }
-    else if(this.state.newUnitCost <= 0){
-      this.setState({unitCostError: 'The product unit cost cannot be negative or zero'})
+    else if (this.state.newUnitCost <= 0) {
+      this.setState({ unitCostError: 'The product unit cost cannot be negative or zero' })
       valid = false
     }
-    else{
-      this.setState({unitCostError: ''})
+    else {
+      this.setState({ unitCostError: '' })
     }
-    if(this.state.newDutyRate === ''){
-      this.setState({dutyRateError: 'The product duty rate cannot be empty'})
+    if (this.state.newDutyRate === '') {
+      this.setState({ dutyRateError: 'The product duty rate cannot be empty' })
       valid = false
     }
-    else if(this.state.newDutyRate < 0){
-      this.setState({dutyRateError: 'The product duty rate cannot be negative'})
+    else if (this.state.newDutyRate < 0) {
+      this.setState({ dutyRateError: 'The product duty rate cannot be negative' })
       valid = false
     }
-    else{
-      this.setState({dutyRateError: ''})
+    else {
+      this.setState({ dutyRateError: '' })
     }
-    if(this.state.newMargin === ''){
-      this.setState({marginError: 'The product margin cannot be empty'})
+    if (this.state.newMargin === '') {
+      this.setState({ marginError: 'The product margin cannot be empty' })
       valid = false
     }
-    else if(this.state.newMargin < 0){
-      this.setState({marginError: 'The product margin cannot be negative'})
+    else if (this.state.newMargin < 0) {
+      this.setState({ marginError: 'The product margin cannot be negative' })
       valid = false
     }
-    else{
-      this.setState({marginError: ''})
+    else {
+      this.setState({ marginError: '' })
     }
     return valid
   }
 
-  handleSubmit =() => {
-    if (this.validateForm()){
-      var newUnitPrice = (Number(this.state.newUnitCost) * ((100 + Number(this.state.newMargin) + Number(this.state.newDutyRate))/100)).toFixed(2)
+  handleSubmit = () => {
+    if (this.validateForm()) {
+      var newUnitPrice = (Number(this.state.newUnitCost) * ((100 + Number(this.state.newMargin) + Number(this.state.newDutyRate)) / 100)).toFixed(2)
       var product = {
         id: this.props.id,
-        category: this.state.newCategory, 
-        name: this.state.newProductName, 
+        category: this.state.newCategory,
+        name: this.state.newProductName,
         description: this.state.newProductDesc,
         price: {
           dutyRate: this.state.newDutyRate,
@@ -138,40 +168,41 @@ export class PriceForm extends React.Component{
     }
   }
 
-  render(){
-    console.log("price form", this.state.newCategory)
+  render() {
+    console.log("price form", this.state)
+    console.log("price form", this.props)
     return <Fragment>
-      
-        
-          <TableCell> <Button size="small" variant="outlined" color="primary" onClick={this.handleClickForm}>
-            Edit
+
+
+      <TableCell> <Button size="small" variant="outlined" color="primary" onClick={this.handleClickForm}>
+        Edit
           </Button></TableCell>
-          <TableCell size="small"><Button size="small" variant="outlined" color="secondary" onClick={this.handleDeleteDialog}>
-            Delete
+      <TableCell size="small"><Button size="small" variant="outlined" color="secondary" onClick={this.handleDeleteDialog}>
+        Delete
           </Button></TableCell>
 
 
-        <Dialog open={this.state.openDelete} onClose={this.handleDeleteDialog} aria-labelledby="del-dialog-title">
-          <DialogTitle id="del-dialog-title">Confirm deletion</DialogTitle>
-          <DialogContent>
-            <Typography>Are you sure you wish to delete this product?</Typography>
-          </DialogContent>
-          <DialogActions>
-           <Button onClick={this.handleDeleteDialog} color="primary">
-              Cancel
+      <Dialog open={this.state.openDelete} onClose={this.handleDeleteDialog} aria-labelledby="del-dialog-title">
+        <DialogTitle id="del-dialog-title">Confirm deletion</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you wish to delete this product?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleDeleteDialog} color="primary">
+            Cancel
             </Button>
-            <Button onClick={this.handleDelete} color="primary">
-              Confirm
+          <Button onClick={this.handleDelete} color="primary">
+            Confirm
             </Button>
-          </DialogActions>
-        </Dialog>
+        </DialogActions>
+      </Dialog>
 
-          <Modal open={this.state.open} onClose={this.handleClickForm}>
-            <div style={{maxWidth:'50%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%',}}>
-              <EditProductCard props={this.props} values={this.state} saveEdit={this.handleSubmit} closeModal={this.handleClickForm} handleChange={this.handleChange} handleCatChange={this.handleCatChange} handleChangeCategory={this.handleChangeCategory}/>
-            </div>
-          </Modal>
-      </Fragment>
+      <Modal open={this.state.open} onClose={this.handleClickForm}>
+        <div style={{ maxWidth: '50%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%', }}>
+          <EditProductCard props={this.props} values={this.state} saveEdit={this.handleSubmit} closeModal={this.handleClickForm} handleChange={this.handleChange} handleCatChange={this.handleCatChange} handleChangeCategory={this.handleChangeCategory} />
+        </div>
+      </Modal>
+    </Fragment>
   }
 }
 
@@ -181,4 +212,4 @@ const mapDispatchToProps = dispatch => {
     editProduct: (newProductInfo) => dispatch(editProduct(newProductInfo)),
   };
 };
-export default connect(null,mapDispatchToProps) (PriceForm)
+export default connect(null, mapDispatchToProps)(PriceForm)
