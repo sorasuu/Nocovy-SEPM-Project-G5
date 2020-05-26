@@ -16,6 +16,7 @@ import Fade from '@material-ui/core/Fade';
 import Badge from '@material-ui/core/Badge';
 import { useSizedIconButtonStyles } from '@mui-treasury/styles/iconButton/sized';
 import { Avatar } from 'material-ui'
+import moment from 'moment'
 const useStyles = makeStyles(styles);
 export function UserMenu(props) {
   
@@ -173,9 +174,9 @@ const SignedInLinks = (props) => {
                      open={open}
                      onClose={handleClose}>
                   {props.props.notifications?props.props.notifications.map(noti=>
-                    <MenuItem onClick={handleClose}>
-                    
-                        {noti.content}
+                    <MenuItem onClick={handleClose} style={{maxWidth:'300px',whiteSpace: 'normal'}}>
+                   <p> {noti.content}</p>
+                  <p style={{fontSize:'10px',marginTop:'40px', textAlign:'right',marginRight:'5px'}}>from {moment(noti.time.toDate()).fromNow()}</p>
                   </MenuItem>
                         )
                         :<MenuItem

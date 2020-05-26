@@ -221,10 +221,6 @@ export default function SupplierDetailCard(props) {
                     <NavLink to={'/profile/' + props.supplier.id} style={{ marginRight: 75 }}>
                         <Typography variant='h5'>Profile</Typography>
                     </NavLink>
-                    <NavLink to='/'>
-                        <Typography variant='h5'>Partner</Typography>
-                    </NavLink>
-
 
                 </div>
                 <Grid container
@@ -300,7 +296,7 @@ export default function SupplierDetailCard(props) {
                 <Table>
                     <TableHead className={classes.header}>
                         <TableRow>
-                            <TableCell className={classes.tabs}>Products </TableCell>
+                            <TableCell className={classes.tabs} size="small" style={{maxWidth:'300px'}}>Products </TableCell>
                             <TableCell>Retailers </TableCell>
                         </TableRow>
                     </TableHead>
@@ -308,16 +304,17 @@ export default function SupplierDetailCard(props) {
 
                         {/* Can't we just map into 2 TableCells instead of mapping twice? */}
                         <TableRow>
-                            <TableCell size="small">
+                            <TableCell size="small" style={{maxWidth:'220px'}}>
                                 <Tabs
                                     orientation="vertical"
                                     variant="scrollable"
                                     value={value}
                                     onChange={handleChange}
                                     className={classes.tabs}
+                                    style={{maxWidth:'220px'}}
                                 >
                                     {filterProducts.map((product, key) =>
-                                        <Tab label={product.name} {...a11yProps(key)} />
+                                        <Tab label={product.name}  style={{maxWidth:'200px'}} {...a11yProps(key)} />
                                     )}
                                 </Tabs>
                             </TableCell>

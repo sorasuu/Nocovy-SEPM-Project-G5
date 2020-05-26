@@ -171,7 +171,7 @@ export default compose(
       {
         collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]],queryParams:['orderByChild=lastMod'] ,storeAs:'allchatsesion'
       },
-      { collection: 'notifications', where: [['uid', '==', props.auth.uid]] ,orderBy:['time','desc'] }]
+      { collection: 'notifications', where: [['uid', '==', props.auth.uid]] ,orderBy:['time','desc'],limit:5 }]
     }
   })
 )

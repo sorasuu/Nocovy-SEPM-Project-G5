@@ -4,6 +4,7 @@ import { firestoreConnect, populate } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import SupplierDetailCard from './SupplierDetailCard'
+import { Container } from '@material-ui/core'
 
 class SupplierDetail extends Component {
     constructor(props) {
@@ -17,7 +18,7 @@ class SupplierDetail extends Component {
       if (!auth.uid) return <Redirect to='/signin' />
     
       return (
-        <div className="container">
+        <Container>
           {user ?
 
               <SupplierDetailCard 
@@ -28,7 +29,7 @@ class SupplierDetail extends Component {
            
             :<div>Loading...</div>
           }        
-        </div>
+        </Container>
       )
     }
   }
