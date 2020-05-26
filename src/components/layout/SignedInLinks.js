@@ -9,7 +9,6 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Notifications from "@material-ui/icons/Notifications";
-import styles from './headerLinksStyle'
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Fade from '@material-ui/core/Fade';
@@ -17,7 +16,6 @@ import Badge from '@material-ui/core/Badge';
 import { useSizedIconButtonStyles } from '@mui-treasury/styles/iconButton/sized';
 import { Avatar } from 'material-ui'
 import moment from 'moment'
-const useStyles = makeStyles(styles);
 export function UserMenu(props) {
   
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -112,7 +110,7 @@ export function MoreMenu(props) {
 }
 const SignedInLinks = (props) => {
   console.log(props)
-  const classes = useStyles();
+
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   
@@ -152,8 +150,8 @@ const SignedInLinks = (props) => {
         <Grid item xs={3} style={{ marginTop: "1%", marginRight: '-1%' }}>
           <NavLink to={'/cart'}  >
             <IconButton>
-            <Badge badgeContent={props.props.cart?props.props.cart.length:0} color="primary">
-              <ShoppingCartIcon  className={classes.icons} />
+            <Badge badgeContent={props.props.cart?props.props.cart.length:0} color="secondary">
+              <ShoppingCartIcon  />
              </Badge>
             </IconButton>
           </NavLink>
@@ -161,10 +159,10 @@ const SignedInLinks = (props) => {
         <Grid item xs={3} style={{ marginTop: "1%" }}>
             <IconButton
               onClick={handleClick}
-              className={classes.buttonLink}
+              
             >
-              <Badge badgeContent={props.props.notifications?props.props.notifications.length:0} color="primary">
-              <Notifications className={classes.icons} />
+              <Badge badgeContent={props.props.notifications?props.props.notifications.length:0} color="secondary">
+              <Notifications  />
               </Badge>
             </IconButton>          
                   <Menu
