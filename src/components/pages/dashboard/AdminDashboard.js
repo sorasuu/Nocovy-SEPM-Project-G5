@@ -160,7 +160,7 @@ class AdminDashboard extends Component {
 
         const { classes, users } = this.props;
         console.log("users admin dashboard: ", users)
-        const usersApprove = checkArray(users).filter(user => user.pending === false)
+        const usersApprove = checkArray(users).filter(user => user.pending === false && user.verify === true)
         const usersPending = checkArray(users).filter(user => user.pending === true)
         const { value, columns, index } = this.state
 
@@ -234,7 +234,7 @@ class AdminDashboard extends Component {
                         },
                         {
                             icon: 'cancel',
-                            tooltip: 'Cancel',
+                            tooltip: 'delete',
                             onClick: (event, rowData) => {
                                 this.handleCancel(rowData.id)
                             }
@@ -479,7 +479,7 @@ const mapStateToProps = (state) => {
     const notifications = populate(state.firestore, 'adminNotifications', populates)
     return {
         auth: state.firebase.auth,
-        users: state.firestore.ordered.allusers,
+        users: state.firestore.ordered.allUsers,
         notificationsdata: notifications,
         notifications: state.firestore.ordered.adminNotifications
        
@@ -504,7 +504,7 @@ export default compose(
         }
         else {
             return [
-                { collection: 'users' , storeAs:'allusers'},
+                { collection: 'users' , storeAs:'allUsers'},
                 {collection,where:[["tag","==","admin"]],populates,orderBy: [['time', 'desc']],storeAs:"adminNotifications"}
 
             ]
