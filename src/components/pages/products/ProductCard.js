@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import cx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import {
     Card, CardContent, CardMedia,
     Button, Dialog, DialogContent, DialogActions,
@@ -14,8 +14,6 @@ import { NavLink } from 'react-router-dom';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
 import "../page.css"
-import AddRoundedIcon from '@material-ui/icons/AddRounded';
-import RemoveRoundedIcon from '@material-ui/icons/RemoveRounded';
 import ProductImageDetail from './ProductImageDetail'
 import { ColorButton } from '../retailer/RetailerCard'
 import  RetailerDialog  from '../profile/RetailerDialog'
@@ -60,8 +58,8 @@ const ProductCard = (props) => {
 
                         <div className="overlay" style={{ borderRadius: 16}}>
 
-                            {props.profile == 'supplier' ? <RetailerDialog allRetailers={props.allRetailers} registered={props.product.retailerId} product={product}/>
-                               : <>{props.profile == 'retailer'? null
+                            {props.profile === 'supplier' ? <RetailerDialog allRetailers={props.allRetailers} registered={props.product.retailerId} product={product}/>
+                               : <>{props.profile === 'retailer'? null
                                : <BuyDialog uid={props.uid} product={product} currentUser={props.currentUser} handleCart={props.handleCart} handelRegister={props.handelRegister}/>}
                                 </>
                             }
@@ -157,7 +155,7 @@ export const BuyDialog = (props) => {
                 aria-labelledby="responsive-dialog-title"
             >
             <h4 style={{ margin: '40px' }}>{product.name}</h4>
-            <Grid container style={{ margin: '1%' }} style={{ width: 'fit-content', marginLeft: '2%' }}>
+            <Grid container style={{ margin: '1%', width: 'fit-content', marginLeft: '2%' }}>
                 <Grid item xs={6} md={6} lg={6}  >
                     <ProductImageDetail image={product} />
                 </Grid>
@@ -185,7 +183,7 @@ export const BuyDialog = (props) => {
                                     </Grid>
                                 </Collapse>
                             </Grid>
-                            { register == false ?
+                            { register === false ?
                             <>
                             <Grid item xs={6}><h5>Quantity</h5></Grid>
                             <Grid item xs={6}><h5 style={{ textAlign: 'right' }}>Cost</h5></Grid>
@@ -221,7 +219,7 @@ export const BuyDialog = (props) => {
                 <Grid container
                     justify="flex-end">
                     <DialogActions>
-                        {currentUser  ? currentUser.type === 'retailer' && currentUser.verify === true && register == false ? 
+                        {currentUser  ? currentUser.type === 'retailer' && currentUser.verify === true && register === false ? 
                             <Button variant='outlined' color='secondary' onClick={handleRegister}>Register</Button>
                              : null :null}
                         <Button autoFocus onClick={handleCloseDialog} color="primary">

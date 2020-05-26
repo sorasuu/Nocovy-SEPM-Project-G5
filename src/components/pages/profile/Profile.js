@@ -58,6 +58,7 @@ const defaultItemState={
   images: [],
   progress: '',
 }
+
 class Profile extends Component {
   state={
     productOpen:false,
@@ -72,13 +73,13 @@ class Profile extends Component {
     certificates: '',
     wholesaler: '',
     logo: '',
+
     newBusinessName: '',
     newPhoneNumber: '',
     newAddress: '',
     newWebsite: '',
     newBusinessGenre: '',
     newDescription: '',
-
     //Figure out editing logo and cert later
     newCertificates: '', 
     newLogo: '',
@@ -86,6 +87,7 @@ class Profile extends Component {
     search:'',
     step:1,
     owner: false,
+
     productName:'',
     productDesc:'',
     productCategories: [],
@@ -462,7 +464,6 @@ const mapStateToProps = (state,ownProps) => {
   console.log('cai gi day',prourls)
   var chatexist=null
   var chatId =null
-  var i;
   if (state.firestore.ordered.chatsesion!==undefined){
     if(state.firestore.ordered.chatsesion.length===0){
       chatexist= false

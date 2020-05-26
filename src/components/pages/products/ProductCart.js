@@ -1,11 +1,16 @@
 import React, { Component, useState } from 'react'
 import { createCheckout } from '../../store/actions/transactionAction'
 import StyledButton from '../../layout/StyledButton'
+import AmountSelector from '../../layout/AmountSelector'
 import {
-  Card, CardContent, Grid, withStyles,
-  Table, TableHead, TableBody, Button,
-  TableRow, TableCell, Input, Dialog,
-  DialogTitle, DialogContent, DialogActions, CardHeader
+  withStyles,
+  Card, CardContent, CardHeader,
+  Grid,
+  Table, TableHead, TableBody, TableRow, TableCell,
+  Button,
+  Input, Dialog, DialogTitle, DialogContent, DialogActions,
+  Container,
+  Typography, Box, TableContainer, IconButton
 } from '@material-ui/core'
 import { NavLink,Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -13,6 +18,11 @@ import { compose } from 'redux'
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
+import CartCard from './CartCard'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import ClearIcon from '@material-ui/icons/Clear'
+
 const useStyles = theme => ({
   root: {
     display: 'flex',
@@ -22,9 +32,6 @@ const useStyles = theme => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  content: {
-    flex: '1 0 auto',
-  },
   cover: {
     display: 'block',
     width: '200px',
@@ -32,7 +39,23 @@ const useStyles = theme => ({
   popover: {
     pointerEvents: 'none',
   },
-
+  card: {
+    display: 'flex',
+    marginTop: "1%",
+    overflow: 'initial',
+    background: '#ffffff',
+    borderRadius: 16,
+    height:'100%'
+  },
+  content: {
+    display:'flex',
+    flexDirection:'column',
+    margin: "2%",
+    width:'100%'
+  },
+  container: {
+    maxHeight: '100%',
+  },
 });
 
 class ProductCart extends Component {
@@ -75,26 +98,158 @@ class ProductCart extends Component {
     this.props.handleEmptyCart(e)
     this.setState({ cart: [] })
   }
+
+  plusOne(e, index) {
+    let cart = [...this.state.cart];
+    if (Number(cart[index].num) + 1 >= 1) {
+      cart[index].num =  Number(cart[index].num) + 1;
+    }else {
+      cart[index].num =  1
+    }
+    this.setState({ cart: cart })
+    this.props.handleNewCart(e,cart)
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  minusOne(e, index) {
+    let cart = [...this.state.cart];
+    if (Number(cart[index].num) - 1 >= 1) {
+      cart[index].num =  Number(cart[index].num) - 1;
+    }else {
+      cart[index].num =  1
+    }
+    this.setState({ cart: cart })
+    this.props.handleNewCart(e,cart)
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  //This method is making users lose focus on the input everytime it's called. Don't know how to fix it
   handleChange(e, index) {
     let cart = [...this.state.cart];
-    cart[index].num =  e.target.value;
+    if (e.target.value >= 1) {
+      cart[index].num =  e.target.value;
+    }
+    else {
+      cart[index].num =  1
+    }
     this.setState({ cart: cart })
     this.props.handleNewCart(e,cart)
     localStorage.setItem('cart', JSON.stringify(cart));
   }
 
   render() {
-
     const classes = useStyles();
     if (!this.props.auth.uid) return <Redirect to='/signin' />
     const { cart } = this.state
-    console.log("cartt", cart)
+    console.log("cart", cart)
     return (
-      <>
-        <h1 style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Cart</h1>
+      <Container>
+        <div style={{maxHeight:'80vh'}}>
+          <Typography variant='h2'>Cart</Typography>
+          {/* Here be dragons. For some fucking reason, classes aren't working */}
+          <Card className={classes.card} style={{
+            display: 'flex',
+            marginTop: "1%",
+            overflow: 'initial',
+            background: '#ffffff',
+            borderRadius: 16,
+            height:'100%'
+          }}>
+            <CardContent className={classes.content} style={{
+              display:'flex',
+              flexDirection:'column',
+              margin: "2%",
+              width:'100%'
+            }}>
+              {cart&&cart.length!==0 ?
+                <div>
+                <TableContainer className={classes.container} style={{
+                  maxHeight:'55vh',
+                  marginBottom:'2%'
+                }}>
+                    <Table stickyHeader aria-label="sticky table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell align='left' style={{ minWidth: 400 }}><Typography><Box fontWeight='Bold'>Product</Box></Typography></TableCell>
+                                <TableCell align='left'><Box fontWeight='Bold'>Unit Price</Box></TableCell>
+                                <TableCell align='left'><Box fontWeight='Bold'>Quantity</Box></TableCell>
+                                <TableCell align='left'><Box fontWeight='Bold'>Total Price</Box></TableCell>
+                                <TableCell align='right'></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {cart.map((item, key) => {
+                                return (
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={item.id}>
+                                        <TableCell align='left'>
+                                          <Grid
+                                            container
+                                            direction="row"
+                                            justify="flex-start"
+                                            alignItems="center"
+                                          >
+                                            <ImageDialog title={item.name} image={item}/>
+                                            <Grid style={{marginLeft:20}}>
+                                              <Typography variant='h6'><Box>{item.name}</Box></Typography>
+                                              <Typography variant='subtitle2'><Box>Seller: {item.authorName}</Box></Typography>
+                                            </Grid>
+                                          </Grid>
+                                        </TableCell>
+                                        {/* <TableCell align='left'>{item.authorName}</TableCell> */}
+                                        <TableCell align='left'>$ {item.price.unitPrice.toLocaleString()}</TableCell>
+                                        <TableCell align='left'>
+                                          <AmountSelector minusOne = {e =>  this.minusOne(e, key)} plusOne={e =>  this.plusOne(e, key)} key={key} value={item.num} onChange={e => this.handleChange(e, key)}/>
+                                          {/* <Input
+                                            required='true'
+                                            disableUnderline="true"
+                                            type='number'
+                                            value={item.num}
+                                            onChange={e => this.handleChange(e, key)}
+                                          /> */}
+                                        </TableCell>
+                                        <TableCell align='left'>$ {(item.price.unitPrice * cart[key].num).toLocaleString()}</TableCell>
+                                        <TableCell><IconButton onClick={e=>this.handleRemove(e,key)}><ClearIcon/></IconButton></TableCell>
+                                    </TableRow>
+                                );
+                             })}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <Grid
+                  container
+                  direction="column"
+                  justify="flex-start"
+                  alignItems="flex-end"
+                >
+                  <Typography variant='h6'>Total:</Typography>
+                  {/* Here be dragons? */}
+                  <Typography paragraph variant='h4'>$ {Math.round(((cart.length>0)? cart.map(item => (Number(item.price.unitPrice) * Number(item.num))).reduce((prev, next) => prev + next) : 0 + Number.EPSILON) * 100) / 100}</Typography>
+                </Grid>
+                <Grid
+                    container
+                    direction="row"
+                    justify="space-between"
+                    alignItems="flex-end"
+                >
+                    <StyledButton href='/' startIcon={<ArrowBackIcon/>}>Continue Shopping</StyledButton>
+                    <StyledButton onClick={(e) => this.handleOrder(e)} startIcon={<ShoppingCartIcon/>}>Place Order</StyledButton>
+                </Grid>
+                </div>
+                : 
+                <Grid >
+                  <Typography paragraph variant='h4'>Your cart is currently empty</Typography>
+                  <Typography paragraph variant='h4'>Add an item to your cart to see it</Typography>
+                  <StyledButton href='/' startIcon={<ArrowBackIcon/>}>Return to the dashboard</StyledButton>
+                </Grid>
+              }
+            </CardContent>
+        </Card>
+        </div>
+
+
+        {/* <Typography variant='h4'>------ BELOW THIS IS OLD CODE ------</Typography>
         {cart&&cart.length!==0 ?
           cart.map((item, key) =>
-
             <Card
               key={key}
               style={classes.root}
@@ -113,13 +268,10 @@ class ProductCart extends Component {
                   <ImageDialog title={item.name} image={item} maxWidth='200px' />
                 </Grid>
                 <Grid style={{marginLeft:'50px'}}item xs={9}>
-                  <Grid className={classes.details}>
-                    
-                      <Table style={{ display: 'block', overflowX: 'auto' }}
-                      >
+                  <Grid className={classes.details}>             
+                      <Table style={{ display: 'block', overflowX: 'auto' }}>
                         <TableHead>
                           <TableRow>
-                
                             <TableCell> ID </TableCell>
                             <TableCell>Author Name</TableCell>
                             <TableCell>Author Email</TableCell>
@@ -129,50 +281,41 @@ class ProductCart extends Component {
                             <TableCell>Action</TableCell>
                           </TableRow>
                         </TableHead>
-                        <TableBody>
-                          
+                        <TableBody>   
                           <TableCell style={{ width: '30px' }}>{item.id}</TableCell>
                           <TableCell>{item.authorName}</TableCell>
                           <TableCell>{item.authorEmail}</TableCell>
                           <TableCell>$ {item.price.unitPrice.toLocaleString()} </TableCell>
                           <TableCell>
                             <Grid container direction='row' justify='space-between' alignItems="center">
-
                               <Input
                                 style={{ width: '20px' }}
                                 disableUnderline="true"
                                 defaultValue={item.num}
-                                InputProps={{
+                                inputProps={{
                                   display: 'flex',
                                   justifyContent: 'center',
                                   alignItems: 'center'
                                 }}
                                 onChange={e => this.handleChange(e, key)}
                               />
-
                             </Grid>
                           </TableCell>
-                          <TableCell> $ {(item.price.unitPrice * cart[key].num).toLocaleString()}</TableCell>
+                          <TableCell>$ {(item.price.unitPrice * cart[key].num).toLocaleString()}</TableCell>
                           <TableCell><Button variant="outlined" color="secondary"  onClick={e=>this.handleRemove(e,key)} >Remove</Button></TableCell>
                         </TableBody>
                       </Table>
-                    
-
                   </Grid>
                 </Grid>
-              </Grid>
-              
+              </Grid>     
               </CardContent>
             </Card>
-
           )
-
           : <div><h4>Your Cart Empty</h4>
           <h2><NavLink to='/'><Button>Make Purchase Now ^^!</Button></NavLink></h2></div>
         }
-      {cart&&cart.length!==0  ?<StyledButton onClick={(e) => this.handleOrder(e)} >Place Order</StyledButton>:null}
-       
-      </>
+      {cart&&cart.length!==0  ?<StyledButton onClick={(e) => this.handleOrder(e)} >Place Order</StyledButton>:null} */}
+      </Container>
     )
   }
 }
@@ -190,8 +333,8 @@ function ImageDialog(props) {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        <img style={{ minWidth:'50px', width: `${props.maxWidth}` }} src={props.image.cover} />
+      <Button onClick={handleClickOpen}>
+        <img style={{ minWidth:'50px', width: '8vh', height:'8vh', objectFit:'cover' }} src={props.image.cover} />
       </Button>
       <Dialog
         style={{ width: 'fit-content', direction: 'flex' }}
@@ -250,5 +393,5 @@ const mapStateToProps = (state) => {
 
 export default compose(
 
-  connect(mapStateToProps, mapDispatchToProps),
+   connect(mapStateToProps, mapDispatchToProps),
 )(withStyles(useStyles)(ProductCart))

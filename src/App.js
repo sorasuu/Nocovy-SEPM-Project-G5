@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { firestoreConnect, populate } from 'react-redux-firebase'
+import { firestoreConnect } from 'react-redux-firebase'
 import Navbar from './components/layout/Navbar'
 import Profile from './components/pages/profile/Profile'
 import SignIn from './components/auth/SignIn'
@@ -47,7 +47,7 @@ class App extends Component {
     if( JSON.parse(window.localStorage.getItem('cart'))!== undefined&&JSON.parse(window.localStorage.getItem('cart'))!== null){
       this.setState({ cart: JSON.parse(window.localStorage.getItem('cart')) });
     }else{
-      this.setState({cart:null})
+      this.setState({cart:[]})
     }
   }
   handleCart=(e, productinfo, num)=>{
@@ -55,7 +55,6 @@ class App extends Component {
     const { cart } = this.state
     console.log('state cart',cart)
     var newcart = cart;
-    var a =[]
     var productitem ={...productinfo,num}
     
       if (cart.length === 0){

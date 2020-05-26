@@ -15,6 +15,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import ParallaxSlide from '@mui-treasury/components/slide/parallax';
 import DotIndicator from '@mui-treasury/components/indicator/dot';
+import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -127,7 +128,7 @@ const ProfileInfoCard = (props) => {
                 title={props.info.businessName? props.info.businessName : 'N/A'}
                 subheader={(props.info.type === 'supplier') ? 'Supplier' : 'Retailer'}
             />
-            <CardContent className={classes.content} >
+            <CardContent className={classes.content}>
                 <div className={classes.topPortion}>
                     <Avatar style={{height:175, width: 175, marginRight:10}} className={classes.avatar} src={props.info.logo ? props.info.logo : 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png'} alt="Logo"/>
                     <div className={classes.contact}>
@@ -146,7 +147,7 @@ const ProfileInfoCard = (props) => {
                       
                     </div>
                     :<div className={classes.buttons}>
-                    <StyledButton style={{marginBottom:10}} onClick={(e)=>props.handleChat(e)}>Chat</StyledButton>
+                    <StyledButton startIcon={<ChatBubbleIcon />} style={{marginBottom:10}} onClick={(e)=>props.handleChat(e)}>Send Message</StyledButton>
                     </div> }
                     
                 </div>

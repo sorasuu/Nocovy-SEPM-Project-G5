@@ -62,7 +62,7 @@ const RetailerDetailCard = (props) => {
                     className={classes.media}
                     title="Business Logo"
                   > */}
-                  <Avatar style={{height:'100%', width:'100%', maxHeight:300, marginBottom:15}} src={props.info.logo} />
+                  <Avatar style={{height:'100%', width:'100%', maxHeight:300, marginBottom:15, objectFit:'cover'}} src={props.info.logo} />
                   {/* </CardMedia> */}
                     <Typography gutterBottom variant="h5" component="h2">
                       {/* {retailer.displayName} */}
