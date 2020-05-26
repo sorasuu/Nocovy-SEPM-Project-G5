@@ -4,14 +4,14 @@ import { connect } from 'react-redux'
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {Typography, Modal} from '@material-ui/core';
-import Grid from '@material-ui/core/Grid'
+
 import {deleteProduct, editProduct} from '../../store/actions/productAction'
 import history from '../../utils/history'
 import EditProductCard from './EditProductCard'
-import { TableRow, TableCell } from '@material-ui/core'
+import { TableCell } from '@material-ui/core'
 export class PriceForm extends React.Component{
   constructor(props){
     super(props);

@@ -113,16 +113,15 @@ export const BuyDialog = (props) => {
     };
     const handleBuyProduct = (e, product, number) => {  
         console.log("handle Buy Product:", product)
-     
-        if ( number <= 1){
-            setNumber(1)
-        }else{
-            props.handleCart(e, product, number)
-            setDialog(false);
+  
             if (register===true){
                 props.handelRegister(e, product.id)
+                setDialog(false);
+            }else{
+                props.handleCart(e, product, number)
+                setDialog(false);
             }
-    }
+    
     };
    
     const handleRegister =()=>{
@@ -132,7 +131,7 @@ export const BuyDialog = (props) => {
         setNumber(e.target.value)    
     }
     var owner
-    if(currentUser!== undefined&& currentUser!==null){
+    if(currentUser!== undefined && currentUser!==null){
     if (currentUser.uid === props.product.supplierId) {
         owner = true
     } else {
@@ -186,6 +185,8 @@ export const BuyDialog = (props) => {
                                     </Grid>
                                 </Collapse>
                             </Grid>
+                            { register == false ?
+                            <>
                             <Grid item xs={6}><h5>Quantity</h5></Grid>
                             <Grid item xs={6}><h5 style={{ textAlign: 'right' }}>Cost</h5></Grid>
                             <Grid item xs={6}>
@@ -206,8 +207,8 @@ export const BuyDialog = (props) => {
                                 </Grid>
                             </Grid>
                             <Grid item xs={6}><div style={{ textAlign: 'right', fontSize: '30px', fontFamily: 'bold' }}> {(product.price.unitPrice * number).toFixed(2)}</div></Grid>
-                                
-
+                             </>   : null
+                        }
                         </Grid>
                         
                     </DialogContent>
@@ -220,7 +221,7 @@ export const BuyDialog = (props) => {
                 <Grid container
                     justify="flex-end">
                     <DialogActions>
-                        {currentUser  ? currentUser.type === 'retailer'&& register == false ? 
+                        {currentUser  ? currentUser.type === 'retailer' && currentUser.verify === true && register == false ? 
                             <Button variant='outlined' color='secondary' onClick={handleRegister}>Register</Button>
                              : null :null}
                         <Button autoFocus onClick={handleCloseDialog} color="primary">

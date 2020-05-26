@@ -48,7 +48,16 @@ const useStyles = theme => ({
     color: 'inherit',
   }
 });
-
+const defaultItemState={
+  productName:'',
+  productDesc:'',
+  productCategories: [],
+  dutyRate:'',
+  margin:'',
+  unitCost:'',
+  images: [],
+  progress: '',
+}
 class Profile extends Component {
   state={
     productOpen:false,
@@ -135,6 +144,7 @@ class Profile extends Component {
 
   handleChangeImg(files){
     console.log(files)
+
     this.setState({
       images: files
     });
@@ -238,6 +248,7 @@ class Profile extends Component {
   }
 
   formSubmit = () => {
+
     if (this.validateForm()){
       var unitPrice = (Number(this.state.unitCost) * ((100 + Number(this.state.margin) + Number(this.state.dutyRate))/100)).toFixed(2)
       var timeStamp = Math.floor(Date.now() / 1000);
@@ -266,6 +277,7 @@ class Profile extends Component {
       // console.log(this.props.productImg)
       //Form submit functions go here
       this.props.createProduct(product)
+      window.location.reload()
       this.handleProductClose()
     }
   }
@@ -344,12 +356,16 @@ static getDerivedStateFromProps(nextProps, prevState) {
 }
   
   render() {
-    const { auth, classes, products } = this.props;
+    const { auth, classes, products, productRetailer} = this.props;
     const allRetailers = this.props.allRetailers ? this.props.allRetailers : []
     const { search } = this.state;
+    const thisUser = this.props.thisUser ? this.props.thisUser.type : 'supplier'
     const currentUser = this.props.currentUser ? this.props.currentUser : [{pending: true, verify:false}]
     const filteredProducts = checkArray(products).filter(product =>{
         return product.name.toLowerCase().indexOf(search.toLowerCase())!== -1
+    })
+    const filteredProductRetailer = checkArray(productRetailer).filter(product =>{
+      return product.name.toLowerCase().indexOf(search.toLowerCase())!== -1
     })
     if (!auth.uid) return <Redirect to='/signin' />
 
@@ -372,6 +388,7 @@ static getDerivedStateFromProps(nextProps, prevState) {
               onChange={this.handleChange('search')}
             />
           </div>
+        {thisUser==='supplier' ?
         <div style={{ marginTop: '3%' }}>
           <Grid
             container
@@ -379,7 +396,7 @@ static getDerivedStateFromProps(nextProps, prevState) {
             direction="row"
             justify="flex-start"
             alignItems="flex-start"
-          >
+          > 
             {products ? filteredProducts.map(product => {
               return (
                 <Grid item xs={12} sm={6} md={4} key={product.id}>
@@ -389,6 +406,23 @@ static getDerivedStateFromProps(nextProps, prevState) {
             }) : <h5>Loading...</h5>}</Grid>
         
         </div>
+        : <div style={{ marginTop: '3%' }}>
+        <Grid
+          container
+          spacing={2}
+          direction="row"
+          justify="flex-start"
+          alignItems="flex-start"
+        > 
+          {productRetailer? filteredProductRetailer.map(product => {
+            return (
+              <Grid item xs={12} sm={6} md={4} key={product.id}>
+                <ProductCard product={product} profile={this.props.thisUser ? this.props.thisUser.type : false} allRetailers={allRetailers} />
+              </Grid>
+            )
+          }) : <h5>Loading...</h5>}</Grid>
+      
+      </div>}
         {this.state.owner && currentUser.pending === false && currentUser.verify === true ?
           <Modal open={this.state.productOpen} onClose={this.handleProductClose}>
             <div style={{maxWidth:'50%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%',}}>
@@ -425,7 +459,7 @@ const mapStateToProps = (state,ownProps) => {
     if (url.path==='/images/productImg/'){
       prourls=prourls.add(url.url)
       }}
-  console.log(prourls)
+  console.log('cai gi day',prourls)
   var chatexist=null
   var chatId =null
   var i;
@@ -449,6 +483,7 @@ const mapStateToProps = (state,ownProps) => {
   return {
     auth: state.firebase.auth,
     products :  state.firestore.ordered.products,
+    productRetailer: state.firestore.ordered.productRetailer,
     productImg: Array.from(prourls),
     progress: state.uploadReducer.progress,
     thisUser: thisUser,
@@ -473,8 +508,9 @@ export default withRouter(compose(
     
       return [
         { collection: 'products', where:[["supplierId","==", props.match.params.id]]},
+        { collection: 'products' , where:[['retailerId', 'array-contains', props.match.params.id]], storeAs:'productRetailer' },
         { collection: 'users', doc: props.match.params.id, storeAs: 'thisUser' },
-        { collection: 'users', where: [["type", "==", "retailer"], ['verify','==',true]], storeAs: 'allRetailers' }      ]
+        { collection: 'users', where: [["type", "==", "retailer"], ['verify','==',true]], storeAs: 'allRetailers' }]
       
   })
 )(withStyles(useStyles)(Profile)) )

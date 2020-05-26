@@ -293,10 +293,12 @@ const mapStateToProps = (state,ownProps) => {
     const requests=state.firestore.ordered.requests
     var chatId=[]
     if(requests!==undefined&& requests!==null){
+    
       for(var i =0; i<requests.length;i++){
-        if(ownProps.chatsesion===undefined&&ownProps.chatsesion===null){
+       
+        if(ownProps.chatsesion===undefined||ownProps.chatsesion===null){
           chatId.push('N/A')
-          break;
+          
         }else {
           var chatId1=requests[i].retailerId+requests[i].supplierId
           var chatId2=requests[i].supplierId+requests[i].retailerId

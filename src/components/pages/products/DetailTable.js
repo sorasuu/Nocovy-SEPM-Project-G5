@@ -36,6 +36,7 @@ class DetailTable extends Component {
     handleUpdateDetails=(data)=>{
         const detailsUpdate={id:this.props.id,details:data}
         this.props.editDetails(detailsUpdate)
+       
     }
   componentDidUpdate(prevState,prevProps){
       if(prevState.details!==this.props.details&& prevProps!==this.props.details){
