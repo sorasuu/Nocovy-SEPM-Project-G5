@@ -41,16 +41,16 @@ class FormSignUp extends Component {
             passwordError = "Password cannot be blank"
         }
 
-        if (!this.props.values.rePassword){
-            rePasswordError = "Re-enter your password"
+        if (!this.props.values.rePassword || this.props.values.rePassword !== this.props.values.password ){
+            rePasswordError = "Password does not match"
         }
 
         // This right here is not done yet
-        if (this.props.values.rePassword != this.props.values.password){
-            rePasswordError = "Password does not match"
-        } else {
-            return true;
-        }
+        // if (this.props.values.rePassword != this.props.values.password){
+        //     rePasswordError = "Password does not match"
+        // } else {
+        //     return true;
+        // }
 
         if (!this.props.values.phoneNumber) {
             phonenumberError = "Phone number cannot be blank"
@@ -130,9 +130,9 @@ class FormSignUp extends Component {
                                 
                             </div>
                             <div className="form-group">
-                            <label htmlFor="repassword">Re-enter Password</label>
+                            <label htmlFor="rePassword">Re-enter Password</label>
                                 <div className="input-field">
-                                    <input type="password" id='repassword' placeholder="Re-enter your password" onChange={handleChange('repassword')} defaultValue={values.repassword} />
+                                    <input type="password" id='rePassword' placeholder="Re-enter your password" onChange={handleChange('rePassword')} defaultValue={values.rePassword} />
                                     <div style={{ fontSize: 11, color: "red" }}> {this.state.rePasswordError} </div>
                                 </div>
                                 
