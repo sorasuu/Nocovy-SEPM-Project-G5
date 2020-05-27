@@ -10,6 +10,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
 const initialState = {
+    imagesError:'',
+    certificatesError:'',
     businessNameError: '',
     businessTypeError: '',
     businessAddressError: '',
@@ -22,10 +24,16 @@ class FormCertificate extends Component {
     state = initialState;
 
     validate = () => {
+        // let imagesError = '';
+        let certificatesError = '';
         let businessNameError = '';
         let typeError = '';
         let businessAddressError = '';
         let businessDescError = '';
+
+        if (this.props.values.images === " ") {
+            certificatesError = "Upload your certificate"
+        }
 
         if (!this.props.values.businessName) {
             businessNameError = "Business name cannot be blank"
@@ -43,8 +51,8 @@ class FormCertificate extends Component {
             businessDescError = "Business description cannot be blank"
         }
 
-        if (businessNameError || typeError || businessAddressError || businessDescError) {
-            this.setState({ businessNameError, typeError, businessAddressError, businessDescError })
+        if ( certificatesError || businessNameError || typeError || businessAddressError || businessDescError) {
+            this.setState({certificatesError, businessNameError, typeError, businessAddressError, businessDescError })
             return false;
         }
 
@@ -95,7 +103,10 @@ class FormCertificate extends Component {
                                     filesLimit={6}
                                     dropzoneText={'Upload your certificates here'}
                                 />
+                                <div style={{ fontSize: 11, color: "red" }}> {this.state.certificatesError} </div>
+                               
                             </div>
+                            {/* <div style={{ fontSize: 11, color: "red" }}> {this.state.certificatesError} </div> */}
 
                             <div className="form-group">
                             <label htmlFor="businessName">Business Name</label>

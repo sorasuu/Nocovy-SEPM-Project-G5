@@ -15,10 +15,13 @@ import "./style.css"
 //     }
 // })(LinearProgress);
 const initialState = {
+    firstNameError:'',
+    lastNameError:'',
     emailError: '',
     passwordError: '',
     rePasswordError: '',
     phonenumberError: '',
+    logoImgError:'',
     uploading: false
 }
 
@@ -27,11 +30,21 @@ class FormSignUp extends Component {
     state = initialState;
 
     validate = () => {
+        let firstNameError = '';
+        let lastNameError = '';
         let emailError = '';
         let passwordError = '';
         let rePasswordError = '';
         let phonenumberError = '';
+        let logoImgError = '';
 
+        if (!this.props.values.firstName) {
+            firstNameError = "First name cannot be blank"
+        }
+
+        if (!this.props.values.lastName) {
+            lastNameError = "Last name cannot be blank"
+        }
 
         if (!this.props.values.email.includes("@")) {
             emailError = "Invalid Email";
@@ -45,19 +58,16 @@ class FormSignUp extends Component {
             rePasswordError = "Password does not match"
         }
 
-        // This right here is not done yet
-        // if (this.props.values.rePassword != this.props.values.password){
-        //     rePasswordError = "Password does not match"
-        // } else {
-        //     return true;
-        // }
-
         if (!this.props.values.phoneNumber) {
             phonenumberError = "Phone number cannot be blank"
         }
 
-        if (emailError || passwordError || rePasswordError || phonenumberError) {
-            this.setState({ emailError, passwordError, rePasswordError, phonenumberError });
+        if(this.props.values.image === ''){
+            logoImgError = 'Avatar cannot be blank'
+        }
+
+        if (firstNameError || lastNameError || emailError || passwordError || rePasswordError || phonenumberError ) {
+            this.setState({ firstNameError, lastNameError, emailError, passwordError, rePasswordError, phonenumberError });
             return false;
         }
         return true;
@@ -104,6 +114,7 @@ class FormSignUp extends Component {
                             <label htmlFor="firstName">First name</label>
                                 <div className="input-field">                                   
                                     <input type="text" id='firstName' placeholder="Enter your first name" onChange={handleChange('firstName')} defaultValue={values.firstName} />
+                                    <div style={{ fontSize: 11, color: "red" }}> {this.state.firstNameError} </div>
                                 </div>
                             </div>
 
@@ -111,6 +122,7 @@ class FormSignUp extends Component {
                             <label htmlFor="lastName">Last Name</label>
                                 <div className="input-field">
                                     <input type="text" id='lastName' placeholder="Enter your last name" onChange={handleChange('lastName')} defaultValue={values.lastName} />
+                                    <div style={{ fontSize: 11, color: "red" }}> {this.state.lastNameError} </div>
                                 </div>
                             </div>
                             <div className="form-group">
@@ -156,7 +168,7 @@ class FormSignUp extends Component {
                                     id='logo'
 
                                 />
-
+                                <div style={{ fontSize: 11, color: "red" }}> {this.state.logoImgError} </div>
                             </div>
 
                             <div className="input-field" style={{ textAlign: 'center'}}>

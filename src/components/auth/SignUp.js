@@ -26,10 +26,16 @@ const initialState = {
     businessAddress: '',
     businessWebsite: '',
     businessDesc: '',
+
+    firstNameError:'',
+    lastNameError:'',
     emailError: '',
     passwordError: '',
     rePasswordError: '',
     phonenumberError: '',
+    logoImgError:'',
+    imagesError:'',
+    certificatesError:'',
     businessNameError: '',
     typeError: '',
     businessAddressError: '',
@@ -152,11 +158,11 @@ class SignUp extends Component {
 
     render() {
         console.log(this.state)
-        const { step, firstName, lastName, email, password, rePassword, phoneNumber, image, url, progress, businessName, type, businessDesc, businessAddress, businessWebsite,images } = this.state;
+        const { step, firstName, lastName, email, password, rePassword, phoneNumber, image, url, progress, businessName, type, businessDesc, businessAddress, businessWebsite, images } = this.state;
         const { auth, authError } = this.props;
         const values = { firstName, lastName, email, password, rePassword, phoneNumber, image, url, progress, businessName, type, businessDesc, businessAddress, businessWebsite,images }
-        const { emailError, passwordError, rePasswordError, phonenumberError, businessNameError, typeError, businessDescError, businessAddressError } = this.state
-        const error = { emailError, passwordError, rePasswordError, phonenumberError, businessNameError, typeError, businessDescError, businessAddressError }
+        const { firstNameError, lastNameError, emailError, passwordError, rePasswordError, phonenumberError, logoImgError, businessNameError, typeError, businessDescError, businessAddressError, imagesError, certificatesError} = this.state
+        const error = {  firstNameError, lastNameError, emailError, passwordError, rePasswordError, phonenumberError, logoImgError, businessNameError, typeError, businessDescError, businessAddressError, imagesError, certificatesError }
         if (auth.uid) return <Redirect to='/' />
         switch (step) {
             case 1:
