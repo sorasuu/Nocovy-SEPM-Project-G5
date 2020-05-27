@@ -207,7 +207,31 @@ const ChatPanel = (props) => {
         </Card>
     );
 };
+const ChatPanelNone = () => {
+    
+    const classes = useStylesCard();
+    const cardHeaderStyles = useContainedCardHeaderStyles();
+    const cardShadowStyles = useOverShadowStyles({ inactive: true });
+    const cardHeaderShadowStyles = useFadedShadowStyles();
+    return (
+        <Card className={cx(classes.card, cardShadowStyles.root)} style={{ position: "fixed", marginBottom: '2%', marginRight: '1%' }}>
+            <CardHeader
+                className={cardHeaderShadowStyles.root}
+                classes={cardHeaderStyles}
+                title={"Chat"}
+                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", top: "-1%", left: "5%", width: '200px', }}
+            />
+            <CardContent className={classes.content} style={{ maxHeight: 300, height: 300, overflow: 'auto', marginTop: '5%' }} >
 
+                <div >
+                   <p>You don't have any chat right now</p>
+
+                </div>
+
+            </CardContent>
+        </Card>
+    );
+};
 class ChatWidget extends Component {
     constructor(props) {
         super(props)
@@ -293,7 +317,7 @@ class ChatWidget extends Component {
                     {this.state.contactwindow ? <ContactPanel chatsession={this.props.chatsession} uid={this.props.auth.uid} chatsesiondata={this.props.chatsesiondata} chatusers={this.props.chatusers}
                      handleChangeChatSession={this.handleChangeChatSession}/> : null}
                 </div>
-                    : null}
+                    : <ChatPanelNone/>}
                
                 {/* <Container>
                     <Grid container spacing={3}>

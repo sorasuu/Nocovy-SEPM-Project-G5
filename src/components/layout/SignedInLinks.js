@@ -52,7 +52,7 @@ export function UserMenu(props) {
           </NavLink>
         {props.lastContact ?
           <NavLink to={'/chat/' + props.lastContact.id} style={{ color: "black" }}>
-            <MenuItem onClick={handleClose}>Chat</MenuItem></NavLink> : null
+            <MenuItem onClick={handleClose}>Chat</MenuItem></NavLink> : <MenuItem onClick={handleClose}>You don't have any chat</MenuItem>
             }
         
         <NavLink to ='/myorders' style={{ color: "black" }}> <MenuItem onClick={handleClose}>My Orders</MenuItem> </NavLink>
