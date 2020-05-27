@@ -231,7 +231,8 @@ class ProductCart extends Component {
                     justify="space-between"
                     alignItems="flex-end"
                 >
-                    <StyledButton href='/' startIcon={<ArrowBackIcon/>}>Continue Shopping</StyledButton>
+                     <NavLink to="/">
+                    <StyledButton href='/' startIcon={<ArrowBackIcon/>}>Continue Shopping</StyledButton></NavLink>
                     <StyledButton onClick={(e) => this.handleOrder(e)} startIcon={<ShoppingCartIcon/>}>Place Order</StyledButton>
                 </Grid>
                 </div>
@@ -239,7 +240,8 @@ class ProductCart extends Component {
                 <Grid >
                   <Typography paragraph variant='h4'>Your cart is currently empty</Typography>
                   <Typography paragraph variant='h4'>Add an item to your cart to see it</Typography>
-                  <StyledButton href='/' startIcon={<ArrowBackIcon/>}>Return to the dashboard</StyledButton>
+                  <NavLink to="/">
+                  <StyledButton  startIcon={<ArrowBackIcon/>}>Return to the dashboard</StyledButton></NavLink>
                 </Grid>
               }
             </CardContent>

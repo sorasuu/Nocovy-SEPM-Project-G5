@@ -173,10 +173,16 @@ const SignedInLinks = (props) => {
                      open={open}
                      onClose={handleClose}>
                   {props.props.notifications?props.props.notifications.map((noti, key)=>
-                    <MenuItem onClick={handleClose} key={key} style={{maxWidth:'300px',whiteSpace: 'normal'}}>
+                  noti.link?<NavLink to={noti.link}>
+                    <MenuItem onClick={handleClose} key={key} style={{maxWidth:'300px',whiteSpace: 'normal', color:'black'}}>
                    <p> {noti.content}</p>
                   <p style={{fontSize:'10px',marginTop:'40px', textAlign:'right',marginRight:'5px'}}>from {moment(noti.time.toDate()).fromNow()}</p>
-                  </MenuItem>
+                  </MenuItem></NavLink>
+                  : <MenuItem onClick={handleClose} key={key} style={{maxWidth:'300px',whiteSpace: 'normal'}}>
+                  <p> {noti.content}</p>
+                 <p style={{fontSize:'10px',marginTop:'40px', textAlign:'right',marginRight:'5px'}}>from {moment(noti.time.toDate()).fromNow()}</p>
+                 </MenuItem>
+                    
                         )
                         :<MenuItem
                           onClick={handleClose}

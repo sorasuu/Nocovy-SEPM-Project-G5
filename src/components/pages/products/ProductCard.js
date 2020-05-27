@@ -17,7 +17,7 @@ import "../page.css"
 import ProductImageDetail from './ProductImageDetail'
 import { ColorButton } from '../retailer/RetailerCard'
 import  RetailerDialog  from '../profile/RetailerDialog'
-
+import AmountSelector from '../../layout/AmountSelector'
 const useStyles = makeStyles(() => ({
     card: {
         // marginTop: "10%",
@@ -126,7 +126,21 @@ export const BuyDialog = (props) => {
         setRegister(true)
     }
     const handleChange = (e) => {
-        setNumber(e.target.value)    
+        if(e.target.value>=1){
+        setNumber(e.target.value)   }
+        else{
+            setNumber(1)
+        } 
+    }
+    const plusOne=(e)=>{
+        setNumber(number+1)
+    }
+    const minusOne=(e)=>{
+        if(number-1>=1){
+        setNumber(number-1)}
+        else{
+            setNumber(1)
+        }
     }
     var owner
     if(currentUser!== undefined && currentUser!==null){
@@ -191,7 +205,11 @@ export const BuyDialog = (props) => {
                                 <Grid container direction="row" justify="center" alignItems="center">
                                     {/* <Grid item xs={4}><Button onClick={buyLess}><RemoveRoundedIcon /></Button></Grid> */}
                                     <Grid item xs={12}>
-                                        <Input
+                                    <AmountSelector minusOne = {e => minusOne(e)} plusOne={e => plusOne(e)} 
+                              
+                                    value={number}
+                                    onChange={e => handleChange(e)}/>
+                                        {/* <Input
                                             required='true'
                                             disableUnderline="true"
                                             type='number'
@@ -199,7 +217,7 @@ export const BuyDialog = (props) => {
                                             value={number}
                                             onChange={e => handleChange(e)}
                                             inputProps={{min: 1}}
-                                        />
+                                        /> */}
                                     </Grid>
                                     {/* <Grid item xs={4}><Button onClick={buyMore}><AddRoundedIcon /></Button></Grid> */}
                                 </Grid>

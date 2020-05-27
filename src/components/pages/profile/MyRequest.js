@@ -257,7 +257,7 @@ class MyRequests extends Component{
         return(
         <div style={{paddingBottom:'200px'}}>
             <Container maxWidth="lg" >
-            {this.props.requests?this.props.requests.map((request,key)=><YourRequestsCard 
+            {this.props.requests&&this.props.requestsdata!==null?this.props.requests.map((request,key)=><YourRequestsCard 
             key={request.id} 
             request={request} 
             requestsdata={this.props.requestsdata} 
@@ -290,6 +290,7 @@ const mapStateToProps = (state,ownProps) => {
     console.log('why?.....', ownProps);
     const chatsession = state.firestore.data.allchatsesion
     const requestsdata = populate(state.firestore, collection, populates)
+    console.log(requestsdata)
     const requests=state.firestore.ordered.requests
     var chatId=[]
     if(requests!==undefined&& requests!==null){
@@ -328,7 +329,7 @@ export default compose(
     firestoreConnect((props)=>{
         if(props.auth.uid!==undefined){
         return([{
-        collection,where:[['retailerId','==',props.auth.uid]],orderBy:[['createdAt','desc']] ,populates  
+        collection,where:[['retailerId','==',props.auth.uid]],orderBy:[['createdAt','desc']] ,populates 
     },{
         collection,where:[['supplierId','==',props.auth.uid]],orderBy:[['createdAt','desc']], populates  
     }

@@ -15,17 +15,53 @@ exports.requestCreated = functions.firestore
   .document('requests/{requestId}')
   .onCreate((snap, context) => {
     const request = snap.data();
-    const notification = {
-      content: `You receive a request for selling  ${request.name}`,
-      uid: `${request.retailer}`,
+    const notification1 = {
+      content: `You receive a request`,
+      uid: `${request.retailerId}`,
+      time: admin.firestore.FieldValue.serverTimestamp(),
+      link: '/requests'
+    }
+    const notification2 = {
+      content: `You have sent the a request`,
+      uid: `${request.supplierId}`,
       time: admin.firestore.FieldValue.serverTimestamp(),
       link: '/requests'
     }
 
-    return createNotification(notification);
+    return createNotification(notification1)&&createNotification(notification2);
 
   });
-
+  exports.requestAccept = functions.firestore
+  .document('requests/{requestId}')
+  .onWrite(
+    (change, context) => {
+      var notification = null
+      if (change.before.exists && change.after.exists) {
+        const request = change.after.data()
+        console.log(context.params)
+        if (request.pending === false && request.confirmed === true) {
+     
+          notification = {
+            content: `Your request has been confirmed`,
+            uid: `${request.supplierId}`,
+            time: admin.firestore.FieldValue.serverTimestamp(),
+            link: '/myrequests'
+          }
+        }
+        if (request.pending === false && request.confirmed === true) {
+         
+          notification = {
+            content: `Your request has been declined`,
+            uid: `${request.supplierId}`,
+            time: admin.firestore.FieldValue.serverTimestamp(),
+            link: '/myrequests'
+          }
+          
+        }
+        return createNotification(notification)
+      }
+    }
+  );
 exports.productCreated = functions.firestore
   .document('products/{productId}')
   .onCreate((snap, context) => {
