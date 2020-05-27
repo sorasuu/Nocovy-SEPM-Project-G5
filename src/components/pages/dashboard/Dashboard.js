@@ -269,7 +269,7 @@ class Dashboard extends Component {
                     <Grid item><InputLabel id="demo-mutiple-chip-label"><em>Select Filter Categories</em></InputLabel></Grid>
                     <Grid item>
                       <Select
-                        style={{width:'300px'}}
+                        // style={{width:'300px'}}
                         multiple
                         displayEmpty
                         value={this.state.selectedCategories}
