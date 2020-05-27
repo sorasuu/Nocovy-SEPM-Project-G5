@@ -105,7 +105,7 @@ export default function ProductDetailCard(props) {
 
                         <Grid item xs={12} sm={4} md={4} lg={4}>
                             <Grid container>
-                                <Grid item xs={12}><ProductInfoCard product={props.product} price={price} id={props.id} owner={props.owner} unitPrice={props.product.price.unitPrice} /> </Grid>
+                                <Grid item xs={12}><ProductInfoCard product={props.product} price={price} id={props.id} owner={props.owner} unitPrice={props.product.price.unitPrice} handleCart={props.handleCart}/> </Grid>
 
                             </Grid>
                         </Grid>
@@ -149,7 +149,7 @@ export default function ProductDetailCard(props) {
 export const ProductInfoCard = props => {
     const classes = useStyles();
     console.log('product detail card...', props.product)
-
+    const product ={...props.product,id:props.id}
     return (
 
         <Grid container spacing={2}>
@@ -214,7 +214,7 @@ export const ProductInfoCard = props => {
             </Grid>
 
             <Grid item>
-            {props.owner ?null: <BuyDialog product={props.product} uid={props.uid}/>}
+            {props.owner ?null: <BuyDialog product={product} uid={props.uid} handleCart={props.handleCart}/>}
 
             </Grid>
         </Grid>

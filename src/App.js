@@ -67,7 +67,7 @@ class App extends Component {
      
       var exist = false
       for( var i=0;i<cart.length;i++){
-        console.log('the fuck',cart[i].id,productitem.id)
+
           if (cart[i].id===productitem.id){
             exist= true
             newcart[i]=productitem
@@ -102,7 +102,7 @@ class App extends Component {
             {/* <Route path='/'component={ProductDetail} /> */}
             <Route path='/supplier/:id' component={(props)=> <SupplierDetail {...props} classes={supplierlist}/>}/>
             <Route path ='/admin' component={AdminDashboard}/>
-            <Route path='/product/:id' component={(props) => <ProductDetail {...props} classes={productlist} />}/>
+            <Route path='/product/:id' component={(props) => <ProductDetail {...props} handleCart={this.handleCart} />}/>
             <Route path='/retailer/:id' component={(props) =><Retailer {...props} class={retailerlist}/>}/>
             <Route path='/signin'component={SignIn}/>
             <Route path='/signup' component={SignUp} />
