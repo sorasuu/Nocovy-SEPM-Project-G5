@@ -31,7 +31,7 @@ class FormCertificate extends Component {
         let businessAddressError = '';
         let businessDescError = '';
 
-        if (this.props.values.images === " ") {
+        if (this.props.values.images.length === 0) {
             certificatesError = "Upload your certificate"
         }
 

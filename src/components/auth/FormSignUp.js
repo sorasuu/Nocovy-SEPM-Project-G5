@@ -62,12 +62,12 @@ class FormSignUp extends Component {
             phonenumberError = "Phone number cannot be blank"
         }
 
-        if(this.props.values.image === ''){
+        if(this.props.values.image == null ){
             logoImgError = 'Avatar cannot be blank'
         }
 
-        if (firstNameError || lastNameError || emailError || passwordError || rePasswordError || phonenumberError ) {
-            this.setState({ firstNameError, lastNameError, emailError, passwordError, rePasswordError, phonenumberError });
+        if (firstNameError || lastNameError || emailError || passwordError || rePasswordError || phonenumberError || logoImgError ) {
+            this.setState({ firstNameError, lastNameError, emailError, passwordError, rePasswordError, phonenumberError, logoImgError });
             return false;
         }
         return true;
