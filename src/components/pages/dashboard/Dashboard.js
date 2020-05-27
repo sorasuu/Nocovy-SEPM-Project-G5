@@ -129,8 +129,8 @@ export const allCategories = [
 ];
 
 const defaultFilter = [
-  { name: 'sortNameAsc', value: false, icon: <SortByAlphaOutlinedIcon />, detail: '(A->z)' },
-  { name: 'sortNameDesc', value: false, icon: <SortByAlphaOutlinedIcon />, detail: '(Z->a)' },
+  { name: 'sortNameAsc', value: false, icon: <SortByAlphaOutlinedIcon />, detail: '(A to z)' },
+  { name: 'sortNameDesc', value: false, icon: <SortByAlphaOutlinedIcon />, detail: '(Z to a)' },
   { name: 'sortPriceAsc', value: false, icon: <TrendingUpOutlinedIcon />, detail: '$' },
   { name: 'sortPriceDesc', value: false, icon: <TrendingDownOutlinedIcon />, detail: '$' },
 ]
