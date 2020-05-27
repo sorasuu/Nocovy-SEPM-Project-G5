@@ -96,7 +96,7 @@ class ProductDialogDetail extends React.Component {
    
     render() {
         // console.log('product dialog detail', this.props)
-        const listProducts = this.props.listProducts ? this.props.listProducts : {name:'No Product'}
+        const listProducts = this.props.listProducts ? this.props.listProducts : [{name:'No Product'}]
 
         return (
         
@@ -116,7 +116,7 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = (state) => {
     
     return {
-        listProducts : state.firestore.ordered.products
+        listProducts : state.firestore.ordered.myProducts
   
     }
   };
@@ -124,9 +124,9 @@ const mapStateToProps = (state) => {
   export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect(props => {
-    //    console.log('props need check...', props)
+       console.log('props need check...', props)
           return [
-              {collection: 'products', where:[["supplierId", '==', props.currentUser.id]]}
+              {collection: 'products', where:[["supplierId", '==', props.currentUser.id]],storeAs:'myProducts'}
           ];
       })
   
