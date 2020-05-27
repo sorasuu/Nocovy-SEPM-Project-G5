@@ -62,7 +62,7 @@ class FormSignUp extends Component {
             phonenumberError = "Phone number cannot be blank"
         }
 
-        if(this.props.values.image == null ){
+        if(this.props.values.logoImg === null ){
             logoImgError = 'Avatar cannot be blank'
         }
 
