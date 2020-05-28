@@ -203,27 +203,35 @@ export const BuyDialog = (props) => {
                             <Grid item xs={6}><h5 style={{ textAlign: 'right' }}>Cost</h5></Grid>
                             <Grid item xs={6}>
                                 <Grid container direction="row" justify="center" alignItems="center">
-                                    {/* <Grid item xs={4}><Button onClick={buyLess}><RemoveRoundedIcon /></Button></Grid> */}
+                                    
                                     <Grid item xs={12}>
                                     <AmountSelector minusOne = {e => minusOne(e)} plusOne={e => plusOne(e)} 
                               
                                     value={number}
                                     onChange={e => handleChange(e)}/>
-                                        {/* <Input
-                                            required='true'
-                                            disableUnderline="true"
-                                            type='number'
-                                            defaultValue={1}
-                                            value={number}
-                                            onChange={e => handleChange(e)}
-                                            inputProps={{min: 1}}
-                                        /> */}
+                                       
                                     </Grid>
-                                    {/* <Grid item xs={4}><Button onClick={buyMore}><AddRoundedIcon /></Button></Grid> */}
+                                   
                                 </Grid>
                             </Grid>
                             <Grid item xs={6}><div style={{ textAlign: 'right', fontSize: '30px', fontFamily: 'bold' }}> {(product.price.unitPrice * number).toFixed(2)}</div></Grid>
-                             </>   : null
+                             </>   : <>
+                             <Grid item xs={6}><h5>Quantity</h5></Grid>
+                            <Grid item xs={6}><h5 style={{ textAlign: 'right' }}>Cost</h5></Grid>
+                            <Grid item xs={6}>
+                                <Grid container direction="row" justify="center" alignItems="center">
+                                    
+                                    <Grid item xs={12}>
+                                    <AmountSelector minusOne = {e => minusOne(e)} plusOne={e => plusOne(e)} 
+                              
+                                    value={number}
+                                    onChange={e => handleChange(e)}/>
+                                       
+                                    </Grid>
+                                   
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={6}><div style={{ textAlign: 'right', fontSize: '30px', fontFamily: 'bold' }}> {((product.price.unitCost * (1+ product.price.dutyRate/100))*number).toFixed(2)}</div></Grid></>
                         }
                         </Grid>
                         
