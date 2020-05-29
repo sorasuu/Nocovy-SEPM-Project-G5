@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { firestoreConnect, populate } from 'react-redux-firebase'
+import { firestoreConnect } from 'react-redux-firebase'
 import Navbar from './components/layout/Navbar'
-import Profile from './components/pages/Profile'
+import Profile from './components/pages/profile/Profile'
 import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
-import Chat from './components/pages/Chat'
+import Chat from './components/pages/profile/Chat'
 import { Fab} from '@material-ui/core';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import "./App.css"
@@ -26,6 +26,8 @@ import PrivacyPolicy from './components/pages/PrivacyPolicy'
 import NotFound from './components/pages/NotFound'
 import CancelIcon from '@material-ui/icons/Cancel';
 import {registerRetailers} from './components/store/actions/productAction'
+import MyOrders from './components/pages/products/MyOrders';
+import MyRequest from './components/pages/profile/MyRequest';
 
 class App extends Component {
   state = {
@@ -35,12 +37,24 @@ class App extends Component {
   handleClicked = e => {
     this.setState({ chatwindow: !this.state.chatwindow })
   }
+  handleEmptyCart = (e) =>{
+    this.setState({cart:[]})
+  }
+  handleNewCart = (e,cart) =>{
+    this.setState({cart:cart})
+  }
+  componentDidMount(){
+    if( JSON.parse(window.localStorage.getItem('cart'))!== undefined&&JSON.parse(window.localStorage.getItem('cart'))!== null){
+      this.setState({ cart: JSON.parse(window.localStorage.getItem('cart')) });
+    }else{
+      this.setState({cart:[]})
+    }
+  }
   handleCart=(e, productinfo, num)=>{
     
     const { cart } = this.state
     console.log('state cart',cart)
     var newcart = cart;
-    var a =[]
     var productitem ={...productinfo,num}
     
       if (cart.length === 0){
@@ -53,7 +67,7 @@ class App extends Component {
      
       var exist = false
       for( var i=0;i<cart.length;i++){
-        console.log('the fuck',cart[i].id,productitem.id)
+
           if (cart[i].id===productitem.id){
             exist= true
             newcart[i]=productitem
@@ -82,23 +96,26 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <Navbar notifications={notifications} lastContact ={lastContact} cart={this.state.cart} />
+          <Navbar notifications={notifications} lastContact ={lastContact} cart={this.state.cart} currentUser={currentUser} />
           <Switch>
             <Route exact path='/' component={(props)=><Dashboard {...props} handleCart={this.handleCart} handelRegister={this.handelRegister} />} />
             {/* <Route path='/'component={ProductDetail} /> */}
             <Route path='/supplier/:id' component={(props)=> <SupplierDetail {...props} classes={supplierlist}/>}/>
             <Route path ='/admin' component={AdminDashboard}/>
-            <Route path='/product/:id' component={(props) => <ProductDetail {...props} classes={productlist} />}/>
+            <Route path='/product/:id' component={(props) => <ProductDetail {...props} handleCart={this.handleCart} />}/>
             <Route path='/retailer/:id' component={(props) =><Retailer {...props} class={retailerlist}/>}/>
             <Route path='/signin'component={SignIn}/>
             <Route path='/signup' component={SignUp} />
-            <Route path='/cart' component={ProductCart} />
+            <Route path='/cart' component={(props)=><ProductCart {...props} handleEmptyCart={this.handleEmptyCart} handleNewCart={this.handleNewCart}/>} />
             <Route path='/profile/:id' component={(props) => <Profile {...props} currentUser={currentUser} chatsesion={chatsession} handleCart={this.handleCart} handelRegister={this.handelRegister}/>} />
             <Route path='/chat/:id' component={(props) => <Chat {...props} currentUser={currentUser} chatsession={chatsession}  />} />
             <Route path='/faq' component={FAQ} />
             <Route path='/privacypolicy' component={PrivacyPolicy} />
             <Route path='/rules' component={TransactionRules}/>
             <Route path='/tos' component={TermOfService} />
+            <Route path='/myorders' component={MyOrders} />
+            <Route path='/myrequests' component={(props) => <MyRequest {...props} currentUser={currentUser}/>}  chatsesion={chatsession}/>
+            
             <Route component={NotFound} />
 
           </Switch>
@@ -151,9 +168,9 @@ export default compose(
     else {
       return [{ collection: 'users', doc: props.auth.uid, storeAs: 'currentUser' },
       {
-        collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]],queryParams:['orderByChild=lastMod'] ,storeAs:'allchatsesion',
+        collection:'chats', where:[['chatsesion', 'array-contains',  props.auth.uid]],queryParams:['orderByChild=lastMod'] ,storeAs:'allchatsesion'
       },
-      { collection: 'notifications', where: [['uid', '==', props.auth.uid]] }]
+      { collection: 'notifications', where: [['uid', '==', props.auth.uid]] ,orderBy:['time','desc'],limit:5 }]
     }
   })
 )

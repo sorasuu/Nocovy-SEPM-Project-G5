@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import cx from 'clsx';
-import { createChatSession, sendMessage } from '../store/actions/chatActions'
+import { createChatSession, sendMessage } from '../../store/actions/chatActions'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
@@ -32,7 +32,7 @@ import {
     ListItem,
     withStyles
 } from '@material-ui/core'
-import StyledButton from '../layout/StyledButton'
+import StyledButton from '../../layout/StyledButton'
 
 const useStyles = makeStyles((theme) => ({
     contactsCard: {
@@ -77,20 +77,6 @@ const useStyles1 = theme => ({
     
 
 })
-export const DUMMY_DATA = [
-    {
-        senderId: "perborgen",
-        text: "who'll win?",
-    },
-    {
-        senderId: "janedoe",
-        text: "who'll win?",
-    },
-    {
-        senderId: "placeholder",
-        text: "hello world",
-    }
-]
 
 function ListItemLink(props) {
     return <ListItem button component="a" {...props} />;
@@ -98,7 +84,7 @@ function ListItemLink(props) {
 
 //CONTACTS COMPONENT
 export const ChatContact = (props) => {
-    console.log('CHAT contact', props)
+    console.log('CHAT CONTACT', props)
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles = useOverShadowStyles({ inactive: true });
@@ -117,6 +103,7 @@ export const ChatContact = (props) => {
                     fullWidth
                     id="search"
                     label="Search contacts"
+                    value={props.search}
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
@@ -135,10 +122,10 @@ export const ChatContact = (props) => {
                         } else {
                             receiver = props.chatuser[contact.user1]
                         }
-
+                        if (receiver.displayName.toLowerCase().includes(props.search.toLowerCase())){
                         return (
                             // <NavLink to={'/chat/'+contact.id}>
-                            <ListItemLink href={'/chat/'+contact.id} divider dense button alignItems="flex-start" selected={contact.id === props.currentchatsession.id}>
+                            <ListItemLink key={contact.id} href={'/chat/'+contact.id} divider dense button alignItems="flex-start" selected={contact.id === props.currentchatsession.id}>
                                 <ListItemAvatar>
                                     <Avatar src={receiver?receiver.logo:null} />
                                 </ListItemAvatar>
@@ -146,11 +133,11 @@ export const ChatContact = (props) => {
                                     primary={
                                         <Typography variant='h6'>{receiver?receiver.displayName:null}</Typography>}
                                     secondary={
-                                        <Typography variant='subtitle'> {receiver?contact.lastchat:null}</Typography>}
+                                        <Typography variant='subtitle1'> {receiver?contact.lastchat:null}</Typography>}
                                 />
                             </ListItemLink>
                             // </NavLink>
-                        )
+                        )}
                     }) : null}
                 </List>
             </CardContent>
@@ -208,7 +195,7 @@ export const SendMessageForm = (props) => {
     return (
         <form
             className='message-form'
-        // onSubmit={this.handleSendMessage}
+            onSubmit={(e) => props.handleSendMessage(e)}
         >
             <div className='input-group'>
                 <Grid container spacing={3}>
@@ -323,7 +310,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    // console.log(ownProps)
     const id = ownProps.match.params.id
     const messages = state.firestore.ordered.thischatsesion
     const chatsession = state.firestore.data.allchatsesion
@@ -342,8 +328,7 @@ const mapStateToProps = (state, ownProps) => {
             }
         }
     }
-    // console.log(userIdlist)
-    // console.log(state.firestore.ordered.chatuser)
+
     return {
         auth: state.firebase.auth,
         messages: messages,

@@ -1,6 +1,4 @@
-
 import firebase from 'firebase/app';
-
 
 export const editUser = (user) => {
     return (dispatch, getState) => {

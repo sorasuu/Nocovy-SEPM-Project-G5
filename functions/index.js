@@ -11,7 +11,57 @@ const createNotification = ((notification) => {
 
 const MY_SENDGRID_API_KEY = "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"
 sendgridemail.setApiKey(MY_SENDGRID_API_KEY);
+exports.requestCreated = functions.firestore
+  .document('requests/{requestId}')
+  .onCreate((snap, context) => {
+    const request = snap.data();
+    const notification1 = {
+      content: `You receive a request`,
+      uid: `${request.retailerId}`,
+      time: admin.firestore.FieldValue.serverTimestamp(),
+      link: '/requests'
+    }
+    const notification2 = {
+      content: `You have sent the a request`,
+      uid: `${request.supplierId}`,
+      time: admin.firestore.FieldValue.serverTimestamp(),
+      link: '/requests'
+    }
 
+    return createNotification(notification1)&&createNotification(notification2);
+
+  });
+  exports.requestAccept = functions.firestore
+  .document('requests/{requestId}')
+  .onWrite(
+    (change, context) => {
+      var notification = null
+      if (change.before.exists && change.after.exists) {
+        const request = change.after.data()
+        console.log(context.params)
+        if (request.pending === false && request.confirmed === true) {
+     
+          notification = {
+            content: `Your request has been confirmed`,
+            uid: `${request.supplierId}`,
+            time: admin.firestore.FieldValue.serverTimestamp(),
+            link: '/myrequests'
+          }
+        }
+        if (request.pending === false && request.confirmed === true) {
+         
+          notification = {
+            content: `Your request has been declined`,
+            uid: `${request.supplierId}`,
+            time: admin.firestore.FieldValue.serverTimestamp(),
+            link: '/myrequests'
+          }
+          
+        }
+        return createNotification(notification)
+      }
+    }
+  );
 exports.productCreated = functions.firestore
   .document('products/{productId}')
   .onCreate((snap, context) => {
@@ -22,6 +72,7 @@ exports.productCreated = functions.firestore
       uid: `${product.supplierId}`,
       time: admin.firestore.FieldValue.serverTimestamp(),
       tag:'admin',
+      link:`/product/${context.params.productId}`
     }
 
     return createNotification(notification);

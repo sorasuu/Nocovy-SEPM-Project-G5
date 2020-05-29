@@ -5,8 +5,6 @@ import {
     Card, CardContent, CardMedia ,
     Button,
 } from '@material-ui/core';
-// import useMediaQuery from '@material-ui/core/useMediaQuery';
-
 import TextInfoContent from '@mui-treasury/components/content/textInfo';
 import { useFourThreeCardMediaStyles } from '@mui-treasury/styles/cardMedia/fourThree';
 import { useN04TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n04';
@@ -20,13 +18,19 @@ import AddRoundedIcon from '@material-ui/icons/AddRounded';
 
 
 const useStyles = makeStyles(() => ({
+    root:{
+        paddingBottom:'65%',
+        
+    },
     card: {
-        marginTop: "10%",
+        // marginTop: "10%",
         transition: '0.3s',
         width: '100%',
+        minWidth:'280px',
         overflow: 'initial',
         background: '#ffffff',
         borderRadius: 16,
+        height:'500px',
     },
 }));
 
@@ -44,7 +48,7 @@ const SupplierCard = (props) => {
     return (
         // <NavLink to = {'/product/'+ props.product.id}>
 
-        <Card className={cx(classes.root, shadowStyles.root)} style={{ position: "relative", marginBottom: '10px' }}>
+        <Card className={cx(classes.root, shadowStyles.root)} class={classes.card} style={{ position: "relative", marginBottom: '10px' }}>
             
             <CardContent className={classes.content}
             // ref={hoverRef}
@@ -54,8 +58,9 @@ const SupplierCard = (props) => {
                     <div className='image'>
                     <CardMedia
                     // component="img"
-                    alt="product"
-                        className={cx(classes.media, mediaStyles.root)}
+                        alt="product"
+                        className={cx(classes.media, mediaStyles.root, classes.root)}
+                        style={{maxHeight:'315px'}}
                         image={supplier.logo}
                     />
 
@@ -75,9 +80,9 @@ const SupplierCard = (props) => {
                 </div>
                 <TextInfoContent
                     classes={textCardContentStyles}
-                    overline={`${supplier.email}: \ ${supplier.phoneNumber? supplier.phoneNumber : 'No PhoneNumber'}`}
+                    overline={`${supplier.email}: \ ${supplier.phoneNumber? supplier.phoneNumber : 'PhoneNumber not Available'}`}
                     heading={supplier.businessName}
-                    body={supplier.address}
+                    body={supplier.address ? supplier.address.slice(0,65):null}
        
                 />
             </CardContent>

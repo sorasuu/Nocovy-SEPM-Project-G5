@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { firestoreConnect } from "react-redux-firebase";
+import { firestoreConnect, populate } from "react-redux-firebase";
 import { compose } from "redux";
 import MaterialTable from "material-table";
 import { NavLink } from 'react-router-dom';
@@ -21,6 +21,8 @@ import {
     TextField
 } from "@material-ui/core";
 import { checkArray } from './Dashboard';
+import moment from 'moment'
+import history from '../../utils/history'
 
 
 export function TabPanel(props) {
@@ -158,7 +160,7 @@ class AdminDashboard extends Component {
 
         const { classes, users } = this.props;
         console.log("users admin dashboard: ", users)
-        const usersApprove = checkArray(users).filter(user => user.pending === false)
+        const usersApprove = checkArray(users).filter(user => user.pending === false && user.verify === true)
         const usersPending = checkArray(users).filter(user => user.pending === true)
         const { value, columns, index } = this.state
 
@@ -232,7 +234,7 @@ class AdminDashboard extends Component {
                         },
                         {
                             icon: 'cancel',
-                            tooltip: 'Cancel',
+                            tooltip: 'delete',
                             onClick: (event, rowData) => {
                                 this.handleCancel(rowData.id)
                             }
@@ -245,34 +247,48 @@ class AdminDashboard extends Component {
         };
 
         const NotiManage = () => {
-            const { notifications } = this.props;
-            return notifications.map(noti => {
+            const { notifications ,notificationsdata} = this.props;
+            console.log(notifications,notificationsdata)
+            return notifications&&notificationsdata? notifications.map(noti => {
                 return (
-                    <List>
+                    <List key={noti.id}>
                         <ListItem>
                             <ListItemAvatar>
-                                <Avatar alt="Remy Sharp" src="https://firebasestorage.googleapis.com/v0/b/sepm-nocovy.appspot.com/o/LogoNocovy.png?alt=media&token=d9ea6b4b-27c5-4bb6-83b0-06d9dc1d38e1" />
+                                <Avatar alt="Remy Sharp" src={notificationsdata[noti.id].uid.logo} />
                             </ListItemAvatar>
                             <ListItemText
-                                primary={noti.title}
-                                secondary={
+                                primary={
                                     <React.Fragment>
                                         <Typography
                                             component="span"
-                                            variant="body2"
+                                            variant="body1"
                                             className={classes.inline}
                                             color="textPrimary"
-                                        >
-                                            {noti.user}
-                                        </Typography>
-                                : {noti.content} at {noti.address}
+                                        > {notificationsdata[noti.id].uid.displayName}</Typography>
+                                                  
+                                    { "        "+ moment(noti.time.toDate()).fromNow()} 
+                                    
                                     </React.Fragment>
+                                }
+                                secondary={
+                                    
+                                        <Typography
+                                            component="span"
+                                            variant="body2"
+                                
+                                            color="textPrimary"
+                                        >
+                                            {noti.content} 
+                              
+                                        </Typography>
+                                       
+                                
                                 }
                             />
                         </ListItem>
                     </List>
                 );
-            });
+            }):null;
         };
 
         return (
@@ -302,7 +318,7 @@ class AdminDashboard extends Component {
                             <TablePending />
                         </TabPanel>
                         <TabPanel value={value} index={2}>
-                            {/* <NotiManage /> */}
+                            <NotiManage />
                         </TabPanel>
                     </Grid>
 
@@ -345,7 +361,7 @@ class AdminDashboard extends Component {
                                 <div style={{ display: 'flex', alignItems: 'center', textAlign: 'left', fontSize: '20px', fontFamily: 'bold' }}>Name:</div>
                             </Grid>
                             <Grid item xs={7} md={7} lg={7}>
-                                <div style={{ display: 'flex', alignItems: 'center', textAlign: 'right', fontSize: '30px' }}>{usersApprove[index].businessName}</div>
+                                <div style={{ display: 'flex', alignItems: 'center', textAlign: 'right', fontSize: '30px' }}>{usersPending[index].businessName}</div>
 
                             </Grid>
                             <Grid item xs={3} md={3} lg={3}>
@@ -453,15 +469,20 @@ function ImageDialog(props) {
         </React.Fragment>
     );
 }
-
+const populates = [
+    { child: 'uid', root: 'users' }
+]
+const collection = 'notifications';
 
 const mapStateToProps = (state) => {
     // console.log("haha", state.product);
+    const notifications = populate(state.firestore, 'adminNotifications', populates)
     return {
         auth: state.firebase.auth,
-        users: state.firestore.ordered.users,
-        // usersPending: state.firestore.ordered.usersPending,
-        // usersApprove: state.firestore.ordered.usersApprove,
+        users: state.firestore.ordered.allUsers,
+        notificationsdata: notifications,
+        notifications: state.firestore.ordered.adminNotifications
+       
     }
 };
 
@@ -478,13 +499,13 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect((props) => {
         if (!props.auth.uid) {
-            props.history.push("/")
+            history.push("/")
+            window.location.reload()
         }
         else {
             return [
-                { collection: 'users' },
-                // { collection: 'users', where:[["pending","==",true]], storeAs:'usersPending' },
-                // { collection: 'users', where:[["pending","==",false]], storeAs:'usersApprove' },
+                { collection: 'users' , storeAs:'allUsers'},
+                {collection,where:[["tag","==","admin"]],populates,orderBy: [['time', 'desc']],storeAs:"adminNotifications"}
 
             ]
         }

@@ -1,5 +1,4 @@
 import firebase from 'firebase/app';
-// import firestore from '../../../index' 
 export const signIn = (credentials) => {
   return (dispatch, getState) => {
     firebase.auth().signInWithEmailAndPassword(
@@ -39,9 +38,11 @@ export const signUp = (newUser) => {
         phoneNumber: newUser.phoneNumber,
         businessName: newUser.businessName,
         logo: newUser.logo,
-        businessGenre: newUser.businessGenre,
+        type: newUser.type,
+        address:newUser.businessAddress?newUser.businessAddress:null,
+        website:newUser.businessWebsite?newUser.businessWebsite:null,
         businessDesc:newUser.businessDesc,
-        certificate: newUser.certificate,
+        certificates: newUser.certificates,
         pending:true,
         verify:false,
       });

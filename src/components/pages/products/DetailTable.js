@@ -36,6 +36,7 @@ class DetailTable extends Component {
     handleUpdateDetails=(data)=>{
         const detailsUpdate={id:this.props.id,details:data}
         this.props.editDetails(detailsUpdate)
+       
     }
   componentDidUpdate(prevState,prevProps){
       if(prevState.details!==this.props.details&& prevProps!==this.props.details){
@@ -49,6 +50,7 @@ render(){
     return (
         <div>
         <h4>Detail</h4>
+        {this.props.owner?
         <MaterialTable
             title={' '}
             columns={this.state.columns}
@@ -104,7 +106,20 @@ render(){
                      
                     }),
             }}
-        />
+        />:  <MaterialTable
+        title={' '}
+        columns={this.state.columns}
+        data={this.state.details}
+        options={{
+            searchFieldAlignment: "left",
+            paging:false,
+            actionsColumnIndex:-1,
+            rowStyle: rowData =>({
+                backgroundColor: (rowData.tableData.id % 2 ===0)? '#EEE': '#FFF',
+            })
+        }}
+
+    />}
         </div>
     );
 }
@@ -115,4 +130,4 @@ const mapDispatchToProps = dispatch => {
     }
   }
   
-export default connect(null,mapDispatchToProps)( DetailTable)
+export default connect(null,mapDispatchToProps)(DetailTable)

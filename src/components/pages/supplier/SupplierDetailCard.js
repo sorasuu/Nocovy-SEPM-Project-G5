@@ -63,7 +63,8 @@ const useStyles = makeStyles((theme) => ({
         transition: '0.3s',
         textAlign: 'left',
         overflowX: 'auto',
-        margin:'3%',
+        marginLeft: '3%',
+        marginRight: '3%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -128,14 +129,16 @@ const useStyles = makeStyles((theme) => ({
             duration: theme.transitions.duration.shortest,
         }),
     },
-    buttons:{
-        marginTop:'5%',
-        display:'flex',
-
+    buttons: {
+        marginTop: '5%',
+        display: 'flex',
     },
+    tabs: {
+        maxWidth: '150px'
+    }
 
 }));
- export function TabPanel(props) {
+export function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
     return (
@@ -172,16 +175,11 @@ export default function SupplierDetailCard(props) {
     const [expanded, setExpanded] = React.useState(false);
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
-    const cardShadowStyles = useOverShadowStyles({inactive: true});
+    const cardShadowStyles = useOverShadowStyles({ inactive: true });
     const cardHeaderShadowStyles = useFadedShadowStyles();
     // const allProducts = [{name:'a',value:'b'}, {name:'b',value:'c'}]
     const allProducts = checkArray(props.products)
-    
-    
-    const onChange = (event, newValue) => {
-        console.log(newValue)
-        // setSearch((newValue).toString);
-    }
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -195,14 +193,14 @@ export default function SupplierDetailCard(props) {
 
     return (
         <Card className={cx(classes.card, cardShadowStyles.root)}
-            style={{ position: "relative", marginBottom: '5px', borderRadius:16 }}>
+            style={{ position: "relative", marginBottom: '5px', borderRadius: 16 }}>
             <CardHeader
                 className={cardHeaderShadowStyles.root}
                 classes={cardHeaderStyles}
-                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", width: 'auto', minWidth: '200px', left: "5%", transform: 'translate(0, -30%)'}}
+                style={{ background: "linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)", position: "absolute", width: 'auto', minWidth: '200px', left: "5%", transform: 'translate(0, -30%)' }}
                 title={<h4>{props.supplier.businessName}</h4>}
                 avatar={
-                    <Avatar aria-label="logo" className={classes.avatar} src={props.supplier.logo}/>
+                    <Avatar aria-label="logo" className={classes.avatar} src={props.supplier.logo} />
                 }
             />
             <CardContent className={classes.content} >
@@ -215,13 +213,10 @@ export default function SupplierDetailCard(props) {
                     <StyledButton>
                         Partner
                     </StyledButton> */}
-                    <NavLink to={'/profile/'+props.supplier.id} style={{marginRight:75}}>
+                    <NavLink to={'/profile/' + props.supplier.id} style={{ marginRight: 75 }}>
                         <Typography variant='h5'>Profile</Typography>
                     </NavLink>
-                    <NavLink to='/'>
-                        <Typography variant='h5'>Partner</Typography>
-                    </NavLink>
-                    
+
                 </div>
                 <Grid container
                     direction="row"
@@ -240,71 +235,82 @@ export default function SupplierDetailCard(props) {
                             <ExpandMoreIcon />
                         </IconButton>
                     </CardActions>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-
-                        <InputBase
-                            placeholder="Searching your Product"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                            onChange={onChange}
-                        />
-                    </div>
+                   
                 </Grid>
             </CardContent>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                     <div className={classes.description}>
-                        <Divider style={{margin:10}} light />
-                        <Typography variant='h6'>Business Genre:</Typography> 
-                        <Typography paragraph>{props.supplier.businessGenre ? props.supplier.businessGenre : 'Business genre not available'}</Typography>
-                        <Typography variant='h6'>Business Description:</Typography> 
-                        <Typography>{props.supplier.businessDesc? props.supplier.businessDesc  : 'Description not available'}</Typography>
-                </div>
+                        <Divider style={{ marginBottom: 10 }} light />
+                        <Grid container direction="row">
+                            <Grid item xs={4}>
+                                <Grid container>
+                                    <Grid item xs={12}> 
+                                        <Typography variant='h6'>Business Genre:</Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Typography paragraph>{props.supplier.businessGenre ? props.supplier.businessGenre : 'Business genre not available'}</Typography>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={8}>
+                                <Grid container>
+                                    <Grid item xs={12}>
+                                        <Typography variant='h6'>Business Description:</Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Typography>{props.supplier.businessDesc ? props.supplier.businessDesc : 'Description not available'}</Typography>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            
+                            
+                           
+                        </Grid>
+                       
+                       
+                        
+                    </div>
                 </CardContent>
             </Collapse>
             <CardContent>
                 <Table>
                     <TableHead className={classes.header}>
                         <TableRow>
-                            <TableCell size="small">Products </TableCell>
+                            <TableCell className={classes.tabs} style={{maxWidth:'200px'}}>Products </TableCell>
                             <TableCell>Retailers </TableCell>
-                        </TableRow>   
+                        </TableRow>
                     </TableHead>
-                <TableBody>
+                    <TableBody>
 
-                    {/* Can't we just map into 2 TableCells instead of mapping twice? */}
-                    <TableRow>
-                        <TableCell size="small">
-                            <Tabs
-                                orientation="vertical"
-                                variant="scrollable"
-                                value={value}
-                                onChange={handleChange}
-                                className={classes.tabs}
-                            >
-                                {filterProducts.map((product, key) =>
-                                    <Tab label={product.name} {...a11yProps(key)} />
+                        {/* Can't we just map into 2 TableCells instead of mapping twice? */}
+                        <TableRow>
+                            <TableCell size="small" style={{maxWidth:'200px'}}>
+                                <Tabs
+                                    orientation="vertical"
+                                    variant="scrollable"
+                                    value={value}
+                                    onChange={handleChange}
+                                    className={classes.tabs}
+                                    style={{maxWidth:'200px'}}
+                                >
+                                    {filterProducts.map((product, key) =>
+                                        <Tab label={product.name}  style={{maxWidth:'200px'}} {...a11yProps(key)} />
+                                    )}
+                                </Tabs>
+                            </TableCell>
+                            <TableCell>
+                                {filterProducts.map((product, productKey) =>
+                                    <RetailerList
+                                        product={product}
+                                        data={props.data}
+                                        productKey={productKey}
+                                        value={value}
+                                    />
                                 )}
-                            </Tabs>
-                        </TableCell>
-                        <TableCell>
-                            {filterProducts.map((product,productkey)=>
-
-                                <RetailerList   product={product}
-                                                data = {props.data}
-                                                productkey ={productkey}
-                                                value={value}
-                                />
-                            )}
-                        </TableCell>
-                    </TableRow>
-                </TableBody>
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
                 </Table>
             </CardContent>
         </Card>

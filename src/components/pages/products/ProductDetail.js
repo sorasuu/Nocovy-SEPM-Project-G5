@@ -4,7 +4,6 @@ import { firestoreConnect, populate } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Grid, withStyles } from '@material-ui/core'
-
 import  ProductDetailCard  from './ProductDetailCard'
 
 const useStyles = (theme) => ({
@@ -38,7 +37,7 @@ class ProductDetail extends Component {
       <div className="container">
         {product ?
           
-            <ProductDetailCard product={product} id={this.props.match.params.id} owner={this.props.owner}/>
+            <ProductDetailCard product={product} id={this.props.match.params.id} owner={this.props.owner} handleCart={this.props.handleCart}/>
          
           :<div>Loading...</div>
         }        

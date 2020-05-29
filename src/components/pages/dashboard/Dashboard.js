@@ -5,49 +5,49 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { fade, withStyles } from '@material-ui/core/styles'
 import {
-  Grid, InputBase,
-  Tabs, Tab, CardContent, Typography,
-  CardMedia, Card, Chip
+  Grid, InputBase, Button, Select, MenuItem, InputLabel,
+  Tabs, Tab, Collapse, Chip, Input, FormControl,
 } from '@material-ui/core'
-// import StyledButton from '../../layout/StyledButton'
+import SortByAlphaOutlinedIcon from '@material-ui/icons/SortByAlphaOutlined';
+import TrendingDownOutlinedIcon from '@material-ui/icons/TrendingDownOutlined';
+import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
+import FilterListRoundedIcon from '@material-ui/icons/FilterListRounded';
 import ProductCard from '../products/ProductCard'
 import SupplierCard from '../supplier/SupplierCard'
 import RetailerCard from '../retailer/RetailerCard'
 import SearchIcon from '@material-ui/icons/Search';
 import { TabPanel, a11yProps } from './AdminDashboard'
-import FilterForm from './FilterForm'
-import {deliverProductToCart}from '../../store/actions/productAction'
-const useStyles = theme => ({
+import { deliverProductToCart } from '../../store/actions/productAction'
 
+const useStyles = theme => ({
   search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    marginTop:'3%',
+    backgroundColor: fade(theme.palette.common.white, 0.75),
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+      backgroundColor: fade(theme.palette.common.white, 0.95),
     },
-    marginTop: "2%",
-    // marginRight: theme.spacing(2),
-    justify: 'center',
-    alignItems: 'center',
-    direction: 'flex',
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
+    display: 'flex',
+    border: `1px solid ${'#dfe1e5'}`,
+    boxShadow: '0 16px 40px -12.125px rgba(0,0,0,0.3)',
+    borderRadius: 100,
+    padding:`${theme.spacing(1)/4}`,
+    height: '50px',
+    margin:'auto',
+    width:'482px'
+
   },
   searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
+    marginTop:'-5px',
+    padding:`${theme.spacing(1) /2}px ${theme.spacing(1)}px`,
     pointerEvents: 'none',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    borderRadius:100,
+    
   },
   inputRoot: {
     color: 'inherit',
+    width:'85%',
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`
@@ -101,23 +101,39 @@ function checkFilter(arr, arrCheck) {
 
 
 export function checkArray(array) {
-  var data = [{ id: 'Loading...', category: ['a', 'b'], pending: true, name: "Loading", displayName: "Loading", businessName: 'Loading', price: 'Loading'}];
+  var data = [{ id: 'Loading...', category: ['a', 'b'], pending: true, name: "Loading", displayName: "Loading", businessName: 'Loading', price: 'Loading' }];
   if (array !== undefined) {
     data = array
   }
   return data
 }
 
-const allCategories = [
-  'fashion',
-  'vehicle',
-  'luxury',
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+export const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 300,
+    },
+  },
+};
+export const allCategories = [
+  'beauty',
   'convenience',
-  'something',
   'electronic',
-  'beauty'
+  'fashion',
+  'food',
+  'vehicle',
+  'other',
 ];
 
+const defaultFilter = [
+  { name: 'sortNameAsc', value: false, icon: <SortByAlphaOutlinedIcon />, detail: '(A to z)' },
+  { name: 'sortNameDesc', value: false, icon: <SortByAlphaOutlinedIcon />, detail: '(Z to a)' },
+  { name: 'sortPriceAsc', value: false, icon: <TrendingUpOutlinedIcon />, detail: '$' },
+  { name: 'sortPriceDesc', value: false, icon: <TrendingDownOutlinedIcon />, detail: '$' },
+]
 
 
 class Dashboard extends Component {
@@ -126,69 +142,87 @@ class Dashboard extends Component {
     this.state = {
       search: '',
       value: 0,
-      filter: [],
-      sortName: true,
-      sortAsc: true,
       isFiltered: false,
-      cart:[]
+      filter: [
+        { name: 'sortNameAsc', value: false, icon: <SortByAlphaOutlinedIcon />, detail: '(A->z)' },
+        { name: 'sortNameDesc', value: false, icon: <SortByAlphaOutlinedIcon />, detail: '(Z->a)' },
+        { name: 'sortPriceAsc', value: false, icon: <TrendingUpOutlinedIcon />, detail: '$' },
+        { name: 'sortPriceDesc', value: false, icon: <TrendingDownOutlinedIcon />, detail: '$' },
+      ],
+      selectedCategories: [],
+      cart: [],
+      allCategories: allCategories
     };
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSortKind = this.handleSortKind.bind(this)
-    // this.handleCart= this.handleCart(this)
+
   }
 
   onChange = e => {
+ 
     this.setState({ search: e.target.value })
   }
-  handleSort = e => {
-    this.setState({ sortAsc: !this.state.sortAsc })
-  }
 
-  handleSortKind(params){
-    this.setState({sortName: !this.state.sortName})
-  }
-
-  handleChange(e, newValue) {
+  handleChange = (e, newValue) => {
     this.setState({ value: newValue });
 
   }
-  handleSelectFilter = (item) => {
-    this.setState({ filter: item })
+
+  handleFilter = () => {
+    this.setState({ isFiltered: !this.state.isFiltered })
   }
-  handleFilterForm = () => {
-    this.setState({ isFiltered: true })
+  handleSelectFilter = (id, item, open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    this.setState({ filter: defaultFilter })
+    this.setState((prevState) => {
+      const data = [...prevState.filter];
+      data[id] = { name: item, value: open, icon: data[id].icon, detail: data[id].detail }
+      return { filter: data }
+    }
+    )
+
   }
-  handleCancelFilter =()=>{
-    this.setState({ isFiltered: false})
+  
+  handleChangeCategory = (e) => {
+    this.setState({ selectedCategories: e.target.value })
   }
+
   render() {
-    
-    const { auth, classes, products, suppliers, retailers } = this.props;
+
+    const { auth, classes, products, suppliers, retailers, currentUser } = this.props;
     // console.log('dashboard product', products)
-    const { search, value, filter, sortAsc, isFiltered, sortName, cart } = this.state;
-    
+    const { search, value, filter, isFiltered, selectedCategories } = this.state;
+
     const afterSearchSupplier = checkArray(suppliers).filter(supplier => supplier.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const afterSearchProduct = checkArray(products).filter(product => product.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
-    const afterSearchRetailer = checkArray(retailers).filter(retailer => retailer.displayName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+    const afterSearchRetailer = checkArray(retailers).filter(retailer => retailer.businessName.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     const found = checkArray(afterSearchProduct).filter((product) => {
-      if (product.category === checkFilter(filter, product.category)) {
+      if (product.category === checkFilter(selectedCategories, product.category)) {
         return true
       } else { return false }
 
     })
-    const sortFoundName = found.sort((a, b) => {
-      const isReverse = (sortAsc === true) ? 1 : -1;
-      return isReverse * a.name.localeCompare(b.name)
+    const sortedFound = found.sort((a, b) => {
+      if (filter[0].value === true) {
+        console.log('vaooooo 0')
+        return a.name.localeCompare(b.name)
+      }
+      if (filter[1].value === true) {
+        console.log('vao 1')
+        return -1 * a.name.localeCompare(b.name)
+      }
+      if (filter[2].value === true) {
+        return a.price.unitPrice - b.price.unitPrice
+      }
+      if (filter[3].value === true) {
+        return -1 * (a.price.unitPrice - b.price.unitPrice)
+      }
     })
 
-    const sortFoundPrice = found.sort((a,b) => {
-      const isReverse = (sortAsc === true) ? 1: -1;
-      return isReverse * ( a.price.unitPrice - b.price.unitPrice)
-    }
-    )
 
     if (!auth.uid) return <Redirect to='/signin' />
-    // console.log('asdasd',this.state)
+
+
     return (
 
       <div className="container" style={{ textAlign: 'center' }}>
@@ -209,14 +243,16 @@ class Dashboard extends Component {
         </Tabs>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
-            <SearchIcon />
+            <SearchIcon style={{marginTop:'5px',padding:'2px'}}/>
           </div>
           <InputBase
+            style={{marginTop:'5px'}}
             placeholder="Search…"
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,
             }}
+            
             inputProps={{ 'aria-label': 'search' }}
             onChange={this.onChange}
           />
@@ -225,54 +261,78 @@ class Dashboard extends Component {
         <div style={{ marginTop: '2%' }}>
           <TabPanel value={value} index={0}>
 
-            <FilterForm 
-              products={products}
-              allCategories={allCategories}
-              handleFilter={item => this.handleSelectFilter(item)}
-              handleFilterForm={this.handleFilterForm}
-              handleCancelFilter={this.handleCancelFilter}
-              handleSort={this.handleSort}
-              handleSortKind={this.handleSortKind}
-              sortName={sortName}
-              sortAsc={sortAsc}
-            />
+            <Button onClick={this.handleFilter}>Filter <FilterListRoundedIcon/></Button>
+            <Collapse className={classes.search} in={this.state.isFiltered} timeout="auto" unmountOnExit >
+              <Grid container style={{marginTop:'5%', marginBottom:'5%'}}>
+                <Grid item xs={12}>
+                  <Grid container justify="center" alignItems='center'>
+                    <Grid item><InputLabel id="demo-mutiple-chip-label"><em>Select Filter Categories</em></InputLabel></Grid>
+                    <Grid item>
+                      <Select
+                        // style={{width:'300px'}}
+                        multiple
+                        displayEmpty
+                        value={this.state.selectedCategories}
+                        onChange={this.handleChangeCategory}
+                        input={<Input name="category" id='category-chip' />}
+                        renderValue={(selected) => (
+                          <div className={classes.chips}>
+                            {selected.map((value) => (
+                              <Chip key={value} label={value} className={classes.chip} />
+                            ))}
+                          </div>
+                        )}
+                        MenuProps={MenuProps}
+                      >
+                        {allCategories.map((name, key) => (
+                          <MenuItem key={key} value={name} style={{whiteSpace: 'normal'}}>
+                            {name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </Grid>
+
+                  </Grid>
+
+
+                </Grid>
+                <Grid item xs={12}>
+                  {filter.map((option, key) => <Button key={key} onClick={this.handleSelectFilter(key, option.name, !option.value)}>{option.icon}{option.detail}</Button>)}
+                </Grid>
+              </Grid>
+            </Collapse>
             <Grid
               container
               spacing={2}
               direction="row"
-              justify="center"
-              alignItems="flex-start"
+              justify="flex-start"
+              alignItems="center"
               style={{ marginTop: '30px' }}
             >
 
-              {isFiltered ? 
-              <>  
-              {
-                sortName ?
-                sortFoundName.map((product, index) => {
-                return (
-                  <Grid item xs={12} sm={6} md={6} lg={6} xl={4}key={index}>
-                     <ProductCard key={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart} handelRegister={this.props.handelRegister} currentUser ={ this.props.currentUser}/>
-                  </Grid>
-                )
+              {isFiltered ?
+                sortedFound.map((product, index) => {
+                  return (
+                    <Grid item xs={12} sm={6} md={4} key={index}>
+                      <ProductCard
+                        key={index}
+                        product={product}
+                        uid={this.props.auth.uid}
+                        handleCart={this.props.handleCart}
+                        handelRegister={this.props.handelRegister}
+                        currentUser={this.props.currentUser}
+                      />
+                    </Grid>
+                  )
                 })
-              : sortFoundPrice.map((product, index) => {
-                return (
-                  <Grid item xs={12} sm={6} md={6} lg={6} xl={4} key={index}>
-                    <ProductCard key={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart} handelRegister={this.props.handelRegister} currentUser ={ this.props.currentUser}/>
-               
-                  </Grid>
-                )
-              })
-              }
-              </>
-              : afterSearchProduct.map((product, index) => {
-                return (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
-                     <ProductCard key ={index} product={product} uid ={this.props.auth.uid} handleCart={this.props.handleCart} currentUser ={ this.props.currentUser} handelRegister={this.props.handelRegister}/>
-                  </Grid>
-                )
-              })}
+
+                : afterSearchProduct.map((product, index) => {
+                  return (
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                      <ProductCard key={index} product={product} uid={this.props.auth.uid} handleCart={this.props.handleCart} currentUser={this.props.currentUser} handelRegister={this.props.handelRegister} />
+                    </Grid>
+                  )
+                })}
 
             </Grid>
           </TabPanel>
@@ -281,15 +341,15 @@ class Dashboard extends Component {
               container
               spacing={2}
               direction="row"
-              justify="center"
-              alignItems="flex-start"
+              justify="flex-start"
+              alignItems="center"
             >
               {afterSearchSupplier.map((supplier, index) => {
                 return (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
-                     <SupplierCard supplier={supplier}/>
+                  <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
+                    <SupplierCard supplier={supplier} />
                   </Grid>
-                  
+
                 )
 
               })}
@@ -300,13 +360,13 @@ class Dashboard extends Component {
               container
               spacing={2}
               direction="row"
-              justify="center"
-              alignItems="flex-start"
+              justify="flex-start"
+              alignItems="center"
             >
               {afterSearchRetailer.map((retailer, index) => {
                 return (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
-                      <RetailerCard retailer={retailer}/>
+                  <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
+                    <RetailerCard retailer={retailer} currentUser={currentUser} />
                   </Grid>
                 )
 
@@ -326,24 +386,27 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = (state) => {
+  
   const users = state.firestore.ordered.currentUser
   const currentUser = users ? users[0] : null
+  
   return {
     currentUser: currentUser,
     auth: state.firebase.auth,
     products: state.firestore.ordered.products,
     suppliers: state.firestore.ordered.suppliers,
     retailers: state.firestore.ordered.retailers
-  
+
   }
 };
 
 export default compose(
-  connect(mapStateToProps,mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect([
-    { collection: 'products'},
-    { collection: 'users', where: [["type", "==", "supplier"]], storeAs: 'suppliers' },
-    { collection: 'users', where: [["type", "==", "retailer"]], storeAs: 'retailers' },
+    { collection: 'products' },
+    
+    { collection: 'users', where: [["type", "==", "supplier"], [['verify', '==', true]] ], storeAs: 'suppliers' },
+    { collection: 'users', where: [["type", "==", "retailer"], [['verify', '==', true]] ], storeAs: 'retailers' },
 
   ]),
 

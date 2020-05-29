@@ -2,21 +2,21 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import {InputBase, Container, Typography, Grid, withStyles, Modal} from '@material-ui/core'
-import ProfileInfoCard from './supplier/ProfileInfoCard'
+import ProfileInfoCard from './ProfileInfoCard'
 import { firestoreConnect } from 'react-redux-firebase'
-import { storeProducts } from "./data"
-import AddProductCard from './products/AddProductCard'
-import EditProfileCard from './supplier/EditProfileCard'
-import ProductCard from './products/ProductCard'
+
+import AddProductCard from '../products/AddProductCard'
+import EditProfileCard from '../supplier/EditProfileCard'
+import ProductCard from '../products/ProductCard'
 import { Redirect } from 'react-router-dom'
-import {createProduct } from '../store/actions/productAction'
-import {editUser } from '../store/actions/userActions'
+import {createProduct } from '../../store/actions/productAction'
+import {editUser } from '../../store/actions/userActions'
 import SearchIcon from '@material-ui/icons/Search'
 import { fade } from '@material-ui/core/styles'
-import {uploadToStorage} from '../store/actions/uploadAction'
+import {uploadToStorage} from '../../store/actions/uploadAction'
 import {withRouter} from 'react-router-dom';
-import {createChatSession} from '../store/actions/chatActions'
-import { checkArray } from './dashboard/Dashboard'
+import {createChatSession} from '../../store/actions/chatActions'
+import { checkArray } from '../dashboard/Dashboard'
 const useStyles = theme => ({
   search: {
     position: 'relative',
@@ -48,6 +48,16 @@ const useStyles = theme => ({
     color: 'inherit',
   }
 });
+const defaultItemState={
+  productName:'',
+  productDesc:'',
+  productCategories: [],
+  dutyRate:'',
+  margin:'',
+  unitCost:'',
+  images: [],
+  progress: '',
+}
 
 class Profile extends Component {
   state={
@@ -63,30 +73,35 @@ class Profile extends Component {
     certificates: '',
     wholesaler: '',
     logo: '',
+
     newBusinessName: '',
     newPhoneNumber: '',
     newAddress: '',
     newWebsite: '',
     newBusinessGenre: '',
     newDescription: '',
-
     //Figure out editing logo and cert later
-    newCertificate: '', 
+    newCertificates: '', 
     newLogo: '',
 
-
-    products: storeProducts,
     search:'',
     step:1,
-    owner:false,
+    owner: false,
+
     productName:'',
     productDesc:'',
     productCategories: [],
-    dutyRate:0,
-    margin:0,
-    unitCost:0,
+    dutyRate:'',
+    margin:'',
+    unitCost:'',
     images: [],
     progress: '',
+
+    nameError: false,
+    categoriesError: false, 
+    unitCostError:'',
+    dutyRateError:'',
+    marginError:''
   }
 
   handleProductOpen = () => {
@@ -124,12 +139,14 @@ class Profile extends Component {
     this.setState({ [input]: e.target.value })
   }
 
-  handleCatChange = (chips) => {
-    this.setState({ productCategories: chips })
+  handleCatChange = (e) => {
+    
+    this.setState({ productCategories: e.target.value })
   }
 
   handleChangeImg(files){
     console.log(files)
+
     this.setState({
       images: files
     });
@@ -176,50 +193,74 @@ class Profile extends Component {
   }
 
   validateForm = () => {
+    console.log(this.state)
+    var valid = true
     if(this.state.productName === ''){
-      alert('The product name cannot be empty')
-      return false
+      this.setState({nameError: true})
+      valid = false
     }
-    if(this.state.productName.length > 256){
-      alert('The product name must not exceed 256 characters')
-      return false
-    }
-    if(this.state.productDesc === ''){
-      alert('The product description cannot be empty')
-      return false
-    }
-    if(this.state.productCategories === ''){
-      alert('The product category cannot be empty')
-      return false
-    }
-    if(this.state.dutyRate <= 0){
-      alert('The product duty rate cannot be negative or zero')
-      return false
-    }
-    if(this.state.margin <= 0){
-      alert('The product margin cannot be negative or zero')
-    }
-    if(this.state.unitCost <= 0){
-      alert('The product unit cost cannot be negative or zero')
+    else if(this.state.productName.length > 256){
+      this.setState({nameError: true})
+      valid = false
     }
     else{
-      return true
+      this.setState({nameError: false})
     }
+    if(this.state.productCategories.length <= 0){
+      this.setState({categoriesError: true})
+      valid = false
+    }
+    else{
+      this.setState({categoriesError: false})
+    }
+    if(this.state.unitCost === ''){
+      this.setState({unitCostError: 'The product unit cost cannot be empty'})
+      valid = false
+    }
+    else if(this.state.unitCost <= 0){
+      this.setState({unitCostError: 'The product unit cost cannot be negative or zero'})
+      valid = false
+    }
+    else{
+      this.setState({unitCostError: ''})
+    }
+    if(this.state.dutyRate === ''){
+      this.setState({dutyRateError: 'The product duty rate cannot be empty'})
+      valid = false
+    }
+    else if(this.state.dutyRate < 0){
+      this.setState({dutyRateError: 'The product duty rate cannot be negative'})
+      valid = false
+    }
+    else{
+      this.setState({dutyRateError: ''})
+    }
+    if(this.state.margin === ''){
+      this.setState({marginError: 'The product margin cannot be empty'})
+      valid = false
+    }
+    else if(this.state.margin < 0){
+      this.setState({marginError: 'The product margin cannot be negative'})
+      valid = false
+    }
+    else{
+      this.setState({marginError: ''})
+    }
+    return valid
   }
 
   formSubmit = () => {
-    if (this.validateForm()){
 
-      //FIX THIS TO FIT WITH NEW DATA
-      var unitPrice = Number(this.state.unitCost) * ((100 + Number(this.state.margin) + Number(this.state.dutyRate))/100)
+    if (this.validateForm()){
+      var unitPrice = (Number(this.state.unitCost) * ((100 + Number(this.state.margin) + Number(this.state.dutyRate))/100)).toFixed(2)
       var timeStamp = Math.floor(Date.now() / 1000);
       var product = {
         authorEmail: this.props.thisUser.email,
         authorName: this.props.thisUser.displayName,
         category: this.state.productCategories, 
-        cover: this.props.productImg[0],
+        cover: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png',
         supplierId: this.props.auth.uid,
-        productImg: this.props.productImg,
+        productImg: ['https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png'],
         name: this.state.productName, 
         createdAt: timeStamp,
         description: this.state.productDesc, 
@@ -230,8 +271,15 @@ class Profile extends Component {
           unitPrice: unitPrice
         }
       }
+      if (this.props.productImg.length > 0) {
+        product.cover = this.props.productImg[0]
+        product.productImg = this.props.productImg
+      }
+      // console.log('hahaha', product)
+      // console.log(this.props.productImg)
       //Form submit functions go here
       this.props.createProduct(product)
+      window.location.reload()
       this.handleProductClose()
     }
   }
@@ -249,6 +297,25 @@ class Profile extends Component {
         address: this.state.newAddress,
         website: this.state.newWebsite
       }
+      if (!this.state.newBusinessGenre) {
+        newProfileData.businessGenre = ''
+      }
+      if (!this.state.newBusinessName) {
+        newProfileData.businessGenre = ''
+      }
+      if (!this.state.newDescription) {
+        newProfileData.businessDesc = ''
+      }
+      if (!this.state.newPhoneNumber) {
+        newProfileData.phoneNumber = ''
+      }
+      if (!this.state.newAddress) {
+        newProfileData.address = ''
+      }
+      if (!this.state.newWebsite) {
+        newProfileData.website = ''
+      }
+      
       //Form submit functions go here
       this.props.editUser(newProfileData)
       this.handleEditClose()
@@ -291,11 +358,16 @@ static getDerivedStateFromProps(nextProps, prevState) {
 }
   
   render() {
-    const { auth, classes, products } = this.props;
-    console.log(this.props)
+    const { auth, classes, products, productRetailer} = this.props;
+    const allRetailers = this.props.allRetailers ? this.props.allRetailers : []
     const { search } = this.state;
+    const thisUser = this.props.thisUser ? this.props.thisUser.type : 'supplier'
+    const currentUser = this.props.currentUser ? this.props.currentUser : [{pending: true, verify:false}]
     const filteredProducts = checkArray(products).filter(product =>{
         return product.name.toLowerCase().indexOf(search.toLowerCase())!== -1
+    })
+    const filteredProductRetailer = checkArray(productRetailer).filter(product =>{
+      return product.name.toLowerCase().indexOf(search.toLowerCase())!== -1
     })
     if (!auth.uid) return <Redirect to='/signin' />
 
@@ -318,6 +390,7 @@ static getDerivedStateFromProps(nextProps, prevState) {
               onChange={this.handleChange('search')}
             />
           </div>
+        {thisUser==='supplier' ?
         <div style={{ marginTop: '3%' }}>
           <Grid
             container
@@ -325,17 +398,34 @@ static getDerivedStateFromProps(nextProps, prevState) {
             direction="row"
             justify="flex-start"
             alignItems="flex-start"
-          >
+          > 
             {products ? filteredProducts.map(product => {
               return (
                 <Grid item xs={12} sm={6} md={4} key={product.id}>
-                  <ProductCard product={product} />
+                  <ProductCard product={product} profile={this.props.thisUser ? this.props.thisUser.type : false} allRetailers={allRetailers} />
                 </Grid>
               )
             }) : <h5>Loading...</h5>}</Grid>
         
         </div>
-        {this.state.owner?
+        : <div style={{ marginTop: '3%' }}>
+        <Grid
+          container
+          spacing={2}
+          direction="row"
+          justify="flex-start"
+          alignItems="flex-start"
+        > 
+          {productRetailer? filteredProductRetailer.map(product => {
+            return (
+              <Grid item xs={12} sm={6} md={4} key={product.id}>
+                <ProductCard product={product} profile={this.props.thisUser ? this.props.thisUser.type : false} allRetailers={allRetailers} />
+              </Grid>
+            )
+          }) : <h5>Loading...</h5>}</Grid>
+      
+      </div>}
+        {this.state.owner && currentUser.pending === false && currentUser.verify === true ?
           <Modal open={this.state.productOpen} onClose={this.handleProductClose}>
             <div style={{maxWidth:'50%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%',}}>
               <AddProductCard props={this.props} values={this.state} prevStep={this.prevStep} step={this.state.step} closeModal={this.handleProductClose} formSubmit={this.formSubmit} handleChange={this.handleChange} handleCatChange={this.handleCatChange} handleUpload={this.handleUpload} handleChangeImg={this.handleChangeImg.bind(this)}/>
@@ -365,21 +455,20 @@ const mapStateToProps = (state,ownProps) => {
   const thisUsers = state.firestore.data.thisUser
   const thisUser = thisUsers?thisUsers:null
   const user = users ? users[0] : null;
-  console.log(ownProps)
+  // console.log(ownProps)
   const url = state.uploadReducer.url ? state.uploadReducer.url:null
   if(url!==undefined&& url!==null){
     if (url.path==='/images/productImg/'){
       prourls=prourls.add(url.url)
       }}
-  console.log(prourls)
+  console.log('cai gi day',prourls)
   var chatexist=null
   var chatId =null
-  var i;
   if (state.firestore.ordered.chatsesion!==undefined){
     if(state.firestore.ordered.chatsesion.length===0){
       chatexist= false
     }
-    for (i in state.firestore.ordered.chatsesion){
+    for (var i=0; i< state.firestore.ordered.chatsesion.length;i++){
 
       if (state.firestore.ordered.chatsesion[i].id===chatId1){
         chatexist = true 
@@ -395,12 +484,14 @@ const mapStateToProps = (state,ownProps) => {
   return {
     auth: state.firebase.auth,
     products :  state.firestore.ordered.products,
+    productRetailer: state.firestore.ordered.productRetailer,
     productImg: Array.from(prourls),
     progress: state.uploadReducer.progress,
     thisUser: thisUser,
     chatexist: chatexist,
     chat: state.firestore.data.chatsesion,
-    chatId: chatId
+    chatId: chatId,
+    allRetailers: state.firestore.ordered.allRetailers
     
 }};
 const mapDispatchToProps = dispatch => {
@@ -416,7 +507,11 @@ export default withRouter(compose(
   connect(mapStateToProps,mapDispatchToProps),
   firestoreConnect((props) => {
     
-      return [{ collection: 'products', where:[["supplierId","==", props.match.params.id]]},{ collection: 'users', doc: props.match.params.id, storeAs: 'thisUser' } ]
+      return [
+        { collection: 'products', where:[["supplierId","==", props.match.params.id]]},
+        { collection: 'products' , where:[['retailerId', 'array-contains', props.match.params.id]], storeAs:'productRetailer' },
+        { collection: 'users', doc: props.match.params.id, storeAs: 'thisUser' },
+        { collection: 'users', where: [["type", "==", "retailer"], ['verify','==',true]], storeAs: 'allRetailers' }]
       
   })
 )(withStyles(useStyles)(Profile)) )

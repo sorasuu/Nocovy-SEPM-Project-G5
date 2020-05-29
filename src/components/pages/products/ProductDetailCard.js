@@ -7,7 +7,7 @@ import {
 import ProductImageDetail from './ProductImageDetail'
 import Grid from '@material-ui/core/Grid';
 import DetailTable from './DetailTable'
-import { Table, TableContainer, TableBody, TableRow, TableCell, TableHead } from '@material-ui/core';
+import { Table, TableContainer, TableBody, TableRow, TableCell, TableHead, Chip } from '@material-ui/core';
 import { useContainedCardHeaderStyles } from '@mui-treasury/styles/cardHeader/contained';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
@@ -105,7 +105,7 @@ export default function ProductDetailCard(props) {
 
                         <Grid item xs={12} sm={4} md={4} lg={4}>
                             <Grid container>
-                                <Grid item xs={12}><ProductInfoCard product={props.product} price={price} id={props.id} owner={props.owner} unitPrice={props.product.price.unitPrice} /> </Grid>
+                                <Grid item xs={12}><ProductInfoCard product={props.product} price={price} id={props.id} owner={props.owner} unitPrice={props.product.price.unitPrice} handleCart={props.handleCart}/> </Grid>
 
                             </Grid>
                         </Grid>
@@ -115,9 +115,9 @@ export default function ProductDetailCard(props) {
                             </Grid>
                             <Grid id="description" item xs={12}>
                                 {props.product.description ?
-                                    <>{props.product.description.length > 20 ?
+                                    <>{props.product.description.length > 100 ?
                                         <> {see ?
-                                            <>{props.product.description.slice(0, 20)} <a onClick={handleSee}>See more...</a></>
+                                            <>{props.product.description.slice(0, 100)} <a onClick={handleSee}>See more...</a></>
                                             :
                                             <> {props.product.description} <a onClick={handleSee}>Less</a></>
                                         }
@@ -149,12 +149,12 @@ export default function ProductDetailCard(props) {
 export const ProductInfoCard = props => {
     const classes = useStyles();
     console.log('product detail card...', props.product)
-
+    const product ={...props.product,id:props.id}
     return (
 
         <Grid container spacing={2}>
-            <Grid item xs={6} md={6} lg={6}><h4>Author:</h4></Grid>
-            <Grid item xs={6} md={6} lg={6}><div style={{ fontSize: '20px' }}>{props.product.authorName}</div>
+            <Grid item xs={12} md={6} lg={6}><h4>Author:</h4></Grid>
+            <Grid item xs={12} md={6} lg={6}><div style={{ fontSize: '20px' }}>{props.product.authorName}</div>
                 <NavLink to={`/supplier/${props.product.supplierId.uid}`}>
                     <Button
                         variant="contained"
@@ -166,12 +166,17 @@ export const ProductInfoCard = props => {
                         </Button>
                 </NavLink>
             </Grid>
-            <Grid container>
-                <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Grid item xs={12} md={6} lg={6}><h4>Categories:</h4></Grid>
+            <Grid item xs={12} md={6} lg={6}>
+                {props.product.category.map((item, key) => <li key={key}><Chip label={item}/></li>)}
+            </Grid>
+            <Grid item xs={12} sm={12} md={12} lg={4}>
                     <h4 > Price</h4>
                 </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={12}>
-                    <TableContainer className={classes.root}>
+            
+                
+                <Grid item xs={12} sm={12} md={12} lg={8}>
+                    <TableContainer>
                         <TableHead>
                             <TableRow>
                                 {props.owner ? <PriceForm product={props.product} id={props.id} /> : null}
@@ -196,8 +201,7 @@ export const ProductInfoCard = props => {
 
                     </TableContainer>
                 </Grid>
-            </Grid>
-
+            
             <Grid item xs={12} md={12} lg={12}>
                 <Grid container justify='space-between' alignItems="center">
                     <Grid item xs={4}>
@@ -210,7 +214,8 @@ export const ProductInfoCard = props => {
             </Grid>
 
             <Grid item>
-                <BuyDialog product={props.product} />
+            {props.owner ?null: <BuyDialog product={product} uid={props.uid} handleCart={props.handleCart}/>}
+
             </Grid>
         </Grid>
 

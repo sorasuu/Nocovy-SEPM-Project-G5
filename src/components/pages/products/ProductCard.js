@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import cx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import {
     Card, CardContent, CardMedia,
     Button, Dialog, DialogContent, DialogActions,
     Chip, DialogTitle, Grid, Input, Collapse
 } from '@material-ui/core';
-// import useMediaQuery from '@material-ui/core/useMediaQuery';
-
 import TextInfoContent from '@mui-treasury/components/content/textInfo';
 import { useFourThreeCardMediaStyles } from '@mui-treasury/styles/cardMedia/fourThree';
 import { useN04TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n04';
@@ -16,14 +14,13 @@ import { NavLink } from 'react-router-dom';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
 import "../page.css"
-import AddRoundedIcon from '@material-ui/icons/AddRounded';
-import RemoveRoundedIcon from '@material-ui/icons/RemoveRounded';
 import ProductImageDetail from './ProductImageDetail'
 import { ColorButton } from '../retailer/RetailerCard'
-
+import  RetailerDialog  from '../profile/RetailerDialog'
+import AmountSelector from '../../layout/AmountSelector'
 const useStyles = makeStyles(() => ({
     card: {
-        marginTop: "10%",
+        // marginTop: "10%",
         transition: '0.3s',
         width: '100%',
         overflow: 'initial',
@@ -44,7 +41,7 @@ const ProductCard = (props) => {
     return (
         // <NavLink to = {'/product/'+ props.product.id}>
 
-        <Card className={cx(classes.root, shadowStyles.root)} style={{ position: "relative", marginBottom: '10px' }}>
+        <Card className={cx(classes.root, shadowStyles.root)} style={{ position: "relative", marginBottom: '10px', borderRadius: 16}}>
 
             <CardContent className={classes.content}
             // ref={hoverRef}
@@ -59,14 +56,19 @@ const ProductCard = (props) => {
                             image={product.cover}
                         />
 
-                        <div className="overlay" style={{ borderRadius: 16 }}>
+                        <div className="overlay" style={{ borderRadius: 16}}>
 
-                            <BuyDialog product={product} currentUser={props.currentUser} handleCart={props.handleCart} handelRegister={props.handelRegister} />
+                            {props.profile === 'supplier' ? <RetailerDialog allRetailers={props.allRetailers} registered={props.product.retailerId} product={product}/>
+                               : <>{props.profile === 'retailer'? null
+                               : <BuyDialog uid={props.uid} product={product} currentUser={props.currentUser} handleCart={props.handleCart} handelRegister={props.handelRegister}/>}
+                                </>
+                            }
                             <NavLink to={'/product/' + product.id}>
                                 <ColorButton
                                     variant="contained"
                                     color="primary"
                                     startIcon={<SendOutlinedIcon />}
+                                    style={{marginLeft:5}}
                                 >
                                     Detail
                                 </ColorButton>
@@ -96,7 +98,7 @@ export default ProductCard
 export const BuyDialog = (props) => {
     const [dialog, setDialog] = React.useState(false);
     const [register, setRegister]= useState(false); 
-    const [number, setNumber] = useState(0);
+    const [number, setNumber] = useState(1);
     const  product  = props.product
     const currentUser = props.currentUser
     const handleClickDialog = () => {
@@ -109,29 +111,39 @@ export const BuyDialog = (props) => {
     };
     const handleBuyProduct = (e, product, number) => {  
         console.log("handle Buy Product:", product)
-        props.handleCart(e, product, number)
-        setDialog(false);
-        if (register===true){
-            props.handelRegister(e, product.id)
-        }
+  
+            if (register===true){
+                props.handelRegister(e, product.id)
+                setDialog(false);
+            }else{
+                props.handleCart(e, product, number)
+                setDialog(false);
+            }
+    
     };
-    const buyLess = () => {
-        if (number > 0) {
-            setNumber(number - 1)
-        }
-    }
-    const buyMore = () => {
-        setNumber(number + 1)
-    }
+   
     const handleRegister =()=>{
         setRegister(true)
     }
     const handleChange = (e) => {
-        setNumber(e.target.value)
-
+        if(e.target.value>=1){
+        setNumber(e.target.value)   }
+        else{
+            setNumber(1)
+        } 
+    }
+    const plusOne=(e)=>{
+        setNumber(number+1)
+    }
+    const minusOne=(e)=>{
+        if(number-1>=1){
+        setNumber(number-1)}
+        else{
+            setNumber(1)
+        }
     }
     var owner
-    if(currentUser!== undefined&& currentUser!==null){
+    if(currentUser!== undefined && currentUser!==null){
     if (currentUser.uid === props.product.supplierId) {
         owner = true
     } else {
@@ -157,7 +169,7 @@ export const BuyDialog = (props) => {
                 aria-labelledby="responsive-dialog-title"
             >
             <h4 style={{ margin: '40px' }}>{product.name}</h4>
-            <Grid container style={{ margin: '1%' }} style={{ width: 'fit-content', marginLeft: '2%' }}>
+            <Grid container style={{ margin: '1%', width: 'fit-content', marginLeft: '2%' }}>
                 <Grid item xs={6} md={6} lg={6}  >
                     <ProductImageDetail image={product} />
                 </Grid>
@@ -168,8 +180,8 @@ export const BuyDialog = (props) => {
                     </DialogTitle>
                     <DialogContent>
                         <Grid container justify="flex-start" style={{ width: 'fit-content' }}>
-                            <Grid item><h5>Description:</h5></Grid>
-                            <Grid item>{props.product.description}</Grid>
+                            <Grid item xs={12}><h5>Description:</h5></Grid>
+                            <Grid item xs={12}>{props.product.description}</Grid>
                             <Grid item xs={6}><h5>Categories:</h5></Grid>
                             <Grid item xs={6}>{product.category.map((item, key) => <Chip key={key} label={item} variant="outlined" />)}</Grid>
                             <br />
@@ -185,25 +197,42 @@ export const BuyDialog = (props) => {
                                     </Grid>
                                 </Collapse>
                             </Grid>
+                            { register === false ?
+                            <>
                             <Grid item xs={6}><h5>Quantity</h5></Grid>
                             <Grid item xs={6}><h5 style={{ textAlign: 'right' }}>Cost</h5></Grid>
                             <Grid item xs={6}>
                                 <Grid container direction="row" justify="center" alignItems="center">
-                                    <Grid item xs={4}><Button onClick={buyLess}><RemoveRoundedIcon /></Button></Grid>
-                                    <Grid item xs={4}>
-                                        <Input
-                                            style={{ width: '20px' }}
-                                            disableUnderline="true"
-                                            value={number}
-                                            onChange={e => handleChange(e)}
-                                        />
+                                    
+                                    <Grid item xs={12}>
+                                    <AmountSelector minusOne = {e => minusOne(e)} plusOne={e => plusOne(e)} 
+                              
+                                    value={number}
+                                    onChange={e => handleChange(e)}/>
+                                       
                                     </Grid>
-                                    <Grid item xs={4}><Button onClick={buyMore}><AddRoundedIcon /></Button></Grid>
+                                   
                                 </Grid>
                             </Grid>
-                            <Grid item xs={6}><div style={{ textAlign: 'right', fontSize: '30px', fontFamily: 'bold' }}> {product.price.unitPrice * number}</div></Grid>
-                                
-
+                            <Grid item xs={6}><div style={{ textAlign: 'right', fontSize: '30px', fontFamily: 'bold' }}> {(product.price.unitPrice * number).toFixed(2)}</div></Grid>
+                             </>   : <>
+                             <Grid item xs={6}><h5>Quantity</h5></Grid>
+                            <Grid item xs={6}><h5 style={{ textAlign: 'right' }}>Cost</h5></Grid>
+                            <Grid item xs={6}>
+                                <Grid container direction="row" justify="center" alignItems="center">
+                                    
+                                    <Grid item xs={12}>
+                                    <AmountSelector minusOne = {e => minusOne(e)} plusOne={e => plusOne(e)} 
+                              
+                                    value={number}
+                                    onChange={e => handleChange(e)}/>
+                                       
+                                    </Grid>
+                                   
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={6}><div style={{ textAlign: 'right', fontSize: '30px', fontFamily: 'bold' }}> {((product.price.unitCost * (1+ product.price.dutyRate/100))*number).toFixed(2)}</div></Grid></>
+                        }
                         </Grid>
                         
                     </DialogContent>
@@ -216,7 +245,7 @@ export const BuyDialog = (props) => {
                 <Grid container
                     justify="flex-end">
                     <DialogActions>
-                        {currentUser  ? currentUser.type === 'retailer'&& register == false ? 
+                        {currentUser  ? currentUser.type === 'retailer' && currentUser.verify === true && register === false ? 
                             <Button variant='outlined' color='secondary' onClick={handleRegister}>Register</Button>
                              : null :null}
                         <Button autoFocus onClick={handleCloseDialog} color="primary">
