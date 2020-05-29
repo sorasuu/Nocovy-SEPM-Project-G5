@@ -19,13 +19,13 @@ exports.requestCreated = functions.firestore
       content: `You receive a request`,
       uid: `${request.retailerId}`,
       time: admin.firestore.FieldValue.serverTimestamp(),
-      link: '/requests'
+      link: '/myrequests'
     }
     const notification2 = {
       content: `You have sent the a request`,
       uid: `${request.supplierId}`,
       time: admin.firestore.FieldValue.serverTimestamp(),
-      link: '/requests'
+      link: '/myrequests'
     }
 
     return createNotification(notification1)&&createNotification(notification2);

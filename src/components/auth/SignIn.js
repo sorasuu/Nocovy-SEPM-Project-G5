@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { signIn } from '../store/actions/authActions'
+import { signIn,fogotPassword } from '../store/actions/authActions'
 import { Redirect } from 'react-router-dom'
 import { Container, NoSsr, LinearProgress, withStyles } from '@material-ui/core'
 import StyledButton from '../layout/StyledButton'
@@ -83,8 +83,10 @@ class SignIn extends Component {
     e.preventDefault();
     const isValid = this.validateForget();
     if (isValid){
-      window.alert('Reset Password Sent !! Check your email')
+      this.props.fogotPassword(this.state.email)
       this.setState(initialState)
+      window.alert('Reset Password Sent !! Check your email')
+      
     }    
   }
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -180,7 +182,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     signIn: (creds) => dispatch(signIn(creds)),
-
+    fogotPassword: (email) => dispatch(fogotPassword(email)),
   }
 }
 

@@ -11,17 +11,17 @@ const initState = {
           authError: 'Login failed'
         }
   
-      case 'LOGIN_GOOGLE_SUCCESS':
-        console.log('login success');
+      case 'SENT_PASSWORD_EMAIL':
+        console.log('email success');
         return {
           ...state,
           authError: null
         }
-      case 'LOGIN_GOOGLE_ERROR':
-        console.log('login error');
+      case 'SENT_PASSWORD_EMAIL_ERROR':
+        console.log('email failed');
         return {
           ...state,
-          authError: 'Login failed'
+          authError: 'Send fogot password email failed'
         }
       
       case 'LOGIN_SUCCESS':

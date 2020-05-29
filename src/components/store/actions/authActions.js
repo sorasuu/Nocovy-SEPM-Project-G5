@@ -13,6 +13,7 @@ export const signIn = (credentials) => {
   }
 }
 
+
 export const signOut = () => {
   return (dispatch, getState) => {
 
@@ -59,4 +60,18 @@ export const signUp = (newUser) => {
       dispatch({ type: 'SIGNUP_ERROR', err});
     });
   }
+}
+
+export const fogotPassword = (email) => {
+  return (dispatch, getState) => {
+    var auth = firebase.auth();
+    
+    
+    auth.sendPasswordResetEmail(email).then(() =>{
+      dispatch({ type: 'SENT_PASSWORD_EMAIL' });
+    }).catch(function(error) {
+      // An error happened.}
+      dispatch({ type: 'SENT_PASSWORD_EMAIL_ERROR' });
+    })}
+    
 }
