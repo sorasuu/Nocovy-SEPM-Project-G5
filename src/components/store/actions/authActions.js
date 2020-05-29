@@ -49,12 +49,12 @@ export const signUp = (newUser) => {
       });
     }).then(() => {
       dispatch({ type: 'SIGNUP_SUCCESS' });
-      // var user = firebase.auth().currentUser;
-      // user.sendEmailVerification().then(function() {
-      // console.log("Email Sent")
-      // }).catch(function(error) {
-      // console.log("Email Sent failed ",error)
-      // });
+      var user = firebase.auth().currentUser;
+      user.sendEmailVerification().then(function() {
+      console.log("Email Sent")
+      }).catch(function(error) {
+      console.log("Email Sent failed ",error)
+      });
     })
     .catch((err) => {
       dispatch({ type: 'SIGNUP_ERROR', err});
