@@ -84,6 +84,7 @@ class SignIn extends Component {
     const isValid = this.validateForget();
     if (isValid){
       window.alert('Reset Password Sent !! Check your email')
+      this.setState(initialState)
     }    
   }
   static getDerivedStateFromProps(nextProps, prevState) {
