@@ -1,4 +1,5 @@
 import React from 'react'
+import StyledButton from '../layout/StyledButton';
 
 class ErrorHandler extends React.Component {
     constructor(props) {
@@ -17,10 +18,10 @@ class ErrorHandler extends React.Component {
     render() {
       if (this.state.errorInfo) {
         return (
-          <div>
+          <div  style={{textAlign:'center'}}>
                 <img alt="error" src='https://firebasestorage.googleapis.com/v0/b/sepm-nocovy.appspot.com/o/rush-11.png?alt=media&token=ca557853-af52-4883-b664-da2ec0807b8c' style={{width:'70%'}}></img>
               <h1 style={{ fontFamily: 'Muli', marginBottom: "5%" }}>Something went wrong!</h1>
-              
+              <StyledButton href='/'>Go to Home Page</StyledButton>
               </div>
         );
       }
