@@ -279,7 +279,7 @@ class Profile extends Component {
       // console.log(this.props.productImg)
       //Form submit functions go here
       this.props.createProduct(product)
-      window.location.reload()
+     
       this.handleProductClose()
     }
   }
@@ -483,7 +483,7 @@ const mapStateToProps = (state,ownProps) => {
    }
   return {
     auth: state.firebase.auth,
-    products :  state.firestore.ordered.products,
+    products :  state.firestore.ordered.userProduct,
     productRetailer: state.firestore.ordered.productRetailer,
     productImg: Array.from(prourls),
     progress: state.uploadReducer.progress,
@@ -508,7 +508,7 @@ export default withRouter(compose(
   firestoreConnect((props) => {
     
       return [
-        { collection: 'products', where:[["supplierId","==", props.match.params.id]]},
+        { collection: 'products', where:[["supplierId","==", props.match.params.id]], storeAs:'userProduct'},
         { collection: 'products' , where:[['retailerId', 'array-contains', props.match.params.id]], storeAs:'productRetailer' },
         { collection: 'users', doc: props.match.params.id, storeAs: 'thisUser' },
         { collection: 'users', where: [["type", "==", "retailer"], ['verify','==',true]], storeAs: 'allRetailers' }]

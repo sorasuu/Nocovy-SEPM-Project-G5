@@ -12,8 +12,8 @@ export const createProduct = (product) => {
         retailerId:[],
         createdAt: new Date()
       }).then(() => {
-       
         dispatch({ type: 'CREATE_PRODUCT_SUCCESS' });
+        window.location.reload()
       }).catch(err => {
         dispatch({ type: 'CREATE_PRODUCT_ERROR' }, err);
       });
