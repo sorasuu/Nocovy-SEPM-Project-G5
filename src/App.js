@@ -28,6 +28,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import {registerRetailers} from './components/store/actions/productAction'
 import MyOrders from './components/pages/products/MyOrders';
 import MyRequest from './components/pages/profile/MyRequest';
+import ErrorHandler from './components/utils/ErrorHandler';
 
 class App extends Component {
   state = {
@@ -98,6 +99,8 @@ class App extends Component {
         <div className="App">
           <Navbar notifications={notifications} lastContact ={lastContact} cart={this.state.cart} currentUser={currentUser} />
           <Switch>
+            
+           
             <Route exact path='/' component={(props)=><Dashboard {...props} handleCart={this.handleCart} handelRegister={this.handelRegister} />} />
             {/* <Route path='/'component={ProductDetail} /> */}
             <Route path='/supplier/:id' component={(props)=> <SupplierDetail {...props} classes={supplierlist}/>}/>
@@ -115,9 +118,9 @@ class App extends Component {
             <Route path='/tos' component={TermOfService} />
             <Route path='/myorders' component={MyOrders} />
             <Route path='/myrequests' component={(props) => <MyRequest {...props} currentUser={currentUser}/>}  chatsesion={chatsession}/>
-            
             <Route component={NotFound} />
-
+   
+            
           </Switch>
           {this.props.auth.uid&&this.props.chatsession?
           <Fab style={{

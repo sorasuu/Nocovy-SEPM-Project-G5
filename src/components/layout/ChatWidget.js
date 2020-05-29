@@ -224,6 +224,7 @@ const ChatPanelNone = () => {
             <CardContent className={classes.content} style={{ maxHeight: 300, height: 300, overflow: 'auto', marginTop: '5%' }} >
 
                 <div >
+                    <img alt='' style={{width:'50%'}} src='https://firebasestorage.googleapis.com/v0/b/sepm-nocovy.appspot.com/o/flamenco-no-messages-1.png?alt=media&token=5658ea55-6bc1-4dfc-bfb4-8c809c8a39ea'></img>
                    <p>You don't have any chat right now</p>
 
                 </div>

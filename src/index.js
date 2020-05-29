@@ -15,6 +15,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import ColorLinearProgress from './components/layout/ColorLinearProgress'
 import thunk from 'redux-thunk';
 import rootReducer from './components/store/reducers/rootReducer'
+import ErrorHandler from './components/utils/ErrorHandler';
 const fbConfig = {
   apiKey: "AIzaSyBtUJtrxFAiL06xfxey92cfYQkRldODuSg",
   authDomain: "sepm-nocovy.firebaseapp.com",
@@ -64,7 +65,7 @@ const rrfProps = {
 }
 
 ReactDOM.render(<Provider store={store}>
-    <ReactReduxFirebaseProvider {...rrfProps}><div id='bckgrd' className = 'bckgrd'><AuthIsLoaded> <MuiThemeProvider><App /></MuiThemeProvider></AuthIsLoaded></div>  </ReactReduxFirebaseProvider>
+    <ReactReduxFirebaseProvider {...rrfProps}><div id='bckgrd' className = 'bckgrd'><AuthIsLoaded> <MuiThemeProvider><ErrorHandler><App /></ErrorHandler></MuiThemeProvider></AuthIsLoaded></div>  </ReactReduxFirebaseProvider>
     </Provider>, document.getElementById('root'));
 
 serviceWorker.register();

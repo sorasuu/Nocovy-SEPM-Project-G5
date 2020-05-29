@@ -254,7 +254,7 @@ class AdminDashboard extends Component {
                     <List key={noti.id}>
                         <ListItem>
                             <ListItemAvatar>
-                                <Avatar alt="Remy Sharp" src={notificationsdata[noti.id].uid.logo} />
+                                <Avatar alt="Remy Sharp" src={notificationsdata[noti.id].uid?notificationsdata[noti.id].uid.logo:null} />
                             </ListItemAvatar>
                             <ListItemText
                                 primary={
@@ -477,6 +477,7 @@ const collection = 'notifications';
 const mapStateToProps = (state) => {
     // console.log("haha", state.product);
     const notifications = populate(state.firestore, 'adminNotifications', populates)
+    console.log(notifications)
     return {
         auth: state.firebase.auth,
         users: state.firestore.ordered.allUsers,
@@ -498,7 +499,7 @@ export default compose(
 
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect((props) => {
-        if (!props.auth.uid) {
+        if (props.auth.uid!=="NtrqIdAeI0PnA0Oespl6m5aS3xz1") {
             history.push("/")
             window.location.reload()
         }

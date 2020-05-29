@@ -311,7 +311,7 @@ class Dashboard extends Component {
             >
 
               {isFiltered ?
-                sortedFound.map((product, index) => {
+                sortedFound.length!==0?sortedFound.map((product, index) => {
                   return (
                     <Grid item xs={12} sm={6} md={4} key={index}>
                       <ProductCard
@@ -325,14 +325,24 @@ class Dashboard extends Component {
                     </Grid>
                   )
                 })
-
-                : afterSearchProduct.map((product, index) => {
+                :  <Grid item xs={12}>
+                <div style={{textAlign:'center'}}>
+                  <img style={{width:'40%'}} alt=''src='https://firebasestorage.googleapis.com/v0/b/sepm-nocovy.appspot.com/o/cherry-list-is-empty-1.png?alt=media&token=ab7a1c77-b257-4177-b338-2c877222d832'></img>
+                  <h5 style={{ fontFamily: 'Muli', marginBottom: "5%" }}>No Product Found</h5>
+                  </div>   
+                  </Grid>
+                : afterSearchProduct.length!==0?afterSearchProduct.map((product, index) => {
                   return (
                     <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                       <ProductCard key={index} product={product} uid={this.props.auth.uid} handleCart={this.props.handleCart} currentUser={this.props.currentUser} handelRegister={this.props.handelRegister} />
                     </Grid>
                   )
-                })}
+                }):<Grid item xs={12}>
+                <div style={{textAlign:'center'}}>
+                  <img style={{width:'40%'}} alt=''src='https://firebasestorage.googleapis.com/v0/b/sepm-nocovy.appspot.com/o/cherry-list-is-empty-1.png?alt=media&token=ab7a1c77-b257-4177-b338-2c877222d832'></img>
+                  <h5 style={{ fontFamily: 'Muli', marginBottom: "5%" }}>No Product Found</h5>
+                  </div>   
+                  </Grid>  }
 
             </Grid>
           </TabPanel>
