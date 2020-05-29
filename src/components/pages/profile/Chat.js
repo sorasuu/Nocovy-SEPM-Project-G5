@@ -125,8 +125,8 @@ export const ChatContact = (props) => {
                         if(receiver!==undefined&& receiver!==null){
                         if (receiver.displayName.toLowerCase().includes(props.search.toLowerCase())){
                         return (
-                            // <NavLink to={'/chat/'+contact.id}>
-                            <ListItemLink key={contact.id} href={'/chat/'+contact.id} divider dense button alignItems="flex-start" selected={contact.id === props.currentchatsession.id}>
+                            <NavLink to={'/chat/'+contact.id}>
+                            <ListItemLink key={contact.id} divider dense button alignItems="flex-start" selected={contact.id === props.currentchatsession.id}>
                                 <ListItemAvatar>
                                     <Avatar src={receiver?receiver.logo:null} />
                                 </ListItemAvatar>
@@ -137,7 +137,7 @@ export const ChatContact = (props) => {
                                         <Typography variant='subtitle1'> {receiver?contact.lastchat:null}</Typography>}
                                 />
                             </ListItemLink>
-                            // </NavLink>
+                           </NavLink>
                         )}
                     }}) : null}
                 </List>
