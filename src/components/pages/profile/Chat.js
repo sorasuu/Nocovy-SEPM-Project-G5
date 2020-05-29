@@ -125,7 +125,7 @@ export const ChatContact = (props) => {
                         if(receiver!==undefined&& receiver!==null){
                         if (receiver.displayName.toLowerCase().includes(props.search.toLowerCase())){
                         return (
-                            <NavLink to={'/chat/'+contact.id}>
+                            <NavLink to={'/chat/'+contact.id} style={{color:'black'}}>
                             <ListItemLink key={contact.id} divider dense button alignItems="flex-start" selected={contact.id === props.currentchatsession.id}>
                                 <ListItemAvatar>
                                     <Avatar src={receiver?receiver.logo:null} />
