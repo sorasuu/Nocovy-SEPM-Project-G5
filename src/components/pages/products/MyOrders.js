@@ -62,7 +62,7 @@ const useStyles1 = makeStyles(({  }) => ({
 
     return (
       <div className={classes.root}>
-        <Button className={classes.tag} disabled={true} style={{color:'black'}}>Total Price: {props.totalPrice?props.totalPrice:null}$</Button>
+        <Button className={classes.tag} disabled={true} style={{color:'black'}}>Total Price: {props.totalPrice?props.totalPrice.toFixed(2):null}$</Button>
       </div>
     );
   };

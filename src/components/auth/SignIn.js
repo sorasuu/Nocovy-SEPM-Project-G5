@@ -50,7 +50,20 @@ class SignIn extends Component {
 
     return true;
   }
+  validateForget=()=>{
+    let emailError ='';
+    
+    if (!this.state.email.includes("@")) {
+      emailError = "Invalid email";
+    }
+    if (emailError){
+      this.setState({emailError});
+      return false;
+    }
+    return true;
 
+    
+  }
   handleForget = () => {
     this.setState({ isForget: !this.state.isForget })
 
@@ -66,8 +79,12 @@ class SignIn extends Component {
     this.props.signIn(this.state)
 
   }
-  handleResetPassword = () => {
-
+  handleResetPassword = (e) => {
+    e.preventDefault();
+    const isValid = this.validateForget();
+    if (isValid){
+      window.alert('Reset Password Sent !! Check your email')
+    }    
   }
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.authError !== prevState.authError) {
@@ -102,6 +119,7 @@ class SignIn extends Component {
               <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <input
+                  required
                   type="email"
                   id='email'
                   placeholder='Enter your Email'
