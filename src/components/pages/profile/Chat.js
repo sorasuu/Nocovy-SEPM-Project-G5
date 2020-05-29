@@ -122,6 +122,7 @@ export const ChatContact = (props) => {
                         } else {
                             receiver = props.chatuser[contact.user1]
                         }
+                        if(receiver!==undefined&& receiver!==null){
                         if (receiver.displayName.toLowerCase().includes(props.search.toLowerCase())){
                         return (
                             // <NavLink to={'/chat/'+contact.id}>
@@ -138,7 +139,7 @@ export const ChatContact = (props) => {
                             </ListItemLink>
                             // </NavLink>
                         )}
-                    }) : null}
+                    }}) : null}
                 </List>
             </CardContent>
         </Card>
