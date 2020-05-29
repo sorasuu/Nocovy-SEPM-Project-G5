@@ -17,7 +17,7 @@ import { useSelector } from 'react-redux'
 export const DefaultChatMsg = (props) => (
 
     <div>
-        {props.messages ? props.messages.map(message => {
+        {props.messages ? props.messages.length!==0?props.messages.map(message => {
             if (message.sender === props.uid) {
                 console.log(props)
                 return (
@@ -40,7 +40,11 @@ export const DefaultChatMsg = (props) => (
                         ]}
                     />)
             }
-        }) : null}
+        }):null : <div >
+        <img alt='' style={{width:'50%'}} src='https://firebasestorage.googleapis.com/v0/b/sepm-nocovy.appspot.com/o/flamenco-no-messages-1.png?alt=media&token=5658ea55-6bc1-4dfc-bfb4-8c809c8a39ea'></img>
+       <p>You haven't chat with this user. Send a message</p>
+
+    </div>}
 
     </div>
 );

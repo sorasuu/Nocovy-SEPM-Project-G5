@@ -153,7 +153,7 @@ export const MessageList = (props) => {
    
     return (
         <div style={{maxHeight:'400px', height:'400px'}}>
-            {props.messages && props.chatuser ? props.messages.map(message => {
+            {props.messages && props.chatuser ? props.messages.length!==0?props.messages.map(message => {
                 console.log(message)
 
                 if (message.sender === props.uid) {
@@ -182,8 +182,16 @@ export const MessageList = (props) => {
                 }
                
                 
-            })
-                : null
+            }):<div >
+            <img alt='' style={{width:'50%'}} src='https://firebasestorage.googleapis.com/v0/b/sepm-nocovy.appspot.com/o/flamenco-no-messages-1.png?alt=media&token=5658ea55-6bc1-4dfc-bfb4-8c809c8a39ea'></img>
+           <p>You haven't chat with this user. Send a message</p>
+
+        </div>
+                : <div >
+                <img alt='' style={{width:'50%'}} src='https://firebasestorage.googleapis.com/v0/b/sepm-nocovy.appspot.com/o/flamenco-no-messages-1.png?alt=media&token=5658ea55-6bc1-4dfc-bfb4-8c809c8a39ea'></img>
+               <p>You don't have any chat right now</p>
+
+            </div>
             }
 
         </div>
