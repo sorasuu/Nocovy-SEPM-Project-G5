@@ -264,7 +264,7 @@ class AdminDashboard extends Component {
                                             variant="body1"
                                             className={classes.inline}
                                             color="textPrimary"
-                                        > {notificationsdata[noti.id].uid.displayName}</Typography>
+                                        > {notificationsdata[noti.id].uid?notificationsdata[noti.id].uid.displayName:null}</Typography>
                                                   
                                     { "        "+ moment(noti.time.toDate()).fromNow()} 
                                     

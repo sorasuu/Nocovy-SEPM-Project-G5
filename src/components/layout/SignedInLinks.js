@@ -172,7 +172,7 @@ const SignedInLinks = (props) => {
                      keepMounted
                      open={open}
                      onClose={handleClose}>
-                  {props.props.notifications?props.props.notifications.map((noti, key)=>
+                  {props.props.notifications?props.props.notifications.length!==0?props.props.notifications.map((noti, key)=>
                   noti.link?<NavLink to={noti.link}>
                     <MenuItem onClick={handleClose} key={key} style={{maxWidth:'300px',whiteSpace: 'normal', color:'black'}}>
                    <p> {noti.content}</p>
@@ -185,6 +185,11 @@ const SignedInLinks = (props) => {
                     
                         )
                         :<MenuItem
+                          onClick={handleClose}
+                      
+                        >
+                          You have no notification
+                    </MenuItem>:<MenuItem
                           onClick={handleClose}
                       
                         >

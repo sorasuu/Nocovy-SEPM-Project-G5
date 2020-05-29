@@ -48,7 +48,7 @@ exports.requestCreated = functions.firestore
             link: '/myrequests'
           }
         }
-        if (request.pending === false && request.confirmed === true) {
+        if (request.pending === false && request.confirmed === false) {
          
           notification = {
             content: `Your request has been declined`,
@@ -108,6 +108,7 @@ exports.userJoined = functions.auth.user()
         const notification = {
           content: 'A new user need approval',
           user: `${newUser.displayName}`,
+          uid:user.uid,
           time: admin.firestore.FieldValue.serverTimestamp(),
           tag:'admin',
         };
