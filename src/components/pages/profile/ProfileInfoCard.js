@@ -115,7 +115,9 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ProfileInfoCard = (props) => {
-    // console.log(props)
+    console.log('haha,',props)
+    const currentUser = props.currentUser ? props.currentUser : [{pending: true, verify:false}]
+
     const classes = useStyles();
     const cardHeaderStyles = useContainedCardHeaderStyles();
     const cardShadowStyles =  useOverShadowStyles({ inactive: true });
@@ -140,8 +142,9 @@ const ProfileInfoCard = (props) => {
                     
                     { props.info.owner?
                     <div className={classes.buttons}>
-                   
+                        {currentUser.pending === false && currentUser.verify === true && currentUser.type == 'supplier' ?
                         <StyledButton onClick={props.handleProductOpen} startIcon={<AddIcon />} style={{marginBottom:10}}> Create New Product </StyledButton>
+                        : null}
                         <Divider light/>
                         <StyledButton onClick={props.handleEditOpen} startIcon={<EditIcon />} style={{background: "linear-gradient(45deg, #019179 30%, #0074A7 90%)", boxShadow: '0 3px 5px 2px rgba(105, 135, 255, 0.3'}}>Edit Profile</StyledButton>
                       

@@ -374,7 +374,7 @@ static getDerivedStateFromProps(nextProps, prevState) {
     return (
       <Container>
         <div>
-        <ProfileInfoCard handleEditOpen={this.handleEditOpen} handleProductOpen={this.handleProductOpen} info = {this.state} auth={auth} uid ={this.props.match.params.id} handleChat={this.handleChat}/>
+        <ProfileInfoCard currentUser={currentUser} handleEditOpen={this.handleEditOpen} handleProductOpen={this.handleProductOpen} info = {this.state} auth={auth} uid ={this.props.match.params.id} handleChat={this.handleChat}/>
         <Typography gutterBottom style={{fontWeight:'bold'}} align='center' variant='h3'>Products</Typography>
         <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -425,7 +425,7 @@ static getDerivedStateFromProps(nextProps, prevState) {
           }) : <h5>Loading...</h5>}</Grid>
       
       </div>}
-        {this.state.owner && currentUser.pending === false && currentUser.verify === true ?
+        {this.state.owner && currentUser.pending === false && currentUser.verify === true && currentUser.type == 'supplier' ?
           <Modal open={this.state.productOpen} onClose={this.handleProductClose}>
             <div style={{maxWidth:'50%', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%',}}>
               <AddProductCard props={this.props} values={this.state} prevStep={this.prevStep} step={this.state.step} closeModal={this.handleProductClose} formSubmit={this.formSubmit} handleChange={this.handleChange} handleCatChange={this.handleCatChange} handleUpload={this.handleUpload} handleChangeImg={this.handleChangeImg.bind(this)}/>
